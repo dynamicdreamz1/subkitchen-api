@@ -34,6 +34,7 @@ gem 'koala'
 gem 'rails-i18n'
 gem 'kaminari'
 gem 'delayed_job_active_record'
+gem 'rack-cors', :require => 'rack/cors'
 
 group :production do
   gem 'rails_12factor'
