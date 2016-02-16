@@ -1,0 +1,7 @@
+test:
+  adapter: postgresql
+  username: postgres
+  pool: 5
+  timeout: 5000
+  database: subkitchen_test
+

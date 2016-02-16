@@ -1,0 +1,52 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://graph.facebook.com/me?access_token=test&fields=email,name
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.9.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=UTF-8
+      X-Fb-Trace-Id:
+      - HmBUAqVDEps
+      X-Fb-Rev:
+      - '2139313'
+      Etag:
+      - '"dc2a0ec609709e137fe9480d2752592c0c199b67"'
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Facebook-Api-Version:
+      - v2.5
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      X-Fb-Debug:
+      - PlIeWl3YiRJVmxtbeOE0AUr+ejlCfyCL0aAR1z+/jHH6git0n9DvqRTk9k6P1CdFInOmD0t9MnvzgJTnihCMtg==
+      Date:
+      - Thu, 21 Jan 2016 13:55:08 GMT
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '104'
+    body:
+      encoding: UTF-8
+      string: '{"name":"Rafa\u0142 Lisowski","email":"some@stuff.pl","gender":"male","id":"4"}'
+    http_version:
+  recorded_at: Thu, 21 Jan 2016 13:55:08 GMT
+recorded_with: VCR 3.0.0
