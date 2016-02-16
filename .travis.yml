@@ -1,0 +1,17 @@
+addons:
+  postgresql: "9.3"
+  # code_climate:
+  #   repo_token: 8749524642bd0f6069ef361cd6bb3a9f92d1b7310e270d97866347f5e4b1e7eb
+services:
+  - postgresql
+language: ruby
+cache: bundler
+rvm:
+  - 2.3.0
+before_script:
+  - psql -c 'create database subkitchen_test;' -U postgres
+  - cp config/database.yml.travis config/database.yml
+script:
+  - RAILS_ENV=test bundle exec rake db:migrate --trace
+  - bundle exec rake db:test:prepare
+  - bundle exec rake

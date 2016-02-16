@@ -1,0 +1,13 @@
+Style/AlignParameters:
+  # The `with_fixed_indentation` style aligns the following lines with one
+  # level of indentation relative to the start of the line with the method call.
+  #
+  #     method_call(a,
+  #       b)
+  EnforcedStyle: with_fixed_indentation
+
+Metrics/LineLength:
+  Max: 120
+
+Documentation:
+  Enabled: false
