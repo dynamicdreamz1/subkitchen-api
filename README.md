@@ -1,6 +1,6 @@
 # Sublimaiton Kitchen
 
-## test
+## run tests
 
 ```
 $ bundle exec rake
@@ -9,5 +9,5 @@ $ bundle exec rake
 or use Guard
 
 ```
-$ bundel exec guard
+$ bundle exec guard
 ```
