@@ -14,6 +14,11 @@ module Products
         per_page = params[:per_page].to_i != 0? params[:per_page] : 10
         Product.page(page).per(per_page)
       end
+
+      desc 'Return product by id'
+      get ':id' do
+        Product.find(params[:id])
+      end
     end
   end
 end

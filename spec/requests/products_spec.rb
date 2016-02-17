@@ -16,4 +16,12 @@ describe Products::Api, type: :request do
       expect(response.body).to eq(Product.page(2).per(1).to_json)
     end
   end
+
+  describe '/api/v1/products/:id' do
+    it 'returns product' do
+      product = create(:product)
+      get "/api/v1/products/#{product.id}"
+      expect(response.body).to eq(product.to_json)
+    end
+  end
 end
