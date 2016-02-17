@@ -14,10 +14,10 @@ u3 = User.create(name: "user3", email: "t3@gmail.com", artist: true)
 u4 = User.create(name: "user4", email: "t4@gmail.com", artist: true)
 
 25.times do
-  Product.create(name: "T-shirt", user: u1)
-  Product.create(name: "Sweater", user: u2)
-  Product.create(name: "Blouse", user: u3)
-  Product.create(name: "Leggins", user: u4)
+  Product.create(name: "T-shirt", user: u1, price: 19.99)
+  Product.create(name: "Sweater", user: u2, price: 29.99)
+  Product.create(name: "Blouse", user: u3, price: 39.99)
+  Product.create(name: "Leggins", user: u4, price: 49.99)
 end
 
 100.times do |n|
