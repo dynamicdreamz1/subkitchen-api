@@ -1,10 +1,10 @@
 describe Products::Api, type: :request do
   describe '/api/v1/products' do
-    it 'returns products' do
+    it 'returns first page of products' do
       create(:product)
       get '/api/v1/products'
       expect(response).to have_http_status(:success)
-      expect(response.body).to eq(Product.all.to_json)
+      expect(response.body).to eq(Product.page(1).to_json)
     end
 
     it 'paginates' do

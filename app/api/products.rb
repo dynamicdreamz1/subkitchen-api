@@ -11,7 +11,7 @@ module Products
       desc 'Return all products'
       get '' do
         page = params[:page].to_i != 0? params[:page] : 1
-        per_page = params[:per_page].to_i != 0? params[:per_page] : 10
+        per_page = params[:per_page].to_i != 0? params[:per_page] : 30
         Product.page(page).per(per_page)
       end
 
