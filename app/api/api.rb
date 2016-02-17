@@ -23,6 +23,8 @@ class Api < Grape::API
   end
 
   mount Sessions::Api
+  mount Products::Api
+  mount Artists::Api
 
   add_swagger_documentation(api_version: 'v1', hide_documentation_path: true, base_path: '/api')
 end

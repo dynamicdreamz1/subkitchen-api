@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   uses_secure_token :auth_token
   uses_secure_token :password_reminder_token
 
+  has_many :products
+
   validates :email, presence: true, email: true, uniqueness: true, if: :validate_email?
 
   scope :with_reminder_token, lambda { |token|
@@ -20,5 +22,9 @@ class User < ActiveRecord::Base
 
   def validate_email?
     @validate_email.nil? ? true : @validate_email
+  end
+
+  def self.artists
+    where(artist: true)
   end
 end

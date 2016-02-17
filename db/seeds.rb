@@ -5,3 +5,21 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Product.destroy_all
+User.destroy_all
+
+u1 = User.create(name: "user1", email: "t1@gmail.com", artist: true)
+u2 = User.create(name: "user2", email: "t2@gmail.com", artist: true)
+u3 = User.create(name: "user3", email: "t3@gmail.com", artist: true)
+u4 = User.create(name: "user4", email: "t4@gmail.com", artist: true)
+
+25.times do
+  Product.create(name: "T-shirt", user: u1)
+  Product.create(name: "Sweater", user: u2)
+  Product.create(name: "Blouse", user: u3)
+  Product.create(name: "Leggins", user: u4)
+end
+
+100.times do |n|
+  User.create(name: "user#{n}", email: "t#{n}@gmail.com", artist: true)
+end
