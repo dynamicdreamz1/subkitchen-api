@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217094355) do
+ActiveRecord::Schema.define(version: 20160218091000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "products", force: :cascade do |t|
     t.string   "name"
@@ -35,6 +36,7 @@ ActiveRecord::Schema.define(version: 20160217094355) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.boolean  "artist"
+    t.string   "password_digest"
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

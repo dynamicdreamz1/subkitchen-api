@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   attr_accessor :validate_email
 
+  has_secure_password
+
   include SecureToken
   uses_secure_token :auth_token
   uses_secure_token :password_reminder_token
