@@ -1,8 +1,8 @@
 class UserNotifier < ApplicationMailer
-  def sign_in(user)
+  def set_new_password(user)
     @user = user
-    @reminder_url = "https://#{ENV['MAILGUN_DOMAIN']}/sign_in?token=#{@user.password_reminder_token}"
+    @reminder_url = "https://localhost:3000/api/v1/set_new_password?token=#{@user.password_reminder_token}"
 
-    mail to: @user.email, subject: 'Cloud Team sign in'
+    mail to: @user.email, subject: 'Set new password'
   end
 end

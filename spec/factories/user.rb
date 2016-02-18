@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :user do
     artist true
-    password 'asd'
+    password 'password'
     sequence :name do |n|
       "person#{n}"
     end

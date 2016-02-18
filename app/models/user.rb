@@ -12,21 +12,20 @@ class User < ActiveRecord::Base
   validates :email, presence: true, email: true, uniqueness: true, if: :validate_email?
 
   scope :with_reminder_token, lambda { |token|
-    where('password_reminder_expiration >= ?', Time.zone.now)
-      .where(password_reminder_token: token)
+    where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token).first
   }
 
   def as_json(params = {})
     UserPublicSerializer.new(self).as_json(params).merge(auth_token: auth_token)
   end
 
+  def self.artists
+    where(artist: true)
+  end
+
   private
 
   def validate_email?
     @validate_email.nil? ? true : @validate_email
-  end
-
-  def self.artists
-    where(artist: true)
   end
 end
