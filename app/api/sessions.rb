@@ -21,13 +21,15 @@ module Sessions
         requires :password, type: String
         requires :password_confirmation, type: String
         requires :name, type: String
+        requires :artist, type: Boolean
       end
       post 'register' do
         user =  User.new(
             name: params.name,
             password: params.password,
             password_confirmation: params.password_confirmation,
-            email: params.email
+            email: params.email,
+            artist: params.artist
         )
         if user.save
           user
@@ -91,6 +93,17 @@ module Sessions
         else
           status :unprocessable_entity
         end
+      end
+
+      desc 'return verify user link to paypal'
+      params do
+        requires :return_path, type: String
+        requires :notify_path, type: String
+      end
+      get 'verify_profile' do
+        authenticate!
+        order = Order.create!(user_id: current_user.id, order_type: 'verification')
+        order.paypal_payment_url(params.return_path, params.notify_path)
       end
     end
   end
