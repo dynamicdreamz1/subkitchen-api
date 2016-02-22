@@ -16,4 +16,14 @@ RSpec.describe User, type: :model do
   it 'can reset auth_token' do
     expect { @user.regenerate_auth_token }.to change(@user, :auth_token)
   end
+
+  it 'has pending status if artist' do
+    user = create(:user, artist: true)
+    expect(user.status).to eq('pending')
+  end
+
+  it 'has unverified status if not artist' do
+    user = create(:user, artist: false)
+    expect(user.status).to eq('unverified')
+  end
 end

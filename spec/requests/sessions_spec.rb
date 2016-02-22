@@ -12,7 +12,7 @@ describe Sessions::Api, type: :request do
 
     it 'should be able to register' do
       expect do
-        post '/api/v1/sessions/register', email: 'test@gmail.com', name: 'test', password: 'password', password_confirmation: 'password'
+        post '/api/v1/sessions/register', email: 'test@gmail.com', name: 'test', password: 'password', password_confirmation: 'password', artist: 'false'
       end.to change(User, :count).by(1)
       expect(response).to have_http_status(:success)
     end
@@ -53,6 +53,13 @@ describe Sessions::Api, type: :request do
       expect(response).to have_http_status(:success)
       user.reload
       expect(user.authenticate('newpassword')).to be_truthy
+    end
+
+    it 'should return verification link to paypal' do
+      user = create(:user)
+      get '/api/v1/sessions/verify_profile', { return_path: '', notify_path: '/user_verify_notifications' }, auth_header_for(user)
+      order = Order.find_by(user_id: user.id, state: 'active', order_type: 'verification')
+      expect(response.body).to eq(order.paypal_payment_url('', '/user_verify_notifications').to_json)
     end
   end
 end
