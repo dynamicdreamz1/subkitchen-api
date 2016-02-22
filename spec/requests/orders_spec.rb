@@ -61,5 +61,17 @@ describe Products::Api, type: :request do
 
       expect(response.body).to eq(order.paypal_payment_url('', '/payment_notifications').to_json)
     end
+
+    it 'should return check if product exists' do
+      user = create(:user)
+      order = create(:order, user: user)
+      product = create(:product)
+      item = create(:order_item, order: order, product: product)
+      product.destroy
+
+      get '/api/v1/orders/checkout', { return_path: '', notify_path: '/payment_notifications' }, auth_header_for(user)
+
+      expect(response.body).to eq([item].to_json)
+    end
   end
 end

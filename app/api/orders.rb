@@ -38,10 +38,14 @@ module Orders
       get 'checkout' do
         authenticate!
         order = Order.find_by(user_id: current_user.id, state: :active)
-        if order
-          order.paypal_payment_url(params.return_path, params.notify_path)
+        if order.order_items_exist?
+          if order
+            order.paypal_payment_url(params.return_path, params.notify_path)
+          else
+            status :unprocessable_entity
+          end
         else
-          status :unprocessable_entity
+          order.update_order
         end
       end
     end

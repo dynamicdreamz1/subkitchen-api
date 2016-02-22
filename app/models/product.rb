@@ -7,6 +7,6 @@ class Product < ActiveRecord::Base
   default_scope { where(is_deleted: false) }
 
   def set_price
-    self.price = product_template.price
+    update_attribute(:price, product_template.price)
   end
 end
