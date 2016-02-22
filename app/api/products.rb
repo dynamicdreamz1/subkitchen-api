@@ -12,7 +12,14 @@ module Products
       get '' do
         page = params[:page].to_i != 0? params[:page] : 1
         per_page = params[:per_page].to_i != 0? params[:per_page] : 30
-        Product.page(page).per(per_page)
+        products = Product.page(page).per(per_page)
+        {
+          products: products,
+          meta: {
+            current_page: products.current_page,
+            total_pages: products.total_pages
+          }
+        }
       end
 
       desc 'Return product by id'
