@@ -3,5 +3,6 @@ FactoryGirl.define do
     user
     state :active
     order_type :cart
+    shipping
   end
 end

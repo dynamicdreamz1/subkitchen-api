@@ -2,6 +2,7 @@ class Order < ActiveRecord::Base
   belongs_to :user
   has_many :order_items
   validates :order_type, uniqueness: { scope: [:user_id, :state] } if :active
+  belongs_to :shipping
 
   def active
     state == :active
