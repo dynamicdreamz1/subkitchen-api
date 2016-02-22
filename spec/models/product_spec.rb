@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Product, type: :model do
   before do
-    @product = create(:product)
+    user = create(:user)
+    @product = create(:product, author: user)
   end
 
   it 'has name' do
@@ -10,6 +11,6 @@ RSpec.describe Product, type: :model do
   end
 
   it 'has user owner' do
-    expect(@product.user).to be_a User
+    expect(@product.author).to be_a User
   end
 end

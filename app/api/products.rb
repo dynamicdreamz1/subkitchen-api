@@ -17,7 +17,12 @@ module Products
 
       desc 'Return product by id'
       get ':id' do
-        Product.find(params[:id])
+        product = Product.find(params[:id])
+        if product
+          ProductSerializer.serialize(product)
+        else
+          status :unprocessable_entity
+        end
       end
     end
   end

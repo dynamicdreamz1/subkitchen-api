@@ -19,9 +19,10 @@ describe Products::Api, type: :request do
 
   describe '/api/v1/products/:id' do
     it 'returns product' do
-      product = create(:product)
+      user = create(:user)
+      product = create(:product, author: user)
       get "/api/v1/products/#{product.id}"
-      expect(response.body).to eq(product.to_json)
+      expect(response.body).to eq(ProductSerializer.serialize(product).to_json)
     end
   end
 end
