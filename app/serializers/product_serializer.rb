@@ -2,7 +2,7 @@ class ProductSerializer
   def self.serialize(product)
     { author: product.author.name,
       type: product.product_template.product_type,
-      price: product.product_template.price,
+      price: product.product_template.price.to_s,
       size: product.product_template.size,
       description: product.description,
       name: product.name,

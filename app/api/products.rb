@@ -14,7 +14,7 @@ module Products
         per_page = params[:per_page].to_i != 0? params[:per_page] : 30
         products = Product.page(page).per(per_page)
         {
-          products: products,
+          products: products.map{|p| ProductSerializer.serialize(p)},
           meta: {
             current_page: products.current_page,
             total_pages: products.total_pages
@@ -24,12 +24,7 @@ module Products
 
       desc 'Return product by id'
       get ':id' do
-        product = Product.find(params[:id])
-        if product
-          ProductSerializer.serialize(product)
-        else
-          status :unprocessable_entity
-        end
+        {product: ProductSerializer.serialize(Product.find(params[:id]))}
       end
     end
   end

@@ -3,7 +3,7 @@ FactoryGirl.define do
     sequence :name do |n|
       "product#{n}"
     end
-    user_id 1
+    author { create(:user) }
     product_template
   end
 end
