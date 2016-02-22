@@ -29,8 +29,9 @@ describe Products::Api, type: :request do
   describe '/api/v1/products/create' do
     it 'should create product' do
       user = create(:user)
+      product_template = create(:product_template)
       expect do
-        post '/api/v1/products/create', { name: 'new_product' }, auth_header_for(user)
+        post '/api/v1/products/create', { name: 'new_product', product_template_id: product_template.id }, auth_header_for(user)
       end.to change(Product, :count).by(1)
     end
   end

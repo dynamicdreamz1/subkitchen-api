@@ -15,7 +15,7 @@ size_chart = ActionDispatch::Http::UploadedFile.new({
      :type => 'image/jpg',
      :tempfile => File.new("#{Rails.root}/app/assets/images/sizechart-hoodie.jpg")
  })
-shipping = Shipping.create(info: "<p>Many of our items are made to order.&nbsp;Please know that there is a <strong>14&nbsp;day&nbsp;crafting period</strong> for each of these.</p></div>
+shipping = Shipping.create(tax: 7.0, shipping_cost: 6.0, shipping_info: "<p>Many of our items are made to order.&nbsp;Please know that there is a <strong>14&nbsp;day&nbsp;crafting period</strong> for each of these.</p></div>
 <p>All US orders will be shipped using either Fedex or USPS priority mail. A tracking number will be sent to the email that you provided when placing the order. Normal shipping times for US orders are around 2-3 business days after the item is sent unless you paid for faster delivery.</p>
 <p>International shipping cost is calculated by product weight and shipping address. A tracking number will be provided, but once the item is outside of the US, it will not be tracked. Please allow 7-14 business days for international shipping as each country's system for delivering packages is different.</p>
 <p>Payment of customs fees or duties is your&nbsp;responsibility, and is due at the time of delivery. For more information on customs or duty fees, please contact your local customs office.</p>")

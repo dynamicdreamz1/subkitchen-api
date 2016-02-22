@@ -30,10 +30,15 @@ module Products
       desc 'create product'
       params do
         requires :name, type: String
+        requires :product_template_id, type: Integer
+        optional :description, type: String
       end
       post 'create' do
         authenticate!
-        product = Product.create(name: params.name, user_id: current_user.id)
+        product = Product.create(name: params.name,
+                                 user_id: current_user.id,
+                                 product_template_id: params.product_template_id,
+                                 description: params.description)
         if product
           product
         else

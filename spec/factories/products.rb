@@ -4,7 +4,7 @@ FactoryGirl.define do
       "product#{n}"
     end
     author { create(:user) }
-    product_template
+    product_template {create(:product_template)}
     price 1
   end
 end
