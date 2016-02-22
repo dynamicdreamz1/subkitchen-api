@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160222140750) do
+ActiveRecord::Schema.define(version: 20160222142914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,18 +19,24 @@ ActiveRecord::Schema.define(version: 20160222140750) do
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
     t.integer  "product_id"
-    t.integer  "quantity",   default: 1
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.integer  "quantity",                           default: 1
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.decimal  "price",      precision: 8, scale: 2
   end
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "state",        default: "active"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.string   "order_type",   default: "cart"
+    t.string   "state",                                 default: "active"
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
+    t.string   "order_type",                            default: "cart"
     t.datetime "purchased_at"
+    t.decimal  "subtotal_cost", precision: 8, scale: 2
+    t.decimal  "shipping_cost", precision: 8, scale: 2
+    t.decimal  "tax",           precision: 4, scale: 2
+    t.decimal  "tax_cost",      precision: 8, scale: 2
+    t.decimal  "total_cost",    precision: 8, scale: 2
   end
 
   create_table "payment_notifications", force: :cascade do |t|
@@ -56,13 +62,14 @@ ActiveRecord::Schema.define(version: 20160222140750) do
   create_table "products", force: :cascade do |t|
     t.string   "name"
     t.integer  "user_id"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                                          null: false
+    t.datetime "updated_at",                                                          null: false
+    t.decimal  "price",               precision: 8, scale: 2
+    t.string   "status",                                      default: "unpublished"
     t.integer  "product_template_id"
     t.string   "description"
-    t.integer  "likes",               default: 0
-    t.string   "status",              default: "unpublished"
-    t.boolean  "is_deleted",          default: false
+    t.integer  "likes",                                       default: 0
+    t.boolean  "is_deleted",                                  default: false
   end
 
   create_table "shippings", force: :cascade do |t|

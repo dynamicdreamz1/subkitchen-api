@@ -5,5 +5,6 @@ FactoryGirl.define do
     end
     author { create(:user) }
     product_template
+    price 1
   end
 end
