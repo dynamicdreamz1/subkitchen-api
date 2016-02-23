@@ -24,3 +24,4 @@
 /tmp
 .idea/
 config/database.yml
+config/application.yml

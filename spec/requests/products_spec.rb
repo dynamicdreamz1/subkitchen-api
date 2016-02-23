@@ -28,17 +28,19 @@ describe Products::Api, type: :request do
 
   describe '/api/v1/products' do
     it 'should create product' do
-      image = fixture_file_upload(Rails.root.join("app/assets/images/sizechart-hoodie.jpg"), 'image/jpg')
-      user = create(:user)
-      product_template = create(:product_template)
-      post '/api/v1/products', { name: 'new_product',
-                                   product_template_id: product_template.id,
-                                   description: 'description',
-                                   image: image }, auth_header_for(user)
-      product = Product.first
-      puts product.inspect
-      expect(response.body).to eq(product.to_json)
-      expect(product.image_id).to be_truthy
+      VCR.use_cassette('s3/product/valid') do
+        image = fixture_file_upload(Rails.root.join("app/assets/images/sizechart-hoodie.jpg"), 'image/jpg')
+        user = create(:user)
+        product_template = create(:product_template)
+        post '/api/v1/products', { name: 'new_product',
+                                     product_template_id: product_template.id,
+                                     description: 'description',
+                                     image: image }, auth_header_for(user)
+        product = Product.first
+        puts product.inspect
+        expect(response.body).to eq(product.to_json)
+        expect(product.image_id).to be_truthy
+      end
     end
   end
 

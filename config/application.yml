@@ -1,0 +1,14 @@
+development:
+  s3_access_key: "AKIAIPXJQYTCK22ISDJA"
+  s3_secret: "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"
+  s3_bucket: "subkitchen-local"
+
+test:
+  s3_access_key: "AKIAJ3SEUBISZN6SF6PA"
+  s3_secret: "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"
+  s3_bucket: "subkitchen-staging"
+
+production:
+  s3_access_key: "AKIAJRTKH5XJOCBWKOOA"
+  s3_secret: "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"
+  s3_bucket: "subkitchen-live"
