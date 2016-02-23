@@ -7,6 +7,7 @@ class ProductSerializer
       size: product.product_template.size,
       description: product.description,
       name: product.name,
+      product_image: product.image_url,
       shipping: product.product_template.shipping.shipping_info,
       size_chart: product.product_template.size_chart_url }
   end

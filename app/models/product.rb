@@ -3,10 +3,15 @@ class Product < ActiveRecord::Base
   belongs_to :product_template
   has_many :order_items
   after_create :set_price
+  attachment :image
 
   default_scope { where(is_deleted: false) }
 
   def set_price
     update_attribute(:price, product_template.price)
+  end
+
+  def delete_product
+    update_attribute(:is_deleted, true)
   end
 end

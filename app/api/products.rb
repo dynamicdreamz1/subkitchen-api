@@ -31,35 +31,31 @@ module Products
       params do
         requires :name, type: String
         requires :product_template_id, type: Integer
-        optional :description, type: String
+        requires :description, type: String
+        optional :image, type: File
       end
-      post 'create' do
+      post do
         authenticate!
-        product = Product.create(name: params.name,
+        image = ActionDispatch::Http::UploadedFile.new(params.image)
+        product = Product.new(name: params.name,
                                  user_id: current_user.id,
                                  product_template_id: params.product_template_id,
-                                 description: params.description)
-        if product
-          product
-        else
-          status :unprocessable_entity
-        end
+                                 description: params.description,
+                                 image: image)
+        status :unprocessable_entity unless product.save
+        product
       end
 
       desc 'remove product'
-      params do
-        requires :product_id, type: Integer
-      end
-      delete 'remove' do
+      delete ':id' do
         authenticate!
-        product = Product.find_by(id: params.product_id, user_id: current_user.id)
+        product = Product.find_by(id: params.id, user_id: current_user.id)
         if product
-          product.destroy
+          product.delete_product
         else
           status :unprocessable_entity
         end
       end
-
     end
   end
 end
