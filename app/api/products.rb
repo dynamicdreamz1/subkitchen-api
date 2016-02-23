@@ -9,12 +9,10 @@ module Products
     end
     resources :products do
       desc 'return all products'
-      params do
-        optional :page, type: Integer, default: 1
-        optional :per_page, type: Integer, default: 30
-      end
-      get do
-        products = Product.page(params.page).per(params.per_page)
+      get '' do
+        page = params[:page].to_i != 0? params[:page] : 1
+        per_page = params[:per_page].to_i != 0? params[:per_page] : 30
+        products = Product.page(page).per(per_page)
         {
           products: products.map{|p| ProductSerializer.serialize(p)},
           meta: {
@@ -34,26 +32,28 @@ module Products
         requires :name, type: String
         requires :product_template_id, type: Integer
         requires :description, type: String
-        optional :image, type: File
+        optional :image
       end
       post do
         authenticate!
-        image = ActionDispatch::Http::UploadedFile.new(params.image)
         product = Product.new(name: params.name,
                                  user_id: current_user.id,
                                  product_template_id: params.product_template_id,
                                  description: params.description,
-                                 image: image)
-        status :unprocessable_entity unless product.save
-        product
+                                 image: params.image)
+        if !product.save
+        else
+          status :unprocessable_entity
+          product
+        end
       end
 
       desc 'remove product'
       delete ':id' do
         authenticate!
-        product = Product.find_by(id: params.id, user_id: current_user.id)
+        product = Product.find_by(id: params.product_id, user_id: current_user.id)
         if product
-          product.delete_product
+          product.destroy
         else
           status :unprocessable_entity
         end

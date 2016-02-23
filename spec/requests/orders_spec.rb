@@ -1,10 +1,9 @@
 describe Products::Api, type: :request do
+  let(:user) { create(:user) }
+  let(:product) { create(:product) }
 
   describe 'orders/add_item' do
     it 'should add item to order' do
-      user = create(:user)
-      product = create(:product)
-
       post '/api/v1/orders/add_item', { product_id: product.id }, auth_header_for(user)
 
       order = Order.find_by(user_id: user.id, state: :active)
@@ -13,8 +12,6 @@ describe Products::Api, type: :request do
     end
 
     it 'should increment quantity' do
-      user = create(:user)
-      product = create(:product)
       order = create(:order, user: user)
       create(:order_item, product: product, order: order)
 
@@ -27,8 +24,6 @@ describe Products::Api, type: :request do
 
   describe 'orders/remove_item' do
     it 'should remove item from order' do
-      user = create(:user)
-      product = create(:product)
       order = create(:order, user: user)
       create(:order_item, order: order, product: product)
 
@@ -39,8 +34,6 @@ describe Products::Api, type: :request do
     end
 
     it 'should decrement' do
-      user = create(:user)
-      product = create(:product)
       order = create(:order, user: user)
       create(:order_item, order: order, product: product)
       create(:order_item, order: order, product: product)
@@ -54,16 +47,13 @@ describe Products::Api, type: :request do
 
   describe 'orders/checkout' do
     it 'should return payment link to paypal' do
-      user = create(:user)
       order = create(:order, user: user)
-
       get '/api/v1/orders/checkout', { return_path: '', notify_path: '/payment_notifications' }, auth_header_for(user)
 
       expect(response.body).to eq(order.paypal_payment_url('', '/payment_notifications').to_json)
     end
 
     it 'should return check if product exists' do
-      user = create(:user)
       order = create(:order, user: user)
       product = create(:product)
       item = create(:order_item, order: order, product: product)
