@@ -37,8 +37,7 @@ gem 'delayed_job_active_record'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'refile', require: 'refile/rails'
 gem 'refile-mini_magick'
-gem 'refile-s3'
-gem 'figaro'
+
 
 group :production do
   gem 'rails_12factor'
