@@ -28,7 +28,7 @@ describe Products::Api, type: :request do
 
   describe '/api/v1/products' do
     it 'should create product' do
-      VCR.use_cassette('s3/product/valid') do
+      VCR.use_cassette('s3/product/valid', record: :new_episodes) do
         image = fixture_file_upload(Rails.root.join("app/assets/images/sizechart-hoodie.jpg"), 'image/jpg')
         user = create(:user)
         product_template = create(:product_template)

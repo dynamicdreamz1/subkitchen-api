@@ -1,7 +1,7 @@
 describe ProductTemplates::Api, type: :request do
   describe '/api/v1/product_templates' do
     it 'should create product template' do
-      VCR.use_cassette('s3/product_template/valid') do
+      VCR.use_cassette('s3/product_template/valid', record: :new_episodes) do
         user = create(:user)
         size_chart = fixture_file_upload(Rails.root.join("app/assets/images/sizechart-hoodie.jpg"), 'image/jpg')
         post '/api/v1/product_templates', { price: '12345',
