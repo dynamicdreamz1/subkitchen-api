@@ -1,17 +1,23 @@
 addons:
-  postgresql: "9.3"
-  # code_climate:
-  #   repo_token: 8749524642bd0f6069ef361cd6bb3a9f92d1b7310e270d97866347f5e4b1e7eb
+  postgresql: '9.3'
 services:
-  - postgresql
+- postgresql
 language: ruby
 cache: bundler
 rvm:
-  - 2.3.0
+- 2.3.0
 before_script:
-  - psql -c 'create database subkitchen_test;' -U postgres
-  - cp config/database.yml.travis config/database.yml
+- psql -c 'create database subkitchen_test;' -U postgres
+- cp config/database.yml.travis config/database.yml
 script:
-  - RAILS_ENV=test bundle exec rake db:migrate --trace
-  - bundle exec rake db:test:prepare
-  - bundle exec rake
+- RAILS_ENV=test bundle exec rake db:migrate --trace
+- bundle exec rake db:test:prepare
+- bundle exec rake
+deploy:
+  provider: heroku
+  api_key:
+    secure: D6rkESLh9qHRKcXpcF3O2KSkwKCu0/i8SHBL1fjBo7QuePo6Z+iE1H1KC0xJQ8hNDWyDst+Z2ns52B7j4VVBEhFAAy0GIOU8XtOWoq4AwrpGSBsac22RdXatpzHYUwlRTUiiSqlb0iVVFOimaJSeDxexLUutcT7N+/prtz4ihUu2Zy4HWd1eNIKt1NvhBH8GdfOr+sChjgejLtMygae8nNqEZgt3cUPvaUyFm0xgScZ1Y1pDFGdLBmBOyGSG1dKCAYnDQzuKil9IjTEaD6rhctG2ZcakTNwjMXxOoG+Gs45pYEFESoRRzfUFAOMJLhFIsMMCSy5Gv2nsKUv5my17rE3Z71f7abGfetq5E7JPXAdSNBPA5JKRtwV4giCZl0+6dS1qBQiNuPaM3N0Xkm/weCl8tMmeqIXrmPgUvpeYIPYWST73BFh/fniyA0t0SA/2rfG2u/KnQfJmXmY/GZzsE6DAfmuhoUbgAXj/f0ceLXs6P6Ev+4pOFPlWc8hTKUm0i4PUhzGu4DDBFN+Hzzw5Un+9b86/r6YGQX5MTYr9fzAZ5cl5blDGTrftQaGVOHIWefus9Dy2yuEOMJ6WXjDZq4n2zt6AJYOdgSM08c0mnYCHOmfx+rZqDiR48diqxPzmxSyxAdllBPM98MiVUYSmMEys3J0DuiZqL2iaU+ggk4c=
+  app: subkitchen-api
+  on:
+    repo: elpassion/subkitchen-api
+  run: "rake db:migrate"
