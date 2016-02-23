@@ -10,9 +10,9 @@ describe Products::Api, type: :request do
     it 'paginates' do
       create(:product)
       create(:product)
-      get '/api/v1/products?page=1&per_page=1'
+      get '/api/v1/products', page: 1, per_page: 1
       expect(json["products"]).to eq(Product.page(1).per(1).map{|p| ProductSerializer.serialize(p).stringify_keys})
-      get '/api/v1/products?page=2&per_page=1'
+      get '/api/v1/products', page: 2, per_page: 1
       expect(json["products"]).to eq(Product.page(2).per(1).map{|p| ProductSerializer.serialize(p).stringify_keys})
     end
   end
