@@ -2,46 +2,95 @@ describe Products::Api, type: :request do
   let(:user) { create(:user) }
   let(:product) { create(:product) }
 
-  describe 'orders/item post' do
-    it 'should add item to order' do
-      post '/api/v1/orders/item', { product_id: product.id }, auth_header_for(user)
 
-      order = Order.find_by(user_id: user.id, state: :active)
-      expect(order).not_to be_nil
-      expect(order.order_items.size).to eq(1)
+  describe 'orders/item post' do
+    describe 'as authorized user' do
+      it 'should add item to order' do
+        post '/api/v1/orders/item', { product_id: product.id }, auth_header_for(user)
+
+        order = Order.find_by(user_id: user.id, state: :active)
+        expect(order).not_to be_nil
+        expect(order.order_items.size).to eq(1)
+      end
+
+      it 'should increment quantity' do
+        order = create(:order, user: user)
+        create(:order_item, product: product, order: order)
+
+        post '/api/v1/orders/item', { product_id: product.id }, auth_header_for(user)
+
+        order = Order.find_by(user_id: user.id, state: :active)
+        expect(order.order_items.first.quantity).to eq(2)
+      end
     end
 
-    it 'should increment quantity' do
-      order = create(:order, user: user)
-      create(:order_item, product: product, order: order)
+    describe 'as unauthorized user' do
+      it 'should add item to order' do
+        order = create(:order, user: user)
+        post '/api/v1/orders/item', { product_id: product.id, uuid: order.uuid }
 
-      post '/api/v1/orders/item', { product_id: product.id }, auth_header_for(user)
+        order = Order.find_by(uuid: order.uuid)
+        expect(order).not_to be_nil
+        expect(order.order_items.size).to eq(1)
+      end
 
-      order = Order.find_by(user_id: user.id, state: :active)
-      expect(order.order_items.first.quantity).to eq(2)
+      it 'should increment quantity' do
+        order = create(:order, user: user)
+        create(:order_item, product: product, order: order)
+
+        post '/api/v1/orders/item', { product_id: product.id, uuid: order.uuid }
+
+        order = Order.find_by(uuid: order.uuid)
+        expect(order.order_items.first.quantity).to eq(2)
+      end
     end
   end
 
   describe 'orders/item delete' do
-    it 'should remove item from order' do
-      order = create(:order, user: user)
-      item = create(:order_item, order: order, product: product)
+    describe 'as authorized user' do
+      it 'should remove item from order' do
+        order = create(:order, user: user)
+        item = create(:order_item, order: order, product: product)
 
-      delete '/api/v1/orders/item', { order_item_id: item.id }
+        delete '/api/v1/orders/item', { order_item_id: item.id }, auth_header_for(user)
 
-      item = OrderItem.find_by(order: order, product: product)
-      expect(item).to be_nil
+        item = OrderItem.find_by(order: order, product: product)
+        expect(item).to be_nil
+      end
+
+      it 'should decrement' do
+        order = create(:order, user: user)
+        create(:order_item, order: order, product: product)
+        item = create(:order_item, order: order, product: product)
+
+        delete '/api/v1/orders/item', { order_item_id: item.id }, auth_header_for(user)
+
+        item = OrderItem.find_by(order: order, product: product)
+        expect(item.quantity).to eq(1)
+      end
     end
 
-    it 'should decrement' do
-      order = create(:order, user: user)
-      create(:order_item, order: order, product: product)
-      item = create(:order_item, order: order, product: product)
+    describe 'as unauthorized user' do
+      it 'should remove item from order' do
+        order = create(:order, user: user)
+        item = create(:order_item, order: order, product: product)
 
-      delete '/api/v1/orders/item', { order_item_id: item.id }
+        delete '/api/v1/orders/item', { order_item_id: item.id }
 
-      item = OrderItem.find_by(order: order, product: product)
-      expect(item.quantity).to eq(1)
+        item = OrderItem.find_by(order: order, product: product)
+        expect(item).to be_nil
+      end
+
+      it 'should decrement' do
+        order = create(:order, user: user)
+        create(:order_item, order: order, product: product)
+        item = create(:order_item, order: order, product: product)
+
+        delete '/api/v1/orders/item', { order_item_id: item.id }
+
+        item = OrderItem.find_by(order: order, product: product)
+        expect(item.quantity).to eq(1)
+      end
     end
   end
 

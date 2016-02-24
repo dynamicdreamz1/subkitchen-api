@@ -7,6 +7,31 @@ module Products
     get 'tshirts' do
       %w(http://lorempixel.com/300/300/)
     end
+    params do
+      requires :invoice, type: Integer
+      requires :payment_status, type: String
+      requires :transaction_id, type: Integer
+    end
+    post 'payment_notification' do
+      payment = Payment.find_by(id: params.invoice)
+      if params.status == 'Completed'
+        payment.update_attributes(status: params.payment_status, transaction_id: params.transaction_id)
+        payment.payable.update_arrtibutes(purchased_at: DateTime.now, state: 'inactive')
+      end
+    end
+
+    params do
+      requires :invoice, type: Integer
+      requires :payment_status, type: String
+      requires :transaction_id, type: Integer
+    end
+    post 'user_verify_notification' do
+      payment = Payment.find_by(id: params.invoice)
+      if params.status == 'Completed'
+        payment.update_attributes(status: params.payment_status, transaction_id: params.transaction_id)
+        payment.payable.update_arrtibutes(status: 'verified')
+      end
+    end
     resources :products do
       desc 'return all products'
       get '' do

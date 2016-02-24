@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160224155652) do
+ActiveRecord::Schema.define(version: 20160224174925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,15 +41,6 @@ ActiveRecord::Schema.define(version: 20160224155652) do
     t.datetime "purchased_at"
     t.integer  "shipping_id"
     t.uuid     "uuid",         default: "uuid_generate_v4()"
-  end
-
-  create_table "payment_notifications", force: :cascade do |t|
-    t.text     "params"
-    t.integer  "order_id"
-    t.string   "status"
-    t.string   "transaction_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
   end
 
   create_table "payments", force: :cascade do |t|
@@ -83,15 +74,6 @@ ActiveRecord::Schema.define(version: 20160224155652) do
     t.boolean  "is_deleted",                                  default: false
     t.string   "image_id"
     t.decimal  "price",               precision: 8, scale: 2
-  end
-
-  create_table "user_verify_notifications", force: :cascade do |t|
-    t.text     "params"
-    t.integer  "order_id"
-    t.string   "status"
-    t.string   "transaction_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
   end
 
   create_table "users", force: :cascade do |t|

@@ -28,7 +28,7 @@ module Orders
 
         item = OrderItem.find_by(product_id: params.product_id, order_id: order.id)
         if item
-          IncrementOrderItem.new(item).call
+          OrderItemQuantity.new(item).increment
         else
           OrderItem.create!(product_id: params.product_id, order_id: order.id)
         end
@@ -42,7 +42,7 @@ module Orders
       delete 'item' do
         item = OrderItem.find(params.order_item_id)
         if item
-          item.quantity > 1 ? DecrementOrderItem.new(item).call : item.destroy
+          item.quantity > 1 ? OrderItemQuantity.new(item).decrement : item.destroy
         else
           status :unprocessable_entity
         end
