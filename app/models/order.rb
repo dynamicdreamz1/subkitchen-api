@@ -29,12 +29,12 @@ class Order < ActiveRecord::Base
 
   def paypal_payment_url(return_path, notify_path)
     values = {
-        business: 'klara.hirao-facilitator@elpassion.pl',
+        business: Figaro.env.paypal_seller,
         cmd: '_cart',
         upload: 1,
-        return: "http://subkitchen.herokuapp.com/#{return_path}",
+        return: Figaro.env.app_host+"#{return_path}",
         invoice: id,
-        notify_url: "http://subkitchen.herokuapp.com/#{notify_path}"
+        notify_url: Figaro.env.app_host+"#{notify_path}"
     }
     order_items.each_with_index do |item, index|
       values.merge!({

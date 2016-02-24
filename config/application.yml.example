@@ -1,0 +1,5 @@
+development:
+  s3_access_key: "https://github.com/refile/refile-s3"
+  s3_secret: ""
+  s3_bucket: ""
+

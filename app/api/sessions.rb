@@ -104,8 +104,7 @@ module Sessions
         authenticate!
         order = Order.create!(user_id: current_user.id, order_type: 'verification')
         product = Product.create!(name: 'user verification', price: 1)
-        puts product.inspect
-        OrderItem.create!(price: 1, order: order, product: product)
+        OrderItem.create!(order: order, product: product)
         order.paypal_payment_url(params.return_path, params.notify_path)
       end
     end
