@@ -37,7 +37,6 @@ describe Products::Api, type: :request do
                                      description: 'description',
                                      image: image }, auth_header_for(user)
         product = Product.first
-        puts product.inspect
         expect(response.body).to eq(product.to_json)
         expect(product.image_id).to be_truthy
       end

@@ -10,8 +10,4 @@ class Product < ActiveRecord::Base
   def set_price
     update_attribute(:price, product_template.price) if product_template
   end
-
-  def delete_product
-    update_attribute(:is_deleted, true)
-  end
 end

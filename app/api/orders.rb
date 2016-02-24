@@ -23,12 +23,12 @@ module Orders
         requires :product_id, type: Integer
         optional :uuid, type: String
       end
-      post 'add_item' do
+      post 'item' do
         order = find_or_create_order(params.uuid)
 
         item = OrderItem.find_by(product_id: params.product_id, order_id: order.id)
         if item
-          item.increment
+          IncrementOrderItem.new(item).call
         else
           OrderItem.create!(product_id: params.product_id, order_id: order.id)
         end
@@ -37,12 +37,12 @@ module Orders
 
       desc 'remove item from order'
       params do
-        requires :product_id, type: Integer
+        requires :order_item_id, type: Integer
       end
-      delete 'remove_item' do
-        item = OrderItem.find_by(product_id: params.product_id)
+      delete 'item' do
+        item = OrderItem.find(params.order_item_id)
         if item
-          item.quantity > 1 ? item.decrement : item.destroy
+          item.quantity > 1 ? DecrementOrderItem.new(item).call : item.destroy
         else
           status :unprocessable_entity
         end
@@ -51,16 +51,16 @@ module Orders
       desc 'return payment link to paypal'
       params do
         requires :return_path, type: String
+        requires :uuid, type: String
       end
       get 'checkout' do
-        authenticate!
-        order = Order.find_by(user_id: current_user.id, state: :active)
-        payment = Payment.create(payable_id: order.id, payable_type: order.class.name)
+        order = Order.find_by(uuid: params.uuid)
+        payment = Payment.create!(payable_id: order.id, payable_type: order.class.name)
         if order
-          if order.order_items_exist?
+          if CheckOrderItems.new(order).call
             { url: PaypalPayment.new(payment, params.return_path).call }
           else
-            order.update_order
+            UpdateOrderItems.new(order).call
           end
         else
           status :unprocessable_entity

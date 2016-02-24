@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 Product.destroy_all
 User.destroy_all
-Shipping.destroy_all
+Config.destroy_all
 ProductTemplate.destroy_all
 
 size_chart = "#{Rails.root}/app/assets/images/sizechart-hoodie.jpg"
@@ -33,12 +33,14 @@ shipping_info = <<-EOT
 </p>
 EOT
 
-shipping = Shipping.create(tax: 7.0, shipping_cost: 6.0, shipping_info: shipping_info)
+Config.create(name: 'tax', value: '7.0')
+Config.create(name: 'shipping_info', value: shipping_info)
+Config.create(name: 'shipping_cost', value: '6.0')
 
-template1 = ProductTemplate.create(price: 19.99, size: %w(s m l xl), product_type: 'leggins', size_chart: File.new(size_chart), shipping: shipping)
-template2 = ProductTemplate.create(price: 29.99, size: %w(s m l xl), product_type: 't_shirt', size_chart: File.new(size_chart), shipping: shipping)
-template3 = ProductTemplate.create(price: 29.99, size: %w(s m l xl), product_type: 'blouse', size_chart: File.new(size_chart), shipping: shipping)
-template4 = ProductTemplate.create(price: 39.99, size: %w(s m l xl), product_type: 'sweater', size_chart: File.new(size_chart), shipping: shipping)
+template1 = ProductTemplate.create(price: 19.99, size: %w(s m l xl), product_type: 'leggins', size_chart: File.new(size_chart))
+template2 = ProductTemplate.create(price: 29.99, size: %w(s m l xl), product_type: 't_shirt', size_chart: File.new(size_chart))
+template3 = ProductTemplate.create(price: 29.99, size: %w(s m l xl), product_type: 'blouse', size_chart: File.new(size_chart))
+template4 = ProductTemplate.create(price: 39.99, size: %w(s m l xl), product_type: 'sweater', size_chart: File.new(size_chart))
 
 u1 = User.create(name: "user1", email: "t1@gmail.com", password: "password", password_confirmation: "password", artist: true)
 u2 = User.create(name: "user2", email: "t2@gmail.com", password: "password", password_confirmation: "password", artist: true)

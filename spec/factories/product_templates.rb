@@ -3,7 +3,6 @@ FactoryGirl.define do
     price 19.99
     product_type 't_shirt'
     size %w(s m l xl)
-    shipping
     size_chart_id '1234'
   end
 end

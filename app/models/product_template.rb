@@ -5,8 +5,4 @@ class ProductTemplate < ActiveRecord::Base
   attachment :size_chart
 
   default_scope { where(is_deleted: false) }
-
-  def delete_product_template
-    update_attribute(:is_deleted, true)
-  end
 end

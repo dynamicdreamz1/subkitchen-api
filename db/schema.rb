@@ -11,11 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160224145823) do
+ActiveRecord::Schema.define(version: 20160224155652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "configs", force: :cascade do |t|
+    t.string   "name"
+    t.string   "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
@@ -61,7 +68,6 @@ ActiveRecord::Schema.define(version: 20160224145823) do
     t.datetime "created_at",                                            null: false
     t.datetime "updated_at",                                            null: false
     t.string   "size_chart_id"
-    t.integer  "shipping_id"
     t.boolean  "is_deleted",                            default: false
   end
 
@@ -77,14 +83,6 @@ ActiveRecord::Schema.define(version: 20160224145823) do
     t.boolean  "is_deleted",                                  default: false
     t.string   "image_id"
     t.decimal  "price",               precision: 8, scale: 2
-  end
-
-  create_table "shippings", force: :cascade do |t|
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.decimal  "shipping_cost", precision: 8, scale: 2
-    t.string   "shipping_info"
-    t.decimal  "tax",           precision: 4, scale: 2
   end
 
   create_table "user_verify_notifications", force: :cascade do |t|

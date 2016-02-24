@@ -18,13 +18,14 @@ class User < ActiveRecord::Base
     where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token).first
   }
 
-  def artist_verify
-    self.status = :pending if artist
-  end
-
   scope :artists, lambda {
     where(artist: true)
   }
+
+
+  def artist_verify
+    self.status = :pending if artist
+  end
 
   def as_json(params = {})
     UserPublicSerializer.new(self).as_json(params).merge(auth_token: auth_token)

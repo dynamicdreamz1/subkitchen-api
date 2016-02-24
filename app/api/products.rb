@@ -54,7 +54,7 @@ module Products
         authenticate!
         product = Product.find_by(id: params.id, user_id: current_user.id)
         if product
-          product.delete_product
+          DeleteResource.new(product).call
         else
           status :unprocessable_entity
         end
