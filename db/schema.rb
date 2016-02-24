@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160224103419) do
+ActiveRecord::Schema.define(version: 20160224132943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,16 +27,10 @@ ActiveRecord::Schema.define(version: 20160224103419) do
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "state",                                 default: "active"
-    t.datetime "created_at",                                               null: false
-    t.datetime "updated_at",                                               null: false
-    t.string   "order_type",                            default: "cart"
+    t.string   "state",        default: "active"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.datetime "purchased_at"
-    t.decimal  "subtotal_cost", precision: 8, scale: 2
-    t.decimal  "shipping_cost", precision: 8, scale: 2
-    t.decimal  "tax",           precision: 4, scale: 2
-    t.decimal  "tax_cost",      precision: 8, scale: 2
-    t.decimal  "total_cost",    precision: 8, scale: 2
     t.integer  "shipping_id"
   end
 
@@ -48,6 +42,15 @@ ActiveRecord::Schema.define(version: 20160224103419) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
+
+  create_table "payments", force: :cascade do |t|
+    t.integer  "payable_id"
+    t.string   "payable_type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "payments", ["payable_id", "payable_type"], name: "index_payments_on_payable_id_and_payable_type", using: :btree
 
   create_table "product_templates", force: :cascade do |t|
     t.decimal  "price",         precision: 8, scale: 2

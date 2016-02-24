@@ -58,10 +58,10 @@ describe Sessions::Api, type: :request do
     it 'should return verification link to paypal' do
       user = create(:user)
 
-      get '/api/v1/sessions/verify_profile', { return_path: '', notify_path: '/user_verify_notifications' }, auth_header_for(user)
+      get '/api/v1/sessions/verify_profile', { return_path: '' }, auth_header_for(user)
+      payment = Payment.find_by(payable_id: user.id, payable_type: user.class.name)
 
-      order = Order.find_by(user_id: user.id, state: 'active', order_type: 'verification')
-      expect(response.body).to eq(order.paypal_payment_url('', '/user_verify_notifications').to_json)
+      expect(json['url']).to eq(PaypalUserVerification.new(payment, '').call)
     end
   end
 end

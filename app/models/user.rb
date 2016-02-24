@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :products
   has_many :user_verify_notifications
   has_many :orders
+  has_one :payment, as: :payable
 
   validates :email, presence: true, email: true, uniqueness: true, if: :validate_email?
 

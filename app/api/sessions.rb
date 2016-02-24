@@ -98,14 +98,11 @@ module Sessions
       desc 'return verify user link to paypal'
       params do
         requires :return_path, type: String
-        requires :notify_path, type: String
       end
       get 'verify_profile' do
         authenticate!
-        order = Order.create!(user_id: current_user.id, order_type: 'verification')
-        product = Product.create!(name: 'user verification', price: 1)
-        OrderItem.create!(order: order, product: product)
-        order.paypal_payment_url(params.return_path, params.notify_path)
+        payment = Payment.create(payable_id: current_user.id, payable_type: current_user.class.name)
+        { url: PaypalUserVerification.new(payment, params.return_path).call }
       end
     end
   end
