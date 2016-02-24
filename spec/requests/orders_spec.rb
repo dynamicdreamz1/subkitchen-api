@@ -48,6 +48,8 @@ describe Products::Api, type: :request do
   describe 'orders/checkout' do
     it 'should return payment link to paypal' do
       order = create(:order, user: user)
+      product = create(:product)
+      create(:order_item, order: order, product: product)
       get '/api/v1/orders/checkout', { return_path: '', notify_path: '/payment_notifications' }, auth_header_for(user)
 
       expect(response.body).to eq(order.paypal_payment_url('', '/payment_notifications').to_json)

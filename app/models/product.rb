@@ -8,7 +8,7 @@ class Product < ActiveRecord::Base
   default_scope { where(is_deleted: false) }
 
   def set_price
-    update_attribute(:price, product_template.price)
+    update_attribute(:price, product_template.price) if product_template
   end
 
   def delete_product

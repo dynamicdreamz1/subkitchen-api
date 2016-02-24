@@ -30,12 +30,11 @@ class Order < ActiveRecord::Base
   def paypal_payment_url(return_path, notify_path)
     values = {
         business: 'klara.hirao-facilitator@elpassion.pl',
-        cmd: '_card ',
+        cmd: '_cart',
         upload: 1,
-        return: "http://localhost:3000/#{return_path}",
+        return: "http://subkitchen.herokuapp.com/#{return_path}",
         invoice: id,
-        item_name: 'Verification cost',
-        notify_url: "http://localhost:3000/#{notify_path}"
+        notify_url: "http://subkitchen.herokuapp.com/#{notify_path}"
     }
     order_items.each_with_index do |item, index|
       values.merge!({
@@ -44,7 +43,7 @@ class Order < ActiveRecord::Base
         "item_number_#{index+1}" => item.id,
         "quantity_#{index+1}" => item.quantity
       })
-    "https://www.sandbox.paypal.com/cgi-bin/webscr?" + values.to_query
     end
+    "https://www.sandbox.paypal.com/cgi-bin/webscr?" + values.to_query
   end
 end

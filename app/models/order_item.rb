@@ -4,7 +4,7 @@ class OrderItem < ActiveRecord::Base
   after_create :set_price
 
   def set_price
-    update_attribute(:price, product.price)
+    update_attribute(:price, product.price) if product
   end
 
   def increment
