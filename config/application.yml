@@ -1,0 +1,3 @@
+test:
+  paypal_seller: "klara.hirao-facilitator@elpassion.pl"
+  app_host: http://localhost:3000/
