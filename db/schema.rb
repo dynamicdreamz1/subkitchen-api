@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20160222170806) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
