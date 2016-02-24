@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160224132943) do
+ActiveRecord::Schema.define(version: 20160224145823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"
@@ -28,10 +29,11 @@ ActiveRecord::Schema.define(version: 20160224132943) do
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "state",        default: "active"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.datetime "purchased_at"
     t.integer  "shipping_id"
+    t.uuid     "uuid",         default: "uuid_generate_v4()"
   end
 
   create_table "payment_notifications", force: :cascade do |t|
