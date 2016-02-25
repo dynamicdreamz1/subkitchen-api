@@ -28,18 +28,31 @@ describe Products::Api, type: :request do
 
   describe '/api/v1/products' do
     it 'should create product' do
-      VCR.use_cassette('s3/product/valid', record: :new_episodes) do
-        image = fixture_file_upload(Rails.root.join("app/assets/images/sizechart-hoodie.jpg"), 'image/jpg')
-        user = create(:user)
-        product_template = create(:product_template)
-        post '/api/v1/products', { name: 'new_product',
-                                     product_template_id: product_template.id,
-                                     description: 'description',
-                                     image: image }, auth_header_for(user)
-        product = Product.first
-        expect(response.body).to eq(product.to_json)
-        expect(product.image_id).to be_truthy
-      end
+      image = fixture_file_upload(Rails.root.join("app/assets/images/sizechart-hoodie.jpg"), 'image/jpg')
+      user = create(:user)
+      product_template = create(:product_template)
+      post '/api/v1/products', { name: 'new_product',
+                                 product_template_id: product_template.id,
+                                 description: 'description',
+                                 image: image,
+                                 published: false}, auth_header_for(user)
+      product = Product.first
+      expect(response.body).to eq(product.to_json)
+      expect(product.image_id).to be_truthy
+    end
+
+    it 'should not publish product when artist false' do
+      image = fixture_file_upload(Rails.root.join("app/assets/images/sizechart-hoodie.jpg"), 'image/jpg')
+      user = create(:user)
+      product_template = create(:product_template)
+      post '/api/v1/products', { name: 'new_product',
+                                 product_template_id: product_template.id,
+                                 description: 'description',
+                                 image: image,
+                                 published: true}, auth_header_for(user)
+      product = Product.first
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(product).to be_nil
     end
   end
 

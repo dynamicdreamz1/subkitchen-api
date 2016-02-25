@@ -59,20 +59,15 @@ module Products
         requires :product_template_id, type: Integer
         requires :description, type: String
         requires :image, type: File
+        requires :published, type: Boolean
       end
       post do
         authenticate!
-        image = ActionDispatch::Http::UploadedFile.new(params.image)
-        product = Product.new(name: params.name,
-                                 user_id: current_user.id,
-                                 product_template_id: params.product_template_id,
-                                 description: params.description,
-                                 image: image)
+        product = CreateProduct.new(current_user, params).call
         unless product.save
           status :unprocessable_entity
-        else
-          product
         end
+        product
       end
 
       desc 'remove product'
