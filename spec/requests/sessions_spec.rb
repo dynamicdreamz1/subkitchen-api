@@ -63,5 +63,18 @@ describe Sessions::Api, type: :request do
 
       expect(json['url']).to eq(PaypalUserVerification.new(payment, '').call)
     end
+
+    it 'should receive email with confirmation link after registration' do
+      expect do
+        post '/api/v1/sessions/register', email: 'test@gmail.com', name: 'test', password: 'password', password_confirmation: 'password', artist: 'false'
+      end.to change { ActionMailer::Base.deliveries.count }.by(1)
+    end
+
+    it 'should confirm email' do
+      user = create(:user)
+      post '/api/v1/sessions/confirm_email', confirm_token: user.confirm_token
+      user.reload
+      expect(user.email_confirmed).to be_truthy
+    end
   end
 end

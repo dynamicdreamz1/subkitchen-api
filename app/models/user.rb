@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   include SecureToken
   uses_secure_token :auth_token
   uses_secure_token :password_reminder_token
+  uses_secure_token :confirm_token
   has_secure_password
 
   has_many :products
@@ -16,6 +17,10 @@ class User < ActiveRecord::Base
 
   scope :with_reminder_token, lambda { |token|
     where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token).first
+  }
+
+  scope :with_confirm_token, lambda { |token|
+    where(confirm_token: token).first
   }
 
   scope :artists, lambda {

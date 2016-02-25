@@ -32,6 +32,22 @@ module Sessions
             artist: params.artist
         )
         if user.save
+          UserNotifier.confirm_email(user).deliver_later
+          user
+        else
+          status :unprocessable_entity
+        end
+      end
+
+      desc 'confirm email'
+      params do
+        requires :confirm_token, type: String
+      end
+      post 'confirm_email' do
+        user = User.with_confirm_token(params.confirm_token)
+        if user
+          user.update_attribute(:email_confirmed, true)
+          user.regenerate_confirm_token
           user
         else
           status :unprocessable_entity
