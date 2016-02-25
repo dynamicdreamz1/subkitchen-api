@@ -11,5 +11,13 @@ FactoryGirl.define do
     sequence :handle do |n|
       "person#{n}"
     end
+    first_name 'test first name'
+    last_name 'test last name'
+    address 'test plac Europejski 6'
+    city 'test Warszawa'
+    zip '00-885'
+    state 'test mazowieckie'
+    country 'PL'
+    phone '792541588'
   end
 end

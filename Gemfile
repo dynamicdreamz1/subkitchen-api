@@ -40,6 +40,7 @@ gem 'refile-mini_magick'
 gem 'refile-s3'
 gem 'figaro'
 gem 'faker'
+gem 'iso_country_codes'
 
 group :production do
   gem 'rails_12factor'

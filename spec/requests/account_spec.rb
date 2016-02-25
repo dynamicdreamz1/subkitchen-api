@@ -37,5 +37,24 @@ describe Accounts::Api, type: :request do
         put "/api/v1/account/#{user.id}", params, auth_header_for(user)
       end.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
+
+    it 'adds shipping info' do
+      user = create(:user)
+      params = {
+          first_name: 'first name',
+          last_name: 'last name',
+          address: 'plac Europejski 6',
+          city: 'Warszawa',
+          zip: '00-884',
+          state: 'mazowieckie',
+          country: 'PL',
+          phone: '792541588'
+      }
+      post '/api/v1/account/address', params, auth_header_for(user)
+      user.reload
+      expect(response).to have_http_status(:success)
+      expect(user.first_name).to eq('first name')
+      expect(response.body).to eq(user.to_json)
+    end
   end
 end
