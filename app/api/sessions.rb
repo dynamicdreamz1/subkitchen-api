@@ -21,16 +21,16 @@ module Sessions
         requires :password, type: String
         requires :password_confirmation, type: String
         requires :name, type: String
-        requires :artist, type: Boolean
+        optional :artist, type: Boolean, default: false
       end
       post 'register' do
         user = CreateUser.new(params).call
         if user.save
           UserNotifier.confirm_email(user).deliver_later
-          user
         else
           status :unprocessable_entity
         end
+        user
       end
 
       desc 'confirm email'
