@@ -8,6 +8,7 @@ module Accounts
         optional :handle, type: String
       end
       put ':id' do
+        authenticate!
         user = User.find_by(id: params.id)
         if user
           UpdateUser.new(user, params).call
