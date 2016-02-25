@@ -56,5 +56,24 @@ describe Accounts::Api, type: :request do
       expect(user.first_name).to eq('first name')
       expect(response.body).to eq(user.to_json)
     end
+
+    it 'deletes shipping info' do
+      user = create(:user)
+      params = {
+          first_name: '',
+          last_name: '',
+          address: '',
+          city: '',
+          zip: '',
+          state: '',
+          country: '',
+          phone: ''
+      }
+      post '/api/v1/account/address', params, auth_header_for(user)
+      user.reload
+      expect(response).to have_http_status(:success)
+      expect(user.first_name).to eq('')
+      expect(response.body).to eq(user.to_json)
+    end
   end
 end
