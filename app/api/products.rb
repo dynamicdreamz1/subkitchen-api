@@ -29,7 +29,8 @@ module Products
       payment = Payment.find_by(id: params.invoice)
       if params.status == 'Completed'
         payment.update_attributes(status: params.payment_status, transaction_id: params.transaction_id)
-        payment.payable.update_arrtibutes(status: 'verified')
+        artist = payment.payable
+        artist.update_arrtibutes(status: 'verified')
       end
     end
     resources :products do

@@ -24,13 +24,7 @@ module Sessions
         requires :artist, type: Boolean
       end
       post 'register' do
-        user =  User.new(
-            name: params.name,
-            password: params.password,
-            password_confirmation: params.password_confirmation,
-            email: params.email,
-            artist: params.artist
-        )
+        user = CreateUser.new(params).call
         if user.save
           UserNotifier.confirm_email(user).deliver_later
           user

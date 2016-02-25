@@ -8,5 +8,8 @@ FactoryGirl.define do
       "person#{n}@example.com"
     end
     artist false
+    sequence :handle do |n|
+      "person#{n}"
+    end
   end
 end

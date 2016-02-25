@@ -11,8 +11,9 @@ describe Sessions::Api, type: :request do
     end
 
     it 'should be able to register' do
+      params =  { email: 'test@gmail.com', name: 'test', password: 'password', password_confirmation: 'password', artist: 'false' }
       expect do
-        post '/api/v1/sessions/register', email: 'test@gmail.com', name: 'test', password: 'password', password_confirmation: 'password', artist: 'false'
+        post '/api/v1/sessions/register', params
       end.to change(User, :count).by(1)
       expect(response).to have_http_status(:success)
     end
@@ -46,9 +47,10 @@ describe Sessions::Api, type: :request do
 
     it 'should be able to set new password' do
       user = create(:user)
+      params = { token: user.password_reminder_token, password: 'newpassword', password_confirmation: 'newpassword' }
 
       post '/api/v1/sessions/forgot_password', email: user.email
-      post '/api/v1/sessions/set_new_password', token: user.password_reminder_token, password: 'newpassword', password_confirmation: 'newpassword'
+      post '/api/v1/sessions/set_new_password', params
 
       expect(response).to have_http_status(:success)
       user.reload
@@ -65,8 +67,14 @@ describe Sessions::Api, type: :request do
     end
 
     it 'should receive email with confirmation link after registration' do
+      params = { email: 'test@gmail.com',
+                 name: 'test',
+                 password: 'password',
+                 password_confirmation: 'password',
+                 artist: 'false'
+      }
       expect do
-        post '/api/v1/sessions/register', email: 'test@gmail.com', name: 'test', password: 'password', password_confirmation: 'password', artist: 'false'
+        post '/api/v1/sessions/register', params
       end.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
 
@@ -75,6 +83,36 @@ describe Sessions::Api, type: :request do
       post '/api/v1/sessions/confirm_email', confirm_token: user.confirm_token
       user.reload
       expect(user.email_confirmed).to be_truthy
+    end
+
+    it 'updates user info' do
+      user = create(:user)
+      params = { name: 'test', email: 'test@gmail.com' }
+      put "/api/v1/account/#{user.id}", params, auth_header_for(user)
+      user.reload
+      expect(user.name).to eq('test')
+      expect(user.email).to eq('test@gmail.com')
+      expect(response.body).to eq(user.to_json)
+    end
+
+    it 'updates user info and handle when artist' do
+      user = create(:user, artist: true)
+      params =  { name: 'test', email: 'test@gmail.com', handle: 'testtest' }
+      put "/api/v1/account/#{user.id}", params, auth_header_for(user)
+      user.reload
+      expect(user.name).to eq('test')
+      expect(user.email).to eq('test@gmail.com')
+      expect(user.handle).to eq('testtest')
+    end
+
+    it 'can not update handle when artist false' do
+      user = create(:user, artist: false)
+      params = { name: 'test', email: 'test@gmail.com', handle: 'testtest' }
+      put "/api/v1/account/#{user.id}", params, auth_header_for(user)
+      user.reload
+      expect(user.name).to eq('test')
+      expect(user.email).to eq('test@gmail.com')
+      expect(user.handle).to eq(user.handle)
     end
   end
 end
