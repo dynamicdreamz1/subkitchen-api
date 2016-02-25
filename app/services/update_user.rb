@@ -1,6 +1,6 @@
 class UpdateUser
   def call
-    update_email
+    update_user
   end
 
   private
@@ -10,13 +10,13 @@ class UpdateUser
     @user = user
   end
 
-  def update_email
+  def update_user
+    UserNotifier.confirm_email(@user).deliver_later if email_changed?(@params.email)
     if @user.artist
       @user.update_attributes(name: @params.name, email: @params.email, handle: @params.handle)
     else
       @user.update_attributes(name: @params.name, email: @params.email)
     end
-    UserNotifier.confirm_email(@user).deliver_later if email_changed?(@params.email)
     @user
   end
 

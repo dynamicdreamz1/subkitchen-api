@@ -29,5 +29,13 @@ describe Accounts::Api, type: :request do
       expect(user.email).to eq('test@gmail.com')
       expect(user.handle).to eq(user.handle)
     end
+
+    it 'sends confirmation email after email update' do
+      user = create(:user)
+      params = { name: 'test', email: 'test@gmail.com' }
+      expect do
+        put "/api/v1/account/#{user.id}", params, auth_header_for(user)
+      end.to change { ActionMailer::Base.deliveries.count }.by(1)
+    end
   end
 end
