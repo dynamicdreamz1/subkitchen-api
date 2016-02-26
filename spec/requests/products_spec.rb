@@ -1,4 +1,11 @@
 describe Products::Api, type: :request do
+
+  before(:all) do
+    create(:config, name: 'tax', value: '6.0')
+    create(:config, name: 'shipping_cost', value: '7.0')
+    create(:config, name: 'shipping_info', value: 'info')
+  end
+
   describe '/api/v1/products' do
     it 'returns first page of products' do
       create(:product)

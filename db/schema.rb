@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160226134230) do
+ActiveRecord::Schema.define(version: 20160226175022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,15 +61,16 @@ ActiveRecord::Schema.define(version: 20160226134230) do
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
     t.decimal  "price",      precision: 8, scale: 2
+    t.string   "size"
   end
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "state",        default: "active"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.string   "state",                                 default: "active"
+    t.datetime "created_at",                                                           null: false
+    t.datetime "updated_at",                                                           null: false
     t.datetime "purchased_at"
-    t.uuid     "uuid",         default: "uuid_generate_v4()"
+    t.uuid     "uuid",                                  default: "uuid_generate_v4()"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "address"
@@ -78,13 +79,19 @@ ActiveRecord::Schema.define(version: 20160226134230) do
     t.string   "region"
     t.string   "country"
     t.string   "phone"
+    t.decimal  "subtotal_cost", precision: 8, scale: 2, default: 0.0
+    t.decimal  "shipping_cost", precision: 8, scale: 2
+    t.decimal  "tax",           precision: 4, scale: 2
+    t.decimal  "tax_cost",      precision: 8, scale: 2, default: 0.0
+    t.decimal  "total_cost",    precision: 8, scale: 2, default: 0.0
   end
 
   create_table "payments", force: :cascade do |t|
     t.integer  "payable_id"
     t.string   "payable_type"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "status",       default: "pending"
   end
 
   add_index "payments", ["payable_id", "payable_type"], name: "index_payments_on_payable_id_and_payable_type", using: :btree

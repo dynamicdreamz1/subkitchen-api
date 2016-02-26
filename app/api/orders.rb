@@ -4,7 +4,7 @@ module Orders
       def find_or_create_order(uuid)
         if uuid.blank?
           if current_user
-            Order.find_or_create_by(user_id: current_user.id, state: :active)
+            Order.find_or_create_by(user_id: current_user.id)
           else
             Order.create
           end
@@ -29,9 +29,11 @@ module Orders
         if item
           OrderItemQuantity.new(item).increment
         else
-          OrderItem.create!(product_id: params.product_id, order_id: order.id)
+          product = Product.find_by(id: params.product_id)
+          OrderItem.create!(product_id: product.id, order_id: order.id)
         end
-        order
+        UpdateOrder.new(order).call
+        order.reload
       end
 
       desc 'remove item from order'
@@ -40,12 +42,14 @@ module Orders
       end
       delete 'item' do
         item = OrderItem.find(params.order_item_id)
+        order = item.order
         if item
           item.quantity > 1 ? OrderItemQuantity.new(item).decrement : item.destroy
         else
           error!({errors: {base: ['cannot find item']}}, 422)
         end
-        item
+        UpdateOrder.new(order).call
+        order.reload
       end
 
       desc 'return payment link to paypal'
@@ -53,7 +57,7 @@ module Orders
         requires :return_path, type: String
         requires :uuid, type: String
       end
-      get 'checkout' do
+      get 'paypal_payment_url' do
         order = Order.find_by(uuid: params.uuid)
         payment = Payment.create!(payable_id: order.id, payable_type: order.class.name)
         if order
@@ -65,6 +69,16 @@ module Orders
         else
           error!({errors: {base: ['cannot find order']}}, 422)
         end
+      end
+
+      desc 'checkout order'
+      params do
+        requires :uuid, type: String
+      end
+      get 'checkout' do
+        order = Order.find_by(uuid: params.uuid)
+        status :unprocessable_entity unless order
+        CheckoutSerializer.new(order).as_json
       end
     end
   end

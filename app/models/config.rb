@@ -1,11 +1,11 @@
 class Config < ActiveRecord::Base
   scope :shipping_info, lambda {
-    where(name: 'shipping_info')
+    where(name: 'shipping_info').first.value
   }
   scope :shipping_cost, lambda {
-    where(name: 'shipping_cost')
+    where(name: 'shipping_cost').first.value
   }
   scope :tax, lambda {
-    where(name: 'tax')
+    where(name: 'tax').first.value
   }
 end

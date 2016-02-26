@@ -1,4 +1,4 @@
-class OrderSerializer
+class CheckoutSerializer
   def as_json(options={})
     items = order.order_items.map do |item|
       { price: item.price,
@@ -10,13 +10,12 @@ class OrderSerializer
     end
     data = { order:
                  { uuid: order.uuid,
-                   purchased_at: order.purchased_at,
                    status: order.status,
-                   subtotal: order.subtotal,
-                   shipping: order.shipping,
+                   subtotal: order.subtotal_cost,
+                   shipping_cost: order.shipping_cost,
                    tax: order.tax,
-                   total: order.total,
-                   payment_status: order.payment.status,
+                   tax_cost: order.tax_cost,
+                   total_cost: order.total_cost,
                    items: items }}
     if order.user
       data.merge(

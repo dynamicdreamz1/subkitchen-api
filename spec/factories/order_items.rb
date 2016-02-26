@@ -3,5 +3,6 @@ FactoryGirl.define do
     order
     product
     quantity 1
+    size 's'
   end
 end
