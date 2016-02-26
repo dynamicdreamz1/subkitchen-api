@@ -21,6 +21,6 @@ class CreateUser
   end
 
   def create_handle(name)
-    name.gsub!(/\s+/, '')
+    name.to_s.parameterize
   end
 end

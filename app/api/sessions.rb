@@ -17,10 +17,10 @@ module Sessions
 
       desc 'register new user'
       params do
-        requires :email, type: String
-        requires :password, type: String
-        requires :password_confirmation, type: String
-        requires :name, type: String
+        optional :email, type: String
+        optional :password, type: String
+        optional :password_confirmation, type: String
+        optional :name, type: String
         optional :artist, type: Boolean, default: false
       end
       post 'register' do
