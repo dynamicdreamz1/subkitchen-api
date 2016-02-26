@@ -11,11 +11,10 @@ module Artists
       desc 'return artist by id'
       get ':id' do
         artist = User.find_by(id: params[:id])
-        if artist
-          artist
-        else
+        unless artist
           status :unprocessable_entity
         end
+        artist
       end
     end
   end

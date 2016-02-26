@@ -14,6 +14,7 @@ module Accounts
           UpdateUser.new(user, params).update_user
         else
           status :unprocessable_entity
+          user
         end
       end
 
@@ -39,21 +40,26 @@ module Accounts
 
       desc 'add company address'
       params do
-        requires :company_name, type: String
-        requires :address, type: String
-        requires :city, type: String
-        requires :zip, type: String
-        requires :region, type: String
-        requires :country, type: String
+        requires :conditions, type: Boolean, default: false
+        optional :company_name, type: String
+        optional :address, type: String
+        optional :city, type: String
+        optional :zip, type: String
+        optional :region, type: String
+        optional :country, type: String
       end
       post 'verification' do
         authenticate!
-        artist = User.find_by(id: current_user.id)
-        if artist
-          CreateCompanyAddress.new(artist, params).call
+        if params.conditions
+          artist = User.find_by(id: current_user.id)
+          if artist
+            CreateCompanyAddress.new(artist, params).call
+          else
+            status :unprocessable_entity
+            artist
+          end
         else
-          status :unprocessable_entity
-          artist
+          error!({errors: {base: ['must be accepted']}}, 422)
         end
       end
 

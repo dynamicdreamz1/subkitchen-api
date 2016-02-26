@@ -75,20 +75,29 @@ describe Accounts::Api, type: :request do
       expect(user.first_name).to eq('')
       expect(response.body).to eq(user.to_json)
     end
+    describe '/verification' do
+      it 'should add company address' do
+        user = create(:user, artist: true)
+        params = {
+            conditions: true,
+            company_name: 'elpassion',
+            address: 'plac Europejski 6',
+            city: 'Warszawa',
+            zip: '01-111',
+            region: 'mazowieckie',
+            country: 'PL'
+        }
+        post '/api/v1/account/verification', params, auth_header_for(user)
+        expect(user.company).to be_a Company
+        expect(user.company.company_name).to eq('elpassion')
+      end
 
-    it 'should add company address' do
-      user = create(:user, artist: true)
-      params = {
-          company_name: 'elpassion',
-          address: 'plac Europejski 6',
-          city: 'Warszawa',
-          zip: '01-111',
-          region: 'mazowieckie',
-          country: 'PL'
-      }
-      post '/api/v1/account/verification', params, auth_header_for(user)
-      expect(user.company).to be_a Company
-      expect(user.company.company_name).to eq('elpassion')
+      it 'should raise error' do
+        user = create(:user, artist: true)
+        params = { conditions: false }
+        post '/api/v1/account/verification', params, auth_header_for(user)
+        expect(json['errors']).to eq({"base"=>["must be accepted"]})
+      end
     end
 
     it 'should return verification link to paypal' do

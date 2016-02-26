@@ -25,7 +25,6 @@ module Orders
       end
       post 'item' do
         order = find_or_create_order(params.uuid)
-
         item = OrderItem.find_by(product_id: params.product_id, order_id: order.id)
         if item
           OrderItemQuantity.new(item).increment
@@ -44,8 +43,9 @@ module Orders
         if item
           item.quantity > 1 ? OrderItemQuantity.new(item).decrement : item.destroy
         else
-          status :unprocessable_entity
+          error!({errors: {base: ['cannot find item']}}, 422)
         end
+        item
       end
 
       desc 'return payment link to paypal'
@@ -63,7 +63,7 @@ module Orders
             UpdateOrderItems.new(order).call
           end
         else
-          status :unprocessable_entity
+          error!({errors: {base: ['cannot find order']}}, 422)
         end
       end
     end
