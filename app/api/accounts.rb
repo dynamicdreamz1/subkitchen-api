@@ -53,7 +53,7 @@ module Accounts
         if params.conditions
           artist = User.find_by(id: current_user.id)
           if artist
-            CreateCompanyAddress.new(artist, params).call
+            CompanyAddress.new(artist, params).create_company
           else
             status :unprocessable_entity
             artist
@@ -71,6 +71,24 @@ module Accounts
         authenticate!
         payment = Payment.create(payable_id: current_user.id, payable_type: current_user.class.name)
         { url: PaypalUserVerification.new(payment, params.return_path).call }
+      end
+
+      desc 'update company address'
+      params do
+        optional :company_name, type: String
+        optional :address, type: String
+        optional :city, type: String
+        optional :zip, type: String
+        optional :region, type: String
+        optional :country, type: String
+      end
+      post 'company_address' do
+        authenticate!
+        if current_user
+          CompanyAddress.new(current_user, params).update_company
+        else
+          status :unprocessable_entity
+        end
       end
     end
   end

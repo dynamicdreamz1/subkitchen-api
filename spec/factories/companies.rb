@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :company do
-    company_name 'elpassion'
+    company_name 'test elpassion'
     address 'test plac Europejski 6'
     city 'test Warszawa'
     zip '00-885'

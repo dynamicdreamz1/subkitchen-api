@@ -100,6 +100,23 @@ describe Accounts::Api, type: :request do
       end
     end
 
+    it 'should update company address' do
+      user = create(:user, artist: true)
+      create(:company, user: user)
+      params = {
+          company_name: 'elpassion',
+          address: 'plac Europejski 6',
+          city: 'Warszawa',
+          zip: '01-111',
+          region: 'mazowieckie',
+          country: 'PL'
+      }
+      post '/api/v1/account/company_address', params, auth_header_for(user)
+
+      user.reload
+      expect(user.company.company_name).to eq('elpassion')
+    end
+
     it 'should return verification link to paypal' do
       user = create(:user)
 
