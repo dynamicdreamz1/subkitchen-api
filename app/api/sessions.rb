@@ -85,17 +85,9 @@ module Sessions
         optional :password_confirmation, type: String
       end
       post 'set_new_password' do
-        # TODO: put into service
         user = User.with_reminder_token(params.token).first
         if user
-          user.password = params.password
-          user.password_confirmation = params.password_confirmation
-          user.password_reminder_expiration = nil
-          if user.save
-            user.regenerate_password_reminder_token
-          else
-            status :unprocessable_entity
-          end
+          SetNewPassword.new(user, params).call
           user
         else
           error!({errors: {base: ['invalid or expired reminder token']}}, 422)
