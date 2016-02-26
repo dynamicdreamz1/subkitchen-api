@@ -105,6 +105,26 @@ module Sessions
         end
       end
 
+      desc 'add business address'
+      params do
+        requires :company_name, type: String
+        requires :address, type: String
+        requires :city, type: String
+        requires :zip, type: String
+        requires :region, type: String
+        requires :country, type: String
+      end
+      post 'company' do
+        authenticate!
+        artist = User.find_by(id: current_user.id)
+        if artist
+          UpdateBusinessAddress.new(artist, params).call
+        else
+          status :unprocessable_entity
+          artist
+        end
+      end
+
       desc 'return verify user link to paypal'
       params do
         requires :return_path, type: String

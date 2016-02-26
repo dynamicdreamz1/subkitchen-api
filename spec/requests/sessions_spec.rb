@@ -84,5 +84,20 @@ describe Sessions::Api, type: :request do
       user.reload
       expect(user.email_confirmed).to be_truthy
     end
+
+    it 'should add company address' do
+      user = create(:user, artist: true)
+      params = {
+          company_name: 'elpassion',
+          address: 'plac Europejski 6',
+          city: 'Warszawa',
+          zip: '01-111',
+          region: 'mazowieckie',
+          country: 'PL'
+      }
+      post '/api/v1/sessions/company', params, auth_header_for(user)
+      expect(user.company).to be_a Company
+      expect(user.company.company_name).to eq('elpassion')
+    end
   end
 end

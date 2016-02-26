@@ -11,11 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160225105021) do
+ActiveRecord::Schema.define(version: 20160226133218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "companies", force: :cascade do |t|
+    t.string   "company_name", default: ""
+    t.string   "address",      default: ""
+    t.string   "city",         default: ""
+    t.string   "zip",          default: ""
+    t.string   "region",       default: ""
+    t.string   "country",      default: ""
+    t.integer  "user_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "companies", ["user_id"], name: "index_companies_on_user_id", using: :btree
 
   create_table "configs", force: :cascade do |t|
     t.string   "name"
@@ -40,7 +54,14 @@ ActiveRecord::Schema.define(version: 20160225105021) do
     t.datetime "updated_at",                                  null: false
     t.datetime "purchased_at"
     t.uuid     "uuid",         default: "uuid_generate_v4()"
-    t.integer  "shipping_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "address"
+    t.string   "city"
+    t.string   "zip"
+    t.string   "region"
+    t.string   "country"
+    t.string   "phone"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -74,6 +95,7 @@ ActiveRecord::Schema.define(version: 20160225105021) do
     t.boolean  "is_deleted",                                  default: false
     t.string   "image_id"
     t.decimal  "price",               precision: 8, scale: 2
+    t.boolean  "published",                                   default: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -92,6 +114,14 @@ ActiveRecord::Schema.define(version: 20160225105021) do
     t.boolean  "email_confirmed",              default: false
     t.string   "confirm_token"
     t.string   "handle"
+    t.string   "first_name",                   default: ""
+    t.string   "last_name",                    default: ""
+    t.string   "address",                      default: ""
+    t.string   "city",                         default: ""
+    t.string   "zip",                          default: ""
+    t.string   "region",                       default: ""
+    t.string   "country",                      default: ""
+    t.string   "phone",                        default: ""
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree
