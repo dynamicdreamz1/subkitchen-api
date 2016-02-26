@@ -1,6 +1,6 @@
-class UpdateBusinessAddress
+class CreateCompanyAddress
   def call
-    update_business_address
+    create_company_address
   end
 
   private
@@ -10,7 +10,7 @@ class UpdateBusinessAddress
     @params = params
   end
 
-  def update_business_address
+  def create_company_address
     company = Company.create(
                company_name: @params.company_name,
                address: @params.address,

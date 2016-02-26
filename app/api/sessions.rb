@@ -94,7 +94,7 @@ module Sessions
         end
       end
 
-      desc 'add business address'
+      desc 'add company address'
       params do
         requires :company_name, type: String
         requires :address, type: String
@@ -107,7 +107,7 @@ module Sessions
         authenticate!
         artist = User.find_by(id: current_user.id)
         if artist
-          UpdateBusinessAddress.new(artist, params).call
+          CreateCompanyAddress.new(artist, params).call
         else
           status :unprocessable_entity
           artist
