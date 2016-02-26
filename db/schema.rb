@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160225151957) do
+ActiveRecord::Schema.define(version: 20160225105021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(version: 20160225151957) do
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
     t.datetime "purchased_at"
-    t.integer  "shipping_id"
     t.uuid     "uuid",         default: "uuid_generate_v4()"
+    t.integer  "shipping_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -74,7 +74,6 @@ ActiveRecord::Schema.define(version: 20160225151957) do
     t.boolean  "is_deleted",                                  default: false
     t.string   "image_id"
     t.decimal  "price",               precision: 8, scale: 2
-    t.boolean  "published",                                   default: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -93,14 +92,6 @@ ActiveRecord::Schema.define(version: 20160225151957) do
     t.boolean  "email_confirmed",              default: false
     t.string   "confirm_token"
     t.string   "handle"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "address"
-    t.string   "city"
-    t.string   "zip"
-    t.string   "state"
-    t.string   "country"
-    t.string   "phone"
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

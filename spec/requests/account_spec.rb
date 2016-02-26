@@ -46,7 +46,7 @@ describe Accounts::Api, type: :request do
           address: 'plac Europejski 6',
           city: 'Warszawa',
           zip: '00-884',
-          state: 'mazowieckie',
+          region: 'mazowieckie',
           country: 'PL',
           phone: '792541588'
       }
@@ -65,7 +65,7 @@ describe Accounts::Api, type: :request do
           address: '',
           city: '',
           zip: '',
-          state: '',
+          region: '',
           country: '',
           phone: ''
       }

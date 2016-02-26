@@ -40,7 +40,7 @@ module Products
         per_page = params[:per_page].to_i != 0? params[:per_page] : 30
         products = Product.page(page).per(per_page)
         {
-          products: products.map{|p| ProductSerializer.serialize(p)},
+          products: products.map{|p| ProductSerializer.new(p).as_json},
           meta: {
             current_page: products.current_page,
             total_pages: products.total_pages
@@ -50,7 +50,7 @@ module Products
 
       desc 'return product by id'
       get ':id' do
-        {product: ProductSerializer.serialize(Product.find(params[:id]))}
+        {product: ProductSerializer.new(Product.find(params[:id])).as_json}
       end
 
       desc 'create product'

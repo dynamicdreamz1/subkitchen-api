@@ -16,7 +16,7 @@ class UpdateUser
       address: @params.address,
       city: @params.city,
       zip: @params.zip,
-      state: @params.state,
+      region: @params.region,
       country: @params.country,
       phone: @params.phone
     )

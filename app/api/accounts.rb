@@ -24,7 +24,7 @@ module Accounts
         requires :address, type: String
         requires :city, type: String
         requires :zip, type: String
-        requires :state, type: String
+        requires :region, type: String
         requires :country, type: String
         optional :phone, type: String
       end

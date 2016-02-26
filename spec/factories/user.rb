@@ -16,7 +16,7 @@ FactoryGirl.define do
     address 'test plac Europejski 6'
     city 'test Warszawa'
     zip '00-885'
-    state 'test mazowieckie'
+    region 'test mazowieckie'
     country 'PL'
     phone '792541588'
   end
