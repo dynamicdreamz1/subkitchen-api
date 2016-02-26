@@ -98,7 +98,7 @@ module Sessions
           end
           user
         else
-          error!({errors: {base: ['invalid reminder token']}}, 422)
+          error!({errors: {base: ['invalid or expired reminder token']}}, 422)
         end
       end
 
