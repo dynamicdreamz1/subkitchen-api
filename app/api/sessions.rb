@@ -80,28 +80,25 @@ module Sessions
 
       desc 'set new password through link'
       params do
-        requires :token, type: String
-      end
-      get 'set_new_password' do
-        if User.with_reminder_token(params.token)
-          status :ok
-        else
-          status :unprocessable_entity
-        end
-      end
-
-      params do
-        requires :token, type: String
-        requires :password, type: String
-        requires :password_confirmation, type: String
+        optional :token, type: String
+        optional :password, type: String
+        optional :password_confirmation, type: String
       end
       post 'set_new_password' do
-        user = User.with_reminder_token(params.token)
+        # TODO: put into service
+        user = User.with_reminder_token(params.token).first
         if user
-          user.update!(password: params.password, password_confirmation: params.password_confirmation, password_reminder_expiration: nil)
-          user.regenerate_password_reminder_token
+          user.password = params.password
+          user.password_confirmation = params.password_confirmation
+          user.password_reminder_expiration = nil
+          if user.save
+            user.regenerate_password_reminder_token
+          else
+            status :unprocessable_entity
+          end
+          user
         else
-          status :unprocessable_entity
+          error!({errors: {base: ['invalid reminder token']}}, 422)
         end
       end
 
