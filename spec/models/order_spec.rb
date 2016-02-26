@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Order, type: :model do
   before do
+    create(:config, name: 'tax', value: '6.0')
+    create(:config, name: 'shipping_cost', value: '7.0')
+    create(:config, name: 'shipping_info', value: 'info')
     @order = create(:order)
     @user = create(:user)
   end
