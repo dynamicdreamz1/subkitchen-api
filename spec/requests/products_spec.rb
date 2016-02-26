@@ -15,6 +15,21 @@ describe Products::Api, type: :request do
       get '/api/v1/products?page=2&per_page=1'
       expect(json["products"]).to eq(Product.page(2).per(1).map{|p| ProductSerializer.serialize(p).stringify_keys})
     end
+
+    it 'publishes product' do
+      artist = create(:user, artist: true)
+      product = create(:product, user_id: artist.id)
+      post '/api/v1/products/publish', { product_id: product.id }
+      product.reload
+      expect(product.published).to be_truthy
+    end
+
+    it 'should not publish product' do
+      user = create(:user, artist: false)
+      product = create(:product, user_id: user.id)
+      post '/api/v1/products/publish', { product_id: product.id }
+      expect(product.published).to be_falsey
+    end
   end
 
   describe '/api/v1/products/:id' do

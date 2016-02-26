@@ -80,6 +80,23 @@ module Products
           status :unprocessable_entity
         end
       end
+
+      desc 'publish product'
+      params do
+        requires :product_id, type: Integer
+      end
+      post 'publish' do
+        product = Product.find_by(id: params.product_id)
+        if product
+          product.published = true
+          unless product.save
+            status :unprocessable_entity
+          end
+          product
+        else
+          status :unprocessable_entity
+        end
+      end
     end
   end
 end
