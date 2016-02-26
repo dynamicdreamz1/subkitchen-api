@@ -49,15 +49,6 @@ describe Sessions::Api, type: :request do
       expect(user.authenticate('newpassword')).to be_truthy
     end
 
-    it 'should return verification link to paypal' do
-      user = create(:user)
-
-      get '/api/v1/sessions/verify_profile', { return_path: '' }, auth_header_for(user)
-      payment = Payment.find_by(payable_id: user.id, payable_type: user.class.name)
-
-      expect(json['url']).to eq(PaypalUserVerification.new(payment, '').call)
-    end
-
     it 'should receive email with confirmation link after registration' do
       params = { email: 'test@gmail.com',
                  name: 'test',
@@ -75,21 +66,6 @@ describe Sessions::Api, type: :request do
       post '/api/v1/sessions/confirm_email', confirm_token: user.confirm_token
       user.reload
       expect(user.email_confirmed).to be_truthy
-    end
-
-    it 'should add company address' do
-      user = create(:user, artist: true)
-      params = {
-          company_name: 'elpassion',
-          address: 'plac Europejski 6',
-          city: 'Warszawa',
-          zip: '01-111',
-          region: 'mazowieckie',
-          country: 'PL'
-      }
-      post '/api/v1/sessions/company', params, auth_header_for(user)
-      expect(user.company).to be_a Company
-      expect(user.company.company_name).to eq('elpassion')
     end
   end
 end

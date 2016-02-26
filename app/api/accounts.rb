@@ -36,6 +36,36 @@ module Accounts
           status :unprocessable_entity
         end
       end
+
+      desc 'add company address'
+      params do
+        requires :company_name, type: String
+        requires :address, type: String
+        requires :city, type: String
+        requires :zip, type: String
+        requires :region, type: String
+        requires :country, type: String
+      end
+      post 'verification' do
+        authenticate!
+        artist = User.find_by(id: current_user.id)
+        if artist
+          CreateCompanyAddress.new(artist, params).call
+        else
+          status :unprocessable_entity
+          artist
+        end
+      end
+
+      desc 'return verify user link to paypal'
+      params do
+        requires :return_path, type: String
+      end
+      get 'paypal_verification_url' do
+        authenticate!
+        payment = Payment.create(payable_id: current_user.id, payable_type: current_user.class.name)
+        { url: PaypalUserVerification.new(payment, params.return_path).call }
+      end
     end
   end
 end
