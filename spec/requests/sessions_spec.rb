@@ -37,14 +37,6 @@ describe Sessions::Api, type: :request do
       end.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
 
-    it 'should be able to access password reminder link' do
-      user = create(:user)
-
-      get '/api/v1/sessions/set_new_password', token: user.password_reminder_token
-
-      expect(response).to have_http_status(:success)
-    end
-
     it 'should be able to set new password' do
       user = create(:user)
       params = { token: user.password_reminder_token, password: 'newpassword', password_confirmation: 'newpassword' }

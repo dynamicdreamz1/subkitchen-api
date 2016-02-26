@@ -38,7 +38,7 @@ module Sessions
         requires :confirm_token, type: String
       end
       post 'confirm_email' do
-        user = User.with_confirm_token(params.confirm_token)
+        user = User.with_confirm_token(params.confirm_token).first
         if user
           user.update_attribute(:email_confirmed, true)
           user.regenerate_confirm_token
