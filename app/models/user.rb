@@ -15,15 +15,15 @@ class User < ActiveRecord::Base
   has_one :company
 
   validates :email, presence: true, email: true, uniqueness: true, if: :validate_email?
-  validates :handle, uniqueness: true
+  validates :handle, uniqueness: { allow_nil: true, allow_empty: true }
   validates :name, presence: true, uniqueness: true
 
   scope :with_reminder_token, lambda { |token|
-    where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token).first
+    where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token)
   }
 
   scope :with_confirm_token, lambda { |token|
-    where(confirm_token: token).first
+    where(confirm_token: token)
   }
 
   scope :artists, lambda {

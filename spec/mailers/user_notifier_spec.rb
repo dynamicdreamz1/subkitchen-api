@@ -12,7 +12,7 @@ RSpec.describe UserNotifier, type: :mailer do
     end
 
     it 'renders the body' do
-      url = "https://localhost:3000/api/v1/set_new_password?token=#{user.password_reminder_token}"
+      url = "#{Figaro.env.frontend_host}/new_password/#{user.password_reminder_token}"
       expect(mail.body.parts.first.body.encoded).to be_include(url)
     end
   end
@@ -28,7 +28,7 @@ RSpec.describe UserNotifier, type: :mailer do
     end
 
     it 'renders the body' do
-      url = "https://localhost:3000/api/v1/confirm_email?token=#{user.confirm_token}"
+      url = "#{Figaro.env.frontend_host}/confirm_email/#{user.confirm_token}"
       expect(mail.body.parts.first.body.encoded).to be_include(url)
     end
   end
