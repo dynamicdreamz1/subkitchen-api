@@ -58,6 +58,7 @@ end
 group :development do
   gem 'rspec-nc'
   gem 'guard-rspec', require: false
+  gem 'letter_opener'
 end
 
 group :test do
