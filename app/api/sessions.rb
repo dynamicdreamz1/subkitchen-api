@@ -17,20 +17,20 @@ module Sessions
 
       desc 'register new user'
       params do
-        requires :email, type: String
-        requires :password, type: String
-        requires :password_confirmation, type: String
-        requires :name, type: String
-        requires :artist, type: Boolean
+        optional :email, type: String
+        optional :password, type: String
+        optional :password_confirmation, type: String
+        optional :name, type: String
+        optional :artist, type: Boolean, default: false
       end
       post 'register' do
         user = CreateUser.new(params).call
         if user.save
           UserNotifier.confirm_email(user).deliver_later
-          user
         else
           status :unprocessable_entity
         end
+        user
       end
 
       desc 'confirm email'

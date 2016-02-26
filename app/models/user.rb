@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 
   validates :email, presence: true, email: true, uniqueness: true, if: :validate_email?
   validates :handle, uniqueness: true
-  validates :name, uniqueness: true
+  validates :name, presence: true, uniqueness: true
 
   scope :with_reminder_token, lambda { |token|
     where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token).first
