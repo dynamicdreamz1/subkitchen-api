@@ -84,13 +84,41 @@ module Products
         requires :product_id, type: Integer
       end
       post 'like' do
+        authenticate!
         product = Product.find_by(id: params.product_id)
         if product
           if !author?(current_user, product)
-            product.likes += 1
-            product.save
+            product.likes.new(user_id: current_user.id)
+            if product.valid?
+              product.save
+            else
+              error!({errors: {base: ['cannot like product more than once']}}, 422)
+            end
           else
             error!({errors: {base: ['cannot like own product']}}, 422)
+          end
+        else
+          error!({errors: {base: ['no product with given id']}}, 422)
+        end
+      end
+
+      desc 'unlike product'
+      params do
+        requires :product_id, type: Integer
+      end
+      post 'like' do
+        authenticate!
+        product = Product.find_by(id: params.product_id)
+        if product
+          if product.likes.empty?
+            like = product.likes.find_by(user_id: current_user.id)
+            if like
+              like.destroy
+            else
+              error!({errors: {base: ['no like with given user id']}}, 422)
+            end
+          else
+            error!({errors: {base: ['cannot unlike not liked product']}}, 422)
           end
         else
           error!({errors: {base: ['no product with given id']}}, 422)

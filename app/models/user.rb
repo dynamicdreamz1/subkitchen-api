@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :orders
   has_one :payment, as: :payable
   has_one :company
+  has_many :likes
 
   validates :email, presence: true, email: true, uniqueness: true, if: :validate_email?
   validates :handle, uniqueness: { allow_nil: true, allow_empty: true }

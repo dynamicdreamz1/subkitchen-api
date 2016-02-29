@@ -5,6 +5,7 @@ class Product < ActiveRecord::Base
   validate :cannot_publish
   after_create :set_price
   attachment :image
+  has_many :likes, as: :likeable
 
   default_scope { where(is_deleted: false) }
 

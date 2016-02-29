@@ -201,12 +201,13 @@ describe Products::Api, type: :request do
 
     describe 'LIKE product' do
       it 'should like product' do
-        product = create(:product, user_id: artist.id, published: true)
+        other_artist = create(:user, artist: true)
+        product = create(:product, user_id: other_artist.id, published: true)
 
-        post '/api/v1/products/like', { product_id: product.id }
+        post '/api/v1/products/like', { product_id: product.id }, auth_header_for(artist)
 
         product.reload
-        expect(product.likes).to eq(1)
+        expect(product.likes.count).to eq(1)
       end
 
       it 'should not like own product' do
@@ -215,8 +216,20 @@ describe Products::Api, type: :request do
         post '/api/v1/products/like', { product_id: product.id }, auth_header_for(artist)
 
         product.reload
-        expect(product.likes).to eq(0)
+        expect(product.likes.count).to eq(0)
         expect(json['errors']).to eq({'base'=>['cannot like own product']})
+      end
+
+      it 'should not like product twice' do
+        other_artist = create(:user, artist: true)
+        product = create(:product, user_id: other_artist.id, published: true)
+        create(:like, likeable_id: product.id, likeable_type: product.class.name, user: artist)
+
+        post '/api/v1/products/like', { product_id: product.id }, auth_header_for(artist)
+
+        product.reload
+        expect(product.likes.count).to eq(1)
+        expect(json['errors']).to eq({'base'=>['cannot like product more than once']})
       end
     end
   end
