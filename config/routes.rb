@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   mount Api => '/api'
   root 'welcome#index'
-  resources :user_verify_notifications, only: :create
-  resources :payment_notifications, only: :create
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

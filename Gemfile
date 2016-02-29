@@ -39,7 +39,6 @@ gem 'refile', require: 'refile/rails'
 gem 'refile-mini_magick'
 gem 'refile-s3'
 gem 'figaro'
-gem 'faker'
 gem 'iso_country_codes'
 
 group :production do
@@ -65,7 +64,8 @@ group :test do
   gem 'codeclimate-test-reporter', require: false
   gem 'webmock'
   gem 'vcr'
-  gem "json-schema"
+  gem 'json-schema'
+  gem 'faker'
 end
 
 group :development, :test do
