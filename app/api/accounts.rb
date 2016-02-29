@@ -7,20 +7,36 @@ module Accounts
     end
 
     resource :account do
-      desc 'updates user info'
+      desc 'update email'
       params do
-        optional :name, type: String
-        optional :email, type: String
-        optional :handle, type: String
+        optional :email
       end
-      put ':id' do
+      put '/email' do
         authenticate!
-        user = User.find_by(id: params.id)
-        if user
-          UpdateUser.new(user, params).update_user
-        else
-          error!({errors: {base: ['no user with given id']}}, 422)
+        if current_user.update(email: params.email)
+          UserNotifier.confirm_email(current_user).deliver_later
         end
+        current_user
+      end
+
+      desc 'update name'
+      params do
+        optional :name
+      end
+      put '/name' do
+        authenticate!
+        current_user.update(name: params.name)
+        current_user
+      end
+
+      desc 'update handle'
+      params do
+        optional :handle
+      end
+      put '/handle' do
+        authenticate!
+        current_user.update(handle: params.handle)
+        current_user
       end
 
       desc 'updates shipping info'
@@ -37,6 +53,7 @@ module Accounts
       post 'address' do
         authenticate!
         UpdateUser.new(current_user, params).update_address
+        ServiceName.new(current_user).call
       end
 
 
