@@ -9,7 +9,6 @@ class User < ActiveRecord::Base
   has_secure_password
 
   has_many :products
-  has_many :user_verify_notifications
   has_many :orders
   has_one :payment, as: :payable
   has_one :company

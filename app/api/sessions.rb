@@ -1,5 +1,12 @@
 module Sessions
   class Api < Grape::API
+
+    helpers do
+      def match?(password, confirmation)
+        password == confirmation
+      end
+    end
+
     resource :sessions do
       desc 'authenticate user'
       params do
@@ -7,11 +14,11 @@ module Sessions
         requires :password, type: String
       end
       post 'login' do
-        user = User.find_by!(email: params.email)
-        if user.authenticate(params.password)
+        user = User.find_by(email: params.email)
+        if user && user.authenticate(params.password)
           user
         else
-          status :unprocessable_entity
+          error!({errors: {base: ['invalid email or password']}}, 422)
         end
       end
 
@@ -40,11 +47,10 @@ module Sessions
       post 'confirm_email' do
         user = User.with_confirm_token(params.confirm_token).first
         if user
-          user.update_attribute(:email_confirmed, true)
-          user.regenerate_confirm_token
+          ConfirmEmail.new(user).call
           user
         else
-          status :unprocessable_entity
+          error!({errors: {base: ['invalid confirmation token']}}, 422)
         end
       end
 
@@ -56,10 +62,16 @@ module Sessions
       end
       post 'change_password' do
         authenticate!
-        if current_user.authenticate(params.current_password)
-          current_user.update!(password: params.password, password_confirmation: params.password_confirmation)
+        if match?(params.password, params.password_confirmation)
+          if current_user.authenticate(params.current_password)
+            current_user.update!(password: params.password,
+                                 password_confirmation: params.password_confirmation)
+            current_user
+          else
+            error!({errors: {base: ['invalid password']}}, 422)
+          end
         else
-          status :unprocessable_entity
+          error!({errors: {base: ['password and password confirmation does not match']}}, 422)
         end
       end
 
@@ -70,11 +82,9 @@ module Sessions
       post 'forgot_password' do
         user = User.find_by(email: params.email)
         if user
-          UserNotifier.set_new_password(user).deliver_later
-          user.password_reminder_expiration = DateTime.now + 2.hours
-          user.save
+          SendNewPasswordLink.new(user).call
         else
-          status :unprocessable_entity
+          error!({errors: {base: ['invalid email']}}, 422)
         end
       end
 
@@ -86,11 +96,15 @@ module Sessions
       end
       post 'set_new_password' do
         user = User.with_reminder_token(params.token).first
-        if user
-          SetNewPassword.new(user, params).call
-          user
+        if match?(params.password, params.password_confirmation)
+          if user
+            SetNewPassword.new(user, params).call
+            user
+          else
+            error!({errors: {base: ['invalid or expired reminder token']}}, 422)
+          end
         else
-          error!({errors: {base: ['invalid or expired reminder token']}}, 422)
+          error!({errors: {base: ['password and password confirmation does not match']}}, 422)
         end
       end
     end
