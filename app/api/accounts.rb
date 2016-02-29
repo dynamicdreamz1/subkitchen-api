@@ -7,20 +7,42 @@ module Accounts
     end
 
     resource :account do
-      desc 'updates user info'
+      desc 'update email'
       params do
-        optional :name, type: String
-        optional :email, type: String
-        optional :handle, type: String
+        optional :email
       end
-      put ':id' do
+      put '/email' do
         authenticate!
-        user = User.find_by(id: params.id)
-        if user
-          UpdateUser.new(user, params).update_user
+        if current_user.update(email: params.email)
+          UserNotifier.confirm_email(current_user).deliver_later
         else
-          error!({errors: {base: ['no user with given id']}}, 422)
+          status :unprocessable_entity
         end
+        current_user
+      end
+
+      desc 'update name'
+      params do
+        optional :name
+      end
+      put '/name' do
+        authenticate!
+        unless current_user.update(name: params.name)
+          status :unprocessable_entity
+        end
+        current_user
+      end
+
+      desc 'update handle'
+      params do
+        optional :handle
+      end
+      put '/handle' do
+        authenticate!
+        unless current_user.update(handle: params.handle)
+          status :unprocessable_entity
+        end
+        current_user
       end
 
       desc 'updates shipping info'

@@ -6,46 +6,32 @@ describe Accounts::Api, type: :request do
     describe 'UPDATE user' do
       context 'artist false' do
         it 'should update user info' do
-          params = { name: 'test', email: 'test@gmail.com' }
+          params = { name: 'test' }
 
-          put "/api/v1/account/#{user.id}", params, auth_header_for(user)
+          put "/api/v1/account/name", params, auth_header_for(user)
 
           user.reload
           expect(user.name).to eq('test')
-          expect(user.email).to eq('test@gmail.com')
           expect(response.body).to eq(user.to_json)
-        end
-
-        it 'should not update handle' do
-          params = { name: 'test', email: 'test@gmail.com', handle: 'testtest' }
-
-          put "/api/v1/account/#{user.id}", params, auth_header_for(user)
-
-          user.reload
-          expect(user.name).to eq('test')
-          expect(user.email).to eq('test@gmail.com')
-          expect(user.handle).to eq(user.handle)
         end
       end
 
       context 'artist' do
-        it 'should update user info and handle' do
-          params =  { name: 'test', email: 'test@gmail.com', handle: 'testtest' }
+        it 'should update user handle' do
+          params =  { handle: 'testtest' }
 
-          put "/api/v1/account/#{artist.id}", params, auth_header_for(artist)
+          put "/api/v1/account/handle", params, auth_header_for(artist)
 
           artist.reload
-          expect(artist.name).to eq('test')
-          expect(artist.email).to eq('test@gmail.com')
           expect(artist.handle).to eq('testtest')
         end
       end
 
       it 'should send confirmation email after email update' do
-        params = { name: 'test', email: 'test@gmail.com' }
+        params = { email: 'test@gmail.com' }
 
         expect do
-          put "/api/v1/account/#{user.id}", params, auth_header_for(user)
+          put "/api/v1/account/email", params, auth_header_for(user)
         end.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
     end
