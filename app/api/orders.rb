@@ -21,19 +21,20 @@ module Orders
       desc 'add item to order'
       params do
         requires :product_id, type: Integer
+        requires :size, type: String
         optional :uuid, type: String
       end
       post 'item' do
         order = find_or_create_order(params.uuid)
-        item = OrderItem.find_by(product_id: params.product_id, order_id: order.id)
+        item = OrderItem.find_by(product_id: params.product_id, order_id: order.id, size: params[:size])
         if item
           OrderItemQuantity.new(item).increment
         else
           product = Product.find_by(id: params.product_id)
-          OrderItem.create!(product_id: product.id, order_id: order.id)
+          CreateOrderItem.new(product, order, params).call
         end
         UpdateOrder.new(order).call
-        order.reload
+        OrderSerializer.new(order.reload).as_json
       end
 
       desc 'remove item from order'
@@ -49,7 +50,7 @@ module Orders
           error!({errors: {base: ['cannot find item']}}, 422)
         end
         UpdateOrder.new(order).call
-        order.reload
+        OrderSerializer.new(order.reload).as_json
       end
 
       desc 'return payment link to paypal'
@@ -65,6 +66,7 @@ module Orders
             { url: PaypalPayment.new(payment, params.return_path).call }
           else
             UpdateOrderItems.new(order).call
+            error!({errors: {base: ['some of the items had to be removed because the products does not exist anymore']}}, 422)
           end
         else
           error!({errors: {base: ['cannot find order']}}, 422)
@@ -77,8 +79,15 @@ module Orders
       end
       get 'checkout' do
         order = Order.find_by(uuid: params.uuid)
-        status :unprocessable_entity unless order
-        CheckoutSerializer.new(order).as_json
+        if order
+          if CheckOrderItems.new(order).call
+            CheckoutSerializer.new(order).as_json
+          else
+            UpdateOrderItems.new(order).call
+          end
+        else
+          error!({errors: {base: ['cannot find order']}}, 422)
+        end
       end
     end
   end

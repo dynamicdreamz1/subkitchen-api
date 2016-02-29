@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "properties": {
+    "order": {
+      "type": "object",
+      "properties": {
+        "user_id": {"type": ["integer", "null"]},
+        "uuid": {"type": "string"},
+        "subtotal": {"type": "string"},
+        "shipping_cost": {"type": "string"},
+        "tax": {"type": "string"},
+        "tax_cost": {"type": "string"},
+        "total": {"type": "string"},
+        "items": {
+          "id": "items",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "price": {"type": "string"},
+              "name": {"type": "string"},
+              "product_id": {"type": "integer"},
+              "quantity": {"type": "integer"},
+              "size": {"type": "string"},
+              "image": {"type": "string"}
+            }
+          }
+        }
+      },
+      "required": [
+        "user_id",
+        "uuid",
+        "subtotal",
+        "shipping_cost",
+        "tax",
+        "tax_cost",
+        "total",
+        "items"
+      ]
+    }
+  },
+  "required": [
+    "order"
+  ]
+}

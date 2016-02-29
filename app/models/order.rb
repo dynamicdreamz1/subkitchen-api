@@ -1,7 +1,6 @@
 class Order < ActiveRecord::Base
   belongs_to :user
   has_many :order_items
-  belongs_to :shipping
   has_one :payment, as: :payable
   after_create :set_tax_and_shipping
   enum status: [:active, :inactive]

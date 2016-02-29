@@ -16,6 +16,6 @@ class UpdateOrderItems
     end
     OrderItem.destroy(items.map{ |i| i.id })
     @order.order_items.reload
-    { order_items: @order.order_items, deleted_items: items }
+    CheckoutSerializer.new(@order, items).as_json
   end
 end

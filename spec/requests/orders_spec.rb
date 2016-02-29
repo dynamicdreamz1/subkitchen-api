@@ -8,45 +8,78 @@ describe Products::Api, type: :request do
     create(:config, name: 'shipping_info', value: 'info')
   end
 
-  describe 'orders/item post' do
-    describe 'as authorized user' do
+  describe 'ADD ITEM' do
+    context 'authorized user' do
+      it 'should create order with user' do
+        expect do
+          post '/api/v1/orders/item', { product_id: product.id, size: 's' }, auth_header_for(user)
+        end.to change(Order, :count).by(1)
+        expect(Order.last.user).to eq(user)
+        expect(response).to match_response_schema('order')
+      end
+
       it 'should add item to order' do
-        post '/api/v1/orders/item', { product_id: product.id }, auth_header_for(user)
+        post '/api/v1/orders/item', { product_id: product.id, size: 's' }, auth_header_for(user)
 
         order = Order.find_by(user_id: user.id, state: :active)
         expect(order).not_to be_nil
         expect(order.order_items.size).to eq(1)
+        expect(response).to match_response_schema('order')
       end
 
       it 'should increment quantity' do
         order = create(:order, user: user)
-        create(:order_item, product: product, order: order)
+        create(:order_item, product: product, order: order, size: 'm')
 
-        post '/api/v1/orders/item', { product_id: product.id }, auth_header_for(user)
+        post '/api/v1/orders/item', { product_id: product.id, size: 'm' }, auth_header_for(user)
 
         order = Order.find_by(user_id: user.id, state: :active)
         expect(order.order_items.first.quantity).to eq(2)
+        expect(response).to match_response_schema('order')
+      end
+
+      it 'should not increment quantity when size different' do
+        order = create(:order, user: user)
+        create(:order_item, product: product, order: order, size: 'm')
+
+        post '/api/v1/orders/item', { product_id: product.id, size: 's' }, auth_header_for(user)
+
+        order = Order.find_by(user_id: user.id, state: :active)
+        expect(order.order_items.first.quantity).to eq(1)
+        expect(order.order_items.size).to eq(2)
+        expect(response).to match_response_schema('order')
       end
     end
 
-    describe 'as unauthorized user' do
+    context 'unauthorized user' do
+      it 'should create order with no user' do
+        expect do
+          post '/api/v1/orders/item', { product_id: product.id, size: 's' }
+        end.to change(Order, :count).by(1)
+        expect(Order.last.user).to be_nil
+        expect(response).to match_response_schema('order')
+      end
+
       it 'should add item to order' do
-        order = create(:order, user: user)
-        post '/api/v1/orders/item', { product_id: product.id, uuid: order.uuid }
+        order = create(:order)
+
+        post '/api/v1/orders/item', { product_id: product.id, size: 'm', uuid: order.uuid }
 
         order = Order.find_by(uuid: order.uuid)
         expect(order).not_to be_nil
         expect(order.order_items.size).to eq(1)
+        expect(response).to match_response_schema('order')
       end
 
       it 'should increment quantity' do
         order = create(:order, user: user)
-        create(:order_item, product: product, order: order)
+        create(:order_item, product: product, order: order, size: 'l')
 
-        post '/api/v1/orders/item', { product_id: product.id, uuid: order.uuid }
+        post '/api/v1/orders/item', { product_id: product.id, size: 'l', uuid: order.uuid }
 
         order = Order.find_by(uuid: order.uuid)
         expect(order.order_items.first.quantity).to eq(2)
+        expect(response).to match_response_schema('order')
       end
     end
 
@@ -56,7 +89,7 @@ describe Products::Api, type: :request do
       product = create(:product, product_template: product_template)
 
 
-      post '/api/v1/orders/item', { product_id: product.id, uuid: order.uuid }
+      post '/api/v1/orders/item', { product_id: product.id, size: 'm', uuid: order.uuid }
 
       order.reload
       expect(order.subtotal_cost).to eq(10)
@@ -67,16 +100,17 @@ describe Products::Api, type: :request do
     end
   end
 
-  describe 'orders/item delete' do
-    describe 'as authorized user' do
+  describe 'DELETE ITEM' do
+    describe 'authorized user' do
       it 'should remove item from order' do
         order = create(:order, user: user)
-        item = create(:order_item, order: order, product: product)
+        item = create(:order_item, order: order, product: product, size: 's')
 
         delete '/api/v1/orders/item', { order_item_id: item.id }, auth_header_for(user)
 
         item = OrderItem.find_by(order: order, product: product)
         expect(item).to be_nil
+        expect(response).to match_response_schema('order')
       end
 
       it 'should decrement' do
@@ -88,10 +122,11 @@ describe Products::Api, type: :request do
 
         item = OrderItem.find_by(order: order, product: product)
         expect(item.quantity).to eq(1)
+        expect(response).to match_response_schema('order')
       end
     end
 
-    describe 'as unauthorized user' do
+    describe 'unauthorized user' do
       it 'should remove item from order' do
         order = create(:order, user: user)
         item = create(:order_item, order: order, product: product)
@@ -100,6 +135,7 @@ describe Products::Api, type: :request do
 
         item = OrderItem.find_by(order: order, product: product)
         expect(item).to be_nil
+        expect(response).to match_response_schema('order')
       end
 
       it 'should decrement' do
@@ -111,6 +147,7 @@ describe Products::Api, type: :request do
 
         item = OrderItem.find_by(order: order, product: product)
         expect(item.quantity).to eq(1)
+        expect(response).to match_response_schema('order')
       end
     end
 
@@ -129,7 +166,7 @@ describe Products::Api, type: :request do
     end
   end
 
-  describe 'orders/paypal_payment_url' do
+  describe 'PAYPAL' do
     it 'should return payment link to paypal' do
       order = create(:order, user: user)
       product = create(:product)
@@ -139,22 +176,23 @@ describe Products::Api, type: :request do
 
       payment = Payment.find_by(payable_id: order.id, payable_type: order.class.name)
       expect(json['url']).to eq(PaypalPayment.new(payment, '').call)
+      expect(response).to match_response_schema('paypal')
     end
 
     it 'should check if product exists' do
       order = create(:order, user: user)
       product = create(:product)
-      item = create(:order_item, order: order, product: product)
+      create(:order_item, order: order, product: product)
       DeleteResource.new(product).call
 
       get '/api/v1/orders/paypal_payment_url', { return_path: '', uuid: order.uuid }
 
-      expect(response.body).to eq({ order_items: [], deleted_items: [item] }.to_json)
+      expect(json['errors']).to eq({'base'=>['some of the items had to be removed because the products does not exist anymore']})
     end
   end
 
-  describe 'orders/checkout' do
-    it 'should order' do
+  describe 'CHECKOUT' do
+    it 'should checkout' do
       order = create(:order, user: nil)
       product = create(:product)
       create(:order_item, order: order, product: product)
@@ -163,8 +201,19 @@ describe Products::Api, type: :request do
 
       get '/api/v1/orders/checkout', params
 
-      serialized_order = CheckoutSerializer.new(order).as_json
-      expect(response.body).to eq(serialized_order.to_json)
+      expect(response).to match_response_schema('checkout')
+    end
+
+    it 'should update items before checkout' do
+      order = create(:order, user: nil)
+      product = create(:product)
+      create(:order_item, order: order, product: product)
+      params = { uuid: order.uuid }
+      DeleteResource.new(product).call
+
+      get '/api/v1/orders/checkout', params
+
+      expect(response).to match_response_schema('checkout')
     end
   end
 end
