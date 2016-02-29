@@ -15,6 +15,8 @@ module Accounts
         authenticate!
         if current_user.update(email: params.email)
           UserNotifier.confirm_email(current_user).deliver_later
+        else
+          status :unprocessable_entity
         end
         current_user
       end
@@ -25,7 +27,9 @@ module Accounts
       end
       put '/name' do
         authenticate!
-        current_user.update(name: params.name)
+        unless current_user.update(name: params.name)
+          status :unprocessable_entity
+        end
         current_user
       end
 
@@ -35,7 +39,9 @@ module Accounts
       end
       put '/handle' do
         authenticate!
-        current_user.update(handle: params.handle)
+        unless current_user.update(handle: params.handle)
+          status :unprocessable_entity
+        end
         current_user
       end
 
