@@ -8,7 +8,7 @@ module PaypalHooks
     post 'payment_notification' do
       payment = Payment.find_by(id: params.invoice)
       if params.status == 'Completed'
-        ConfirmPayment.new(payment, params).update_order
+        ConfirmPayment.new(payment, params).call
       end
     end
 
@@ -20,7 +20,7 @@ module PaypalHooks
     post 'user_verify_notification' do
       payment = Payment.find_by(id: params.invoice)
       if params.status == 'Completed'
-        ConfirmPayment.new(payment, params).update_artist
+        ConfirmUserVerification.new(payment, params).call
       end
     end
   end
