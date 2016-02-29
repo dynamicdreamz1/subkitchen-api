@@ -1,0 +1,51 @@
+{
+  "type": "object",
+  "properties": {
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": ["integer", "null"]},
+          "author": {"type": ["string", "null"]},
+          "price": {"type": "string"},
+          "size": {"type": "array"},
+          "description": {"type": "string"},
+          "name": {"type": "string"},
+          "likes": {"type": "integer"},
+          "product_image": {"type": "string"},
+          "shipping": {"type": "string"},
+          "shipping_cost": {"type": "string"},
+          "tax": {"type": "string"},
+          "size_chart": {"type": "string"},
+          "errors": {"type": "object"}
+        },
+        "required": [
+          "id",
+          "author",
+          "price",
+          "size",
+          "description",
+          "name",
+          "likes",
+          "product_image",
+          "shipping",
+          "shipping_cost",
+          "tax",
+          "size_chart"
+        ]
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "current_page": {"type": "integer"},
+        "total_pages": {"type": "integer"}
+      }
+    }
+  },
+  "required": [
+    "products",
+    "meta"
+  ]
+}

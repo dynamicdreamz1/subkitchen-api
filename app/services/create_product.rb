@@ -11,13 +11,14 @@ class CreateProduct
   end
 
   def create_product
-    Product.new(name: @params.name,
-                user_id: @user.id,
+    product = Product.new(name: @params.name,
                 product_template_id: @params.product_template_id,
                 description: @params.description,
                 image: image(@params.image),
                 published: @params.published
     )
+    product.user_id = @user.id if @user
+    product
   end
 
   def image(image)

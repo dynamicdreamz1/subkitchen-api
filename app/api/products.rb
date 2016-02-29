@@ -1,53 +1,37 @@
 module Products
   class Api < Grape::API
-    get 'promo' do
-      %w(http://lorempixel.com/400/400/
-      http://lorempixel.com/1920/800/)
-    end
-    get 'tshirts' do
-      %w(http://lorempixel.com/300/300/)
-    end
-    params do
-      requires :invoice, type: Integer
-      requires :payment_status, type: String
-      requires :transaction_id, type: Integer
-    end
-    post 'payment_notification' do
-      payment = Payment.find_by(id: params.invoice)
-      if params.status == 'Completed'
-        ConfirmPayment.new(payment, params).update_order
-      end
-    end
-
-    params do
-      requires :invoice, type: Integer
-      requires :payment_status, type: String
-      requires :transaction_id, type: Integer
-    end
-    post 'user_verify_notification' do
-      payment = Payment.find_by(id: params.invoice)
-      if params.status == 'Completed'
-        ConfirmPayment.new(payment, params).update_artist
-      end
-    end
     resources :products do
+
+      helpers do
+        def is_author?(current_user, product)
+          product.author == current_user
+        end
+
+        def author?(current_user, product)
+          if current_user
+            current_user == product.author
+          else
+            false
+          end
+        end
+      end
+
       desc 'return all products'
       get do
-        page = params[:page].to_i != 0? params[:page] : 1
-        per_page = params[:per_page].to_i != 0? params[:per_page] : 30
+        page = params.page.to_i != 0? params.page : 1
+        per_page = params.per_page.to_i != 0? params.per_page : 30
         products = Product.page(page).per(per_page)
-        {
-          products: products.map{|p| ProductSerializer.new(p).as_json},
-          meta: {
-            current_page: products.current_page,
-            total_pages: products.total_pages
-          }
-        }
+        ProductListSerializer.new(products).as_json
       end
 
       desc 'return product by id'
       get ':id' do
-        {product: ProductSerializer.new(Product.find(params[:id])).as_json}
+        product = Product.find_by(id: params.id)
+        if product
+          ProductSerializer.new(product).as_json
+        else
+          error!({errors: {base: ['no product with given id']}}, 422)
+        end
       end
 
       desc 'create product'
@@ -59,23 +43,22 @@ module Products
         requires :published, type: Boolean
       end
       post do
-        authenticate!
         product = CreateProduct.new(current_user, params).call
         unless product.save
           status :unprocessable_entity
         end
-        product
+        ProductSerializer.new(product).as_json
       end
 
       desc 'remove product'
       delete ':id' do
-        authenticate!
-        product = Product.find_by(id: params.id, user_id: current_user.id)
+        product = Product.find_by(id: params.id)
         if product
           DeleteResource.new(product).call
         else
-          status :unprocessable_entity
+          error!({errors: {base: ['no product with given id']}}, 422)
         end
+        ProductSerializer.new(product).as_json
       end
 
       desc 'publish product'
@@ -83,15 +66,34 @@ module Products
         requires :product_id, type: Integer
       end
       post 'publish' do
+        authenticate!
         product = Product.find_by(id: params.product_id)
-        if product
+        if product && is_author?(current_user, product)
           product.published = true
           unless product.save
             status :unprocessable_entity
           end
-          product
+          ProductSerializer.new(product).as_json
         else
-          status :unprocessable_entity
+          error!({errors: {base: ['no product with given id or user is not an author']}}, 422)
+        end
+      end
+
+      desc 'like product'
+      params do
+        requires :product_id, type: Integer
+      end
+      post 'like' do
+        product = Product.find_by(id: params.product_id)
+        if product
+          if !author?(current_user, product)
+            product.likes += 1
+            product.save
+          else
+            error!({errors: {base: ['cannot like own product']}}, 422)
+          end
+        else
+          error!({errors: {base: ['no product with given id']}}, 422)
         end
       end
     end
