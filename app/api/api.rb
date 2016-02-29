@@ -27,6 +27,7 @@ class Api < Grape::API
   mount Artists::Api
   mount Orders::Api
   mount Accounts::Api
+  mount PaypalHooks::Api
 
 
   add_swagger_documentation(api_version: 'v1', hide_documentation_path: true, base_path: '/api')

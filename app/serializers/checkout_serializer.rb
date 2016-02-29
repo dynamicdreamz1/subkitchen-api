@@ -2,11 +2,21 @@ class CheckoutSerializer
   def as_json(options={})
     items = order.order_items.map do |item|
       { price: item.price,
-        name: item.product.name,
+        name: item.product_name,
         id: item.id,
         quantity: item.quantity,
         size: item.size,
-        image: item.product.image}
+        image: item.product.image_url}
+    end
+
+    if deleted_items
+      deleted = deleted_items.map do |item|
+        { price: item.price,
+          name: item.product_name,
+          id: item.id,
+          quantity: item.quantity,
+          size: item.size }
+      end
     end
     data = { order:
                  { uuid: order.uuid,
@@ -32,15 +42,17 @@ class CheckoutSerializer
     end
 
     data[:errors] = order.errors if order.errors.any?
+    data[:deleted_items] = deleted if deleted_items
 
     data.as_json(options)
   end
 
   private
 
-  attr_reader :order
+  attr_reader :order, :deleted_items
 
-  def initialize(order)
+  def initialize(order, deleted_items=nil)
     @order = order
+    @deleted_items = deleted_items
   end
 end
