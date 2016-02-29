@@ -14,6 +14,9 @@ class User < ActiveRecord::Base
   has_one :company
   has_many :likes
 
+  attachment :profile_image, content_type: ['image/jpeg', 'image/png', 'image/jpg']
+  attachment :shop_banner, content_type: ['image/jpeg', 'image/png', 'image/jpg']
+
   validates :email, presence: true, email: true, uniqueness: true, if: :validate_email?
   validates :handle, uniqueness: { allow_nil: true, allow_empty: true }
   validates :name, presence: true, uniqueness: true

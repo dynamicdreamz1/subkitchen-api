@@ -2,7 +2,7 @@
   "type": "object",
   "properties": {
     "name": {"type": "string"},
-    "image_url": {"type": "null"},
+    "image_url": {"type": ["string", "null"]},
     "email": {"type": "string"},
     "auth_token": {"type": "string"}
   },

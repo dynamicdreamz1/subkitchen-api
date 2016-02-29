@@ -113,6 +113,44 @@ module Accounts
           CompanyAddress.new(current_user, params).update_company
         end
       end
+
+      desc 'upload profile image'
+      params do
+        requires :image, type: File
+      end
+      post 'profile_image' do
+        authenticate!
+        image = ActionDispatch::Http::UploadedFile.new(params.image)
+        if CheckProfileImageSize.new(image.tempfile.path, params.image.type).call
+          current_user.update(profile_image: image)
+          data = { profile_image_url: current_user.profile_image_url }
+          data[:errors] = current_user.errors if current_user.errors.any?
+          data
+        else
+          error!({errors: {base: ['image is too small']}}, 422)
+        end
+      end
+
+      desc 'upload shop banner'
+      params do
+        requires :banner, type: File
+      end
+      post 'shop_banner' do
+        authenticate!
+        banner = ActionDispatch::Http::UploadedFile.new(params.banner)
+        if CheckShopBannerSize.new(banner.tempfile.path, params.banner.type).call
+          if current_user.artist
+            current_user.update(shop_banner: banner)
+            data = { shop_banner_url: current_user.shop_banner_url }
+            data[:errors] = current_user.errors if current_user.errors.any?
+            data
+          else
+            error!({errors: {base: ['user must be an artist']}}, 422)
+          end
+        else
+          error!({errors: {base: ['image is too small']}}, 422)
+        end
+      end
     end
   end
 end

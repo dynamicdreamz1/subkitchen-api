@@ -1,7 +1,7 @@
 class UserPublicSerializer
   def as_json(options = {})
     data = { name: user.name,
-      image_url: image_url,
+      image_url: (user.profile_image_url ? user.profile_image_url : image_url),
       email: user.email }
 
     data[:errors] = user.errors if user.errors.any?
