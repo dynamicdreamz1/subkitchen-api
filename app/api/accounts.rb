@@ -1,5 +1,11 @@
 module Accounts
   class Api < Grape::API
+
+    desc 'array of countries and their codes'
+    get 'iso_countries' do
+      IsoCountryCodes.for_select
+    end
+
     resource :account do
       desc 'updates user info'
       params do
@@ -13,8 +19,7 @@ module Accounts
         if user
           UpdateUser.new(user, params).update_user
         else
-          status :unprocessable_entity
-          user
+          error!({errors: {base: ['no user with given id']}}, 422)
         end
       end
 
@@ -31,14 +36,11 @@ module Accounts
       end
       post 'address' do
         authenticate!
-        if current_user
-          UpdateUser.new(current_user, params).update_address
-        else
-          status :unprocessable_entity
-        end
+        UpdateUser.new(current_user, params).update_address
       end
 
-      desc 'add company address'
+
+      desc 'user verification'
       params do
         requires :conditions, type: Boolean, default: false
         optional :company_name, type: String
@@ -51,15 +53,14 @@ module Accounts
       post 'verification' do
         authenticate!
         if params.conditions
-          artist = User.find_by(id: current_user.id)
+          artist = User.find_by(id: current_user.id, artist: true)
           if artist
             CompanyAddress.new(artist, params).create_company
           else
-            status :unprocessable_entity
-            artist
+            error!({errors: {base: ['no artist with given id']}}, 422)
           end
         else
-          error!({errors: {base: ['must be accepted']}}, 422)
+          error!({errors: {conditions: ['must be accepted']}}, 422)
         end
       end
 
@@ -70,24 +71,25 @@ module Accounts
       get 'paypal_verification_url' do
         authenticate!
         payment = Payment.create(payable_id: current_user.id, payable_type: current_user.class.name)
-        { url: PaypalUserVerification.new(payment, params.return_path).call }
+        url = PaypalUserVerification.new(payment, params.return_path).call
+        { url: url }
       end
 
       desc 'update company address'
       params do
-        optional :company_name, type: String
-        optional :address, type: String
-        optional :city, type: String
-        optional :zip, type: String
-        optional :region, type: String
-        optional :country, type: String
+        requires :company_name, type: String
+        requires :address, type: String
+        requires :city, type: String
+        requires :zip, type: String
+        requires :region, type: String
+        requires :country, type: String
       end
       post 'company_address' do
         authenticate!
-        if current_user
-          CompanyAddress.new(current_user, params).update_company
+        if current_user.company
+          CompanyAddress.new(current_user, params).create_company
         else
-          status :unprocessable_entity
+          CompanyAddress.new(current_user, params).update_company
         end
       end
     end
