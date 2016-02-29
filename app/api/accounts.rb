@@ -53,7 +53,6 @@ module Accounts
       post 'address' do
         authenticate!
         UpdateUser.new(current_user, params).update_address
-        ServiceName.new(current_user).call
       end
 
 
