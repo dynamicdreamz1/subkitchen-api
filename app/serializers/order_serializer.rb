@@ -1,15 +1,5 @@
 class OrderSerializer
   def as_json(options={})
-    items = order.order_items.map do |item|
-      {
-          price: item.price,
-          name: item.product.name,
-          product_id: item.product.id,
-          quantity: item.quantity,
-          size: item.size,
-          image: item.product.image_url
-      }
-    end
     data = {
         order: {
             uuid: order.uuid,
@@ -35,4 +25,18 @@ class OrderSerializer
   def initialize(order)
     @order = order
   end
+
+  def items
+    order.order_items.map do |item|
+      {
+          price: item.price,
+          name: item.product.name,
+          product_id: item.product.id,
+          quantity: item.quantity,
+          size: item.size,
+          image: item.product.image_url
+      }
+    end
+  end
 end
+
