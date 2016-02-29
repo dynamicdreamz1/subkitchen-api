@@ -95,7 +95,7 @@ describe Accounts::Api, type: :request do
     describe 'VERIFICATION' do
       it 'should add company address' do
         params = {
-            conditions: true,
+            has_company: true,
             company_name: 'elpassion',
             address: 'plac Europejski 6',
             city: 'Warszawa',
@@ -106,16 +106,20 @@ describe Accounts::Api, type: :request do
 
         post '/api/v1/account/verification', params, auth_header_for(artist)
 
+        artist.reload
         expect(artist.company).to be_a Company
+        expect(artist.has_company).to be_truthy
         expect(artist.company.company_name).to eq('elpassion')
       end
 
-      it 'should return error' do
-        params = { conditions: false }
+      it 'should not add company' do
+        params = { has_company: false }
 
         post '/api/v1/account/verification', params, auth_header_for(artist)
 
-        expect(json['errors']).to eq({'conditions'=>['must be accepted']})
+        artist.reload
+        expect(artist.company).to be_nil
+        expect(artist.company).to be_falsey
       end
     end
 

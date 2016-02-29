@@ -42,7 +42,7 @@ module Accounts
 
       desc 'user verification'
       params do
-        requires :conditions, type: Boolean, default: false
+        requires :has_company, type: Boolean
         optional :company_name, type: String
         optional :address, type: String
         optional :city, type: String
@@ -52,16 +52,15 @@ module Accounts
       end
       post 'verification' do
         authenticate!
-        if params.conditions
-          artist = User.find_by(id: current_user.id, artist: true)
+        artist = User.find_by(id: current_user.id, artist: true)
+        if params.has_company
           if artist
             CompanyAddress.new(artist, params).create_company
           else
             error!({errors: {base: ['no artist with given id']}}, 422)
           end
-        else
-          error!({errors: {conditions: ['must be accepted']}}, 422)
         end
+        artist.update_attribute(:has_company, params[:has_company])
       end
 
       desc 'return verify user link to paypal'

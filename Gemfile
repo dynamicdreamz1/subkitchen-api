@@ -40,6 +40,7 @@ gem 'refile-mini_magick'
 gem 'refile-s3'
 gem 'figaro'
 gem 'iso_country_codes'
+gem 'faker'
 
 group :production do
   gem 'rails_12factor'
@@ -65,7 +66,6 @@ group :test do
   gem 'webmock'
   gem 'vcr'
   gem 'json-schema'
-  gem 'faker'
 end
 
 group :development, :test do
