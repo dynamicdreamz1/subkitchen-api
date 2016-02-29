@@ -42,10 +42,10 @@ template2 = ProductTemplate.create(price: 29.99, size: %w(s m l xl), product_typ
 template3 = ProductTemplate.create(price: 29.99, size: %w(s m l xl), product_type: 'blouse', size_chart: File.new(size_chart))
 template4 = ProductTemplate.create(price: 39.99, size: %w(s m l xl), product_type: 'sweater', size_chart: File.new(size_chart))
 
-u1 = User.create(name: "user1", email: "t1@gmail.com", password: "password", password_confirmation: "password", artist: true)
-u2 = User.create(name: "user2", email: "t2@gmail.com", password: "password", password_confirmation: "password", artist: true)
-u3 = User.create(name: "user3", email: "t3@gmail.com", password: "password", password_confirmation: "password", artist: true)
-u4 = User.create(name: "user4", email: "t4@gmail.com", password: "password", password_confirmation: "password", artist: true)
+u1 = User.create(name: "user1", email: "t1@example.com", password: "password", password_confirmation: "password", artist: true)
+u2 = User.create(name: "user2", email: "t2@example.com", password: "password", password_confirmation: "password", artist: true)
+u3 = User.create(name: "user3", email: "t3@example.com", password: "password", password_confirmation: "password", artist: true)
+u4 = User.create(name: "user4", email: "t4@example.com", password: "password", password_confirmation: "password", artist: true)
 
 description = <<-EOT
 <p>This 'all over' print crewneck sweatshirt is made using a special sublimation technique to provide a vivid graphic image throughout the shirt.</p>
@@ -62,5 +62,5 @@ EOT
 end
 
 100.times do |n|
-  User.create(name: "user#{n}", email: "t#{n}@gmail.com", password: "password", password_confirmation: "password", artist: false)
+  User.create(name: "user#{n}", email: "t#{n}@example.com", password: "password", password_confirmation: "password", artist: false)
 end
