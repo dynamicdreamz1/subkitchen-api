@@ -5,20 +5,21 @@ class CreateOrderItem
 
   private
 
-  def initialize(product, order, params)
-    @product = product
+  def initialize(product_id, order, params)
+    @product_id = product_id
     @order = order
     @params = params
   end
 
   def create
+    product = Product.find_by(id: @product_id)
     OrderItem.create!(
-        product_id: @product.id,
+        product_id: product.id,
         order_id: @order.id,
         size: @params[:size],
-        product_name: @product.name,
-        product_description: @product.description,
-        product_author: @product.author
+        product_name: product.name,
+        product_description: product.description,
+        product_author: product.author
     )
   end
 end

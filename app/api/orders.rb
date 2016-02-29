@@ -18,39 +18,38 @@ module Orders
     end
 
     resources :orders do
-      desc 'add item to order'
-      params do
-        requires :product_id, type: Integer
-        requires :size, type: String
-        optional :uuid, type: String
-      end
-      post 'item' do
-        order = find_or_create_order(params.uuid)
-        item = OrderItem.find_by(product_id: params.product_id, order_id: order.id, size: params[:size])
-        if item
-          OrderItemQuantity.new(item).increment
-        else
-          product = Product.find_by(id: params.product_id)
-          CreateOrderItem.new(product, order, params).call
+      resources :item do
+        desc 'add item to order'
+        params do
+          requires :product_id, type: Integer
+          requires :size, type: String
+          requires :quantity, type: Integer
+          optional :uuid, type: String
         end
-        UpdateOrder.new(order).call
-        OrderSerializer.new(order.reload).as_json
-      end
+        post do
+          order = find_or_create_order(params.uuid)
+          item = OrderItem.find_by(product_id: params.product_id, order_id: order.id, size: params[:size])
+          if item
+            OrderItemQuantity.new(item, params.quantity).call
+          else
+            CreateOrderItem.new(params.product_id, order, params).call
+          end
+          UpdateOrder.new(order).call
+          OrderSerializer.new(order.reload).as_json
+        end
 
-      desc 'remove item from order'
-      params do
-        requires :order_item_id, type: Integer
-      end
-      delete 'item' do
-        item = OrderItem.find(params.order_item_id)
-        order = item.order
-        if item
-          item.quantity > 1 ? OrderItemQuantity.new(item).decrement : item.destroy
-        else
-          error!({errors: {base: ['cannot find item']}}, 422)
+        desc 'remove item from order'
+        delete ':id' do
+          item = OrderItem.find_by(id: params.id)
+          if item
+            order = item.order
+            item.destroy
+          else
+            error!({errors: {base: ['cannot find item']}}, 422)
+          end
+          UpdateOrder.new(order).call
+          OrderSerializer.new(order.reload).as_json
         end
-        UpdateOrder.new(order).call
-        OrderSerializer.new(order.reload).as_json
       end
 
       desc 'return payment link to paypal'
