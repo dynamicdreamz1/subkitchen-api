@@ -16,6 +16,7 @@ describe Artists::Api, type: :request do
 
       get "/api/v1/artists/#{artist.id}"
 
+      artist.reload
       expect(response.body).to eq(artist.to_json)
     end
   end
