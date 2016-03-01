@@ -63,8 +63,8 @@ module Accounts
 
       desc 'user verification'
       params do
-        requires :return_path, type: String
-        requires :has_company, type: Boolean
+        optional :return_path, type: String
+        optional :has_company, type: Boolean
         optional :company_name, type: String
         optional :address, type: String
         optional :city, type: String

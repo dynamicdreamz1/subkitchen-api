@@ -1,4 +1,6 @@
 development:
+  paypal_seller: "klara.hirao-facilitator@elpassion.pl"
+  app_host: http://localhost:3000
   frontend_host: http://localhost:4200
 
 test:
