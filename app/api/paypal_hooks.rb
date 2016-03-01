@@ -3,7 +3,6 @@ module PaypalHooks
     params do
       requires :invoice, type: Integer
       requires :payment_status, type: String
-      requires :transaction_id, type: Integer
     end
     post 'payment_notification' do
       payment = Payment.find_by(id: params.invoice)
@@ -15,7 +14,6 @@ module PaypalHooks
     params do
       requires :invoice, type: Integer
       requires :payment_status, type: String
-      requires :transaction_id, type: Integer
     end
     post 'user_verify_notification' do
       payment = Payment.find_by(id: params.invoice)
