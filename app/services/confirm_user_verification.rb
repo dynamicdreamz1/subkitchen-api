@@ -13,7 +13,7 @@ class ConfirmUserVerification
   end
 
   def update_artist
-    payment.update_attributes(status: params.payment_status, transaction_id: params.transaction_id)
+    payment.update_attributes(status: params.payment_status)
     artist = payment.payable
     artist.update_arrtibute(:status, 'verified')
     payment

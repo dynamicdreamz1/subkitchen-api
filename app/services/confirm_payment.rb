@@ -13,7 +13,7 @@ class ConfirmPayment
   end
 
   def update_order
-    payment.update_attributes(status: params.payment_status, transaction_id: params.transaction_id)
+    payment.update_attributes(status: params.payment_status)
     payment.payable.update_arrtibutes(purchased_at: DateTime.now, state: 'inactive')
     payment
   end
