@@ -17,7 +17,7 @@ class PaypalUserVerification
         upload: 1,
         return: Figaro.env.frontend_host+"#{@return_path}",
         invoice: @payment.id,
-        notify_url: Figaro.env.app_host+"/api/v1/user_verify_notifications",
+        notify_url: Figaro.env.app_host+"/api/v1/user_verify_notification",
         item_name: 'user verifiaction',
         amount: 1
     }
