@@ -17,7 +17,7 @@ class PaypalPayment
         upload: 1,
         return: Figaro.env.app_host+"#{@return_path}",
         invoice: @payment.id,
-        notify_url: Figaro.env.app_host+"/payment_notifications"
+        notify_url: Figaro.env.app_host+"/api/v1/payment_notifications"
     }
     @payment.payable.order_items.each_with_index do |item, index|
       values.merge!({
