@@ -5,9 +5,9 @@ class CheckShopBannerSize
 
   private
 
-  def initialize(path, type)
-    @path = path
-    @type = type
+  def initialize(params_image)
+    @path = ActionDispatch::Http::UploadedFile.new(params_image).tempfile.path
+    @type = params_image.type
   end
 
   def check_size

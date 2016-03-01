@@ -110,6 +110,7 @@ describe Products::Api, type: :request do
                                      published: false}
 
           product = Product.first
+          expect(response).to have_http_status(:success)
           serialized_product = ProductSerializer.new(product).as_json
           expect(product.image_id).to be_truthy
           expect(response.body).to eq(serialized_product.to_json)

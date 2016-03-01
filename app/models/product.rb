@@ -4,7 +4,7 @@ class Product < ActiveRecord::Base
   has_many :order_items
   validate :cannot_publish
   after_create :set_price
-  attachment :image, type: :image
+  attachment :image, content_type: ['image/jpeg', 'image/png', 'image/jpg']
   has_many :likes, as: :likeable
 
   default_scope { where(is_deleted: false) }

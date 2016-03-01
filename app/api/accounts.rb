@@ -99,7 +99,7 @@ module Accounts
       post 'profile_image' do
         authenticate!
         image = ActionDispatch::Http::UploadedFile.new(params.image)
-        if CheckProfileImageSize.new(image.tempfile.path, params.image.type).call
+        if CheckProfileImageSize.new(params.image).call
           current_user.update(profile_image: image)
           data = { profile_image_url: current_user.profile_image_url }
           data[:errors] = current_user.errors if current_user.errors.any?
@@ -116,7 +116,7 @@ module Accounts
       post 'shop_banner' do
         authenticate!
         banner = ActionDispatch::Http::UploadedFile.new(params.banner)
-        if CheckShopBannerSize.new(banner.tempfile.path, params.banner.type).call
+        if CheckShopBannerSize.new(params.banner).call
           if current_user.artist
             current_user.update(shop_banner: banner)
             data = { shop_banner_url: current_user.shop_banner_url }

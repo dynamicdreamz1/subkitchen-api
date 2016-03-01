@@ -43,11 +43,17 @@ module Products
         requires :published, type: Boolean
       end
       post do
-        product = CreateProduct.new(current_user, params).call
-        unless product.save
-          status :unprocessable_entity
+        if CheckProductImageSize.new(params.image)
+          product = CreateProduct.new(params, current_user).call
+          if product.valid?
+            product.save
+          else
+            status :unprocessable_entity
+          end
+          ProductSerializer.new(product).as_json
+        else
+          error!({errors: {base: ['image is too small']}}, 422)
         end
-        ProductSerializer.new(product).as_json
       end
 
       desc 'remove product'

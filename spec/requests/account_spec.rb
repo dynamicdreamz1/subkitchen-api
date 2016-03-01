@@ -138,6 +138,7 @@ describe Accounts::Api, type: :request do
         expect(artist.company.company_name).to eq('elpassion')
       end
 
+
     describe 'PROFILE IMAGE' do
       it 'should upload profile image' do
         post '/api/v1/account/profile_image', {image: image}, auth_header_for(user)
