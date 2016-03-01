@@ -4,6 +4,8 @@ class UserPublicSerializer
       image_url: image_url,
       email: user.email }
 
+    data[:company] = user.company if user.artist
+
     data[:errors] = user.errors if user.errors.any?
 
     data.as_json(options)

@@ -1,6 +1,5 @@
 module Accounts
   class Api < Grape::API
-
     desc 'array of countries and their codes'
     get 'iso_countries' do
       IsoCountryCodes.for_select
@@ -64,6 +63,7 @@ module Accounts
 
       desc 'user verification'
       params do
+        requires :return_path, type: String
         requires :has_company, type: Boolean
         optional :company_name, type: String
         optional :address, type: String
@@ -74,26 +74,7 @@ module Accounts
       end
       post 'verification' do
         authenticate!
-        artist = User.find_by(id: current_user.id, artist: true)
-        if params.has_company
-          if artist
-            CompanyAddress.new(artist, params).create_company
-          else
-            error!({errors: {base: ['no artist with given id']}}, 422)
-          end
-        end
-        artist.update_attribute(:has_company, params[:has_company])
-      end
-
-      desc 'return verify user link to paypal'
-      params do
-        requires :return_path, type: String
-      end
-      get 'paypal_verification_url' do
-        authenticate!
-        payment = Payment.create(payable_id: current_user.id, payable_type: current_user.class.name)
-        url = PaypalUserVerification.new(payment, params.return_path).call
-        { url: url }
+        VerifyArtist.new(current_user, params).call || error!(current_user, :unprocessable_entity)
       end
 
       desc 'update company address'
@@ -107,11 +88,8 @@ module Accounts
       end
       post 'company_address' do
         authenticate!
-        if current_user.company
-          CompanyAddress.new(current_user, params).create_company
-        else
-          CompanyAddress.new(current_user, params).update_company
-        end
+        CompanyAddress.new(current_user, params).call
+        current_user
       end
     end
   end
