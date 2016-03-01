@@ -90,23 +90,30 @@ describe Accounts::Api, type: :request do
             city: 'Warszawa',
             zip: '01-111',
             region: 'mazowieckie',
-            country: 'PL'
+            country: 'PL',
+            return_path: ''
         }
 
         post '/api/v1/account/verification', params, auth_header_for(artist)
 
         artist.reload
+        payment = Payment.find_by!(payable: artist)
+        expect(response).to have_http_status(:success)
+        expect(json['url']).to eq(PaypalUserVerification.new(payment, '').call)
         expect(artist.company).to be_a Company
         expect(artist.has_company).to be_truthy
         expect(artist.company.company_name).to eq('elpassion')
       end
 
       it 'should not add company' do
-        params = { has_company: false }
+        params = { has_company: false, return_path: '' }
 
         post '/api/v1/account/verification', params, auth_header_for(artist)
 
         artist.reload
+        payment = Payment.find_by!(payable: artist)
+        expect(response).to have_http_status(:success)
+        expect(json['url']).to eq(PaypalUserVerification.new(payment, '').call)
         expect(artist.company).to be_nil
         expect(artist.company).to be_falsey
       end
@@ -127,17 +134,9 @@ describe Accounts::Api, type: :request do
         post '/api/v1/account/company_address', params, auth_header_for(artist)
 
         artist.reload
+        expect(response).to have_http_status(:success)
         expect(artist.company.company_name).to eq('elpassion')
       end
-
-    describe 'PAYPAL' do
-      it 'should return verification link to paypal' do
-        get '/api/v1/account/paypal_verification_url', { return_path: '' }, auth_header_for(user)
-
-        payment = Payment.find_by(payable_id: user.id, payable_type: user.class.name)
-        expect(json['url']).to eq(PaypalUserVerification.new(payment, '').call)
-      end
-    end
 
     describe 'PROFILE IMAGE' do
       it 'should upload profile image' do

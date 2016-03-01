@@ -15,7 +15,7 @@ class PaypalUserVerification
         business: Figaro.env.paypal_seller,
         cmd: '_xclick',
         upload: 1,
-        return: Figaro.env.app_host+"#{@return_path}",
+        return: Figaro.env.frontend_host+"#{@return_path}",
         invoice: @payment.id,
         notify_url: Figaro.env.app_host+"/user_verify_notifications",
         item_name: 'user verifiaction',
