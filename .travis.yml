@@ -21,3 +21,5 @@ deploy:
   on:
     repo: elpassion/subkitchen-api
   run: "rake db:migrate"
+services:
+  - redis-server
