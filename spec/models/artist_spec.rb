@@ -71,4 +71,33 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  context 'published_counter' do
+    let(:product){create(:product, author: artist)}
+    let(:order){create(:order)}
+
+    it 'should increment published counter' do
+      expect do
+        PublishProduct.new(product, artist).call
+        PublishedCounter.drain
+      end.to change{artist.published_count}.by(1)
+    end
+
+    it 'should set weekly percentage' do
+      PublishProduct.new(product, artist).call
+      PublishedCounter.drain
+
+      expect(artist.published_weekly).to eq(100)
+    end
+
+    it 'should decrement published counter' do
+      PublishProduct.new(product, artist).call
+      PublishedCounter.drain
+
+      expect do
+        DeleteProduct.new(product).call
+        PublishedCounter.drain
+      end.to change{artist.published_count}.by(-1)
+    end
+  end
 end

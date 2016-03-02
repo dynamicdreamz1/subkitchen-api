@@ -3,10 +3,6 @@ module Products
     resources :products do
 
       helpers do
-        def is_author?(current_user, product)
-          product.author == current_user
-        end
-
         def author?(current_user, product)
           if current_user
             current_user == product.author
@@ -74,13 +70,12 @@ module Products
       post 'publish' do
         authenticate!
         product = Product.find_by(id: params.product_id)
-        if product && is_author?(current_user, product)
-          product.published = true
-          product.published_at = DateTime.now
-          unless product.save
-            status :unprocessable_entity
+        if product
+          if PublishProduct.new(product, current_user).call
+            ProductSerializer.new(product).as_json
+          else
+            error!({errors: {base: ['cannot publish not own product']}}, 422)
           end
-          ProductSerializer.new(product).as_json
         else
           error!({errors: {base: ['no product with given id or user is not an author']}}, 422)
         end

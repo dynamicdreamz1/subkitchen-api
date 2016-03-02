@@ -184,7 +184,7 @@ describe Products::Api, type: :request do
           post '/api/v1/products/publish', { product_id: product.id }, auth_header_for(artist)
 
           expect(response).to have_http_status(:unprocessable_entity)
-          expect(json['errors']).to eq({'base'=>['no product with given id or user is not an author']})
+          expect(json['errors']).to eq({'base'=>['cannot publish not own product']})
         end
       end
 

@@ -76,6 +76,18 @@ class User < ActiveRecord::Base
     count
   end
 
+  def published_count
+    $redis.get("user_#{id}_published_counter").to_i
+  end
+
+  def published_weekly
+    $redis.get("user_#{id}_published_weekly").to_i
+  end
+
+  def published_count_weekly
+    products.select{ |product| product.published_at > 1.week.ago }.count
+  end
+
   private
 
   def validate_email?
