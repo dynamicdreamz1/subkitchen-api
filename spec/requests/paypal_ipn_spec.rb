@@ -65,23 +65,6 @@ describe PaypalHooks::Api, type: :request do
       expect(order.purchased).to be_truthy
     end
 
-    it 'should change order state' do
-      post '/api/v1/payment_notification',  { "mc_gross"=>"1.00", "invoice"=>order_payment.id, "payment_status"=>"Completed" }
-
-      order.reload
-      order_payment.reload
-      expect(order.state).to eq('inactive')
-    end
-
-    it 'should change order item purchased' do
-      item = create(:order_item, order: order)
-      post '/api/v1/payment_notification',  { "mc_gross"=>"1.00", "invoice"=>order_payment.id, "payment_status"=>"Completed" }
-
-      order.reload
-      order_payment.reload
-      item.reload
-      expect(item.purchased).to be_truthy
-    end
 
     it 'should change payment status to denied' do
       post '/api/v1/payment_notification',  { "mc_gross"=>"1.00", "invoice"=>order_payment.id, "payment_status"=>"Denied" }

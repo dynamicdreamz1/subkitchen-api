@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301104034) do
+ActiveRecord::Schema.define(version: 20160302154226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,22 +37,6 @@ ActiveRecord::Schema.define(version: 20160301104034) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "likes", force: :cascade do |t|
     t.integer  "likeable_id"
@@ -97,6 +81,7 @@ ActiveRecord::Schema.define(version: 20160301104034) do
     t.decimal  "tax",           precision: 4, scale: 2
     t.decimal  "tax_cost",      precision: 8, scale: 2, default: 0.0
     t.decimal  "total_cost",    precision: 8, scale: 2, default: 0.0
+    t.boolean  "purchased",                             default: false
   end
 
   create_table "payments", force: :cascade do |t|
@@ -132,6 +117,7 @@ ActiveRecord::Schema.define(version: 20160301104034) do
     t.string   "image_id"
     t.decimal  "price",               precision: 8, scale: 2
     t.boolean  "published",                                   default: false
+    t.datetime "published_at"
   end
 
   create_table "users", force: :cascade do |t|
