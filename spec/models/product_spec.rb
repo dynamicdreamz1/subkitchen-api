@@ -21,4 +21,8 @@ RSpec.describe Product, type: :model do
     @product_template.save
     expect(@product.price).to eq(price)
   end
+
+  it 'should count sales' do
+
+  end
 end

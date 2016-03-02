@@ -8,6 +8,8 @@ class Product < ActiveRecord::Base
   has_many :likes, as: :likeable
 
   default_scope { where(is_deleted: false) }
+  scope :published, -> (user) { where('published = ? AND user_id = ?', true, user.id )}
+  scope :published_weekly, -> (user) { where('published = ? AND user_id = ? AND published_at < ?', true, user.id, 1.week.ago )}
 
   def cannot_publish
     if published && (!author || !author.artist)
