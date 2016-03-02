@@ -33,7 +33,6 @@ class User < ActiveRecord::Base
     where(artist: true)
   }
 
-
   def artist_verify
     self.status = :pending if artist
   end

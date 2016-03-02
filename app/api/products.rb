@@ -76,6 +76,7 @@ module Products
         product = Product.find_by(id: params.product_id)
         if product && is_author?(current_user, product)
           product.published = true
+          product.published_at = DateTime.now
           unless product.save
             status :unprocessable_entity
           end
