@@ -8,6 +8,8 @@ module PaypalHooks
       payment = Payment.find_by(id: params.invoice)
       if params.payment_status == 'Completed'
         ConfirmPayment.new(payment, params).call
+      else
+        payment.update(status: 'Denied')
       end
     end
 
@@ -19,6 +21,8 @@ module PaypalHooks
       payment = Payment.find_by(id: params.invoice)
       if params.payment_status == 'Completed'
         ConfirmUserVerification.new(payment, params).call
+      else
+        payment.update(status: 'Denied')
       end
     end
   end
