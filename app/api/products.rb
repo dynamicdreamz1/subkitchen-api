@@ -93,12 +93,10 @@ module Products
       post 'like' do
         authenticate!
         product = Product.find_by(id: params.product_id)
+        LikeProduct.new(product, current_user).call
         if product
           if !author?(current_user, product)
-            product.likes.new(user_id: current_user.id)
-            if product.valid?
-              product.save
-            else
+            unless LikeProduct.new(product, current_user).call
               error!({errors: {base: ['cannot like product more than once']}}, 422)
             end
           else
@@ -118,10 +116,7 @@ module Products
         product = Product.find_by(id: params.product_id)
         if product
           if product.likes.empty?
-            like = product.likes.find_by(user_id: current_user.id)
-            if like
-              like.destroy
-            else
+            unless UnlikeProduct.new(product, current_user).call
               error!({errors: {base: ['no like with given user id']}}, 422)
             end
           else

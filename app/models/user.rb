@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_one :payment, as: :payable
   has_one :company
   has_many :likes
+  has_many :order_items, through: :products
 
   attachment :profile_image, content_type: ['image/jpeg', 'image/png', 'image/jpg']
   attachment :shop_banner, content_type: ['image/jpeg', 'image/png', 'image/jpg']
@@ -43,6 +44,36 @@ class User < ActiveRecord::Base
 
   def sales_count
     $redis.get("user_#{id}_sales_counter").to_i
+  end
+
+  def sales_weekly
+    $redis.get("user_#{id}_sales_weekly").to_i
+  end
+
+  def sales_count_weekly
+    count = 0
+    order_items.each do |item|
+      if item.order.purchased_at > 1.week.ago
+        count += item.quantity
+      end
+    end
+    count
+  end
+
+  def likes_count
+    $redis.get("user_#{id}_likes_counter").to_i
+  end
+
+  def likes_weekly
+    $redis.get("user_#{id}_likes_weekly").to_i
+  end
+
+  def likes_count_weekly
+    count = 0
+    products.each do |product|
+      count += Like.this_week(product.id)
+    end
+    count
   end
 
   private
