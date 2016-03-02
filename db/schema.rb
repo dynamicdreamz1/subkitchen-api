@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302101835) do
+ActiveRecord::Schema.define(version: 20160301104034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,14 +68,13 @@ ActiveRecord::Schema.define(version: 20160302101835) do
     t.integer  "order_id"
     t.integer  "product_id"
     t.integer  "quantity",                                    default: 1
-    t.datetime "created_at",                                                  null: false
-    t.datetime "updated_at",                                                  null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.decimal  "price",               precision: 8, scale: 2
     t.string   "size"
     t.string   "product_name"
     t.string   "product_description"
     t.string   "product_author"
-    t.boolean  "purchased",                                   default: false
   end
 
   create_table "orders", force: :cascade do |t|
@@ -98,7 +97,6 @@ ActiveRecord::Schema.define(version: 20160302101835) do
     t.decimal  "tax",           precision: 4, scale: 2
     t.decimal  "tax_cost",      precision: 8, scale: 2, default: 0.0
     t.decimal  "total_cost",    precision: 8, scale: 2, default: 0.0
-    t.boolean  "purchased",                             default: false
   end
 
   create_table "payments", force: :cascade do |t|
@@ -134,7 +132,6 @@ ActiveRecord::Schema.define(version: 20160302101835) do
     t.string   "image_id"
     t.decimal  "price",               precision: 8, scale: 2
     t.boolean  "published",                                   default: false
-    t.datetime "published_at"
   end
 
   create_table "users", force: :cascade do |t|

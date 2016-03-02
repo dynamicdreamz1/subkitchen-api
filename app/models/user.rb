@@ -41,6 +41,10 @@ class User < ActiveRecord::Base
     UserPublicSerializer.new(self).as_json(params).merge(auth_token: auth_token)
   end
 
+  def sales_count
+    $redis.get("user_#{id}_sales_counter").to_i
+  end
+
   private
 
   def validate_email?

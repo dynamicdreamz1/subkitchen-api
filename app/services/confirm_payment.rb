@@ -15,8 +15,8 @@ class ConfirmPayment
   def update_order
     payment.update(status: params.payment_status)
     order = payment.payable
-    order.update(purchased_at: DateTime.now, state: 'inactive', purchased: true)
-    order.order_items.each{ |item| item.update(purchased: true) }
+    order.update(purchased_at: DateTime.now, state: 'inactive')
+    SalesCounter.perform_async(order.id)
     payment
   end
 end
