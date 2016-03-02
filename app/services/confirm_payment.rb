@@ -14,7 +14,9 @@ class ConfirmPayment
 
   def update_order
     payment.update_attributes(status: params.payment_status)
-    payment.payable.update_arrtibutes(purchased_at: DateTime.now, state: 'inactive')
+    order = payment.payable
+    order.update_attributes(purchased_at: DateTime.now, state: 'inactive')
+    SalesCounter.perform_async(order.id)
     payment
   end
 end
