@@ -25,3 +25,4 @@
 .idea/
 config/database.yml
 .byebug_history
+dump.rdb

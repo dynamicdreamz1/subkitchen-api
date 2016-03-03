@@ -65,6 +65,7 @@ module Accounts
       params do
         optional :return_path, type: String
         optional :has_company, type: Boolean
+        optional :handle, type: String
         optional :company_name, type: String
         optional :address, type: String
         optional :city, type: String
