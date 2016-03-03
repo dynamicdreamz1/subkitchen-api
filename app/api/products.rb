@@ -13,10 +13,12 @@ module Products
       end
 
       desc 'return all products'
+      params do
+        optional :page, type: Integer, default: 1
+        optional :per_page, type: Integer, default: 30
+      end
       get do
-        page = params.page.to_i != 0? params.page : 1
-        per_page = params.per_page.to_i != 0? params.per_page : 30
-        products = Product.page(page).per(per_page)
+        products = Product.page(params.page).per(params.per_page)
         ProductListSerializer.new(products).as_json
       end
 

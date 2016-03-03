@@ -37,10 +37,11 @@ Config.create(name: 'tax', value: '7.0')
 Config.create(name: 'shipping_info', value: shipping_info)
 Config.create(name: 'shipping_cost', value: '6.0')
 
-template1 = ProductTemplate.create(price: 19.99, size: %w(s m l xl), product_type: 'leggins', size_chart: File.new(size_chart))
-template2 = ProductTemplate.create(price: 29.99, size: %w(s m l xl), product_type: 't_shirt', size_chart: File.new(size_chart))
-template3 = ProductTemplate.create(price: 29.99, size: %w(s m l xl), product_type: 'blouse', size_chart: File.new(size_chart))
-template4 = ProductTemplate.create(price: 39.99, size: %w(s m l xl), product_type: 'sweater', size_chart: File.new(size_chart))
+template1 = ProductTemplate.create(price: 69.95, profit: 25.00, size: %w(s m l xl), product_type: 'hoodie', size_chart: File.new(size_chart))
+template2 = ProductTemplate.create(price: 65.00, profit: 25.00, size: %w(s m l xl), product_type: 'sweatshirt', size_chart: File.new(size_chart))
+template3 = ProductTemplate.create(price: 39.95, profit: 15.00, size: %w(s m l xl), product_type: 'tee', size_chart: File.new(size_chart))
+template4 = ProductTemplate.create(price: 35.00, profit: 15.00, size: %w(s m l xl), product_type: 'tank_top', size_chart: File.new(size_chart))
+template5 = ProductTemplate.create(price: 79.95, profit: 30.00, size: %w(s m l xl), product_type: 'yoga_pants', size_chart: File.new(size_chart))
 
 u1 = User.create(name: "user1", email: "t1@example.com", password: "password", password_confirmation: "password", artist: true)
 u2 = User.create(name: "user2", email: "t2@example.com", password: "password", password_confirmation: "password", artist: true)
@@ -59,6 +60,7 @@ EOT
   Product.create(name: Faker::Commerce.product_name, description:  description, author: u2, product_template: template4)
   Product.create(name: Faker::Commerce.product_name, description:  description, author: u3, product_template: template3)
   Product.create(name: Faker::Commerce.product_name, description:  description, author: u4, product_template: template1)
+  Product.create(name: Faker::Commerce.product_name, description:  description, author: u4, product_template: template5)
 end
 
 100.times do |n|
