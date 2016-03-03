@@ -3,10 +3,9 @@ class PublishedCounter
 
   def perform(product_id, quantity)
     user = get_user(product_id)
-    count = get_counter(user)
-    if (count + quantity) >= 0
+    if (get_counter(user) + quantity) >= 0
       increment(quantity, user)
-      percentage = calculate_percentage(user, count, quantity)
+      percentage = calculate_percentage(user)
       set_weekly(user, percentage)
     end
   end
@@ -21,8 +20,9 @@ class PublishedCounter
     $redis.set("user_#{user.id}_published_weekly", percentage)
   end
 
-  def calculate_percentage(user, count, quantity)
-    count + quantity == 0 ? 0 : (user.published_count_weekly * 100) / (count + quantity)
+  def calculate_percentage(user)
+    count = get_counter(user)
+    count == 0 ? 0 : ((user.published_count_weekly * 100) / count)
   end
 
   def get_counter(user)
@@ -30,7 +30,6 @@ class PublishedCounter
   end
 
   def get_user(product_id)
-    product = Product.find_by(id: product_id)
-    product.author
+    Product.find_by(id: product_id).author
   end
 end
