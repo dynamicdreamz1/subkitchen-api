@@ -1,6 +1,6 @@
 describe Accounts::Api, type: :request do
   let(:user){ create(:user) }
-  let(:artist){ create(:user, artist: true) }
+  let(:artist){ create(:user, artist: true, handle: 'artist') }
   let(:image){ fixture_file_upload(Rails.root.join('app/assets/images/sizechart-hoodie.jpg'), 'image/jpg') }
   let(:invalid_image){ fixture_file_upload(Rails.root.join('app/assets/images/sample.txt'), 'txt') }
   let(:too_small_image){ fixture_file_upload(Rails.root.join('app/assets/images/image.png'), 'image/png') }

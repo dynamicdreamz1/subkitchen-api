@@ -3,6 +3,7 @@ class UserPublicSerializer
     data = { name: user.name,
       image_url: (user.profile_image_url ? user.profile_image_url : image_url),
       artist: user.artist,
+      handle: user.handle,
       status: user.status,
       has_company: user.has_company,
       company: user.company,
