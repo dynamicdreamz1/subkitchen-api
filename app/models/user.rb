@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   attachment :shop_banner, content_type: ['image/jpeg', 'image/png', 'image/jpg']
 
   validates :email, presence: true, email: true, uniqueness: true, if: :validate_email?
-  validates :handle, uniqueness: { allow_nil: true, allow_empty: true }, presence: { if: :artist }
+  validates :handle, uniqueness: { allow_nil: true, allow_blank: true }, presence: { if: :artist }
   validates :name, presence: true, uniqueness: true
 
   scope :with_reminder_token, lambda { |token|

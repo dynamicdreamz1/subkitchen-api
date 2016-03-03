@@ -85,6 +85,7 @@ describe Accounts::Api, type: :request do
       it 'should add company address' do
         params = {
             has_company: true,
+            handle: 'asd',
             company_name: 'elpassion',
             address: 'plac Europejski 6',
             city: 'Warszawa',
@@ -106,8 +107,7 @@ describe Accounts::Api, type: :request do
       end
 
       it 'should not add company' do
-        params = { has_company: false, return_path: '' }
-
+        params = { has_company: false, return_path: '', handle: 'asd' }
         post '/api/v1/account/verification', params, auth_header_for(artist)
 
         artist.reload
