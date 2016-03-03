@@ -27,6 +27,7 @@ class Api < Grape::API
   mount Artists::Api
   mount Orders::Api
   mount Accounts::Api
+  mount AccountsArtist::Api
   mount PaypalHooks::Api
 
 

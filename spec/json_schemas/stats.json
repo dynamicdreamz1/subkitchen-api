@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "total_sales": {"type": "number"},
+    "total_sales_percentage": {"type": "number"},
+    "earnings": {"type": "number"},
+    "earnings_percentage": {"type": "number"},
+    "published_designs": {"type": "number"},
+    "published_designs_percentage": {"type": "number"},
+    "total_likes": {"type": "number"},
+    "total_likes_percentage": {"type": "number"}
+  },
+  "required": [
+    "total_sales",
+    "total_sales_percentage",
+    "earnings",
+    "earnings_percentage",
+    "published_designs",
+    "published_designs_percentage",
+    "total_likes",
+    "total_likes_percentage"
+  ]
+}
