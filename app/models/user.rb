@@ -88,6 +88,24 @@ class User < ActiveRecord::Base
     products.select{ |product| product.published_at > 1.week.ago }.count
   end
 
+  def earnings_count
+    $redis.get("user_#{id}_earnings_counter").to_i
+  end
+
+  def earnings_weekly
+    $redis.get("user_#{id}_earnings_weekly").to_i
+  end
+
+  def earnings_count_weekly
+    count = 0
+    order_items.each do |item|
+      if item.order.purchased_at > 1.week.ago
+        count += item.quantity * item.product.product_template.profit
+      end
+    end
+    count
+  end
+
   private
 
   def validate_email?

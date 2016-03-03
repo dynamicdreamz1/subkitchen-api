@@ -16,7 +16,7 @@ class ConfirmPayment
     payment.update(status: params.payment_status)
     order = payment.payable
     order.update(purchased_at: DateTime.now, purchased: true)
-    SalesCounter.perform_async(order.id)
+    SalesAndEarningsCounter.perform_async(order.id)
     payment
   end
 end

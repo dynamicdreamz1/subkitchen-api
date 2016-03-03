@@ -19,7 +19,7 @@ RSpec.describe User, type: :model do
       payment = create(:payment, payable: order)
       expect do
         ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
-        SalesCounter.drain
+        SalesAndEarningsCounter.drain
       end.to change{artist.sales_count}.by(3)
     end
 
@@ -27,7 +27,7 @@ RSpec.describe User, type: :model do
       OrderItem.create!(order: order, product: product, quantity: 3)
       payment = create(:payment, payable: order)
       ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
-      SalesCounter.drain
+      SalesAndEarningsCounter.drain
       expect(artist.sales_weekly).to eq(100)
     end
   end
@@ -98,6 +98,29 @@ RSpec.describe User, type: :model do
         DeleteProduct.new(product).call
         PublishedCounter.drain
       end.to change{artist.published_count}.by(-1)
+    end
+  end
+
+  context 'earnings_counter' do
+    let(:product){create(:product, author: artist)}
+    let(:order){create(:order)}
+
+    it 'should increment earnings counter after buying an item' do
+      OrderItem.create!(order: order, product: product, quantity: 3)
+      payment = create(:payment, payable: order)
+      profit = product.product_template.profit * 3
+      expect do
+        ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
+        SalesAndEarningsCounter.drain
+      end.to change{artist.earnings_count}.by(profit)
+    end
+
+    it 'should set weekly percentage after buying an item' do
+      OrderItem.create!(order: order, product: product, quantity: 3)
+      payment = create(:payment, payable: order)
+      ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
+      SalesAndEarningsCounter.drain
+      expect(artist.earnings_weekly).to eq(100)
     end
   end
 end

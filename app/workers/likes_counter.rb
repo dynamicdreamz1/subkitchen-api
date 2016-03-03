@@ -3,17 +3,16 @@ class LikesCounter
 
   def perform(like_id, quantity)
     user = get_user(like_id)
-    count = get_counter(user)
-    if (count + quantity) >= 0
-      increment(quantity, user)
-      percentage = calculate_percentage(user, count, quantity)
+    if (get_counter(user) + quantity) >= 0
+      increment(user, quantity)
+      percentage = calculate_percentage(user)
       set_weekly(user, percentage)
     end
   end
 
   private
 
-  def increment(quantity, user)
+  def increment(user, quantity)
     $redis.incrby("user_#{user.id}_likes_counter", quantity)
   end
 
@@ -21,8 +20,9 @@ class LikesCounter
     $redis.set("user_#{user.id}_likes_weekly", percentage)
   end
 
-  def calculate_percentage(user, count, quantity)
-    count + quantity == 0 ? 0 : (user.likes_count_weekly * 100) / (count + quantity)
+  def calculate_percentage(user)
+    count = get_counter(user)
+    count == 0 ? 0 : ((user.likes_count_weekly * 100) / count)
   end
 
   def get_counter(user)
