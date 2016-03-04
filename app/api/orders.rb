@@ -4,7 +4,7 @@ module Orders
       def find_or_create_order(uuid)
         if uuid.blank?
           if current_user
-            Order.find_or_create_by(user_id: current_user.id)
+            Order.find_or_create_by(user_id: current_user.id, active: true)
           else
             Order.create
           end

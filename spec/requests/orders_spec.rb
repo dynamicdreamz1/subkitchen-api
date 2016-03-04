@@ -21,7 +21,7 @@ describe Products::Api, type: :request do
       it 'should add item to order' do
         post '/api/v1/orders/item', { product_id: product.id, size: 's', quantity: 1 }, auth_header_for(user)
 
-        order = Order.find_by(user_id: user.id, state: :active)
+        order = Order.find_by(user_id: user.id, active: true)
         expect(order).not_to be_nil
         expect(order.order_items.size).to eq(1)
         expect(response).to match_response_schema('order')
@@ -33,7 +33,7 @@ describe Products::Api, type: :request do
 
         post '/api/v1/orders/item', { product_id: product.id, size: 'm', quantity: 1 }, auth_header_for(user)
 
-        order = Order.find_by(user_id: user.id, state: :active)
+        order = Order.find_by(user_id: user.id, active: true)
         expect(order.order_items.first.quantity).to eq(2)
         expect(response).to match_response_schema('order')
       end
@@ -44,7 +44,7 @@ describe Products::Api, type: :request do
 
         post '/api/v1/orders/item', { product_id: product.id, size: 's', quantity: 1 }, auth_header_for(user)
 
-        order = Order.find_by(user_id: user.id, state: :active)
+        order = Order.find_by(user_id: user.id, active: true)
         expect(order.order_items.first.quantity).to eq(1)
         expect(order.order_items.size).to eq(2)
         expect(response).to match_response_schema('order')

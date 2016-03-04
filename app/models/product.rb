@@ -7,6 +7,9 @@ class Product < ActiveRecord::Base
   attachment :image, content_type: ['image/jpeg', 'image/png', 'image/jpg']
   has_many :likes, as: :likeable
 
+  attachment :design
+  after_update :check_items_if_ready
+  has_many :orders, through: :order_items
   default_scope { where(is_deleted: false) }
   scope :published, -> (user) { where('published = ? AND user_id = ?', true, user.id )}
   scope :published_weekly, -> (user) { where('published = ? AND user_id = ? AND published_at < ?', true, user.id, 1.week.ago )}
@@ -14,6 +17,17 @@ class Product < ActiveRecord::Base
   def cannot_publish
     if published && (!author || !author.artist)
       errors.add(:published, "can't be true when you're not an artist")
+    end
+  end
+
+  def check_items_if_ready
+    if design_id_changed? && design_id && design_id_was.nil?
+      orders = self.orders.where(order_status: 'processing').distinct
+      orders.each do |order|
+        if CheckOrderIfReady.new(order).call
+          SendOrder.new(order).call
+        end
+      end
     end
   end
 

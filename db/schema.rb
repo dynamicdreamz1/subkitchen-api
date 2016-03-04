@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160303104046) do
+ActiveRecord::Schema.define(version: 20160304150329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,7 +63,6 @@ ActiveRecord::Schema.define(version: 20160303104046) do
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "state",                                 default: "active"
     t.datetime "created_at",                                                           null: false
     t.datetime "updated_at",                                                           null: false
     t.datetime "purchased_at"
@@ -82,14 +81,16 @@ ActiveRecord::Schema.define(version: 20160303104046) do
     t.decimal  "tax_cost",      precision: 8, scale: 2, default: 0.0
     t.decimal  "total_cost",    precision: 8, scale: 2, default: 0.0
     t.boolean  "purchased",                             default: false
+    t.boolean  "active",                                default: true
+    t.string   "order_status",                          default: "creating"
   end
 
   create_table "payments", force: :cascade do |t|
     t.integer  "payable_id"
     t.string   "payable_type"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.string   "status",       default: "pending"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.string   "payment_status", default: "pending"
   end
 
   add_index "payments", ["payable_id", "payable_type"], name: "index_payments_on_payable_id_and_payable_type", using: :btree
@@ -119,6 +120,7 @@ ActiveRecord::Schema.define(version: 20160303104046) do
     t.decimal  "price",               precision: 8, scale: 2
     t.boolean  "published",                                   default: false
     t.datetime "published_at"
+    t.string   "design_id"
   end
 
   create_table "users", force: :cascade do |t|

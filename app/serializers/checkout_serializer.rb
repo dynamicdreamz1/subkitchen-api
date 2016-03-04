@@ -2,7 +2,7 @@ class CheckoutSerializer
   def as_json(options={})
     data = { order:
                  { uuid: order.uuid,
-                   status: order.status,
+                   status: order.order_status,
                    subtotal: order.subtotal_cost,
                    shipping_cost: order.shipping_cost,
                    tax: order.tax,

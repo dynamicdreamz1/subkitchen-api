@@ -13,7 +13,7 @@ class ConfirmUserVerification
   end
 
   def update_artist
-    payment.update(status: 'Completed')
+    payment.update(payment_status: 'Completed')
     artist = payment.payable
     artist.update(status: 'verified')
     payment

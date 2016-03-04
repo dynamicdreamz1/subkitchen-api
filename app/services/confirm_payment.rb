@@ -5,18 +5,27 @@ class ConfirmPayment
 
   private
 
-  attr_accessor :payment, :params
+  attr_accessor :payment, :params, :order
 
   def initialize(payment, params)
     @payment = payment
     @params = params
+    @order = payment.payable
   end
 
   def update_order
-    payment.update(status: params.payment_status)
-    order = payment.payable
-    order.update(purchased_at: DateTime.now, purchased: true)
-    SalesAndEarningsCounter.perform_async(order.id)
+    Order.transaction do
+      payment.update(payment_status: 'Completed')
+      if CheckOrderIfReady.new(order).call
+        SendOrder.new(order).call
+      else
+        order.update(order_status: 'processing')
+      end
+      order.update(purchased_at: DateTime.now,
+                   purchased: true,
+                   active: false)
+      SalesAndEarningsCounter.perform_async(order.id)
+    end
     payment
   end
 end

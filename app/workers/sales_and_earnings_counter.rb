@@ -69,6 +69,6 @@ class SalesAndEarningsCounter
 
   def calculate_sales_percentage(user)
     sales = get_sales_counter(user)
-    sales == 0? 0 : (user.sales_count_weekly * 100 / sales)
+    sales == 0 ? 0 : (user.sales_count_weekly * 100 / sales)
   end
 end

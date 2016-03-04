@@ -9,7 +9,7 @@ module PaypalHooks
       if params.payment_status == 'Completed'
         ConfirmPayment.new(payment, params).call
       else
-        payment.update(status: 'Denied')
+        payment.update(payment_status: 'Denied')
       end
     end
 
@@ -22,7 +22,7 @@ module PaypalHooks
       if params.payment_status == 'Completed'
         ConfirmUserVerification.new(payment, params).call
       else
-        payment.update(status: 'Denied')
+        payment.update(payment_status: 'Denied')
       end
     end
   end

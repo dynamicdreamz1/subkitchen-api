@@ -5,7 +5,7 @@
       "type": "object",
       "properties": {
         "uuid": {"type": "string"},
-        "status": {"type": "null"},
+        "status": {"type": "string"},
         "subtotal": {"type": "string"},
         "shipping_cost": {"type": "string"},
         "tax": {"type": "string"},
