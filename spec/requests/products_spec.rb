@@ -113,6 +113,10 @@ describe Products::Api, type: :request do
           @p1 = create(:product, name: 'AAA', created_at: 1.week.ago, product_template: create(:product_template, price: 100, product_type: 'tee'))
           @p2 = create(:product, name: 'BBB', created_at: 2.weeks.ago, product_template: create(:product_template, price: 200, product_type: 'hoodie'))
           @p3 = create(:product, name: 'CCC', created_at: 3.weeks.ago, product_template: create(:product_template, price: 300, product_type: 'yoga_pants'))
+          @p1.tag_list.add(['cats', 'space'])
+          @p1.save
+          @p3.tag_list.add(['music'])
+          @p3.save
         end
 
         it 'should filter products with product type' do
@@ -141,10 +145,17 @@ describe Products::Api, type: :request do
           serialized_products = ProductListSerializer.new(products).as_json
           expect(response.body).to eq(serialized_products.to_json)
         end
+
+        it 'should filter products with tags' do
+          get '/api/v1/products', {with_tags: ['cats', 'music']}
+
+          products = Product.sorted_by('created_at_desc').where(id: [@p1.id, @p3.id])
+          products = products.page(1).per(3)
+          serialized_products = ProductListSerializer.new(products).as_json
+          expect(response.body).to eq(serialized_products.to_json)
+        end
       end
     end
-
-
 
     describe 'SHOW product' do
       it 'should return product' do
@@ -165,6 +176,7 @@ describe Products::Api, type: :request do
                                      product_template_id: product_template.id,
                                      description: 'description',
                                      image: image,
+                                     tags: ['cats'],
                                      published: true}, auth_header_for(artist)
 
           product = Product.first
@@ -181,6 +193,7 @@ describe Products::Api, type: :request do
                                      product_template_id: product_template.id,
                                      description: 'description',
                                      image: image,
+                                     tags: ['cats'],
                                      published: false}, auth_header_for(user)
 
           product = Product.first
@@ -195,6 +208,7 @@ describe Products::Api, type: :request do
                                      product_template_id: product_template.id,
                                      description: 'description',
                                      image: image,
+                                     tags: ['cats'],
                                      published: true}, auth_header_for(user)
 
           product = Product.first
@@ -210,6 +224,7 @@ describe Products::Api, type: :request do
                                      product_template_id: product_template.id,
                                      description: 'description',
                                      image: image,
+                                     tags: ['cats'],
                                      published: false}
 
           product = Product.first
@@ -225,6 +240,7 @@ describe Products::Api, type: :request do
                                      product_template_id: product_template.id,
                                      description: 'description',
                                      image: image,
+                                     tags: ['cats'],
                                      published: true}
 
           product = Product.first

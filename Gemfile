@@ -44,6 +44,7 @@ gem 'sidekiq'
 gem 'redis'
 gem 'connection_pool'
 gem 'filterrific'
+gem 'acts-as-taggable-on', '~> 3.4'
 
 group :production do
   gem 'rails_12factor'

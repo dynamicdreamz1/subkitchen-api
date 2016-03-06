@@ -11,15 +11,18 @@ class CreateProduct
   end
 
   def create_product
-    product = Product.new(name: @params.name,
-                product_template_id: @params.product_template_id,
-                description: @params.description,
-                image: image,
-                published: @params.published,
-                published_at: (@params.published ? DateTime.now : nil)
-    )
-    product.user_id = @user.id if @user
-    product
+    User.transaction do
+      product = Product.new(name: @params.name,
+                  product_template_id: @params.product_template_id,
+                  description: @params.description,
+                  image: image,
+                  published: @params.published,
+                  published_at: (@params.published ? DateTime.now : nil)
+      )
+      product.tag_list.add(@params.tags)
+      product.user_id = @user.id if @user
+      product
+    end
   end
 
   def image

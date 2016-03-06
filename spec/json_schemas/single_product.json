@@ -12,6 +12,8 @@
         "description": {"type": "string"},
         "name": {"type": "string"},
         "likes": {"type": "integer"},
+        "product_type": {"type": "string"},
+        "tags": {"type": "array"},
         "product_image": {"type": "string"},
         "shipping": {"type": "string"},
         "shipping_cost": {"type": "string"},

@@ -15,6 +15,8 @@ class Product < ActiveRecord::Base
   scope :published_weekly, -> (user) { where('published = ? AND user_id = ? AND published_at < ?', true, user.id, 1.week.ago )}
   scope :with_product_type, -> (type) { joins(:product_template).where(product_templates: {product_type: type}) }
   scope :with_price_range, -> (range) { where('price > ? AND price < ?', range[0], range[1]) }
+  scope :with_tags, -> (tags) { tagged_with(tags, any: true) }
+  acts_as_taggable
 
   def cannot_publish
     if published && (!author || !author.artist)
@@ -57,8 +59,7 @@ class Product < ActiveRecord::Base
           :sorted_by,
           :with_price_range,
           :with_product_type,
-          # :search_query,
-          # :with_tags
+          :with_tags
       ]
   )
 end

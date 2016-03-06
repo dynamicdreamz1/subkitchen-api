@@ -19,14 +19,19 @@ module Products
         optional :sorted_by, type: String, default: 'created_at_desc'
         optional :with_product_type, type: Array[String]
         optional :with_price_range, type: Array[Integer]
-        optional :tag_filter, type: String
+        optional :with_tags, type: Array[String]
       end
       get do
         filterrific = Filterrific::ParamSet.new(Product, {sorted_by: params.sorted_by,
                                                 with_price_range: params.with_price_range,
-                                                with_product_type: params.with_product_type})
+                                                with_product_type: params.with_product_type,
+                                                with_tags: params.with_tags})
         products = Product.filterrific_find(filterrific).page(params.page).per(params.per_page)
-        ProductListSerializer.new(products).as_json
+        if products
+          ProductListSerializer.new(products).as_json
+        else
+          error!({errors: {base: ['no products matching given criteria']}}, 422)
+        end
       end
 
       desc 'return product by id'
@@ -46,6 +51,7 @@ module Products
         requires :description, type: String
         requires :image, type: File
         requires :published, type: Boolean
+        requires :tags, type: Array[String]
       end
       post do
         if CheckProductImageSize.new(params.image)
