@@ -1,5 +1,5 @@
 class OrderItem < ActiveRecord::Base
-  belongs_to :product
+  belongs_to :product, counter_cache: true
   belongs_to :order
   after_create :set_price
 

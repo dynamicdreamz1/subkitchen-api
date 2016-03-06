@@ -43,6 +43,7 @@ gem 'faker'
 gem 'sidekiq'
 gem 'redis'
 gem 'connection_pool'
+gem 'filterrific'
 
 group :production do
   gem 'rails_12factor'

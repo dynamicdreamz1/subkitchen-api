@@ -16,9 +16,16 @@ module Products
       params do
         optional :page, type: Integer, default: 1
         optional :per_page, type: Integer, default: 30
+        optional :sorted_by, type: String, default: 'created_at_desc'
+        optional :with_product_type, type: Array[String]
+        optional :with_price_range, type: Array[Integer]
+        optional :tag_filter, type: String
       end
       get do
-        products = Product.page(params.page).per(params.per_page)
+        filterrific = Filterrific::ParamSet.new(Product, {sorted_by: params.sorted_by,
+                                                with_price_range: params.with_price_range,
+                                                with_product_type: params.with_product_type})
+        products = Product.filterrific_find(filterrific).page(params.page).per(params.per_page)
         ProductListSerializer.new(products).as_json
       end
 
