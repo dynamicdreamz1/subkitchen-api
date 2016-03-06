@@ -26,7 +26,7 @@ describe PaypalHooks::Api, type: :request do
       user.reload
       user_payment.reload
 
-      expect(user_payment.payment_status).to eq('Completed')
+      expect(user_payment.payment_status).to eq('completed')
     end
 
     it 'should change payment status to denied' do
@@ -35,7 +35,7 @@ describe PaypalHooks::Api, type: :request do
       user.reload
       user_payment.reload
 
-      expect(user_payment.payment_status).to eq('Denied')
+      expect(user_payment.payment_status).to eq('denied')
     end
 
     it 'should not change artist status' do
@@ -54,7 +54,7 @@ describe PaypalHooks::Api, type: :request do
 
       order.reload
       order_payment.reload
-      expect(order_payment.payment_status).to eq('Completed')
+      expect(order_payment.payment_status).to eq('completed')
     end
 
     it 'should change order purchased' do
@@ -71,7 +71,7 @@ describe PaypalHooks::Api, type: :request do
 
       order.reload
       order_payment.reload
-      expect(order_payment.payment_status).to eq('Denied')
+      expect(order_payment.payment_status).to eq('denied')
     end
 
     it 'should not change order purchased' do

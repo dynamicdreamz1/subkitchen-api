@@ -1,6 +1,6 @@
-class ConfirmUserVerification
+class DenyUserVerification
   def call
-    update_artist
+    deny_verification
   end
 
   private
@@ -12,13 +12,12 @@ class ConfirmUserVerification
     @params = params
   end
 
-  def update_artist
+  def deny_verification
     User.transaction do
-      payment.update(payment_status: 'completed')
+      payment.update(payment_status: 'denied')
       artist = payment.payable
-      artist.update(status: 'verified')
+      artist.update(status: 'unverified')
       payment
     end
   end
 end
-

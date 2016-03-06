@@ -2,10 +2,12 @@ module Artists
   class Api < Grape::API
     resources :artists do
       desc 'return all artists'
-      get '' do
-        page = params[:page].to_i != 0? params[:page] : 1
-        per_page = params[:per_page].to_i != 0? params[:per_page] : 30
-        User.artists.page(page).per(per_page)
+      params do
+        optional :page, type: Integer, default: 1
+        optional :per_page, type: Integer, default: 30
+      end
+      get do
+        User.artists.page(params.page).per(params.per_page)
       end
 
       desc 'return artist by id'

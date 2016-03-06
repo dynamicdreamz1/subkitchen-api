@@ -1,6 +1,8 @@
 module AccountsArtist
   class Api < Grape::API
+
     resource :account do
+
       resource :artist do
 
         desc 'artist stats'
@@ -12,7 +14,6 @@ module AccountsArtist
             error!({errors: {base: ['you are not authorized']}}, 422)
           end
         end
-
       end
     end
   end

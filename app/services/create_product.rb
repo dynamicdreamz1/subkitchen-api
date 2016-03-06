@@ -20,7 +20,7 @@ class CreateProduct
                   published_at: (@params.published ? DateTime.now : nil)
       )
       product.tag_list.add(@params.tags)
-      product.user_id = @user.id if @user
+      product.author_id = @user.id if @user
       product
     end
   end

@@ -1,6 +1,19 @@
 class User < ActiveRecord::Base
+  has_many :products, foreign_key: 'author_id'
+  has_many :orders
+  has_one :payment, as: :payable
+  has_one :company
+  has_many :likes
+  has_many :order_items, through: :products
+
+  validates :email, presence: true, email: true, uniqueness: true, if: :validate_email?
+  validates :handle, uniqueness: { allow_nil: true, allow_blank: true }, presence: { if: :artist }
+  validates :name, presence: true, uniqueness: true
+
   attr_accessor :validate_email
-  after_create :artist_verify
+
+  after_create ChangeStatusIfArtist.new
+  after_update ChangeStatusIfArtist.new, if: :artist_changed?
 
   include SecureToken
   uses_secure_token :auth_token
@@ -8,19 +21,8 @@ class User < ActiveRecord::Base
   uses_secure_token :confirm_token
   has_secure_password
 
-  has_many :products
-  has_many :orders
-  has_one :payment, as: :payable
-  has_one :company
-  has_many :likes
-  has_many :order_items, through: :products
-
-  attachment :profile_image, content_type: ['image/jpeg', 'image/png', 'image/jpg']
-  attachment :shop_banner, content_type: ['image/jpeg', 'image/png', 'image/jpg']
-
-  validates :email, presence: true, email: true, uniqueness: true, if: :validate_email?
-  validates :handle, uniqueness: { allow_nil: true, allow_blank: true }, presence: { if: :artist }
-  validates :name, presence: true, uniqueness: true
+  attachment :profile_image, content_type: %w(image/jpeg image/png image/jpg)
+  attachment :shop_banner, content_type: %w(image/jpeg image/png image/jpg)
 
   scope :with_reminder_token, lambda { |token|
     where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token)
@@ -33,10 +35,6 @@ class User < ActiveRecord::Base
   scope :artists, lambda {
     where(artist: true)
   }
-
-  def artist_verify
-    self.status = :pending if artist
-  end
 
   def as_json(params = {})
     UserPublicSerializer.new(self).as_json(params).merge(auth_token: auth_token)

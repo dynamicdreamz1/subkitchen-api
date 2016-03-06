@@ -161,7 +161,7 @@ describe Products::Api, type: :request do
 
       get '/api/v1/orders/paypal_payment_url', { return_path: '', uuid: order.uuid }
 
-      payment = Payment.find_by(payable_id: order.id, payable_type: order.class.name)
+      payment = Payment.find_by(payable: order)
       expect(json['url']).to eq(PaypalPayment.new(payment, '').call)
       expect(response).to match_response_schema('paypal')
     end

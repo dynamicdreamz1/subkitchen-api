@@ -21,13 +21,12 @@ class Api < Grape::API
       @current_user ||= User.where(auth_token: headers['Auth-Token']).first
     end
   end
-
-  mount Sessions::Api
-  mount Products::Api
-  mount Artists::Api
-  mount Orders::Api
   mount Accounts::Api
   mount AccountsArtist::Api
+  mount Sessions::Api
+  mount Products::Api
+  mount Orders::Api
+  mount Artists::Api
   mount PaypalHooks::Api
 
 

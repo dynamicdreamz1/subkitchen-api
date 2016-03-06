@@ -19,6 +19,7 @@ module Orders
 
     resources :orders do
       resources :item do
+
         desc 'add item to order'
         params do
           requires :product_id, type: Integer
@@ -59,14 +60,12 @@ module Orders
       end
       get 'paypal_payment_url' do
         order = Order.find_by(uuid: params.uuid)
-        payment = Payment.create!(payable_id: order.id, payable_type: order.class.name)
         if order
-          if CheckOrderItems.new(order).call
-            { url: PaypalPayment.new(payment, params.return_path).call }
-          else
+          unless CheckOrderItems.new(order).call
             UpdateOrderItems.new(order).call
             error!({errors: {base: ['some of the items had to be removed because the products does not exist anymore']}}, 422)
           end
+          CheckoutByPayPal.new(order, params).call || error!({errors: {base: ['already paid']}}, 422)
         else
           error!({errors: {base: ['cannot find order']}}, 422)
         end

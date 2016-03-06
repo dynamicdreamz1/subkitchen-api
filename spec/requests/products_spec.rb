@@ -254,7 +254,7 @@ describe Products::Api, type: :request do
     describe 'DELETE product' do
       context 'authorized user' do
         it 'should remove product' do
-          product = create(:product, user_id: user.id)
+          product = create(:product, author: user)
 
           expect do
             delete "/api/v1/products/#{product.id}", {}, auth_header_for(user)
@@ -286,7 +286,7 @@ describe Products::Api, type: :request do
     describe 'PUBLISH product' do
       context 'artist true' do
         it 'should publish product' do
-          product = create(:product, user_id: artist.id)
+          product = create(:product, author: artist)
 
           post '/api/v1/products/publish', { product_id: product.id }, auth_header_for(artist)
 
@@ -298,7 +298,7 @@ describe Products::Api, type: :request do
 
         it 'should not publish when artist is not an author' do
           other_artist = create(:user, artist: true)
-          product = create(:product, user_id: other_artist.id)
+          product = create(:product, author: other_artist)
 
           post '/api/v1/products/publish', { product_id: product.id }, auth_header_for(artist)
 
@@ -309,7 +309,7 @@ describe Products::Api, type: :request do
 
       context 'artist false' do
         it 'should not publish product' do
-          product = create(:product, user_id: user.id)
+          product = create(:product, author: user)
 
           post '/api/v1/products/publish', { product_id: product.id }, auth_header_for(user)
 
@@ -322,7 +322,7 @@ describe Products::Api, type: :request do
     describe 'LIKE product' do
       it 'should like product' do
         other_artist = create(:user, artist: true)
-        product = create(:product, user_id: other_artist.id, published: true)
+        product = create(:product, author: other_artist, published: true)
 
         post '/api/v1/products/like', { product_id: product.id }, auth_header_for(artist)
 
@@ -331,7 +331,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should not like own product' do
-        product = create(:product, user_id: artist.id, published: true)
+        product = create(:product, author: artist, published: true)
 
         post '/api/v1/products/like', { product_id: product.id }, auth_header_for(artist)
 
@@ -342,7 +342,7 @@ describe Products::Api, type: :request do
 
       it 'should not like product twice' do
         other_artist = create(:user, artist: true)
-        product = create(:product, user_id: other_artist.id, published: true)
+        product = create(:product, author: other_artist, published: true)
         create(:like, likeable_id: product.id, likeable_type: product.class.name, user: artist)
 
         post '/api/v1/products/like', { product_id: product.id }, auth_header_for(artist)
