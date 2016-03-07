@@ -6,11 +6,13 @@ class User < ActiveRecord::Base
   has_many :likes
   has_many :order_items, through: :products
 
-  validates :email, presence: true, email: true, uniqueness: true, if: :validate_email?
+  attr_accessor :oauth_registration
+
+  validates :email, presence: true, email: true, uniqueness: true, unless: :oauth_registration?
   validates :handle, uniqueness: { allow_nil: true, allow_blank: true }, presence: { if: :artist }
   validates :name, presence: true, uniqueness: true
+  has_secure_password validations: false, if: :oauth_registration?
 
-  attr_accessor :validate_email
 
   after_create ChangeStatusIfArtist.new
   after_update ChangeStatusIfArtist.new, if: :artist_changed?
@@ -19,7 +21,7 @@ class User < ActiveRecord::Base
   uses_secure_token :auth_token
   uses_secure_token :password_reminder_token
   uses_secure_token :confirm_token
-  has_secure_password
+
 
   attachment :profile_image, content_type: %w(image/jpeg image/png image/jpg)
   attachment :shop_banner, content_type: %w(image/jpeg image/png image/jpg)
@@ -106,7 +108,7 @@ class User < ActiveRecord::Base
 
   private
 
-  def validate_email?
-    @validate_email.nil? ? true : @validate_email
+  def oauth_registration?
+    @oauth_registration.nil? ? false : @oauth_registration
   end
 end
