@@ -11,6 +11,7 @@ Config.destroy_all
 ProductTemplate.destroy_all
 
 size_chart = "#{Rails.root}/app/assets/images/sizechart-hoodie.jpg"
+product_image = "#{Rails.root}/app/assets/images/t-shirt.png"
 
 shipping_info = <<-EOT
 <p>
@@ -56,11 +57,11 @@ description = <<-EOT
 EOT
 
 25.times do
-  Product.create(name: Faker::Commerce.product_name, description:  description, author: u1, product_template: template2)
-  Product.create(name: Faker::Commerce.product_name, description:  description, author: u2, product_template: template4)
-  Product.create(name: Faker::Commerce.product_name, description:  description, author: u3, product_template: template3)
-  Product.create(name: Faker::Commerce.product_name, description:  description, author: u4, product_template: template1)
-  Product.create(name: Faker::Commerce.product_name, description:  description, author: u4, product_template: template5)
+  Product.create!(name: Faker::Commerce.product_name, description:  description, author: u1, product_template: template2, image: File.new(product_image))
+  Product.create!(name: Faker::Commerce.product_name, description:  description, author: u2, product_template: template4, image: File.new(product_image))
+  Product.create!(name: Faker::Commerce.product_name, description:  description, author: u3, product_template: template3, image: File.new(product_image))
+  Product.create!(name: Faker::Commerce.product_name, description:  description, author: u4, product_template: template1, image: File.new(product_image))
+  Product.create!(name: Faker::Commerce.product_name, description:  description, author: u4, product_template: template5, image: File.new(product_image))
 end
 
 100.times do |n|

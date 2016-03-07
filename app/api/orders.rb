@@ -40,8 +40,12 @@ module Orders
         end
 
         desc 'remove item from order'
+        params do
+          requires :uuid, type: String
+        end
         delete ':id' do
-          item = OrderItem.find_by(id: params.id)
+          order = Order.find_by!(uuid: params.uuid)
+          item = order.order_items.find_by(id: params.id)
           if item
             order = item.order
             item.destroy
@@ -51,6 +55,15 @@ module Orders
           UpdateOrder.new(order).call
           OrderSerializer.new(order.reload).as_json
         end
+      end
+
+      desc 'get current order or create new'
+      params do
+        optional :uuid, type: String
+      end
+      get do
+        order = find_or_create_order(params.uuid)
+        OrderSerializer.new(order).as_json
       end
 
       desc 'return payment link to paypal'

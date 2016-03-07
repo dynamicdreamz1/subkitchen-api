@@ -29,12 +29,13 @@ class OrderSerializer
   def items
     order.order_items.map do |item|
       {
+          id: item.id,
           price: item.price,
           name: item.product.name,
           product_id: item.product.id,
           quantity: item.quantity,
           size: item.size,
-          image: item.product.image_url
+          image: Figaro.env.app_host + Refile.attachment_url(item.product, :image, format: :png)
       }
     end
   end
