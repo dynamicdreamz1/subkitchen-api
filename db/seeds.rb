@@ -66,3 +66,5 @@ end
 100.times do |n|
   User.create(name: "user#{n}", email: "t#{n}@example.com", password: "password", password_confirmation: "password", artist: false)
 end
+
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')

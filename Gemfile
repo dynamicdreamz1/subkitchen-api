@@ -45,6 +45,8 @@ gem 'redis'
 gem 'connection_pool'
 gem 'filterrific'
 gem 'acts-as-taggable-on', '~> 3.4'
+gem 'activeadmin', github: 'activeadmin'
+gem 'devise'
 
 group :production do
   gem 'rails_12factor'
