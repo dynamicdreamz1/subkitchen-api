@@ -11,7 +11,12 @@ class User < ActiveRecord::Base
   validates :email, presence: true, email: true, uniqueness: true, unless: :oauth_registration?
   validates :handle, uniqueness: { allow_nil: true, allow_blank: true }, presence: { if: :artist }
   validates :name, presence: true, uniqueness: true
-  has_secure_password validations: false, if: :oauth_registration?
+  validate do |record|
+    record.errors.add(:password, :blank) unless record.password_digest.present? || oauth_registration?
+  end
+  validates_length_of :password, maximum: ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED
+  validates_confirmation_of :password, allow_blank: true
+  has_secure_password validations: false
 
 
   after_create ChangeStatusIfArtist.new

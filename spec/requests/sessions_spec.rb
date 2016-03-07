@@ -34,6 +34,18 @@ describe Sessions::Api, type: :request do
         expect(response).to match_response_schema('user_public')
       end
 
+      it 'should not be able to register with no password' do
+        params =  { email: 'test@gmail.com',
+                    name: 'test',
+                    password: '',
+                    password_confirmation: '',
+                    artist: 'false' }
+
+        expect do
+          post '/api/v1/sessions/register', params
+        end.to change(User, :count).by(0)
+      end
+
       it 'should receive email with confirmation link' do
         params = { email: 'test@gmail.com',
                    name: 'test',
