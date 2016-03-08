@@ -82,11 +82,11 @@ describe Products::Api, type: :request do
         expect(response).to match_response_schema('order')
       end
 
-      it 'should decrement quantity' do
+      it 'should set quantity' do
         order = create(:order, user: user)
-        create(:order_item, product: product, order: order, size: 'l')
+        item = create(:order_item, product: product, order: order, size: 'l')
 
-        post '/api/v1/orders/item', { product_id: product.id, size: 'l', quantity: -1, uuid: order.uuid }
+        put "/api/v1/orders/item/#{item.id}", { quantity: 0, uuid: order.uuid }
 
         order = Order.find_by(uuid: order.uuid)
         expect(order.order_items.first.quantity).to eq(0)

@@ -28,13 +28,28 @@ module Orders
           optional :uuid, type: String
         end
         post do
+          params[:quantity] = params[:quantity].to_i.abs
           order = find_or_create_order(params.uuid)
-          item = OrderItem.find_by(product_id: params.product_id, order_id: order.id, size: params[:size])
+          item = order.order_items.find_by(product_id: params.product_id, order_id: order.id, size: params[:size])
           if item
             OrderItemQuantity.new(item, params.quantity).call
           else
             CreateOrderItem.new(params.product_id, order, params).call
           end
+          UpdateOrder.new(order).call
+          OrderSerializer.new(order.reload).as_json
+        end
+
+        desc 'update item'
+        params do
+          requires :quantity, type: Integer
+          requires :uuid, type: String
+        end
+        put ':id' do
+          params[:quantity] = params[:quantity].to_i.abs
+          order = Order.find_by!(uuid: params.uuid)
+          item = order.order_items.find(params.id)
+          item.update(quantity: params.quantity)
           UpdateOrder.new(order).call
           OrderSerializer.new(order.reload).as_json
         end
