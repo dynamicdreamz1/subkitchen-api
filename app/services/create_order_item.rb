@@ -17,6 +17,7 @@ class CreateOrderItem
         product_id: product.id,
         order_id: @order.id,
         size: @params[:size],
+        quantity: @params[:quantity],
         product_name: product.name,
         product_description: product.description,
         product_author: product.author

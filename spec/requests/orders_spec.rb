@@ -82,11 +82,11 @@ describe Products::Api, type: :request do
         expect(response).to match_response_schema('order')
       end
 
-      it 'should decrement quantity' do
+      it 'should set quantity' do
         order = create(:order, user: user)
-        create(:order_item, product: product, order: order, size: 'l')
+        item = create(:order_item, product: product, order: order, size: 'l')
 
-        post '/api/v1/orders/item', { product_id: product.id, size: 'l', quantity: -1, uuid: order.uuid }
+        put "/api/v1/orders/item/#{item.id}", { quantity: 0, uuid: order.uuid }
 
         order = Order.find_by(uuid: order.uuid)
         expect(order.order_items.first.quantity).to eq(0)
@@ -117,7 +117,7 @@ describe Products::Api, type: :request do
         order = create(:order, user: user)
         item = create(:order_item, order: order, product: product, size: 's')
 
-        delete "/api/v1/orders/item/#{item.id}", auth_header_for(user)
+        delete "/api/v1/orders/item/#{item.id}", { uuid: order.uuid }, auth_header_for(user)
 
         item = OrderItem.find_by(order: order, product: product)
         expect(item).to be_nil
@@ -130,7 +130,7 @@ describe Products::Api, type: :request do
         order = create(:order, user: user)
         item = create(:order_item, order: order, product: product)
 
-        delete "/api/v1/orders/item/#{item.id}"
+        delete "/api/v1/orders/item/#{item.id}", { uuid: order.uuid }
 
         item = OrderItem.find_by(order: order, product: product)
         expect(item).to be_nil
@@ -142,7 +142,7 @@ describe Products::Api, type: :request do
       order = create(:order, user: user, shipping_cost: 7.0, tax: 6.0, subtotal_cost: 10, total_cost: 17.6, tax_cost: 0.6)
       item = create(:order_item, order: order, product: product, price: 10)
 
-      delete "/api/v1/orders/item/#{item.id}"
+      delete "/api/v1/orders/item/#{item.id}", { uuid: order.uuid }
 
       order.reload
       expect(order.subtotal_cost).to eq(0)

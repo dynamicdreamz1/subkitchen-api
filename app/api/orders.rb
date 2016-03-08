@@ -28,8 +28,9 @@ module Orders
           optional :uuid, type: String
         end
         post do
+          params[:quantity] = params[:quantity].to_i.abs
           order = find_or_create_order(params.uuid)
-          item = OrderItem.find_by(product_id: params.product_id, order_id: order.id, size: params[:size])
+          item = order.order_items.find_by(product_id: params.product_id, order_id: order.id, size: params[:size])
           if item
             OrderItemQuantity.new(item, params.quantity).call
           else
@@ -39,9 +40,27 @@ module Orders
           OrderSerializer.new(order.reload).as_json
         end
 
+        desc 'update item'
+        params do
+          requires :quantity, type: Integer
+          requires :uuid, type: String
+        end
+        put ':id' do
+          params[:quantity] = params[:quantity].to_i.abs
+          order = Order.find_by!(uuid: params.uuid)
+          item = order.order_items.find(params.id)
+          item.update(quantity: params.quantity)
+          UpdateOrder.new(order).call
+          OrderSerializer.new(order.reload).as_json
+        end
+
         desc 'remove item from order'
+        params do
+          requires :uuid, type: String
+        end
         delete ':id' do
-          item = OrderItem.find_by(id: params.id)
+          order = Order.find_by!(uuid: params.uuid)
+          item = order.order_items.find_by(id: params.id)
           if item
             order = item.order
             item.destroy
@@ -51,6 +70,15 @@ module Orders
           UpdateOrder.new(order).call
           OrderSerializer.new(order.reload).as_json
         end
+      end
+
+      desc 'get current order or create new'
+      params do
+        optional :uuid, type: String
+      end
+      get do
+        order = find_or_create_order(params.uuid)
+        OrderSerializer.new(order).as_json
       end
 
       desc 'return payment link to paypal'
