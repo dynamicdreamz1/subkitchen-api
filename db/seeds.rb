@@ -9,6 +9,7 @@ Product.destroy_all
 User.destroy_all
 Config.destroy_all
 ProductTemplate.destroy_all
+AdminUser.destroy_all
 
 size_chart = "#{Rails.root}/app/assets/images/sizechart-hoodie.jpg"
 
@@ -33,9 +34,17 @@ shipping_info = <<-EOT
 </p>
 EOT
 
-Config.create(name: 'tax', value: '7.0')
-Config.create(name: 'shipping_info', value: shipping_info)
-Config.create(name: 'shipping_cost', value: '6.0')
+Config.create(name: 'tax', value: '7.0', input_type: 'short_text')
+Config.create(name: 'shipping_info', value: shipping_info, input_type: 'long_text')
+Config.create(name: 'shipping_cost', value: '6.0', input_type: 'short_text')
+Config.create(name: 'banner_img', config_image: '', input_type: 'image')
+Config.create(name: 'banner_url', value: '', input_type: 'short_text')
+Config.create(name: 'promo_1_img', config_image: '', input_type: 'image')
+Config.create(name: 'promo_1_url', value: '', input_type: 'short_text')
+Config.create(name: 'promo_2_img', config_image: '', input_type: 'image')
+Config.create(name: 'promo_2_url', value: '', input_type: 'short_text')
+Config.create(name: 'promo_3_img', config_image: '', input_type: 'image')
+Config.create(name: 'promo_3_url', value: '', input_type: 'short_text')
 
 template1 = ProductTemplate.create(price: 69.95, profit: 25.00, size: %w(s m l xl), product_type: 'hoodie', size_chart: File.new(size_chart))
 template2 = ProductTemplate.create(price: 65.00, profit: 25.00, size: %w(s m l xl), product_type: 'sweatshirt', size_chart: File.new(size_chart))

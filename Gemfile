@@ -46,6 +46,8 @@ gem 'connection_pool'
 gem 'filterrific'
 gem 'acts-as-taggable-on', '~> 3.4'
 gem 'activeadmin', github: 'activeadmin'
+gem 'active_admin_editor', github: 'ejholmes/active_admin_editor'
+gem 'refile-input', require: ['inputs/refile_input']
 gem 'devise'
 
 group :production do

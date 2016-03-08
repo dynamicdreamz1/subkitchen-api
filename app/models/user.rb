@@ -63,6 +63,8 @@ class User < ActiveRecord::Base
       end
     end
     count
+    # order_items.pluck(:id)
+    # OrderItem.where(user_id: order_items.pluck(:id)).select('SUM(quantity) AS quantity_sum').order('quantity_sum')
   end
 
   def likes_count
@@ -79,6 +81,7 @@ class User < ActiveRecord::Base
       count += Like.this_week(product.id)
     end
     count
+    # Like.week(products.pluck(:id), 'Product').count
   end
 
   def published_count

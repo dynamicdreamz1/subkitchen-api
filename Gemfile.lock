@@ -17,6 +17,15 @@ GIT
       sass-rails
       sprockets (< 4)
 
+GIT
+  remote: git://github.com/ejholmes/active_admin_editor.git
+  revision: 86f964be3071cd938c3cd17ad00df94ece3a50c0
+  specs:
+    active_admin_editor (1.1.0)
+      activeadmin (>= 0.4.0)
+      ejs
+      rails (>= 3.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -110,6 +119,7 @@ GEM
     docile (1.1.5)
     domain_name (0.5.20160128)
       unf (>= 0.0.5, < 1.0.0)
+    ejs (1.1.1)
     email_validator (1.6.0)
       activemodel
     equalizer (0.0.11)
@@ -298,6 +308,9 @@ GEM
       mime-types
       rest-client (~> 1.8)
       sinatra (~> 1.4.5)
+    refile-input (0.1.0)
+      formtastic (~> 3.1)
+      refile (~> 0.6)
     refile-mini_magick (0.2.0)
       mini_magick (~> 4.0)
       refile (~> 0.5)
@@ -404,6 +417,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_admin_editor!
   activeadmin!
   acts-as-taggable-on (~> 3.4)
   awesome_print
@@ -439,6 +453,7 @@ DEPENDENCIES
   rails_12factor
   redis
   refile
+  refile-input
   refile-mini_magick
   refile-s3
   rspec-nc

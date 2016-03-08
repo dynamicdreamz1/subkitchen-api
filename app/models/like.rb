@@ -6,4 +6,8 @@ class Like < ActiveRecord::Base
   validates_with LikeValidator
 
   scope :this_week, -> (product_id) { where(likeable_id: product_id).count }
+  # scope :this_week, -> (ids, type) {
+  #   this_week = [Date.today.end_of_day..(Date.today-7.days).beginning_of_day]
+  #   where(likeable_id: ids, likeable_type: type, crated_at: this_week)
+  # }
 end
