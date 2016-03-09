@@ -53,10 +53,10 @@ template3 = ProductTemplate.create(price: 39.95, profit: 15.00, size: %w(s m l x
 template4 = ProductTemplate.create(price: 35.00, profit: 15.00, size: %w(s m l xl), product_type: 'tank_top', size_chart: File.new(size_chart))
 template5 = ProductTemplate.create(price: 79.95, profit: 30.00, size: %w(s m l xl), product_type: 'yoga_pants', size_chart: File.new(size_chart))
 
-u1 = User.create(name: "user1", email: "t1@example.com", password: "password", password_confirmation: "password", artist: true)
-u2 = User.create(name: "user2", email: "t2@example.com", password: "password", password_confirmation: "password", artist: true)
-u3 = User.create(name: "user3", email: "t3@example.com", password: "password", password_confirmation: "password", artist: true)
-u4 = User.create(name: "user4", email: "t4@example.com", password: "password", password_confirmation: "password", artist: true)
+u1 = User.create!(name: "user1", handle: "user1", email: "t1@example.com", password: "password", password_confirmation: "password", artist: true)
+u2 = User.create!(name: "user2", handle: "user2", email: "t2@example.com", password: "password", password_confirmation: "password", artist: true)
+u3 = User.create!(name: "user3", handle: "user3", email: "t3@example.com", password: "password", password_confirmation: "password", artist: true)
+u4 = User.create!(name: "user4", handle: "user4", email: "t4@example.com", password: "password", password_confirmation: "password", artist: true)
 
 description = <<-EOT
 <p>This 'all over' print crewneck sweatshirt is made using a special sublimation technique to provide a vivid graphic image throughout the shirt.</p>
@@ -66,11 +66,14 @@ description = <<-EOT
 EOT
 
 25.times do
-  Product.create!(name: Faker::Commerce.product_name, description:  description, author: u1, product_template: template2, image: File.new(product_image))
-  Product.create!(name: Faker::Commerce.product_name, description:  description, author: u2, product_template: template4, image: File.new(product_image))
-  Product.create!(name: Faker::Commerce.product_name, description:  description, author: u3, product_template: template3, image: File.new(product_image))
-  Product.create!(name: Faker::Commerce.product_name, description:  description, author: u4, product_template: template1, image: File.new(product_image))
-  Product.create!(name: Faker::Commerce.product_name, description:  description, author: u4, product_template: template5, image: File.new(product_image))
+  p = Product.create!(name: Faker::Commerce.product_name, description: description, author: u1, product_template: template2, image: File.new(product_image))
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u2, product_template: template4, image: File.new(product_image))
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u3, product_template: template3, image: File.new(product_image))
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template1, image: File.new(product_image))
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template5, image: File.new(product_image))
+  p.likes.create!(user: u2)
+  p.likes.create!(user: u3)
+  p.likes.create!(user: u4)
 end
 
 100.times do |n|
