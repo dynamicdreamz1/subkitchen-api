@@ -14,7 +14,7 @@ class ConfirmUserVerification
 
   def update_artist
     User.transaction do
-      payment.update(payment_status: 'completed')
+      payment.update(payment_token: params.txn_id, payment_status: 'completed')
       artist = payment.payable
       artist.update(status: 'verified')
       payment

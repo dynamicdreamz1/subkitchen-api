@@ -50,6 +50,7 @@ gem 'active_admin_editor', github: 'ejholmes/active_admin_editor'
 gem 'refile-input', require: ['inputs/refile_input']
 gem 'devise'
 gem 'stripe'
+gem 'stripe-ruby-mock', '~> 2.2.2', :require => 'stripe_mock'
 
 group :production do
   gem 'rails_12factor'

@@ -14,12 +14,6 @@ RSpec.describe Order, type: :model do
       expect(@order.order_status).to eq('creating')
     end
 
-    it 'should change status after creating payment' do
-      CreatePayment.new(@order).call
-
-      expect(@order.order_status).to eq('payment pending')
-    end
-
     context 'after payment confirmation' do
       let(:order){ create(:order) }
       let(:payment){ create(:payment, payable: order) }

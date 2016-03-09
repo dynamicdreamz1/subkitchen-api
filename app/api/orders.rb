@@ -81,24 +81,6 @@ module Orders
         OrderSerializer.new(order).as_json
       end
 
-      desc 'return payment link to paypal'
-      params do
-        requires :return_path, type: String
-        requires :uuid, type: String
-      end
-      get 'paypal_payment_url' do
-        order = Order.find_by(uuid: params.uuid)
-        if order
-          unless CheckOrderItems.new(order).call
-            UpdateOrderItems.new(order).call
-            error!({errors: {base: ['some of the items had to be removed because the products does not exist anymore']}}, 422)
-          end
-          CheckoutByPayPal.new(order, params).call || error!({errors: {base: ['already paid']}}, 422)
-        else
-          error!({errors: {base: ['cannot find order']}}, 422)
-        end
-      end
-
       desc 'checkout order'
       params do
         requires :uuid, type: String

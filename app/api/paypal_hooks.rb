@@ -1,6 +1,7 @@
 module PaypalHooks
   class Api < Grape::API
     params do
+      requires :txn_id, type: String
       requires :invoice, type: Integer
       requires :payment_status, type: String
     end
@@ -14,6 +15,7 @@ module PaypalHooks
     end
 
     params do
+      requires :txn_id, type: String
       requires :invoice, type: Integer
       requires :payment_status, type: String
     end

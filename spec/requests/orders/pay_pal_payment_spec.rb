@@ -14,7 +14,7 @@ describe Products::Api, type: :request do
       product = create(:product)
       create(:order_item, order: order, product: product)
 
-      get '/api/v1/orders/paypal_payment_url', { return_path: '', uuid: order.uuid }
+      post "/api/v1/orders/#{order.uuid}/payment", { return_path: '', payment_type: 'paypal' }
 
       payment = Payment.find_by(payable: order)
       expect(json['url']).to eq(PaypalPayment.new(payment, '').call)
@@ -27,7 +27,7 @@ describe Products::Api, type: :request do
       create(:order_item, order: order, product: product)
       DeleteResource.new(product).call
 
-      get '/api/v1/orders/paypal_payment_url', { return_path: '', uuid: order.uuid }
+      post "/api/v1/orders/#{order.uuid}/payment", { return_path: '', payment_type: 'paypal' }
 
       expect(json['errors']).to eq({'base'=>['some of the items had to be removed because the products does not exist anymore']})
     end
