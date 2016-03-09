@@ -49,6 +49,7 @@ gem 'activeadmin', github: 'activeadmin'
 gem 'active_admin_editor', github: 'ejholmes/active_admin_editor'
 gem 'refile-input', require: ['inputs/refile_input']
 gem 'devise'
+gem 'stripe'
 
 group :production do
   gem 'rails_12factor'
