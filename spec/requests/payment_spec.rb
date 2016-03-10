@@ -35,6 +35,19 @@ describe Payments::Api, type: :request do
         expect(response).to have_http_status(:success)
         expect(response).to match_response_schema('checkout')
       end
+
+      it 'should update items before checkout' do
+        order = create(:order, user: nil)
+        product = create(:product)
+        create(:order_item, order: order, product: product)
+        params = { uuid: order.uuid }
+        DeleteResource.new(product).call
+
+        get "/api/v1/orders/#{order.uuid}/payment"
+
+        expect(json['deleted_items']).not_to be_nil
+        expect(response).to match_response_schema('checkout')
+      end
     end
 
     describe 'POST' do
