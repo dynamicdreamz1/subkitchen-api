@@ -80,23 +80,6 @@ module Orders
         order = find_or_create_order(params.uuid)
         OrderSerializer.new(order).as_json
       end
-
-      desc 'checkout order'
-      params do
-        requires :uuid, type: String
-      end
-      get 'checkout' do
-        order = Order.find_by(uuid: params.uuid)
-        if order
-          if CheckOrderItems.new(order).call
-            CheckoutSerializer.new(order).as_json
-          else
-            UpdateOrderItems.new(order).call
-          end
-        else
-          error!({errors: {base: ['cannot find order']}}, 422)
-        end
-      end
     end
   end
 end

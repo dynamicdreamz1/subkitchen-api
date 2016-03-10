@@ -7,7 +7,11 @@ module Payments
       get ':uuid/payment' do
         order = Order.find_by(uuid: params.uuid)
         error!({errors: {base: ['cannot find order']}}, 422) if order.nil?
-        CheckoutSerializer.new(order).as_json
+        if CheckOrderItems.new(order).call
+          CheckoutSerializer.new(order).as_json
+        else
+          UpdateOrderItems.new(order).call
+        end
       end
 
       desc 'create stripe or paypal payment'
