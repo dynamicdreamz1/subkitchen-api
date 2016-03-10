@@ -2,16 +2,6 @@ module Products
   class Api < Grape::API
     resources :products do
 
-      helpers do
-        def author?(current_user, product)
-          if current_user
-            current_user == product.author
-          else
-            false
-          end
-        end
-      end
-
       desc 'return all products'
       params do
         optional :page, type: Integer, default: 1
@@ -93,47 +83,6 @@ module Products
           end
         else
           error!({errors: {base: ['no product with given id or user is not an author']}}, 422)
-        end
-      end
-
-      desc 'like product'
-      params do
-        requires :product_id, type: Integer
-      end
-      post 'like' do
-        authenticate!
-        product = Product.find_by(id: params.product_id)
-        LikeProduct.new(product, current_user).call
-        if product
-          if !author?(current_user, product)
-            unless LikeProduct.new(product, current_user).call
-              error!({errors: {base: ['cannot like product more than once']}}, 422)
-            end
-          else
-            error!({errors: {base: ['cannot like own product']}}, 422)
-          end
-        else
-          error!({errors: {base: ['no product with given id']}}, 422)
-        end
-      end
-
-      desc 'unlike product'
-      params do
-        requires :product_id, type: Integer
-      end
-      post 'like' do
-        authenticate!
-        product = Product.find_by(id: params.product_id)
-        if product
-          if product.likes.empty?
-            unless UnlikeProduct.new(product, current_user).call
-              error!({errors: {base: ['no like with given user id']}}, 422)
-            end
-          else
-            error!({errors: {base: ['cannot unlike not liked product']}}, 422)
-          end
-        else
-          error!({errors: {base: ['no product with given id']}}, 422)
         end
       end
     end

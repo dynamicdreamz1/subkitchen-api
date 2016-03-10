@@ -30,6 +30,7 @@ class Api < Grape::API
   mount PaypalHooks::Api
   mount Oauth::Api
   mount Payments::Api
+  mount Likes::Api
 
 
   add_swagger_documentation(api_version: 'v1', hide_documentation_path: true, base_path: '/api')
