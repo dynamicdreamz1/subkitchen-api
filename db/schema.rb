@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160309141931) do
+ActiveRecord::Schema.define(version: 20160309162127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,14 +102,12 @@ ActiveRecord::Schema.define(version: 20160309141931) do
     t.datetime "updated_at",                                                           null: false
     t.datetime "purchased_at"
     t.uuid     "uuid",                                  default: "uuid_generate_v4()"
-    t.string   "first_name"
-    t.string   "last_name"
+    t.string   "full_name"
     t.string   "address"
     t.string   "city"
     t.string   "zip"
     t.string   "region"
     t.string   "country"
-    t.string   "phone"
     t.decimal  "subtotal_cost", precision: 8, scale: 2, default: 0.0
     t.decimal  "shipping_cost", precision: 8, scale: 2
     t.decimal  "tax",           precision: 4, scale: 2
