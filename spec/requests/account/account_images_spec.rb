@@ -13,7 +13,7 @@ describe Accounts::Api, type: :request do
 
         user.reload
         expect(user.profile_image_url).not_to be_nil
-        expect(json['image_url']).to eq(user.profile_image_url(format: :png))
+        expect(json['image_url']).to eq(Figaro.env.app_host+user.profile_image_url(format: :png))
         Refile
       end
 
