@@ -1,8 +1,8 @@
 class LikesCounter
   include Sidekiq::Worker
 
-  def perform(like_id, quantity)
-    user = get_user(like_id)
+  def perform(author_id, quantity)
+    user = get_user(author_id)
     if (get_counter(user) + quantity) >= 0
       increment(user, quantity)
       percentage = calculate_percentage(user)
@@ -29,8 +29,7 @@ class LikesCounter
     $redis.get("user_#{user.id}_likes_counter").to_i
   end
 
-  def get_user(like_id)
-    like = Like.find_by(id: like_id)
-    like.likeable.author
+  def get_user(author_id)
+    User.find(author_id)
   end
 end

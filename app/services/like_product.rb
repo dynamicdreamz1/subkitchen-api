@@ -13,9 +13,9 @@ class LikeProduct
   end
 
   def like
-    like = product.likes.create(user_id: current_user.id)
+    product.likes.create(user_id: current_user.id)
     if product.valid?
-      LikesCounter.perform_async(like.id, 1)
+      LikesCounter.perform_async(product.author_id, 1)
     else
       false
     end
