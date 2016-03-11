@@ -15,7 +15,7 @@ class UpdateUser
       last_name: @params.last_name,
       address: @params.address,
       city: @params.city,
-      zip: @params.zip,
+      zip: @params[:zip],
       region: @params.region,
       country: @params.country,
       phone: @params.phone
