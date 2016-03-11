@@ -5,48 +5,24 @@ module Likes
 
       helpers do
         def author?(current_user, product)
-          if current_user
-            current_user == product.author
-          else
-            false
-          end
+          current_user.id == product.author_id
         end
       end
 
-      desc 'like product'
-      post ':id/likes' do
+      desc 'toggle like product'
+      post ':id/toggle_like' do
         authenticate!
-        product = Product.find_by(id: params.id)
-        if product
-          if !author?(current_user, product)
-            valid = LikeProduct.new(product, current_user).call
-            if valid
-              { likes: product.likes_count }
-            else
-              error!({errors: {base: ['cannot like product more than once']}}, 422)
-            end
-          else
-            error!({errors: {base: ['cannot like own product']}}, 422)
-          end
-        else
-          error!({errors: {base: ['no product with given id']}}, 422)
-        end
-
-      end
-
-      desc 'unlike product'
-      delete ':id/likes' do
-        authenticate!
-        product = Product.find_by(id: params.id)
-        if product
-          valid = UnlikeProduct.new(product, current_user).call
+        product = Product.find(params.id)
+        if !author?(current_user, product)
+          proceeder = Like.where(likeable: product, user: current_user).exists? ?  UnlikeProduct : LikeProduct
+          valid = proceeder.new(product, current_user).call
           if valid
             { likes: product.reload.likes_count }
           else
-            error!({errors: {base: ['no like with given user id']}}, 422)
+            error!({errors: {base: ['please try again later']}}, 422)
           end
         else
-          error!({errors: {base: ['no product with given id']}}, 422)
+          error!({errors: {base: ['cannot like own product']}}, 422)
         end
       end
     end

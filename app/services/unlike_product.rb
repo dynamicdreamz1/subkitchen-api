@@ -15,7 +15,7 @@ class UnlikeProduct
   def unlike
     like = product.likes.find_by(user_id: current_user.id)
     if like
-      LikesCounter.new.perform(like.id, -1)
+      LikesCounter.new.perform(product.author_id, -1)
       like.destroy
     else
       false
