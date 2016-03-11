@@ -102,9 +102,7 @@ module Accounts
         image = ActionDispatch::Http::UploadedFile.new(params.image)
         if CheckProfileImageSize.new(params.image).call
           current_user.update(profile_image: image)
-          data = { profile_image_url: current_user.profile_image_url }
-          data[:errors] = current_user.errors if current_user.errors.any?
-          data
+          current_user
         else
           error!({errors: {base: ['image is too small']}}, 422)
         end

@@ -2,4 +2,16 @@ development:
   s3_access_key: "https://github.com/refile/refile-s3"
   s3_secret: ""
   s3_bucket: ""
+  app_host: 'http://localhost:3000'
+  front_host: 'http://localhost:4200'
+
+test:
+  paypal_seller: "klara.hirao-facilitator@elpassion.pl"
+  app_host: http://localhost:3000
+  frontend_host: http://localhost:4200/
+  stripe_publishable_key: "pk_test_h5Aqwd3kEZvC3496unFZclWC"
+  stripe_secret_key: "sk_test_RAhFuXterQa3oRG6TdUTP7AH"
+  s3_access_key: "https://github.com/refile/refile-s3"
+  s3_secret: ""
+  s3_bucket: ""
 

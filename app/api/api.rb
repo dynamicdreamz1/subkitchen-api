@@ -22,6 +22,7 @@ class Api < Grape::API
     end
   end
   mount Accounts::Api
+  mount Addresses::Api
   mount AccountsArtist::Api
   mount Sessions::Api
   mount Products::Api
