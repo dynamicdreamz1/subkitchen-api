@@ -3,31 +3,59 @@ ActiveAdmin.register_page "Dashboard" do
   menu priority: 1, label: proc{ I18n.t("active_admin.dashboard") }
 
   content title: proc{ I18n.t("active_admin.dashboard") } do
-    div class: "blank_slate_container", id: "dashboard_default_message" do
-      span class: "blank_slate" do
-        span I18n.t("active_admin.dashboard_welcome.welcome")
-        small I18n.t("active_admin.dashboard_welcome.call_to_action")
+
+    columns do
+      column do
+        panel 'Recent Orders' do
+          table_for Order.completed.order('purchased_at desc').limit(10) do
+            column('Customer') do |order|
+              order.user \
+              ? link_to(order.user.email, admin_user_path(order.user)) \
+              : 'unknown'
+            end
+            column('Total')   {|order| number_to_currency order.total_cost }
+            column(''){ |order| link_to 'View', admin_order_path(order)}
+          end
+        end
+      end
+
+      column do
+        panel 'Recent Users' do
+          table_for User.order('id desc').limit(10).each do
+            column('Avatar') do |user|
+              attachment_image_tag(user, :profile_image, :fit, 50, 50)
+            end
+            column(:name)
+            column(:email){ |user| link_to(user.email, admin_user_path(user)) }
+          end
+        end
       end
     end
 
-    # Here is an example of a simple dashboard with columns and panels.
-    #
-    # columns do
-    #   column do
-    #     panel "Recent Posts" do
-    #       ul do
-    #         Post.recent(5).map do |post|
-    #           li link_to(post.title, admin_post_path(post))
-    #         end
-    #       end
-    #     end
-    #   end
+    columns do
+      column do
+        panel 'Recently published' do
+          table_for Product.published_all.order('published_at desc').limit(10) do
+            column('Image') do |product|
+              attachment_image_tag(product, :image, :fit, 50, 50)
+            end
+            column(:author)
+            column(:name){ |product| link_to(product.name, admin_product_path(product)) }
+          end
+        end
+      end
 
-    #   column do
-    #     panel "Info" do
-    #       para "Welcome to ActiveAdmin."
-    #     end
-    #   end
-    # end
-  end # content
+      column do
+        panel 'BestSellers' do
+          table_for Product.order('order_items_count desc').limit(10) do
+            column('Image') do |product|
+              attachment_image_tag(product, :image, :fit, 50, 50)
+            end
+            column(:author)
+            column(:name){ |product| link_to(product.name, admin_product_path(product)) }
+          end
+        end
+      end
+    end
+  end
 end
