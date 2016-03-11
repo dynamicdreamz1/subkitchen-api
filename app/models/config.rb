@@ -1,6 +1,7 @@
 class Config < ActiveRecord::Base
   scope :shipping_info, lambda { where(name: 'shipping_info').first.value }
   scope :shipping_cost, lambda { where(name: 'shipping_cost').first.value }
+  scope :tax, lambda { where(name: 'tax').first.value }
   scope :banner_img, lambda { where(name: 'banner_img').first.config_image_url }
   scope :promo_1_img, lambda { where(name: 'promo_1_img').first.config_image_url }
   scope :promo_2_img, lambda { where(name: 'promo_2_img').first.config_image_url }
