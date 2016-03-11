@@ -4,4 +4,6 @@ class Order < ActiveRecord::Base
   has_one :payment, as: :payable
 
   after_create SetTaxAndShipping.new
+
+  scope :completed, -> { where(purchased: true) }
 end

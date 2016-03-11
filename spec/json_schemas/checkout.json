@@ -17,7 +17,7 @@
             "type": "object",
             "properties": {
               "price": {"type": "string"},
-              "name": {"type": "null"},
+              "name": {"type": "string"},
               "id": {"type": "integer"},
               "quantity": {"type": "integer"},
               "size": {"type": "string"},
@@ -43,7 +43,7 @@
         "type": "object",
         "properties": {
           "price": {"type": "string"},
-          "name": {"type": "null"},
+          "name": {"type": "string"},
           "id": {"type": "integer"},
           "quantity": {"type": "integer"},
           "size": {"type": "string"}

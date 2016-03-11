@@ -15,6 +15,7 @@ class Product < ActiveRecord::Base
   acts_as_taggable
 
   default_scope { where(is_deleted: false) }
+  scope :published_all, -> { where(published: true) }
   scope :published, -> (user) { where(published: true, author: user) }
   scope :published_weekly, -> (user) { where(published: true, author: user, published_at: 1.week.ago..DateTime.now) }
   scope :with_product_type, -> (type) { joins(:product_template).where(product_templates: {product_type: type}) }

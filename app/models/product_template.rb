@@ -6,6 +6,7 @@ class ProductTemplate < ActiveRecord::Base
   serialize :size
 
   attachment :size_chart
+  attachment :template_image
 
   default_scope { where(is_deleted: false) }
 end

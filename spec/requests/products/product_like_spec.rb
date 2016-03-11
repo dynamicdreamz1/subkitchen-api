@@ -19,7 +19,7 @@ describe Products::Api, type: :request do
         post "/api/v1/products/#{artist_product.id}/likes", {}, auth_header_for(artist)
 
         product.reload
-        expect(product.likes.count).to eq(0)
+        expect(product.likes_count).to eq(0)
         expect(json['errors']).to eq({'base'=>['cannot like own product']})
       end
 
@@ -29,7 +29,7 @@ describe Products::Api, type: :request do
         post "/api/v1/products/#{product.id}/likes", {}, auth_header_for(artist)
 
         product.reload
-        expect(product.likes.count).to eq(1)
+        expect(product.likes_count).to eq(1)
         expect(json['errors']).to eq({'base'=>['cannot like product more than once']})
       end
     end

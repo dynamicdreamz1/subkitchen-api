@@ -11,7 +11,7 @@ class ProductSerializer
           name: product.name,
           product_type: product.product_template.product_type,
           tags: product.tag_list,
-          likes: product.likes.count,
+          likes: product.likes_count,
           product_image: product.image_url,
           shipping: Config.shipping_info,
           shipping_cost: Config.shipping_cost,

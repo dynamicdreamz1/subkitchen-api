@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160309162127) do
+ActiveRecord::Schema.define(version: 20160311141834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,14 +132,15 @@ ActiveRecord::Schema.define(version: 20160309162127) do
   add_index "payments", ["payable_id", "payable_type"], name: "index_payments_on_payable_id_and_payable_type", using: :btree
 
   create_table "product_templates", force: :cascade do |t|
-    t.decimal  "price",         precision: 8, scale: 2
+    t.decimal  "price",             precision: 8, scale: 2
     t.string   "product_type"
     t.string   "size"
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
+    t.datetime "created_at",                                                null: false
+    t.datetime "updated_at",                                                null: false
     t.string   "size_chart_id"
-    t.boolean  "is_deleted",                            default: false
-    t.decimal  "profit",        precision: 8, scale: 2
+    t.boolean  "is_deleted",                                default: false
+    t.decimal  "profit",            precision: 8, scale: 2
+    t.string   "template_image_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -150,7 +151,7 @@ ActiveRecord::Schema.define(version: 20160309162127) do
     t.string   "status",                                      default: "unpublished"
     t.integer  "product_template_id"
     t.string   "description"
-    t.integer  "likes",                                       default: 0
+    t.integer  "likes_count",                                 default: 0
     t.boolean  "is_deleted",                                  default: false
     t.string   "image_id"
     t.decimal  "price",               precision: 8, scale: 2

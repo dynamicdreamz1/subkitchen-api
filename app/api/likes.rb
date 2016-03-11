@@ -21,7 +21,7 @@ module Likes
           if !author?(current_user, product)
             valid = LikeProduct.new(product, current_user).call
             if valid
-              { likes: product.likes.count }
+              { likes: product.likes_count }
             else
               error!({errors: {base: ['cannot like product more than once']}}, 422)
             end
@@ -41,7 +41,7 @@ module Likes
         if product
           valid = UnlikeProduct.new(product, current_user).call
           if valid
-            { likes: product.likes.count }
+            { likes: product.reload.likes_count }
           else
             error!({errors: {base: ['no like with given user id']}}, 422)
           end
