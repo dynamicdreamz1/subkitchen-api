@@ -38,10 +38,6 @@ ActiveAdmin.register User do
           row(:artist)
           row(:status)
           row(:created_at)
-          row('Number of Likes'){ user.likes_count }
-          row('Number of Sales'){ user.sales_count }
-          row('Profit'){ user.earnings_count }
-          row('Published'){ user.published_count }
         end
       end
 
@@ -55,6 +51,18 @@ ActiveAdmin.register User do
           row(:city)
           row(:country)
           row(:phone)
+        end
+      end
+
+      if user.artist
+        tab 'Shop' do
+          attributes_table do
+            row(:handle)
+            row('Number of Likes'){ user.likes_count }
+            row('Number of Sales'){ user.sales_count }
+            row('Profit'){ user.earnings_count }
+            row('Published'){ user.published_count }
+          end
         end
       end
 
