@@ -9,7 +9,7 @@ ActiveAdmin.register Product do
 
   filter :published
   filter :name_cont, as: :string, label: 'Name'
-  filter :product_template_product_type_cont, as: :select, collection: ProductTemplate.pluck(:product_type).map(&:humanize)
+  filter :product_template_product_type_cont, as: :select, collection: proc { ProductTemplate.pluck(:product_type).map(&:humanize) }
   filter :price
 
   index do
