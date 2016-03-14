@@ -17,7 +17,7 @@ module Likes
           proceeder = Like.where(likeable: product, user: current_user).exists? ?  UnlikeProduct : LikeProduct
           valid = proceeder.new(product, current_user).call
           if valid
-            { likes: product.reload.likes_count }
+            { likes_count: product.reload.likes_count }
           else
             error!({errors: {base: ['please try again later']}}, 422)
           end

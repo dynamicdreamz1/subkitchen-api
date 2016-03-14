@@ -13,7 +13,7 @@ describe Products::Api, type: :request do
 
         expect(response).to have_http_status(:success)
         product.reload
-        expect(json['likes']).to eq(1)
+        expect(json['likes_count']).to eq(1)
       end
 
       it 'should not like own product' do
@@ -34,7 +34,7 @@ describe Products::Api, type: :request do
         post "/api/v1/products/#{product.id}/toggle_like", {}, auth_header_for(artist)
 
         expect(response).to have_http_status(:success)
-        expect(json['likes']).to eq(0)
+        expect(json['likes_count']).to eq(0)
         expect(product.likes.count).to eq(0)
       end
     end
