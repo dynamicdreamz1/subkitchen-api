@@ -31,17 +31,10 @@ class User < ActiveRecord::Base
   attachment :profile_image, content_type: %w(image/jpeg image/png image/jpg)
   attachment :shop_banner, content_type: %w(image/jpeg image/png image/jpg)
 
-  scope :with_reminder_token, lambda { |token|
-    where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token)
-  }
-
-  scope :with_confirm_token, lambda { |token|
-    where(confirm_token: token)
-  }
-
-  scope :artists, lambda {
-    where(artist: true)
-  }
+  scope :with_reminder_token, lambda { |token| where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token) }
+  scope :with_confirm_token, lambda { |token| where(confirm_token: token) }
+  scope :artists, lambda { where(artist: true) }
+  scope :not_artists, lambda { where(artist: false) }
 
   def as_json(params = {})
     UserPublicSerializer.new(self).as_json(params).merge(auth_token: auth_token)

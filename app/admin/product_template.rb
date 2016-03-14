@@ -5,6 +5,8 @@ ActiveAdmin.register ProductTemplate do
                 :profit,
                 :is_deleted,
                 :template_image
+  config.filters = false
+  config.batch_actions = false
   actions :all, except: :destroy
 
   index do
@@ -15,7 +17,6 @@ ActiveAdmin.register ProductTemplate do
     column(:profit)
     column(:created_at)
     column(:price)
-    column(:is_deleted)
     actions
   end
 

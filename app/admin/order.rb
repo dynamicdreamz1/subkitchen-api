@@ -1,8 +1,12 @@
 ActiveAdmin.register Order do
   actions :index, :show
 
+  filter :order_status, as: :select, collection: ['creating', 'completed', 'payment pending', 'cooking', 'processing']
+  filter :purchased_at
+
+
   index do
-    column('Date') { |order| order.created_at.strftime('%d-%m-%Y') }
+    column('Date') { |order| order.created_at }
     column(:order_status)
     column(:total_cost)
     actions
@@ -12,7 +16,7 @@ ActiveAdmin.register Order do
     tabs do
       tab('Overview') do
         attributes_table do
-          row('Date') { order.created_at.strftime('%d-%m-%Y') }
+          row('Date') { order.created_at }
           row(:uuid)
           row(:user)
           row(:order_status)

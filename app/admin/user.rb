@@ -1,6 +1,19 @@
 ActiveAdmin.register User do
   actions :index, :show
 
+  scope :all
+  scope :artists
+  scope :not_artists
+
+  filter :email_cont, as: :string
+  filter :name_cont, as: :string
+  filter :status, as: :select, collection: %w[pending verified unverified]
+  filter :email_confirmed
+  filter :created_at
+  filter :has_company
+
+
+
   index do
     column('Avatar') do |user|
       attachment_image_tag(user, :profile_image, :fit, 50, 50)
