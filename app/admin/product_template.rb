@@ -7,7 +7,23 @@ ActiveAdmin.register ProductTemplate do
                 :template_image
   config.filters = false
   config.batch_actions = false
-  actions :all, except: :destroy
+  actions :index, :show, :edit, :new, :create, :update, :delete
+
+  scope :all
+  scope :deleted
+
+  member_action :delete, method: :put do
+    resource.update(is_deleted: true)
+    resource.products.map{ |p| p.update(is_deleted: true) }
+    redirect_to admin_product_templates_path, notice: 'Template Deleted'
+  end
+
+  member_action :restore, method: :put do
+    template = ProductTemplate.unscoped.where(id: params[:id]).first
+    template.update(is_deleted: false)
+    template.products.unscoped.map{ |p| p.update(is_deleted: false) }
+    redirect_to admin_product_templates_path, notice: 'Template Restored'
+  end
 
   index do
     column('Image') do |template|
@@ -17,7 +33,13 @@ ActiveAdmin.register ProductTemplate do
     column(:profit)
     column(:created_at)
     column(:price)
-    actions
+    actions defaults: true do |template|
+      if template.is_deleted
+        link_to 'Restore', restore_admin_product_template_path(template), method: :put
+      else
+        link_to 'Delete', delete_admin_product_template_path(template), method: :put, data: {confirm: 'Are you sure?'}
+      end
+    end
   end
 
   show do |template|

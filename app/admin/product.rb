@@ -5,11 +5,12 @@ ActiveAdmin.register Product do
 
 
   scope :all, default: true
-  scope :ready_to_print, default: false
+  scope :ready_to_print
+  scope :waiting, default: false
 
   filter :published
   filter :name_cont, as: :string, label: 'Name'
-  filter :product_template_product_type_cont, as: :select, collection: proc { ProductTemplate.pluck(:product_type).map(&:humanize) }
+  filter :product_template_product_type_cont, as: :select, collection: proc { ProductTemplate.pluck(:product_type)}
   filter :price
 
   index do
@@ -20,7 +21,7 @@ ActiveAdmin.register Product do
     column(:name)
     column(:published)
     column(:price)
-    column('Type') { |product| product.product_template.product_type.humanize }
+    column('Type') { |product| product.product_template.product_type }
     actions
   end
 

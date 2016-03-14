@@ -16,6 +16,7 @@ class Product < ActiveRecord::Base
 
   default_scope { where(is_deleted: false) }
   scope :ready_to_print, -> { where.not(design_id: nil)}
+  scope :waiting, -> { joins(:orders).where(orders: { order_status: 'processing' } ) }
   scope :published_all, -> { where(published: true) }
   scope :published, -> (user) { where(published: true, author: user) }
   scope :published_weekly, -> (user) { where(published: true, author: user, published_at: 1.week.ago..DateTime.now) }

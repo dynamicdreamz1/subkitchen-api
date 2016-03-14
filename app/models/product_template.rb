@@ -9,4 +9,5 @@ class ProductTemplate < ActiveRecord::Base
   attachment :template_image
 
   default_scope { where(is_deleted: false) }
+  scope :deleted, -> { unscoped.where(is_deleted: true) }
 end
