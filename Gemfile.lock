@@ -26,6 +26,13 @@ GIT
       ejs
       rails (>= 3.0.0)
 
+GIT
+  remote: git://github.com/guilleiguaran/fakeredis.git
+  revision: 0136520e4b2023d315a3761b495a8242625e5815
+  specs:
+    fakeredis (0.5.0)
+      redis (~> 3.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -444,6 +451,7 @@ DEPENDENCIES
   email_validator
   factory_girl_rails
   faker
+  fakeredis!
   figaro
   filterrific
   grape

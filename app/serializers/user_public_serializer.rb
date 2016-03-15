@@ -26,7 +26,7 @@ class UserPublicSerializer
 
   def image_url
     if user.profile_image_url
-      Figaro.env.app_host.to_s + Refile.attachment_url(user, :profile_image, format: :png)
+      Figaro.env.app_host.to_s + Refile.attachment_url(user, :profile_image, :fill, 200, 200, format: :png)
     else
       if user.provider == 'facebook' && user.uid
         return "https://graph.facebook.com/#{user.uid}/picture?width=200"

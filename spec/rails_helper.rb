@@ -14,6 +14,7 @@ require 'sidekiq/testing'
 Sidekiq::Testing.fake! # fake is the default mode
 # Add additional requires below this line. Rails is not loaded until this point!
 
+require 'fakeredis/rspec'
 require 'vcr'
 
 VCR.configure do |config|

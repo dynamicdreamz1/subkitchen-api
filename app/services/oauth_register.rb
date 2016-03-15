@@ -31,8 +31,13 @@ class OauthRegister
     user.oauth_registration = true
     user.uid = uid
     user.provider = provider
-    user.name = name
-    user.email = email
+    user.name ||= name
+    user.email ||= email
+    if user.password_digest.blank?
+      password = SecureRandom.uuid
+      user.password = password
+      user.password_confirmation = password
+    end
     user.save
     user
   end
