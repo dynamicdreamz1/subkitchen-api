@@ -104,7 +104,7 @@ module Accounts
           current_user.update(profile_image: image)
           current_user
         else
-          error!({errors: {base: ['image is too small']}}, 422)
+          error!({errors: {profile_image: ['image is too small']}}, 422)
         end
       end
 

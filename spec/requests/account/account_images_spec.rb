@@ -26,7 +26,7 @@ describe Accounts::Api, type: :request do
       it 'should not upload profile image when image too small' do
         post '/api/v1/account/profile_image', {image: too_small_image}, auth_header_for(user)
 
-        expect(json['errors']).to eq({'base'=>['image is too small']})
+        expect(json['errors']).to eq({'profile_image'=>['image is too small']})
       end
     end
 
