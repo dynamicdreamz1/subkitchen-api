@@ -78,13 +78,13 @@ ActiveAdmin.register User do
 
       if user.has_company
         tab 'Company' do
-          table_for user.company do
-            column(:company_name)
-            column(:address)
-            column(:region)
-            column(:zip)
-            column(:city)
-            column(:country)
+          attributes_table do
+            row('Company Name'){ user.company.company_name }
+            row('Address'){ user.company.address }
+            row('Region'){ user.company.region }
+            row('Zip'){ user.company.zip }
+            row('City'){ user.company.city }
+            row('Country'){ user.company.country }
           end
         end
       end
