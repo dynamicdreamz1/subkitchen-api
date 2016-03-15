@@ -31,8 +31,8 @@ class OauthRegister
     user.oauth_registration = true
     user.uid = uid
     user.provider = provider
-    user.name = name
-    user.email = email
+    user.name ||= name
+    user.email ||= email
     user.save
     user
   end
