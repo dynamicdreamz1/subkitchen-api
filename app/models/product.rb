@@ -6,7 +6,7 @@ class Product < ActiveRecord::Base
   has_many :orders, through: :order_items
 
   validates_with PublishedValidator
-  after_create SetProductPrice.new
+  after_create SetProduct.new
   after_update SendOrderIfItemsReady.new, if: :design_id_changed?
 
   attachment :image, content_type: %w(image/jpeg image/png image/jpg)
@@ -15,6 +15,7 @@ class Product < ActiveRecord::Base
   acts_as_taggable
 
   default_scope { where(is_deleted: false) }
+  scope :deleted, -> { unscoped.where(is_deleted: true) }
   scope :ready_to_print, -> { where.not(design_id: nil)}
   scope :waiting, -> { joins(:orders).where(orders: { order_status: 'processing' } ) }
   scope :published_all, -> { where(published: true) }

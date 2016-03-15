@@ -33,11 +33,13 @@ ActiveAdmin.register ProductTemplate do
     column(:profit)
     column(:created_at)
     column(:price)
-    actions defaults: true do |template|
+    actions defaults: false do |template|
       if template.is_deleted
-        link_to 'Restore', restore_admin_product_template_path(template), method: :put
+        link_to('Restore', restore_admin_product_template_path(template), method: :put)
       else
-        link_to 'Delete', delete_admin_product_template_path(template), method: :put, data: {confirm: 'Are you sure?'}
+        link_to('View', admin_product_template_path(template), method: :get) + ' ' +
+        link_to('Edit', edit_admin_product_template_path(template), method: :get) + ' ' +
+        link_to('Delete', delete_admin_product_template_path(template), method: :put, data: {confirm: 'Are you sure? If you delete this template, all the products related to this template will be deleted'})
       end
     end
   end

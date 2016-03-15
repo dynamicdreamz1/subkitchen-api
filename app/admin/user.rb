@@ -4,6 +4,7 @@ ActiveAdmin.register User do
   scope :all
   scope :artists
   scope :not_artists
+  scope :deleted
 
   filter :email_cont, as: :string
   filter :name_cont, as: :string
@@ -12,17 +13,26 @@ ActiveAdmin.register User do
   filter :created_at
   filter :has_company
 
-
+  member_action :delete, method: :put do
+    DeleteUser.new(resource).call
+    resource.products.map{ |p| p.update(is_deleted: true) }
+    redirect_to admin_users_path, notice: 'User Deleted'
+  end
 
   index do
     column('Avatar') do |user|
       attachment_image_tag(user, :profile_image, :fit, 50, 50)
     end
-    column(:email)
     column(:name)
+    column(:email)
     column(:artist)
     column(:status)
-    actions
+    actions defaults: false do |user|
+      unless user.is_deleted
+        link_to('View', admin_user_path(user), method: :get) + ' ' +
+        link_to('Delete', delete_admin_user_path(user), method: :put, data: {confirm: 'Are you sure? If you delete this user, all the products created by this user will be deleted'})
+      end
+    end
   end
 
   show do |user|

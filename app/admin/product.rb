@@ -4,9 +4,10 @@ ActiveAdmin.register Product do
   actions :index, :show, :update, :edit
 
 
-  scope :all, default: true
+  scope :all
   scope :ready_to_print
-  scope :waiting, default: false
+  scope :waiting
+  scope :deleted
 
   filter :published
   filter :name_cont, as: :string, label: 'Name'
@@ -17,14 +18,24 @@ ActiveAdmin.register Product do
     column('Image') do |product|
       attachment_image_tag(product, :image, :fit, 50, 50)
     end
-    column(:author)
+    column('Author') do |product|
+      if product.author
+        link_to product.author.name, admin_user_path(product.author_id)
+      else
+        User.deleted.find_by(id: product.author_id).name
+      end
+    end
     column(:name)
     column(:published)
     column(:price)
-    column('Type') { |product| product.product_template.product_type }
-    actions
+    column(:template_type)
+    actions defaults: false do |product|
+      unless product.is_deleted
+        link_to('View', admin_product_path(product), method: :get) + ' ' +
+        link_to('Edit', edit_admin_product_path(product), method: :get)
+      end
+    end
   end
-
 
   form do |f|
     f.inputs 'Product Design', multipart: true do

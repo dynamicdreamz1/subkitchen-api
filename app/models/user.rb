@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :oauth_registration
 
-  validates :email, presence: true, email: true, uniqueness: true, unless: :oauth_registration?
+  validates :email, presence: true, email: true, uniqueness: true, unless: :oauth_registration?, on: :create
   validates :handle, uniqueness: { allow_nil: true, allow_blank: true }, presence: { if: :artist }
   validates :name, presence: true, uniqueness: true
   validate do |record|
@@ -31,6 +31,8 @@ class User < ActiveRecord::Base
   attachment :profile_image, content_type: %w(image/jpeg image/png image/jpg)
   attachment :shop_banner, content_type: %w(image/jpeg image/png image/jpg)
 
+  default_scope { where(is_deleted: false) }
+  scope :deleted, -> { unscoped.where(is_deleted: true) }
   scope :with_reminder_token, lambda { |token| where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token) }
   scope :with_confirm_token, lambda { |token| where(confirm_token: token) }
   scope :artists, lambda { where(artist: true) }
@@ -111,5 +113,9 @@ class User < ActiveRecord::Base
 
   def oauth_registration?
     @oauth_registration.nil? ? false : @oauth_registration
+  end
+
+  def is_deleted?
+    is_deleted
   end
 end
