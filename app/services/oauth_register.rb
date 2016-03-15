@@ -33,6 +33,11 @@ class OauthRegister
     user.provider = provider
     user.name ||= name
     user.email ||= email
+    if user.password_digest.blank?
+      password = SecureRandom.uuid
+      user.password = password
+      user.password_confirmation = password
+    end
     user.save
     user
   end

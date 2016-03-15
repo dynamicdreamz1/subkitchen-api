@@ -6,6 +6,13 @@ module Accounts
     end
 
     resource :account do
+      desc 'get current user'
+      get do
+        authenticate!
+        current_user
+      end
+
+
       desc 'update email'
       params do
         optional :email
@@ -75,7 +82,10 @@ module Accounts
       end
       post 'verification' do
         authenticate!
-        VerifyArtist.new(current_user, params).call || error!(current_user, :unprocessable_entity)
+        result = VerifyArtist.new(current_user, params).call
+        return result if result
+        status(:unprocessable_entity)
+        current_user
       end
 
       desc 'update company address'
@@ -101,7 +111,13 @@ module Accounts
         authenticate!
         image = ActionDispatch::Http::UploadedFile.new(params.image)
         if CheckProfileImageSize.new(params.image).call
-          current_user.update(profile_image: image)
+          current_user.profile_image = image
+          current_user.valid?
+          if current_user.errors[:profile_image].blank?
+            current_user.errors.delete(:profile_image)
+            current_user.save(validate: false)
+          end
+          current_user.reload
           current_user
         else
           error!({errors: {profile_image: ['image is too small']}}, 422)
