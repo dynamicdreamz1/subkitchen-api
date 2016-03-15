@@ -76,6 +76,7 @@ group :test do
   gem 'webmock'
   gem 'vcr'
   gem 'json-schema'
+  gem "fakeredis", :git => "git://github.com/guilleiguaran/fakeredis.git", :require => "fakeredis/rspec"
 end
 
 group :development, :test do
