@@ -9,6 +9,18 @@ RSpec.describe Order, type: :model do
     @user = create(:user)
   end
 
+  it 'should return purchased orders' do
+    order = create(:order, purchased: true)
+    expect(Order.completed).to contain_exactly(order)
+  end
+
+  describe 'SetTaxAndShipping on create callback' do
+    it 'should set tax and shipping cost' do
+      expect(@order.shipping_cost).to eq(Config.shipping_cost.to_d)
+      expect(@order.tax).to eq(Config.tax.to_d)
+    end
+  end
+
   context 'status' do
     it 'has default creating status' do
       expect(@order.order_status).to eq('creating')

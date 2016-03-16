@@ -1,6 +1,6 @@
 describe Products::Api, type: :request do
   let(:product_template){ create(:product_template) }
-  let(:artist){ create(:user, artist: true) }
+  let(:artist){ create(:user, status: 'verified', artist: true) }
   let(:user){ create(:user, artist: false) }
 
   describe '/api/v1/products/publish' do

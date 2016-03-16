@@ -8,10 +8,21 @@ RSpec.describe OrderItem, type: :model do
     @order_item = create(:order_item, product: @product )
   end
 
-  it 'sets price' do
-    price = @product.price
-    @product.price = 100
-    @product.save
-    expect(@order_item.price).to eq(price)
+  describe 'SetOrderItem on create callback' do
+    it 'should set price' do
+      expect(@order_item.price).to eq(@product.price)
+    end
+
+    it 'should set product name' do
+      expect(@order_item.product_name).to eq(@product.name)
+    end
+
+    it 'should set product description' do
+      expect(@order_item.product_description).to eq(@product.description)
+    end
+
+    it 'should set product author' do
+      expect(@order_item.product_author).to eq(@product.author.name)
+    end
   end
 end

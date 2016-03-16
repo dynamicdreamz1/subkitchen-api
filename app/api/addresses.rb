@@ -22,7 +22,7 @@ module Addresses
       end
       put '/current' do
         authenticate!
-        UpdateUser.new(current_user, params.address).update_address
+        UpdateUserAddress.new(current_user, params.address).call
         AddressSerializer.new(current_user)
       end
     end

@@ -21,5 +21,6 @@ FactoryGirl.define do
     phone '792541588'
     profile_image_id '1234'
     shop_banner_id '1234'
+    email_confirmed true
   end
 end

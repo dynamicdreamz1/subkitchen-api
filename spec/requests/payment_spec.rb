@@ -15,6 +15,8 @@ describe Payments::Api, type: :request do
                  region: 'region',
                  country: 'country',
                  email: 'test@example.com'}}
+  let(:order) { create(:order, user: user, total_cost: 100) }
+  let(:item) { create(:order_item, order: order, product: product) }
 
   before(:all) do
     create(:config, name: 'tax', value: '6.0')
@@ -26,10 +28,6 @@ describe Payments::Api, type: :request do
   describe '/api/v1/orders/:uuid/payment' do
     describe 'GET' do
       it 'should get serialized order' do
-        order = create(:order, user: user)
-        product = create(:product)
-        create(:order_item, order: order, product: product)
-
         get "/api/v1/orders/#{order.uuid}/payment"
 
         expect(response).to have_http_status(:success)
@@ -38,10 +36,10 @@ describe Payments::Api, type: :request do
 
       it 'should update items before checkout' do
         order = create(:order, user: nil)
-        product = create(:product)
         create(:order_item, order: order, product: product)
+
         params = { uuid: order.uuid }
-        DeleteResource.new(product).call
+        DeleteProduct.new(product).call
 
         get "/api/v1/orders/#{order.uuid}/payment"
 
@@ -52,33 +50,45 @@ describe Payments::Api, type: :request do
 
     describe 'POST' do
       it 'should create stripe payment' do
-        order = create(:order, user: user)
-        product = create(:product)
-        create(:order_item, order: order, product: product)
-
         post "/api/v1/orders/#{order.uuid}/payment", params
 
         expect(order.payment).not_to be_nil
       end
 
       it 'should be success' do
-        order = create(:order, user: user)
-        product = create(:product)
-        create(:order_item, order: order, product: product)
-
         post "/api/v1/orders/#{order.uuid}/payment", params
 
         expect(response).to have_http_status(:success)
       end
 
-      it 'should change order status' do
-        order = create(:order, user: user, total_cost: 100)
-        product = create(:product)
-        create(:order_item, order: order, product: product)
-
+      it 'should change payment status' do
         post "/api/v1/orders/#{order.uuid}/payment", params
 
         expect(order.payment.payment_status).to eq('completed')
+      end
+
+      it 'should change order purchased' do
+        post "/api/v1/orders/#{order.uuid}/payment", params
+
+        order.reload
+        expect(order.purchased).to be_truthy
+      end
+
+      it 'should set order purchased at' do
+        new_time = Time.local(2008, 9, 1, 12, 0, 0)
+        Timecop.freeze(new_time)
+
+        post "/api/v1/orders/#{order.uuid}/payment", params
+
+        order.reload
+        expect(order.purchased_at).to eq(new_time)
+      end
+
+      it 'should change order state' do
+        post "/api/v1/orders/#{order.uuid}/payment", params
+
+        order.reload
+        expect(order.active).to be_falsey
       end
 
       it 'should raise error when amount zero' do
@@ -90,10 +100,6 @@ describe Payments::Api, type: :request do
       end
 
       it 'should add address and email to order' do
-        order = create(:order, user: user, total_cost: 100)
-        product = create(:product)
-        create(:order_item, order: order, product: product)
-
         post "/api/v1/orders/#{order.uuid}/payment", params
 
         order.reload

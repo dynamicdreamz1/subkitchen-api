@@ -34,7 +34,7 @@ describe Products::Api, type: :request do
       order = create(:order, user: user)
       product = create(:product)
       create(:order_item, order: order, product: product)
-      DeleteResource.new(product).call
+      DeleteProduct.new(product).call
 
       post "/api/v1/orders/#{order.uuid}/payment", @params
 

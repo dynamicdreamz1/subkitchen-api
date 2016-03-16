@@ -2,7 +2,9 @@
 require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start
 require 'simplecov'
-SimpleCov.start 'rails'
+SimpleCov.start do
+  add_filter 'app/admin/'
+end
 ENV['RAILS_ENV'] ||= 'test'
 ENV['MAILGUN_DOMAIN'] ||= 'isp.dev'
 require File.expand_path('../../config/environment', __FILE__)

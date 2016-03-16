@@ -64,7 +64,7 @@ module Accounts
       end
       post 'address' do
         authenticate!
-        UpdateUser.new(current_user, params).update_address
+        UpdateUserAddress.new(current_user, params).call
       end
 
 
@@ -82,10 +82,14 @@ module Accounts
       end
       post 'verification' do
         authenticate!
-        result = VerifyArtist.new(current_user, params).call
-        return result if result
-        status(:unprocessable_entity)
-        current_user
+        if current_user.email_confirmed
+          result = VerifyArtist.new(current_user, params).call
+          return result if result
+          status(:unprocessable_entity)
+          current_user
+        else
+          error!({errors: {base: ['confirm your email first']}}, 422)
+        end
       end
 
       desc 'update company address'

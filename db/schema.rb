@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(version: 20160315131653) do
     t.integer  "author_id"
     t.datetime "created_at",                                                          null: false
     t.datetime "updated_at",                                                          null: false
-    t.string   "status",                                      default: "unpublished"
+    t.string   "status",                                      default:  "unpublished"
     t.integer  "product_template_id"
     t.string   "description"
     t.integer  "likes_count",                                 default: 0

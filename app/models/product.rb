@@ -8,6 +8,7 @@ class Product < ActiveRecord::Base
   validates_with PublishedValidator
   after_create SetProduct.new
   after_update SendOrderIfItemsReady.new, if: :design_id_changed?
+  after_save SetPublishedAt.new, if: :published_changed?
 
   attachment :image, content_type: %w(image/jpeg image/png image/jpg)
   attachment :design
@@ -17,7 +18,7 @@ class Product < ActiveRecord::Base
   default_scope { where(is_deleted: false) }
   scope :deleted, -> { unscoped.where(is_deleted: true) }
   scope :ready_to_print, -> { where.not(design_id: nil)}
-  scope :waiting, -> { joins(:orders).where(orders: { order_status: 'processing' } ) }
+  scope :waiting, -> { joins(:orders).where(design_id: nil).where(orders: { order_status: 'processing' } ) }
   scope :published_all, -> { where(published: true) }
   scope :published, -> (user) { where(published: true, author: user) }
   scope :published_weekly, -> (user) { where(published: true, author: user, published_at: 1.week.ago..DateTime.now) }

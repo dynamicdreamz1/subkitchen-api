@@ -61,7 +61,7 @@ module Products
       delete ':id' do
         product = Product.find_by(id: params.id)
         if product
-          DeleteResource.new(product).call
+          DeleteProduct.new(product).call
         else
           error!({errors: {base: ['no product with given id']}}, 422)
         end

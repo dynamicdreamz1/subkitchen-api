@@ -96,6 +96,12 @@ describe Products::Api, type: :request do
           serialized_products = ProductListSerializer.new(sorted_products).as_json
           expect(response.body).to eq(serialized_products.to_json)
         end
+
+        it 'should raise error' do
+          expect do
+            get '/api/v1/products', {sorted_by: 'invalid'}
+          end.to raise_error(ArgumentError)
+        end
       end
 
       context 'filter' do

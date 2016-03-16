@@ -8,5 +8,6 @@ FactoryGirl.define do
     product_template {create(:product_template)}
     price 1
     image_id '1234'
+    published false
   end
 end

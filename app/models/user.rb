@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true, email: true, uniqueness: true, unless: :oauth_registration?, on: :create
   validates :handle, uniqueness: { allow_nil: true, allow_blank: true }, presence: { if: :artist }
   validates :name, presence: true, uniqueness: true
+  validates_with ArtistValidator
   validate do |record|
     record.errors.add(:password, :blank) unless record.password_digest.present? || oauth_registration?
   end
@@ -113,9 +114,5 @@ class User < ActiveRecord::Base
 
   def oauth_registration?
     @oauth_registration.nil? ? false : @oauth_registration
-  end
-
-  def is_deleted?
-    is_deleted
   end
 end
