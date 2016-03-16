@@ -11,11 +11,8 @@ class CheckOrderItems
 
   def order_items_exist?
     @order.order_items.each do |item|
-      if item.product
-        true
-      else
-        return false
-      end
+      return false if item.product.is_deleted
     end
+    true
   end
 end

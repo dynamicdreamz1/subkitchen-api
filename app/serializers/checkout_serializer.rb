@@ -33,14 +33,14 @@ class CheckoutSerializer
         id: item.id,
         quantity: item.quantity,
         size: item.size,
-        image: item.product.image_url }
+        image: Figaro.env.app_host + Refile.attachment_url(item.product, :image, format: :png)}
     end
   end
 
   def deleted_items
     @deleted_items.map do |item|
       { price: item.price,
-        name: item.product_name,
+        name: item.product.name,
         id: item.id,
         quantity: item.quantity,
         size: item.size }
