@@ -14,8 +14,8 @@ module Sessions
         requires :password, type: String
       end
       post 'login' do
-        user = User.find_by(email: params.email)
-        if user && user.authenticate(params.password)
+        user = User.find_by!(email: params.email)
+        if user.authenticate(params.password)
           user
         else
           error!({errors: {base: ['invalid email or password']}}, 422)
@@ -80,12 +80,8 @@ module Sessions
         requires :email, type: String
       end
       post 'forgot_password' do
-        user = User.find_by(email: params.email)
-        if user
-          SendNewPasswordLink.new(user).call
-        else
-          error!({errors: {base: ['invalid email']}}, 422)
-        end
+        user = User.find_by!(email: params.email)
+        SendNewPasswordLink.new(user).call
       end
 
       desc 'set new password through link'

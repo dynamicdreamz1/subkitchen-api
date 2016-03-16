@@ -5,7 +5,7 @@ class Api < Grape::API
   format :json
 
   rescue_from ActiveRecord::RecordNotFound do
-    error!('', 404)
+    error!({errors: {base: ['record not found']}}, 404)
   end
 
   rescue_from ActiveRecord::RecordNotUnique do

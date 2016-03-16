@@ -5,8 +5,7 @@ module Payments
 
       desc 'payment page'
       get ':uuid/payment' do
-        order = Order.find_by(uuid: params.uuid)
-        error!({errors: {base: ['cannot find order']}}, 422) if order.nil?
+        order = Order.find_by!(uuid: params.uuid)
         if CheckOrderItems.new(order).call
           CheckoutSerializer.new(order).as_json
         else
@@ -29,8 +28,7 @@ module Payments
         optional :return_path, type: String
       end
       post ':uuid/payment' do
-        order = Order.find_by(uuid: params.uuid)
-        error!({errors: {base: ['cannot find order']}}, 422) if order.nil?
+        order = Order.find_by!(uuid: params.uuid)
         AddOrderAddress.new(params, order).call
         unless CheckOrderItems.new(order).call
           UpdateOrderItems.new(order).call

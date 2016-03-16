@@ -15,7 +15,7 @@ describe Sessions::Api, type: :request do
       it 'should not authenticate' do
         post '/api/v1/sessions/login', email: 'test@test.test', password: 'password'
 
-        expect(json['errors']).to eq({'base'=>['invalid email or password']})
+        expect(json['errors']).to eq({'base'=>['record not found']})
       end
     end
 
@@ -109,8 +109,8 @@ describe Sessions::Api, type: :request do
         expect do
           post '/api/v1/sessions/forgot_password', email: 'invalid@email.com'
         end.to change { ActionMailer::Base.deliveries.count }.by(0)
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(json['errors']).to eq({'base'=>['invalid email']})
+        expect(response).to have_http_status(:not_found)
+        expect(json['errors']).to eq({'base'=>['record not found']})
       end
 
       describe 'SET PASSWORD' do

@@ -2,7 +2,6 @@ module AccountsArtist
   class Api < Grape::API
 
     resource :account do
-
       resource :artist do
 
         desc 'artist stats'

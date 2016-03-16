@@ -60,13 +60,9 @@ module Orders
         end
         delete ':id' do
           order = Order.find_by!(uuid: params.uuid)
-          item = order.order_items.find_by(id: params.id)
-          if item
-            order = item.order
-            item.destroy
-          else
-            error!({errors: {base: ['cannot find item']}}, 422)
-          end
+          item = order.order_items.find(params.id)
+          order = item.order
+          item.destroy
           UpdateOrder.new(order).call
           OrderSerializer.new(order.reload).as_json
         end

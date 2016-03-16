@@ -20,18 +20,14 @@ module Products
         if products
           ProductListSerializer.new(products).as_json
         else
-          error!({errors: {base: ['no products matching given criteria']}}, 422)
+          error!({errors: {base: ['no products matching given criteria']}}, 404)
         end
       end
 
       desc 'return product by id'
       get ':id' do
-        product = Product.find_by(id: params.id)
-        if product
-          ProductSerializer.new(product).as_json
-        else
-          error!({errors: {base: ['no product with given id']}}, 422)
-        end
+        product = Product.find(params.id)
+        ProductSerializer.new(product).as_json
       end
 
       desc 'create product'
@@ -59,12 +55,8 @@ module Products
 
       desc 'remove product'
       delete ':id' do
-        product = Product.find_by(id: params.id)
-        if product
-          DeleteProduct.new(product).call
-        else
-          error!({errors: {base: ['no product with given id']}}, 422)
-        end
+        product = Product.find(params.id)
+        DeleteProduct.new(product).call
         ProductSerializer.new(product).as_json
       end
 
@@ -74,15 +66,11 @@ module Products
       end
       post 'publish' do
         authenticate!
-        product = Product.find_by(id: params.product_id)
-        if product
-          if PublishProduct.new(product, current_user).call
-            ProductSerializer.new(product).as_json
-          else
-            error!({errors: {base: ['cannot publish not own product']}}, 422)
-          end
+        product = Product.find(params.product_id)
+        if PublishProduct.new(product, current_user).call
+          ProductSerializer.new(product).as_json
         else
-          error!({errors: {base: ['no product with given id or user is not an author']}}, 422)
+          error!({errors: {base: ['cannot publish not own product']}}, 422)
         end
       end
     end
