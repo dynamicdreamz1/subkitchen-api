@@ -27,10 +27,13 @@ class CheckoutSerializer
   end
 
   def items
-    order.order_items.map do |item|
+    order.order_items
+      .reject{|item| item.product.is_deleted}
+      .map do |item|
       { price: item.price,
         name: item.product_name,
         id: item.id,
+        is_deleted: item.product.is_deleted,
         quantity: item.quantity,
         size: item.size,
         image: Figaro.env.app_host + Refile.attachment_url(item.product, :image, format: :png)}
@@ -43,7 +46,8 @@ class CheckoutSerializer
         name: item.product.name,
         id: item.id,
         quantity: item.quantity,
-        size: item.size }
+        size: item.size,
+        image: Figaro.env.app_host + Refile.attachment_url(item.product, :image, format: :png)}
     end
   end
 
