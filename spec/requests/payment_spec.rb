@@ -36,14 +36,19 @@ describe Payments::Api, type: :request do
 
       it 'should update items before checkout' do
         order = create(:order, user: nil)
-        create(:order_item, order: order, product: product)
-
-        params = { uuid: order.uuid }
-        DeleteProduct.new(product).call
+        product = create(:product, price: 12)
+        product.update(price: 12)
+        create(:order_item, order: order, product: product, price: 12)
+        product = create(:product, price: 30)
+        product.update(price: 30)
+        create(:order_item, order: order, product: product, price: 30)
+        UpdateOrder.new(order).call
+        DeleteResource.new(product).call
 
         get "/api/v1/orders/#{order.uuid}/payment"
 
         expect(json['deleted_items']).not_to be_nil
+        expect(json['order']['subtotal'].to_f).to eq(12.0)
         expect(response).to match_response_schema('checkout')
       end
     end
