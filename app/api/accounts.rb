@@ -5,7 +5,7 @@ module Accounts
       IsoCountryCodes.for_select
     end
 
-    resource :account do
+    resources :account do
       desc 'get current user'
       get do
         authenticate!

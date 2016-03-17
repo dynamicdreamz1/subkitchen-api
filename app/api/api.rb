@@ -14,7 +14,7 @@ class Api < Grape::API
 
   helpers do
     def authenticate!
-      error!('401 Unauthorized', 401) unless current_user
+      error!({errors: {base: ['401 Unauthorized']}}, 401) unless current_user
     end
 
     def current_user
@@ -33,6 +33,7 @@ class Api < Grape::API
   mount Payments::Api
   mount Likes::Api
   mount Promoters::Api
+  mount Comments::Api
 
 
   add_swagger_documentation(api_version: 'v1', hide_documentation_path: true, base_path: '/api')

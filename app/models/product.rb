@@ -4,6 +4,7 @@ class Product < ActiveRecord::Base
   has_many :order_items
   has_many :likes, as: :likeable
   has_many :orders, through: :order_items
+  has_many :comments
 
   validates_with PublishedValidator
   after_create SetProduct.new

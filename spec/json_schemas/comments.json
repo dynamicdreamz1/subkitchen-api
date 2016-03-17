@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": ["integer"]},
+          "user_id": {"type": ["integer"]},
+          "product_id": {"type": ["integer"]},
+          "content": {"type": "string"},
+          "errors": {"type": "object"}
+        },
+        "required": [
+          "id",
+          "user_id",
+          "product_id",
+          "content"
+        ]
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "current_page": {"type": "integer"},
+        "total_pages": {"type": "integer"}
+      }
+    }
+  },
+  "required": [
+    "comments",
+    "meta"
+  ]
+}

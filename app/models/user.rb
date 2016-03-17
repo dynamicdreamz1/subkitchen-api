@@ -36,10 +36,10 @@ class User < ActiveRecord::Base
 
   default_scope { where(is_deleted: false) }
   scope :deleted, -> { unscoped.where(is_deleted: true) }
-  scope :with_reminder_token, lambda { |token| where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token) }
-  scope :with_confirm_token, lambda { |token| where(confirm_token: token) }
-  scope :artists, lambda { where(artist: true) }
-  scope :not_artists, lambda { where(artist: false) }
+  scope :with_reminder_token, -> (token) { where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token) }
+  scope :with_confirm_token, -> (token) { where(confirm_token: token) }
+  scope :artists, -> { where(artist: true) }
+  scope :not_artists, -> { where(artist: false) }
 
   def as_json(params = {})
     UserPublicSerializer.new(self).as_json(params).merge(auth_token: auth_token)
