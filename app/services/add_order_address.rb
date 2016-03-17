@@ -14,12 +14,14 @@ class AddOrderAddress
   end
 
   def add_address
-    order.update( full_name: params.full_name,
-                  address: params.address,
-                  city: params.city,
-                  zip: params[:zip],
-                  region: params.region,
-                  country: params.country,
-                  email: params.email)
+    order.full_name = params.full_name
+    order.city      = params.city
+    order.address   = params.address
+    order.zip       = params[:zip]
+    order.region    = params.region
+    order.country   = params.country
+    order.email     = params.email
+
+    order.save(context: :address)
   end
 end
