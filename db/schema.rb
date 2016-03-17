@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317202028) do
+ActiveRecord::Schema.define(version: 20160317203414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,9 +153,8 @@ ActiveRecord::Schema.define(version: 20160317202028) do
   create_table "products", force: :cascade do |t|
     t.string   "name"
     t.integer  "author_id"
-    t.datetime "created_at",                                                          null: false
-    t.datetime "updated_at",                                                          null: false
-    t.string   "status",                                      default: "unpublished"
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
     t.integer  "product_template_id"
     t.string   "description"
     t.integer  "likes_count",                                 default: 0
@@ -212,7 +211,6 @@ ActiveRecord::Schema.define(version: 20160317202028) do
     t.string   "region",                       default: ""
     t.string   "country",                      default: ""
     t.string   "phone",                        default: ""
-    t.boolean  "has_company",                  default: false
     t.string   "profile_image_id"
     t.string   "shop_banner_id"
     t.boolean  "is_deleted",                   default: false
