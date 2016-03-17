@@ -3,8 +3,8 @@ describe Products::Api, type: :request do
   let(:product) { create(:product) }
 
   before(:all) do
-    create(:config, name: 'tax', value: '6.0')
-    create(:config, name: 'shipping_cost', value: '7.0')
+    create(:config, name: 'tax', value: '6')
+    create(:config, name: 'shipping_cost', value: '7.00')
     create(:config, name: 'shipping_info', value: 'info')
   end
 
@@ -106,8 +106,8 @@ describe Products::Api, type: :request do
       expect(order.subtotal_cost).to eq(10)
       expect(order.total_cost).to eq(17.6)
       expect(order.tax_cost).to eq(0.6)
-      expect(order.shipping_cost).to eq(7.0)
-      expect(order.tax).to eq(6.0)
+      expect(order.shipping_cost).to eq(7.00)
+      expect(order.tax).to eq(6)
     end
   end
 end

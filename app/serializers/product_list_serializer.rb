@@ -1,4 +1,6 @@
 class ProductListSerializer
+  include ApplicationHelper
+
   def as_json(options={})
     data = {
       products: serialized_products,
@@ -32,7 +34,7 @@ class ProductListSerializer
     {
         id: product.id,
         author: (product.author ? product.author.name : nil),
-        price: product.product_template.price.to_s,
+        price: number_to_price(product.product_template.price),
         size: product.product_template.size,
         description: product.description,
         name: product.name,

@@ -3,7 +3,7 @@
   "properties": {
     "total_sales": {"type": "number"},
     "total_sales_percentage": {"type": "number"},
-    "earnings": {"type": "number"},
+    "earnings": {"type": "string"},
     "earnings_percentage": {"type": "number"},
     "published_designs": {"type": "number"},
     "published_designs_percentage": {"type": "number"},

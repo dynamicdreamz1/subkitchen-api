@@ -3,8 +3,8 @@ describe Products::Api, type: :request do
   let(:product) { create(:product) }
 
   before(:all) do
-    create(:config, name: 'tax', value: '6.0')
-    create(:config, name: 'shipping_cost', value: '7.0')
+    create(:config, name: 'tax', value: '6')
+    create(:config, name: 'shipping_cost', value: '7.00')
     create(:config, name: 'shipping_info', value: 'info')
   end
 
@@ -36,7 +36,7 @@ describe Products::Api, type: :request do
     end
 
     it 'updates total/subtotal after deleting item from order' do
-      order = create(:order, user: user, shipping_cost: 7.0, tax: 6.0, subtotal_cost: 10, total_cost: 17.6, tax_cost: 0.6)
+      order = create(:order, user: user, shipping_cost: 7.00, tax: 6, subtotal_cost: 10, total_cost: 17.6, tax_cost: 0.6)
       item = create(:order_item, order: order, product: product, price: 10)
 
       delete "/api/v1/orders/item/#{item.id}", { uuid: order.uuid }
@@ -45,8 +45,8 @@ describe Products::Api, type: :request do
       expect(order.subtotal_cost).to eq(0)
       expect(order.total_cost).to eq(0)
       expect(order.tax_cost).to eq(0)
-      expect(order.shipping_cost).to eq(7.0)
-      expect(order.tax).to eq(6.0)
+      expect(order.shipping_cost).to eq(7.00)
+      expect(order.tax).to eq(6)
     end
   end
 end

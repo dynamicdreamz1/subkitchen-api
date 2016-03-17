@@ -12,7 +12,6 @@ module Accounts
         current_user
       end
 
-
       desc 'update email'
       params do
         optional :email
@@ -50,23 +49,6 @@ module Accounts
         end
         current_user
       end
-
-      desc 'updates shipping info'
-      params do
-        requires :first_name, type: String
-        requires :last_name, type: String
-        requires :address, type: String
-        requires :city, type: String
-        requires :zip, type: String
-        requires :region, type: String
-        requires :country, type: String
-        optional :phone, type: String
-      end
-      post 'address' do
-        authenticate!
-        UpdateUserAddress.new(current_user, params).call
-      end
-
 
       desc 'user verification'
       params do

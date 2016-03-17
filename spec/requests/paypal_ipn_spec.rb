@@ -5,8 +5,8 @@ describe PaypalHooks::Api, type: :request do
   let(:order_payment){ create(:payment, payable: order) }
 
   before(:all) do
-    create(:config, name: 'tax', value: '6.0')
-    create(:config, name: 'shipping_cost', value: '7.0')
+    create(:config, name: 'tax', value: '6')
+    create(:config, name: 'shipping_cost', value: '7.00')
     create(:config, name: 'shipping_info', value: 'info')
   end
 

@@ -1,13 +1,15 @@
 class CheckoutSerializer
+  include ApplicationHelper
+
   def as_json(options={})
     data = { order:
                  { uuid: order.uuid,
                    status: order.order_status,
-                   subtotal: order.subtotal_cost,
-                   shipping_cost: order.shipping_cost,
+                   subtotal: number_to_price(order.subtotal_cost),
+                   shipping_cost: number_to_price(order.shipping_cost),
                    tax: order.tax,
-                   tax_cost: order.tax_cost,
-                   total_cost: order.total_cost,
+                   tax_cost: number_to_price(order.tax_cost),
+                   total_cost: number_to_price(order.total_cost),
                    items: items }}
     data.merge(shipping_address) if order.user
 
@@ -30,7 +32,7 @@ class CheckoutSerializer
     order.order_items
       .reject{|item| item.product.is_deleted}
       .map do |item|
-      { price: item.price,
+      { price: number_to_price(item.price),
         name: item.product_name,
         id: item.id,
         is_deleted: item.product.is_deleted,
@@ -42,7 +44,7 @@ class CheckoutSerializer
 
   def deleted_items
     @deleted_items.map do |item|
-      { price: item.price,
+      { price: number_to_price(item.price),
         name: item.product.name,
         id: item.id,
         quantity: item.quantity,

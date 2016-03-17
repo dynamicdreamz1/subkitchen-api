@@ -13,7 +13,7 @@ describe AccountsArtist::Api, type: :request do
     it 'should not get statistics for user' do
       get '/api/v1/account/artist/stats', {}, auth_header_for(user)
 
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unauthorized)
       expect(json['errors']).to eq({'base'=>['you are not authorized']})
     end
   end

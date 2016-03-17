@@ -3,8 +3,8 @@ describe Products::Api, type: :request do
   let(:product) { create(:product) }
 
   before(:all) do
-    create(:config, name: 'tax', value: '6.0')
-    create(:config, name: 'shipping_cost', value: '7.0')
+    create(:config, name: 'tax', value: '6')
+    create(:config, name: 'shipping_cost', value: '7.00')
     create(:config, name: 'shipping_info', value: 'info')
     @params = { return_path: '',
                          payment_type: 'paypal',

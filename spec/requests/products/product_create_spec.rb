@@ -52,7 +52,7 @@ describe Products::Api, type: :request do
           product = Product.first
           expect(product).to be_nil
           expect(response).to have_http_status(:unprocessable_entity)
-          expect(response).to match_response_schema('single_product')
+          expect(json['errors']).to eq({'published'=>["can't be true when you're not an artist"]})
         end
       end
 
@@ -84,7 +84,7 @@ describe Products::Api, type: :request do
           product = Product.first
           expect(product).to be_nil
           expect(response).to have_http_status(:unprocessable_entity)
-          expect(response).to match_response_schema('single_product')
+          expect(json['errors']).to eq({'published'=>["can't be true when you're not an artist"]})
         end
       end
     end

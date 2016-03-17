@@ -35,9 +35,9 @@ shipping_info = <<-EOT
 </p>
 EOT
 
-Config.create(name: 'tax', value: '7.0', input_type: 'short_text')
+Config.create(name: 'tax', value: '7.00', input_type: 'short_text')
 Config.create(name: 'shipping_info', value: shipping_info, input_type: 'long_text')
-Config.create(name: 'shipping_cost', value: '6.0', input_type: 'short_text')
+Config.create(name: 'shipping_cost', value: '6', input_type: 'short_text')
 Config.create(name: 'banner_img', config_image: '', input_type: 'image')
 Config.create(name: 'banner_url', value: '', input_type: 'short_text')
 Config.create(name: 'promo_1_img', config_image: '', input_type: 'image')

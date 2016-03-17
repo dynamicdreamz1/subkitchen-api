@@ -45,7 +45,7 @@ module Products
           if product.valid?
             product.save
           else
-            status :unprocessable_entity
+            error!({errors: product.errors.messages}, 422)
           end
           ProductSerializer.new(product).as_json
         else

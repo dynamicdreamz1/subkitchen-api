@@ -10,7 +10,7 @@ module AccountsArtist
           if current_user.artist
             StatsSerializer.new(current_user).as_json
           else
-            error!({errors: {base: ['you are not authorized']}}, 422)
+            error!({errors: {base: ['you are not authorized']}}, 401)
           end
         end
       end

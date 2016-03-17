@@ -19,8 +19,8 @@ describe Payments::Api, type: :request do
   let(:item) { create(:order_item, order: order, product: product) }
 
   before(:all) do
-    create(:config, name: 'tax', value: '6.0')
-    create(:config, name: 'shipping_cost', value: '7.0')
+    create(:config, name: 'tax', value: '6')
+    create(:config, name: 'shipping_cost', value: '7.00')
     create(:config, name: 'shipping_info', value: 'info')
   end
 
