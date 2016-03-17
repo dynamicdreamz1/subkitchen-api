@@ -46,8 +46,8 @@ ActiveAdmin.register Order do
           column(:price)
           column(:quantity)
           column(:size)
-          column(:product_name)
-          column(:product_author)
+          column('Product Name'){ |item| item.product.name }
+          column('Product Author'){ |item| item.product.author }
           column(''){ |item| link_to 'View', admin_product_path(item.product)}
         end
       end

@@ -33,7 +33,7 @@ class CheckoutSerializer
       .reject{|item| item.product.is_deleted}
       .map do |item|
       { price: number_to_price(item.price),
-        name: item.product_name,
+        name: item.product.name,
         id: item.id,
         is_deleted: item.product.is_deleted,
         quantity: item.quantity,

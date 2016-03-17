@@ -51,4 +51,8 @@ class Product < ActiveRecord::Base
           :with_tags
       ]
   )
+
+  def product_template
+    ProductTemplate.unscoped.find_by(id: product_template_id)
+  end
 end

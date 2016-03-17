@@ -5,6 +5,6 @@ class OrderItem < ActiveRecord::Base
   after_create SetOrderItem.new
 
   def product
-    Product.unscoped.find_by_id(product_id)
+    Product.unscoped.find_by(id: product_id)
   end
 end

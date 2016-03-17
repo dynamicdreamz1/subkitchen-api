@@ -28,7 +28,7 @@ ActiveAdmin.register Product do
     column(:name)
     column(:published)
     column(:price)
-    column(:template_type)
+    column('Type'){ |product| product.product_template.product_type }
     actions defaults: false do |product|
       unless product.is_deleted
         link_to('View', admin_product_path(product), method: :get) + ' ' +
