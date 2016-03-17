@@ -8,7 +8,12 @@ module PaypalHooks
     post 'payment_notification' do
       payment = Payment.find(params.invoice)
       if params.payment_status == 'Completed'
-        ConfirmPayment.new(payment, params).call
+        if CheckForFraud.new(params, payment).call
+          ConfirmPayment.new(payment, params).call
+        else
+          #send email
+          error!({errors: {base: ['cannot confirm payment!']}}, 422)
+        end
       else
         DenyPaypalPayment.new(payment, params).call
       end
