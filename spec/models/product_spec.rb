@@ -6,6 +6,12 @@ RSpec.describe Product, type: :model do
   let(:artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
   let(:other_artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
 
+  before do
+    create(:config, name: 'tax', value: '6.0')
+    create(:config, name: 'shipping_cost', value: '7.0')
+    create(:config, name: 'shipping_info', value: 'info')
+  end
+
   it 'has name' do
     expect(product.name).to_not be_blank
   end
