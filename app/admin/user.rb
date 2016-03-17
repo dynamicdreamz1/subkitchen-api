@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  actions :index, :show
+  actions :index, :show, :new, :create
 
   scope :all
   scope :artists
@@ -11,12 +11,53 @@ ActiveAdmin.register User do
   filter :status, as: :select, collection: %w[pending verified unverified]
   filter :email_confirmed
   filter :created_at
-  filter :has_company
 
   member_action :delete, method: :put do
     DeleteUser.new(resource).call
     resource.products.map{ |p| p.update(is_deleted: true) }
     redirect_to admin_users_path, notice: 'User Deleted'
+  end
+
+  form do |f|
+    f.inputs 'User', multipart: true do
+      f.input :profile_image, as: :refile
+      f.input :name, required: true
+      f.input :email, required: true
+      f.input :handle, required: true
+      f.input :password, required: true
+      f.input :password_confirmation, required: true
+      f.input :email_confirmed
+      f.input :artist
+      f.input :status, as: :select, collection: %w[verified unverified pending]
+    end
+    f.inputs 'Address' do
+      f.input :first_name
+      f.input :last_name
+      f.input :address
+      f.input :city
+      f.input :zip
+      f.input :region
+      f.input :country, as: :select, collection: IsoCountryCodes.for_select
+      f.input :phone
+    end
+    f.inputs 'Company' do
+      f.input :shop_banner, as: :refile
+      f.has_many :company do |c|
+        c.input :company_name
+        c.input :address
+        c.input :city
+        c.input :zip
+        c.input :region
+        c.input :country, as: :select, collection: IsoCountryCodes.for_select
+      end
+    end
+    f.actions
+  end
+
+  controller do
+    def permitted_params
+      params.permit!
+    end
   end
 
   index do
@@ -76,7 +117,7 @@ ActiveAdmin.register User do
         end
       end
 
-      if user.has_company
+      if user.company
         tab 'Company' do
           attributes_table do
             row('Company Name'){ user.company.company_name }

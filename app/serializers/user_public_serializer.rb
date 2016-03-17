@@ -5,11 +5,8 @@ class UserPublicSerializer
       artist: user.artist,
       handle: user.handle,
       status: user.status,
-      has_company: user.has_company,
       company: user.company,
       email: user.email }
-
-    data[:company] = user.company if user.artist
 
     data[:errors] = user.errors if user.errors.any?
 

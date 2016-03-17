@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   has_many :likes
   has_many :order_items, through: :products
 
+  accepts_nested_attributes_for :company
+
   attr_accessor :oauth_registration
 
   validates :email, presence: true, email: true, uniqueness: true, unless: :oauth_registration?, on: :create

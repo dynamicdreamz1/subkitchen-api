@@ -28,7 +28,6 @@ describe Accounts::Api, type: :request do
 
         artist.reload
         expect(artist.company).to be_a Company
-        expect(artist.has_company).to be_truthy
         expect(artist.company.company_name).to eq('elpassion')
       end
 

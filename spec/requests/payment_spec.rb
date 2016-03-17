@@ -43,7 +43,7 @@ describe Payments::Api, type: :request do
         product.update(price: 30)
         create(:order_item, order: order, product: product, price: 30)
         UpdateOrder.new(order).call
-        DeleteResource.new(product).call
+        DeleteProduct.new(product).call
 
         get "/api/v1/orders/#{order.uuid}/payment"
 
