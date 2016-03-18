@@ -5,7 +5,7 @@ module Payments
 
       desc 'payment page'
       get ':uuid/payment' do
-        order = Order.find_by!(uuid: params.uuid, active: true)
+        order = Order.find_by!(uuid: params.uuid, active: true, order_status: 'creating')
         if CheckOrderItems.new(order).call
           CheckoutSerializer.new(order).as_json
         else
@@ -28,7 +28,7 @@ module Payments
         optional :return_path, type: String
       end
       post ':uuid/payment' do
-        order = Order.find_by!(uuid: params.uuid, active: true)
+        order = Order.find_by!(uuid: params.uuid, active: true, order_status: 'creating')
 
         unless AddOrderAddress.new(params, order).call
           status :unprocessable_entity
