@@ -5,8 +5,7 @@ module Payments
 
       desc 'payment page'
       get ':uuid/payment' do
-        order = Order.find_by(uuid: params.uuid)
-        error!({errors: {base: ['cannot find order']}}, 422) if order.nil?
+        order = Order.find_by!(uuid: params.uuid, active: true)
         if CheckOrderItems.new(order).call
           CheckoutSerializer.new(order).as_json
         else
@@ -29,17 +28,14 @@ module Payments
         optional :return_path, type: String
       end
       post ':uuid/payment' do
-        order = Order.find_by!(uuid: params.uuid)
+        order = Order.find_by!(uuid: params.uuid, active: true)
 
         unless AddOrderAddress.new(params, order).call
-          puts '1'
           status :unprocessable_entity
           return CheckoutSerializer.new(order).as_json
         end
 
         unless AddOrderAddress.new(params, order).call && CheckOrderItems.new(order).call
-          puts '2'
-          # error!({errors: {base: ['some of the items had to be removed because the products does not exist anymore']}}, 422)
           status :unprocessable_entity
           return UpdateOrderItems.new(order).call
         end

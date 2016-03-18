@@ -7,14 +7,14 @@ describe Products::Api, type: :request do
     create(:config, name: 'shipping_cost', value: '7.0')
     create(:config, name: 'shipping_info', value: 'info')
     @params = { return_path: '',
-                         payment_type: 'paypal',
-                         full_name: 'full name',
-                         address: 'address',
-                         city: 'city',
-                         zip: 'zip',
-                         region: 'region',
-                         country: 'country',
-                         email: 'test@example.com'}
+                payment_type: 'paypal',
+                full_name: 'full name',
+                address: 'address',
+                city: 'city',
+                zip: 'zip',
+                region: 'region',
+                country: 'country',
+                email: 'test@example.com'}
   end
 
   describe 'PAYPAL' do
@@ -38,7 +38,8 @@ describe Products::Api, type: :request do
 
       post "/api/v1/orders/#{order.uuid}/payment", @params
 
-      expect(json['errors']).to eq({'base'=>['some of the items had to be removed because the products does not exist anymore']})
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(json['deleted_items']).to_not be_empty
     end
   end
 end

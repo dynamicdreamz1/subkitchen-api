@@ -8,7 +8,7 @@ class OrderSerializer
             shipping_cost: order.shipping_cost,
             tax: order.tax,
             tax_cost: order.tax_cost,
-            total: order.total_cost,
+            total_cost: order.total_cost,
             items: items
         }
     }
