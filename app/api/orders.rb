@@ -4,12 +4,13 @@ module Orders
       def find_or_create_order(uuid)
         if uuid.blank?
           if current_user
-            Order.find_or_create_by(user_id: current_user.id, active: true)
+            Order.find_or_create_by(user_id: current_user.id, active: true, order_status: 'creating')
           else
             Order.create
           end
         else
-          order = Order.where(uuid: uuid).first
+          order = Order.where(uuid: uuid, active: true, order_status: 'creating').first
+          order ||= Order.new
           order.user ||= current_user
           order.save
           order

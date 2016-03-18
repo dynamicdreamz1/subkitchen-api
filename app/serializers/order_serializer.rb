@@ -10,7 +10,7 @@ class OrderSerializer
             shipping_cost: number_to_price(order.shipping_cost),
             tax: order.tax,
             tax_cost: number_to_price(order.tax_cost),
-            total: number_to_price(order.total_cost),
+            total_cost: number_to_price(order.total_cost),
             items: items
         }
     }
