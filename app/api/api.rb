@@ -12,6 +12,10 @@ class Api < Grape::API
     error!('', 422)
   end
 
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    error!({errors: {base: [e.message]}}, 422)
+  end
+
   helpers do
     def authenticate!
       error!({errors: {base: ['401 Unauthorized']}}, 401) unless current_user

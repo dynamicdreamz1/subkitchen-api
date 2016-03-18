@@ -16,6 +16,7 @@ describe Products::Api, type: :request do
         end.to change(Order, :count).by(1)
         expect(Order.last.user).to eq(user)
         expect(response).to match_response_schema('order')
+        expect(response).to have_http_status(:success)
       end
 
       it 'should add item to order' do
@@ -48,6 +49,24 @@ describe Products::Api, type: :request do
         expect(order.order_items.first.quantity).to eq(1)
         expect(order.order_items.size).to eq(2)
         expect(response).to match_response_schema('order')
+      end
+
+      it 'should return error when payment completed' do
+        order = create(:order, user: user)
+        create(:payment, payable: order, payment_status: 'completed')
+
+        post '/api/v1/orders/item', { product_id: product.id, size: 's', quantity: 1 }, auth_header_for(user)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(json['errors']).to eq({'base'=>['cannot change already paid order']})
+      end
+
+      it 'should not be able to change order when payment exist' do
+        order = create(:order, user: user)
+        create(:payment, payable: order)
+        expect do
+          post '/api/v1/orders/item', { product_id: product.id, size: 's', quantity: 1 }, auth_header_for(user)
+        end.to change(OrderItem, :count).by(0)
       end
     end
 

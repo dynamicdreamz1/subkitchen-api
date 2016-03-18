@@ -16,8 +16,8 @@ RSpec.describe Order, type: :model do
 
   describe 'SetTaxAndShipping on create callback' do
     it 'should set tax and shipping cost' do
-      expect(@order.shipping_cost).to eq(Config.shipping_cost.to_d)
-      expect(@order.tax).to eq(Config.tax.to_d)
+      expect(@order.shipping_cost).to eq(Config.shipping_cost)
+      expect(@order.tax).to eq(Config.tax)
     end
   end
 
@@ -81,6 +81,16 @@ RSpec.describe Order, type: :model do
         order.reload
         expect(order.order_status).to eq('processing')
       end
+    end
+  end
+
+  describe 'AddressValidator' do
+    it 'should not update address when payment completed' do
+      payment = create(:payment, payable: @order)
+
+      expect do
+        @order.update!(address: 'abcd')
+      end.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 end

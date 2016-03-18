@@ -40,5 +40,33 @@ describe Products::Api, type: :request do
 
       expect(json['errors']).to eq({'base'=>['some of the items had to be removed because the products does not exist anymore']})
     end
+
+    it 'should not update address' do
+      order = create(:order, user: user)
+      product = create(:product)
+      create(:order_item, order: order, product: product)
+      @changed_params = { return_path: '',
+                  payment_type: 'paypal',
+                  full_name: 'changed',
+                  address: 'changed',
+                  city: 'changed',
+                  zip: 'changed',
+                  region: 'changed',
+                  country: 'changed',
+                  email: 'test@.com'}
+
+      post "/api/v1/orders/#{order.uuid}/payment", @params
+
+      post "/api/v1/orders/#{order.uuid}/payment", @changed_params
+
+      order.reload
+      expect(order.full_name).not_to eq('changed')
+      expect(order.address).not_to eq('changed')
+      expect(order.city).not_to eq('changed')
+      expect(order.zip).not_to eq('changed')
+      expect(order.region).not_to eq('changed')
+      expect(order.country).not_to eq('changed')
+      expect(order.email).not_to eq('changed')
+    end
   end
 end

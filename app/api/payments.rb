@@ -29,7 +29,7 @@ module Payments
       end
       post ':uuid/payment' do
         order = Order.find_by!(uuid: params.uuid)
-        AddOrderAddress.new(params, order).call
+        AddOrderAddress.new(params, order).call unless order.address
         unless CheckOrderItems.new(order).call
           UpdateOrderItems.new(order).call
           error!({errors: {base: ['some of the items had to be removed because the products does not exist anymore']}}, 422)

@@ -5,5 +5,7 @@ class Order < ActiveRecord::Base
 
   after_create SetTaxAndShipping.new
 
+  validates_with AddressValidator, on: :update
+
   scope :completed, -> { where(purchased: true) }
 end
