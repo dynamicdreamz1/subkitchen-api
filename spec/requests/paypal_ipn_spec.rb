@@ -12,7 +12,8 @@ describe PaypalHooks::Api, type: :request do
 
   describe 'USER VERIFICATION' do
     it 'should change artist status' do
-      post '/api/v1/user_verify_notification', { "payment_gross"=>"1.00",
+      post '/api/v1/user_verify_notification', { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+                                                 "payment_gross"=>"1.00",
                                                  "invoice"=>user_payment.id,
                                                  "payment_status"=>"Completed",
                                                  "txn_id"=>"61E67681CH3238416" }
@@ -23,8 +24,19 @@ describe PaypalHooks::Api, type: :request do
       expect(user.status).to eq('verified')
     end
 
+    it 'should status 201' do
+      post '/api/v1/user_verify_notification', { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+                                                 "payment_gross"=>"1.00",
+                                                 "invoice"=>user_payment.id,
+                                                 "payment_status"=>"Completed",
+                                                 "txn_id"=>"61E67681CH3238416" }
+
+      expect(response).to have_http_status(:success)
+    end
+
     it 'should change payment status to completed' do
-      post '/api/v1/user_verify_notification', { "payment_gross"=>"1.00",
+      post '/api/v1/user_verify_notification', { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+                                                 "payment_gross"=>"1.00",
                                                  "invoice"=>user_payment.id,
                                                  "payment_status"=>"Completed",
                                                  "txn_id"=>"61E67681CH3238416" }
@@ -49,7 +61,8 @@ describe PaypalHooks::Api, type: :request do
     end
 
     it 'should change payment status to denied' do
-      post '/api/v1/user_verify_notification', { "payment_gross"=>"1.00",
+      post '/api/v1/user_verify_notification', { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+                                                 "payment_gross"=>"1.00",
                                                  "invoice"=>user_payment.id,
                                                  "payment_status"=>"Denied",
                                                  "txn_id"=>"61E67681CH3238416" }
@@ -61,7 +74,8 @@ describe PaypalHooks::Api, type: :request do
     end
 
     it 'should not change artist status' do
-      post '/api/v1/user_verify_notification',  { "payment_gross"=>"1.00",
+      post '/api/v1/user_verify_notification',  { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+                                                  "payment_gross"=>"1.00",
                                                   "invoice"=>user_payment.id,
                                                   "payment_status"=>"Denied",
                                                   "txn_id"=>"61E67681CH3238416" }
@@ -70,6 +84,36 @@ describe PaypalHooks::Api, type: :request do
       user_payment.reload
 
       expect(user.status).to eq('unverified')
+    end
+
+    it 'should not change order when payment receiver email invalid' do
+      post '/api/v1/user_verify_notification',  { "receiver_email"=>"invalid receiver email",
+                                                  "payment_gross"=>"1.00",
+                                                  "invoice"=>user_payment.id,
+                                                  "payment_status"=>"Completed",
+                                                  "txn_id"=>"61E67681CH3238416" }
+
+      expect(json['errors']).to eq({'base'=>['cannot confirm payment!']})
+    end
+
+    it 'should not change order when payment gross invalid' do
+      post '/api/v1/user_verify_notification',  { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+                                                  "payment_gross"=>"100.00",
+                                                  "invoice"=>user_payment.id,
+                                                  "payment_status"=>"Completed",
+                                                  "txn_id"=>"61E67681CH3238416" }
+
+      expect(json['errors']).to eq({'base'=>['cannot confirm payment!']})
+    end
+
+    it 'should not change order when payment gross invalid' do
+      post '/api/v1/user_verify_notification',  { "receiver_email"=>"invalid receiver email",
+                                                  "payment_gross"=>"100.00",
+                                                  "invoice"=>user_payment.id,
+                                                  "payment_status"=>"Completed",
+                                                  "txn_id"=>"61E67681CH3238416" }
+
+      expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 
@@ -84,6 +128,16 @@ describe PaypalHooks::Api, type: :request do
       order.reload
       order_payment.reload
       expect(order_payment.payment_status).to eq('completed')
+    end
+
+    it 'should return status 201' do
+      post '/api/v1/payment_notification',  { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+                                              "payment_gross"=>"1.00",
+                                              "invoice"=>order_payment.id,
+                                              "payment_status"=>"Completed",
+                                              "txn_id"=>"61E67681CH3238416" }
+
+      expect(response).to have_http_status(:success)
     end
 
     it 'should change order purchased' do
@@ -179,6 +233,16 @@ describe PaypalHooks::Api, type: :request do
                                                "txn_id"=>"61E67681CH3238416" }
 
       expect(json['errors']).to eq({'base'=>['cannot confirm payment!']})
+    end
+
+    it 'should not return status 422 when invalid' do
+      post '/api/v1/payment_notification',   { "receiver_email"=>"invalid receiver email",
+                                               "payment_gross"=>"2.00",
+                                               "invoice"=>order_payment.id,
+                                               "payment_status"=>"Completed",
+                                               "txn_id"=>"61E67681CH3238416" }
+
+      expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 end

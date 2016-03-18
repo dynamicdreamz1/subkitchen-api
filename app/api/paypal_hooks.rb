@@ -27,7 +27,12 @@ module PaypalHooks
     post 'user_verify_notification' do
       payment = Payment.find(params.invoice)
       if params.payment_status == 'Completed'
-        ConfirmUserVerification.new(payment, params).call
+        if CheckForFraud.new(params, payment).call
+          ConfirmUserVerification.new(payment, params).call
+        else
+          #send email
+          error!({errors: {base: ['cannot confirm payment!']}}, 422)
+        end
       else
         DenyUserVerification.new(payment, params).call
       end
