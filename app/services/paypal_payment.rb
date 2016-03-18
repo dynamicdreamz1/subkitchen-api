@@ -15,7 +15,7 @@ class PaypalPayment
         business: Figaro.env.paypal_seller,
         cmd: '_cart',
         upload: 1,
-        return: Figaro.env.app_host+"#{@return_path}",
+        return: Figaro.env.frontend_host+"#{@return_path}",
         invoice: @payment.id,
         notify_url: Figaro.env.app_host+"/api/v1/payment_notification"
     }
