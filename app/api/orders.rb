@@ -9,7 +9,8 @@ module Orders
             Order.create
           end
         else
-          order = Order.where(uuid: uuid).first
+          order = Order.where(uuid: uuid, active: true).first
+          order ||= Order.new
           order.user ||= current_user
           order.save
           order

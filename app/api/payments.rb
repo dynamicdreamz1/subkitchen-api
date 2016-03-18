@@ -5,7 +5,7 @@ module Payments
 
       desc 'payment page'
       get ':uuid/payment' do
-        order = Order.find_by!(uuid: params.uuid)
+        order = Order.find_by!(uuid: params.uuid, active: true)
         if CheckOrderItems.new(order).call
           CheckoutSerializer.new(order).as_json
         else
@@ -28,12 +28,18 @@ module Payments
         optional :return_path, type: String
       end
       post ':uuid/payment' do
-        order = Order.find_by!(uuid: params.uuid)
-        AddOrderAddress.new(params, order).call
-        unless CheckOrderItems.new(order).call
-          UpdateOrderItems.new(order).call
-          error!({errors: {base: ['some of the items had to be removed because the products does not exist anymore']}}, 422)
+        order = Order.find_by!(uuid: params.uuid, active: true)
+
+        unless AddOrderAddress.new(params, order).call
+          status :unprocessable_entity
+          return CheckoutSerializer.new(order).as_json
         end
+
+        unless AddOrderAddress.new(params, order).call && CheckOrderItems.new(order).call
+          status :unprocessable_entity
+          return UpdateOrderItems.new(order).call
+        end
+
         CreatePayment.new(order, params.payment_type, params.stripe_token, params.return_path).call || error!({errors: {base: ['already paid']}}, 422)
       end
     end

@@ -10,7 +10,7 @@
         "shipping_cost": {"type": "string"},
         "tax": {"type": "string"},
         "tax_cost": {"type": "string"},
-        "total": {"type": "string"},
+        "total_cost": {"type": "string"},
         "items": {
           "id": "items",
           "type": "array",
@@ -34,7 +34,7 @@
         "shipping_cost",
         "tax",
         "tax_cost",
-        "total",
+        "total_cost",
         "items"
       ]
     }
