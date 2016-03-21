@@ -5,6 +5,9 @@ RSpec.describe User, type: :model do
   let(:user){create(:user)}
 
   before do
+    create(:config, name: 'tax', value: '6')
+    create(:config, name: 'shipping_cost', value: '7.00')
+    create(:config, name: 'shipping_info', value: 'info')
     @completed = create(:payment, payment_status: 'completed')
     @denied = create(:payment, payment_status: 'denied')
     @malformed = create(:payment, payment_status: 'malformed')
