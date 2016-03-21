@@ -11,7 +11,8 @@ module PaypalHooks
         if CheckForFraud.new(params, payment).call
           ConfirmPayment.new(payment, params).call
         else
-          #send email
+          AdminNotifier.send_malformed_payment_email(payment)
+          payment.update(payment_status: 'malformed')
           error!({errors: {base: ['cannot confirm payment!']}}, 422)
         end
       else
@@ -30,7 +31,8 @@ module PaypalHooks
         if CheckForFraud.new(params, payment).call
           ConfirmUserVerification.new(payment, params).call
         else
-          #send email
+          AdminNotifier.send_malformed_payment_email(payment)
+          payment.update(payment_status: 'malformed')
           error!({errors: {base: ['cannot confirm payment!']}}, 422)
         end
       else

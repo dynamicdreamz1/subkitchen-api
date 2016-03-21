@@ -135,7 +135,19 @@ ActiveAdmin.register User do
           column('Date') { |order| order.created_at.strftime('%d-%m-%Y')  }
           column(:order_status)
           column(:total_cost)
+          column(:payment)
           column(''){ |order| link_to 'View', admin_order_path(order)}
+        end
+      end
+
+      if user.payment
+        tab 'Verification' do
+          attributes_table do
+            row('Created At'){ user.payment.created_at }
+            row('Status'){ user.payment.payment_status }
+            column('Type'){ user.payment.payment_type }
+            column('Token'){ user.payment.payment_token }
+          end
         end
       end
     end

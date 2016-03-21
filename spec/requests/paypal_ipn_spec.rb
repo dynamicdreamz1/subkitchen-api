@@ -8,6 +8,9 @@ describe PaypalHooks::Api, type: :request do
     create(:config, name: 'tax', value: '6')
     create(:config, name: 'shipping_cost', value: '7.00')
     create(:config, name: 'shipping_info', value: 'info')
+    AdminUser.destroy_all
+    create(:admin_user)
+    create(:admin_user)
   end
 
   describe 'USER VERIFICATION' do
@@ -87,33 +90,33 @@ describe PaypalHooks::Api, type: :request do
     end
 
     it 'should not change order when payment receiver email invalid' do
-      post '/api/v1/user_verify_notification',  { "receiver_email"=>"invalid receiver email",
+      expect do
+        post '/api/v1/user_verify_notification',  { "receiver_email"=>"invalid receiver email",
                                                   "payment_gross"=>"1.00",
                                                   "invoice"=>user_payment.id,
                                                   "payment_status"=>"Completed",
                                                   "txn_id"=>"61E67681CH3238416" }
-
-      expect(json['errors']).to eq({'base'=>['cannot confirm payment!']})
+      end.to change { ActionMailer::Base.deliveries.count }.by(2)
     end
 
     it 'should not change order when payment gross invalid' do
-      post '/api/v1/user_verify_notification',  { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+      expect do
+        post '/api/v1/user_verify_notification',  { "receiver_email"=>"#{Figaro.env.paypal_seller}",
                                                   "payment_gross"=>"100.00",
                                                   "invoice"=>user_payment.id,
                                                   "payment_status"=>"Completed",
                                                   "txn_id"=>"61E67681CH3238416" }
-
-      expect(json['errors']).to eq({'base'=>['cannot confirm payment!']})
+      end.to change { ActionMailer::Base.deliveries.count }.by(2)
     end
 
-    it 'should not change order when payment gross invalid' do
+    it 'should change status to malformed' do
       post '/api/v1/user_verify_notification',  { "receiver_email"=>"invalid receiver email",
                                                   "payment_gross"=>"100.00",
                                                   "invoice"=>user_payment.id,
                                                   "payment_status"=>"Completed",
                                                   "txn_id"=>"61E67681CH3238416" }
-
-      expect(response).to have_http_status(:unprocessable_entity)
+      user_payment.reload
+      expect(user_payment.payment_status).to eq('malformed')
     end
   end
 
@@ -216,33 +219,33 @@ describe PaypalHooks::Api, type: :request do
     end
 
     it 'should not change order when receiver email invalid' do
-      post '/api/v1/payment_notification',   { "receiver_email"=>"invalid receiver email",
+     expect do
+       post '/api/v1/payment_notification',   { "receiver_email"=>"invalid receiver email",
                                                "payment_gross"=>"1.00",
                                                "invoice"=>order_payment.id,
                                                "payment_status"=>"Completed",
                                                "txn_id"=>"61E67681CH3238416" }
-
-      expect(json['errors']).to eq({'base'=>['cannot confirm payment!']})
+     end.to change { ActionMailer::Base.deliveries.count }.by(2)
     end
 
     it 'should not change order when payment gross invalid' do
-      post '/api/v1/payment_notification',   { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+      expect do
+        post '/api/v1/payment_notification',   { "receiver_email"=>"#{Figaro.env.paypal_seller}",
                                                "payment_gross"=>"2.00",
                                                "invoice"=>order_payment.id,
                                                "payment_status"=>"Completed",
                                                "txn_id"=>"61E67681CH3238416" }
-
-      expect(json['errors']).to eq({'base'=>['cannot confirm payment!']})
+      end.to change { ActionMailer::Base.deliveries.count }.by(2)
     end
 
-    it 'should not return status 422 when invalid' do
+    it 'should change status to malformed' do
       post '/api/v1/payment_notification',   { "receiver_email"=>"invalid receiver email",
                                                "payment_gross"=>"2.00",
                                                "invoice"=>order_payment.id,
                                                "payment_status"=>"Completed",
                                                "txn_id"=>"61E67681CH3238416" }
-
-      expect(response).to have_http_status(:unprocessable_entity)
+      order_payment.reload
+      expect(order_payment.payment_status).to eq('malformed')
     end
   end
 end

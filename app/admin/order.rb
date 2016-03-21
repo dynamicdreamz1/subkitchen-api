@@ -47,17 +47,17 @@ ActiveAdmin.register Order do
           column(:quantity)
           column(:size)
           column('Product Name'){ |item| item.product.name }
-          column('Product Author'){ |item| item.product.author }
+          column('Product Author'){ |item| item.product.author.name }
           column(''){ |item| link_to 'View', admin_product_path(item.product)}
         end
       end
 
       tab 'Payment' do
-        table_for order.payment do
-          column(:payment_type)
-          column(:payment_token)
-          column(:payment_status)
-          column(:created_at)
+        attributes_table do
+          row('Type'){ order.payment.payment_type }
+          row('Token'){ order.payment.payment_token }
+          row('Status'){ order.payment.payment_status }
+          row('Created At'){ order.payment.created_at }
         end
       end
     end

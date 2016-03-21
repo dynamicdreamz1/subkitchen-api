@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :order do
-    user
+    user { create(:user) }
     uuid SecureRandom.uuid
     email 'test@example.com'
   end
