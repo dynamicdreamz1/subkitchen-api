@@ -8,7 +8,8 @@ RSpec.describe DesignerNotifier, type: :mailer do
       create(:config, name: 'shipping_info', value: 'info')
       AdminUser.destroy_all
       @designer_email = 'designer@example.com'
-      @products = [create(:product), create(:product)]
+      @product = create(:product)
+      @products = [@product]
       @mail = DesignerNotifier.notify_designer(@products, @designer_email )
     end
 
@@ -19,8 +20,7 @@ RSpec.describe DesignerNotifier, type: :mailer do
     end
 
     it 'renders the body' do
-      expect(@mail.body.parts.first.body.encoded).to be_include("Product ID: #{@products.first.id}")
-      expect(@mail.body.parts.first.body.encoded).to be_include("Product ID: #{@products.second.id}")
+      expect(@mail.body.parts.first.body.encoded).to be_include("Product ID: <a href=\"#{Figaro.env.frontend_host}admin/products/#{@product.id}\">#{@product.id}")
     end
   end
 end

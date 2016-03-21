@@ -87,6 +87,7 @@ Rails.application.configure do
     :domain         => ENV['MAILGUN_DOMAIN'],
     :authentication => :plain,
   }
+  config.action_mailer.default_url_options = { host: Figaro.env.frontend_host }
 
   config.active_job.queue_adapter = :sidekiq
 end

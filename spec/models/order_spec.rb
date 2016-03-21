@@ -9,9 +9,29 @@ RSpec.describe Order, type: :model do
     @user = create(:user)
   end
 
-  it 'should return purchased orders' do
-    order = create(:order, purchased: true)
-    expect(Order.completed).to contain_exactly(order)
+  describe 'scopes' do
+    context 'completed scope' do
+      it 'should return purchased orders' do
+        order = create(:order, purchased: true)
+        expect(Order.completed).to contain_exactly(order)
+      end
+    end
+
+    context 'waiting_products scope' do
+      it 'should return all products waiting for design' do
+        product = create(:product, design_id: nil)
+        create(:order_item, order: @order, product: product)
+
+        expect(Order.waiting_products(@order)).to contain_exactly(product)
+      end
+
+      it 'should not return products with design' do
+        product = create(:product, design_id: '123')
+        create(:order_item, order: @order, product: product)
+
+        expect(Order.waiting_products(@order)).to eq([])
+      end
+    end
   end
 
   describe 'SetTaxAndShipping on create callback' do

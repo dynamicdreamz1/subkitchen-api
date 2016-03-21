@@ -4,12 +4,13 @@
   New products are waiting for your design
   <br/>
   <br/>
-  <%= @products.each do |product| %>
-    Product ID: <%= product.id %>
+  <% @products.each do |product| %>
+    Product ID: <%= link_to "#{product.id}", admin_product_url(product) %>
   <% end %>
   <br/>
   <br/>
 </p>
+
 
 <p>
   Regards,
