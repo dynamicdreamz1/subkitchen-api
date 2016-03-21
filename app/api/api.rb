@@ -25,6 +25,8 @@ class Api < Grape::API
       @current_user ||= User.where(auth_token: headers['Auth-Token']).first
     end
   end
+
+  mount AppConfig::Api
   mount Accounts::Api
   mount Addresses::Api
   mount AccountsArtist::Api
