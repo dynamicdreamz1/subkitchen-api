@@ -20,7 +20,7 @@ class CreatePayment
     return false if already_paid?
     payment = Payment.create!(payable: order, payment_type: payment_type)
     if payment_type == 'stripe'
-      payment.payment_token = payment_token
+      payment.update(payment_token: payment_token, payment_type: 'stripe')
       payment.save
       StripePayment.new(payment).call
     else
