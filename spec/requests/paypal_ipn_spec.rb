@@ -247,5 +247,48 @@ describe PaypalHooks::Api, type: :request do
       order_payment.reload
       expect(order_payment.payment_status).to eq('malformed')
     end
+
+    context 'designer notifications' do
+
+      it 'should notify designer when product has no design' do
+        create(:config, name: 'designers', value: 'designer@example.com')
+        create(:order_item, order: order, product: create(:product, design_id: nil))
+
+        expect do
+         post '/api/v1/payment_notification',  { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+                                                "payment_gross"=>order.total_cost,
+                                                "invoice"=>order_payment.id,
+                                                "payment_status"=>"Completed",
+                                                "txn_id"=>"61E67681CH3238416" }
+        end.to change { ActionMailer::Base.deliveries.count }.by(1)
+      end
+
+      it 'should not notify designer when all products have design' do
+        create(:config, name: 'designers', value: 'designer@example.com')
+        create(:order_item, order: order, product: create(:product, design_id: '123'))
+
+        expect do
+          post '/api/v1/payment_notification',  { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+                                                  "payment_gross"=>order.total_cost,
+                                                  "invoice"=>order_payment.id,
+                                                  "payment_status"=>"Completed",
+                                                  "txn_id"=>"61E67681CH3238416" }
+        end.to change { ActionMailer::Base.deliveries.count }.by(0)
+      end
+
+      it 'should not notify designer when no designers' do
+        create(:config, name: 'designers', value: '')
+        create(:order_item, order: order, product: create(:product, design_id: nil))
+
+        expect do
+          post '/api/v1/payment_notification',  { "receiver_email"=>"#{Figaro.env.paypal_seller}",
+                                                  "payment_gross"=>order.total_cost,
+                                                  "invoice"=>order_payment.id,
+                                                  "payment_status"=>"Completed",
+                                                  "txn_id"=>"61E67681CH3238416" }
+
+        end.to change { ActionMailer::Base.deliveries.count }.by(0)
+      end
+    end
   end
 end

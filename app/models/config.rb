@@ -10,6 +10,7 @@ class Config < ActiveRecord::Base
   scope :promo_1_url, lambda { where(name: 'promo_1_url').first.value }
   scope :promo_2_url, lambda { where(name: 'promo_2_url').first.value }
   scope :promo_3_url, lambda { where(name: 'promo_3_url').first.value }
+  scope :designers, lambda { where(name: 'designers').first.value }
 
 
   attachment :config_image, content_type: %w(image/jpeg image/png image/jpg)

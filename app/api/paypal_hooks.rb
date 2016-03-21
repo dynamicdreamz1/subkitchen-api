@@ -9,11 +9,11 @@ module PaypalHooks
       payment = Payment.find(params.invoice)
       if params.payment_status == 'Completed'
         if CheckForFraud.new(params, payment).call
+          NotifyDesigners.new(payment.payable).call
           ConfirmPayment.new(payment, params).call
         else
           AdminNotifier.send_malformed_payment_email(payment)
           payment.update(payment_status: 'malformed')
-          error!({errors: {base: ['cannot confirm payment!']}}, 422)
         end
       else
         DenyPaypalPayment.new(payment, params).call
@@ -33,7 +33,6 @@ module PaypalHooks
         else
           AdminNotifier.send_malformed_payment_email(payment)
           payment.update(payment_status: 'malformed')
-          error!({errors: {base: ['cannot confirm payment!']}}, 422)
         end
       else
         DenyUserVerification.new(payment, params).call

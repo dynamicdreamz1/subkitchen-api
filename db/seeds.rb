@@ -46,6 +46,7 @@ Config.create(name: 'promo_2_img', config_image: '', input_type: 'image')
 Config.create(name: 'promo_2_url', value: '', input_type: 'short_text')
 Config.create(name: 'promo_3_img', config_image: '', input_type: 'image')
 Config.create(name: 'promo_3_url', value: '', input_type: 'short_text')
+Config.create(name: 'designers', value: 'designer@example.com', input_type: 'short_text')
 
 template1 = ProductTemplate.create(price: 69.95, profit: 25.00, size: %w(s m l xl), product_type: 'hoodie', size_chart: File.new(size_chart))
 template2 = ProductTemplate.create(price: 65.00, profit: 25.00, size: %w(s m l xl), product_type: 'sweatshirt', size_chart: File.new(size_chart))
@@ -53,10 +54,10 @@ template3 = ProductTemplate.create(price: 39.95, profit: 15.00, size: %w(s m l x
 template4 = ProductTemplate.create(price: 35.00, profit: 15.00, size: %w(s m l xl), product_type: 'tank_top', size_chart: File.new(size_chart))
 template5 = ProductTemplate.create(price: 79.95, profit: 30.00, size: %w(s m l xl), product_type: 'yoga_pants', size_chart: File.new(size_chart))
 
-u1 = User.create!(name: "user1", handle: "user1", email: "t1@example.com", password: "password", password_confirmation: "password", artist: true)
-u2 = User.create!(name: "user2", handle: "user2", email: "t2@example.com", password: "password", password_confirmation: "password", artist: true)
-u3 = User.create!(name: "user3", handle: "user3", email: "t3@example.com", password: "password", password_confirmation: "password", artist: true)
-u4 = User.create!(name: "user4", handle: "user4", email: "t4@example.com", password: "password", password_confirmation: "password", artist: true)
+u1 = User.create!(name: "user1", handle: "user1", email: "t1@example.com", password: "password", password_confirmation: "password", email_confirmed: true, artist: true)
+u2 = User.create!(name: "user2", handle: "user2", email: "t2@example.com", password: "password", password_confirmation: "password", email_confirmed: true, artist: true)
+u3 = User.create!(name: "user3", handle: "user3", email: "t3@example.com", password: "password", password_confirmation: "password", email_confirmed: true, artist: true)
+u4 = User.create!(name: "user4", handle: "user4", email: "t4@example.com", password: "password", password_confirmation: "password", email_confirmed: true, artist: true)
 
 description = <<-EOT
 <p>This 'all over' print crewneck sweatshirt is made using a special sublimation technique to provide a vivid graphic image throughout the shirt.</p>

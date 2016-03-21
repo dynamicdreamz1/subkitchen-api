@@ -21,9 +21,10 @@ class StripePayment
                           currency: 'usd',
                           metadata: {'order_id' => order.id}
 
+    NotifyDesigners.new(order).call
     order.update_attributes(purchased: true, purchased_at: DateTime.now, active: false)
     payment.update_attribute(:payment_status, 'completed')
-    rescue Stripe::InvalidRequestError => e
+  rescue Stripe::InvalidRequestError => e
       {errors: {base: [e.message]}}
     rescue Stripe::CardError => e
       {errors: {base: [e.message]}}
