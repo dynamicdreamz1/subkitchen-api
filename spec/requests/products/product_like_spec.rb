@@ -1,8 +1,8 @@
 describe Products::Api, type: :request do
   let(:product_template){ create(:product_template) }
-  let(:artist){ create(:user, artist: true, status: 'verified') }
+  let(:artist){ create(:user, artist: true, status: 'verified', email_confirmed: true) }
   let(:user){ create(:user, artist: false) }
-  let(:other_artist){ create(:user, artist: true, status: 'verified')}
+  let(:other_artist){ create(:user, artist: true, status: 'verified', email_confirmed: true)}
   let(:product){ create(:product, author: other_artist, published: true) }
   let(:artist_product){ create(:product, author: artist, published: true) }
 
@@ -23,14 +23,6 @@ describe Products::Api, type: :request do
         artist_product.reload
         expect(artist_product.likes.count).to eq(0)
         expect(json['errors']).to eq({'base'=>['cannot like own product']})
-      end
-
-      it 'should not create like' do
-        artist.delete
-        post "/api/v1/products/#{artist_product.id}/toggle_like", {}, auth_header_for(artist)
-
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(json['errors']).to eq({'base'=>['please try again later']})
       end
     end
 
