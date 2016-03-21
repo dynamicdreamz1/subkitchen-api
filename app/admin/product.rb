@@ -14,15 +14,19 @@ ActiveAdmin.register Product do
   filter :product_template_product_type_cont, as: :select, collection: proc { ProductTemplate.pluck(:product_type) }
   filter :price
 
+  member_action :delete, method: :put do
+    resource.update(is_deleted: true)
+    redirect_to admin_products_path, notice: 'Product Deleted'
+  end
+
   index do
+    column(:id)
     column('Image') do |product|
       attachment_image_tag(product, :image, :fit, 50, 50)
     end
     column('Author') do |product|
       if product.author
         link_to product.author.name, admin_user_path(product.author_id)
-      else
-        User.deleted.find_by(id: product.author_id).name
       end
     end
     column(:name)
@@ -32,7 +36,8 @@ ActiveAdmin.register Product do
     actions defaults: false do |product|
       unless product.is_deleted
         link_to('View', admin_product_path(product), method: :get) + ' ' +
-        link_to('Edit', edit_admin_product_path(product), method: :get)
+        link_to('Edit', edit_admin_product_path(product), method: :get) + ' ' +
+        link_to('Delete', delete_admin_product_path(product), method: :put, data: {confirm: 'Are you sure?'})
       end
     end
   end

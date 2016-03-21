@@ -55,4 +55,8 @@ class Product < ActiveRecord::Base
   def product_template
     ProductTemplate.unscoped.find_by(id: product_template_id)
   end
+
+  def author
+    User.unscoped.find_by(id: author_id)
+  end
 end
