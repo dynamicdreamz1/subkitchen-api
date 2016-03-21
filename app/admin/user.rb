@@ -145,8 +145,8 @@ ActiveAdmin.register User do
           attributes_table do
             row('Created At'){ user.payment.created_at }
             row('Status'){ user.payment.payment_status }
-            column('Type'){ user.payment.payment_type }
-            column('Token'){ user.payment.payment_token }
+            row('Type'){ user.payment.payment_type }
+            row('Token'){ user.payment.payment_token }
           end
         end
       end
