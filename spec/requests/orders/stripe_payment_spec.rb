@@ -116,6 +116,20 @@ describe Payments::Api, type: :request do
         expect(order.country).to eq('country')
         expect(order.email).to eq('test@example.com')
       end
+
+      it 'should return error when parameters wrong' do
+        no_token_params = {payment_type: 'stripe',
+                  full_name: 'full name',
+                  address: 'address',
+                  city: 'city',
+                  zip: 'zip',
+                  region: 'region',
+                  country: 'country',
+                  email: 'test@example.com'}
+        post "/api/v1/orders/#{order.uuid}/payment", no_token_params
+
+        expect(json['errors']).to eq({'base'=>['invalid payment parameters!']})
+      end
     end
   end
 end

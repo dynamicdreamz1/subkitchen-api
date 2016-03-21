@@ -1,6 +1,8 @@
 describe Products::Api, type: :request do
   let(:user) { create(:user) }
   let(:product) { create(:product) }
+  let(:order){ create(:order, user: user) }
+  let(:order_item){ create(:order_item, order: order, product: product) }
 
   before(:all) do
     create(:config, name: 'tax', value: '6')
@@ -19,10 +21,6 @@ describe Products::Api, type: :request do
 
   describe 'PAYPAL' do
     it 'should return payment link to paypal' do
-      order = create(:order, user: user)
-      product = create(:product)
-      create(:order_item, order: order, product: product)
-
       post "/api/v1/orders/#{order.uuid}/payment", @params
 
       payment = Payment.find_by(payable: order)
@@ -31,10 +29,9 @@ describe Products::Api, type: :request do
     end
 
     it 'should check if product exists' do
-      order = create(:order, user: user)
-      product = create(:product)
       create(:order_item, order: order, product: product)
       DeleteProduct.new(product).call
+
 
       post "/api/v1/orders/#{order.uuid}/payment", @params
 
@@ -43,10 +40,7 @@ describe Products::Api, type: :request do
     end
 
     it 'should not update address' do
-      order = create(:order, user: user)
-      product = create(:product)
-      create(:order_item, order: order, product: product)
-      @changed_params = { return_path: '',
+      changed_params = { return_path: '',
                   payment_type: 'paypal',
                   full_name: 'changed',
                   address: 'changed',
@@ -58,7 +52,7 @@ describe Products::Api, type: :request do
 
       post "/api/v1/orders/#{order.uuid}/payment", @params
 
-      post "/api/v1/orders/#{order.uuid}/payment", @changed_params
+      post "/api/v1/orders/#{order.uuid}/payment", changed_params
 
       order.reload
       expect(order.full_name).not_to eq('changed')
@@ -68,6 +62,20 @@ describe Products::Api, type: :request do
       expect(order.region).not_to eq('changed')
       expect(order.country).not_to eq('changed')
       expect(order.email).not_to eq('changed')
+    end
+
+    it 'should return error when parameters wrong' do
+      no_return_path = {payment_type: 'paypal',
+                         full_name: 'full name',
+                         address: 'address',
+                         city: 'city',
+                         zip: 'zip',
+                         region: 'region',
+                         country: 'country',
+                         email: 'test@example.com'}
+      post "/api/v1/orders/#{order.uuid}/payment", no_return_path
+
+      expect(json['errors']).to eq({'base'=>['invalid payment parameters!']})
     end
   end
 end
