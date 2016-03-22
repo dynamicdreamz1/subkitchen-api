@@ -81,4 +81,11 @@ end
   User.create(name: "user#{n}", email: "t#{n}@example.com", password: "password", password_confirmation: "password", artist: false)
 end
 
+Product.all.each do |p|
+  30.times do
+    offset = rand(User.count)
+    p.comments.create(content: Faker::Lorem.paragraph, user: User.offset(offset).first)
+  end
+end
+
 AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')

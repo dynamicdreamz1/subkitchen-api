@@ -34,6 +34,7 @@ class Api < Grape::API
   mount Products::Api
   mount Orders::Api
   mount Artists::Api
+  mount Users::Api
   mount PaypalHooks::Api
   mount Oauth::Api
   mount Payments::Api

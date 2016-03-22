@@ -1,12 +1,10 @@
 class UserPublicSerializer
   def as_json(options = {})
-    data = { name: user.name,
-      image_url: image_url,
-      artist: user.artist,
-      handle: user.handle,
-      status: user.status,
-      company: user.company,
-      email: user.email }
+    data = { id: user.id,
+             name: user.name,
+             image_url: image_url,
+             handle: user.handle,
+             company: user.company }
 
     data[:errors] = user.errors if user.errors.any?
 

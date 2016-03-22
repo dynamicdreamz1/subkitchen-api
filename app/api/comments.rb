@@ -26,6 +26,11 @@ module Comments
         comments = Comment.product(product.id).page(params.page).per(params.per_page)
         CommentListSerializer.new(comments).as_json
       end
+
+      desc 'show comment'
+      get ':id' do
+        CommentSerializer.new(Comment.find(params.id)).as_json
+      end
     end
   end
 end

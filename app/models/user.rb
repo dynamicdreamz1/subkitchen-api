@@ -42,7 +42,11 @@ class User < ActiveRecord::Base
   scope :not_artists, -> { where(artist: false) }
 
   def as_json(params = {})
-    UserPublicSerializer.new(self).as_json(params).merge(auth_token: auth_token)
+    UserPublicSerializer.new(self).as_json(params).merge(
+      email: email,
+      artist: artist,
+      status: status,
+      auth_token: auth_token )
   end
 
   def sales_count
