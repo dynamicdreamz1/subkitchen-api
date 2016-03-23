@@ -8,7 +8,7 @@ class OrderSerializer
             user_id: (order.user ? order.user_id : nil),
             subtotal: number_to_price(order.subtotal_cost),
             shipping_cost: number_to_price(order.shipping_cost),
-            tax: order.tax,
+            tax: number_to_price(order.tax),
             tax_cost: number_to_price(order.tax_cost),
             total_cost: number_to_price(order.total_cost),
             items: items

@@ -4,10 +4,11 @@ class CheckoutSerializer
   def as_json(options={})
     data = { order:
                  { uuid: order.uuid,
+                   purchased_at: order.purchased_at,
                    status: order.order_status,
                    subtotal: number_to_price(order.subtotal_cost),
                    shipping_cost: number_to_price(order.shipping_cost),
-                   tax: order.tax,
+                   tax: number_to_price(order.tax),
                    tax_cost: number_to_price(order.tax_cost),
                    total_cost: number_to_price(order.total_cost),
                    items: items }}
@@ -33,6 +34,7 @@ class CheckoutSerializer
       .reject{|item| item.product.is_deleted}
       .map do |item|
       { price: number_to_price(item.price),
+        subtotal: number_to_price(item.price*item.quantity),
         name: item.product.name,
         id: item.id,
         is_deleted: item.product.is_deleted,

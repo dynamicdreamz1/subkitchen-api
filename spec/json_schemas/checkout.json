@@ -5,6 +5,7 @@
       "type": "object",
       "properties": {
         "uuid": {"type": "string"},
+        "purchased_at": {"type": ["string", "null"]},
         "status": {"type": "string"},
         "subtotal": {"type": "string"},
         "shipping_cost": {"type": "string"},
@@ -19,6 +20,7 @@
               "price": {"type": "string"},
               "name": {"type": "string"},
               "id": {"type": "integer"},
+              "subtotal": {"type": "string"},
               "quantity": {"type": "integer"},
               "size": {"type": "string"},
               "image": {"type": "string"}
@@ -27,6 +29,7 @@
         }
       },
       "required": [
+        "purchased_at",
         "uuid",
         "status",
         "subtotal",
