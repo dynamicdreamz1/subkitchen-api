@@ -42,6 +42,8 @@ describe Sessions::Api, type: :request do
 
     describe 'REGISTER when placing order' do
       before do
+        create(:config, name: 'tax', value: '6')
+        create(:config, name: 'shipping_cost', value: '7.00')
         @order = create(:order)
         @params =  { order_uuid: @order.uuid,
                     first_name: 'John',
