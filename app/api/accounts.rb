@@ -12,44 +12,6 @@ module Accounts
         current_user
       end
 
-      desc 'update email'
-      params do
-        optional :email
-      end
-      put '/email' do
-        authenticate!
-        if current_user.update(email: params.email)
-          UserNotifier.confirm_email(current_user).deliver_later
-        else
-          status :unprocessable_entity
-        end
-        current_user
-      end
-
-      desc 'update name'
-      params do
-        optional :name
-      end
-      put '/name' do
-        authenticate!
-        unless current_user.update(name: params.name)
-          status :unprocessable_entity
-        end
-        current_user
-      end
-
-      desc 'update handle'
-      params do
-        optional :handle
-      end
-      put '/handle' do
-        authenticate!
-        unless current_user.update(handle: params.handle)
-          status :unprocessable_entity
-        end
-        current_user
-      end
-
       desc 'user verification'
       params do
         optional :return_path, type: String
@@ -102,9 +64,11 @@ module Accounts
           if current_user.errors[:profile_image].blank?
             current_user.errors.delete(:profile_image)
             current_user.save(validate: false)
+            current_user.reload
+          else
+            status(:unprocessable_entity)
           end
-          current_user.reload
-          current_user
+          UserPublicSerializer.new(current_user)
         else
           error!({errors: {profile_image: ['image is too small']}}, 422)
         end

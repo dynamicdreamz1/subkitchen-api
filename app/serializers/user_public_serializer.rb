@@ -1,22 +1,31 @@
 class UserPublicSerializer
   def as_json(options = {})
-    data = { id: user.id,
-             name: user.name,
-             image_url: image_url,
-             handle: user.handle,
-             company: user.company }
+    data = {
+      user: { id: user.id,
+              name: user.name,
+              image_url: image_url,
+              handle: user.handle,
+              company: user.company }}
 
-    data[:errors] = user.errors if user.errors.any?
+    if include_sensitive_data
+      data[:user][:email] = user.email
+      data[:user][:artist] = user.artist
+      data[:user][:status] = user.status
+      data[:user][:auth_token] = user.auth_token
+    end
+
+    data[:errors] = user.errors.to_h if user.errors.any?
 
     data.as_json(options)
   end
 
   private
 
-  attr_reader :user
+  attr_reader :user, :include_sensitive_data
 
-  def initialize(user)
+  def initialize(user, include_sensitive_data = false)
     @user = user
+    @include_sensitive_data = include_sensitive_data
   end
 
   def image_url

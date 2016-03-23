@@ -9,7 +9,7 @@ module Oauth
         user = OauthRegister.new(:facebook, params.access_token).call
         error!('', :unprocessable_entity) unless user && user.persisted?
         status(200)
-        user
+        return UserPublicSerializer.new(user, true).as_json
       end
     end
   end
