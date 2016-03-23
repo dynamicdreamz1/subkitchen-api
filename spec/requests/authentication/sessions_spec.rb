@@ -7,8 +7,8 @@ describe Sessions::Api, type: :request do
         post '/api/v1/sessions/login', email: user.email, password: 'password'
 
         expect(response).to have_http_status(:success)
-        expect(json['name']).to eq(user.name)
-        expect(json['auth_token']).to eq(user.auth_token)
+        expect(json['user']['name']).to eq(user.name)
+        expect(json['user']['auth_token']).to eq(user.auth_token)
         expect(response).to match_response_schema('user_public')
       end
 

@@ -36,13 +36,6 @@ RSpec.describe User, type: :model do
     expect(user.status).to eq('unverified')
   end
 
-  it 'should not be able to become artist when email not confirmed' do
-    user = create(:user, artist: false, email_confirmed: false)
-    expect do
-      user.update!(artist: true)
-    end.to raise_error(ActiveRecord::RecordInvalid)
-  end
-
   describe 'ChangeStatusIfArtist callback' do
     context 'on create' do
       it 'should change status' do

@@ -1,15 +1,14 @@
 {
   "type": "object",
   "properties": {
-    "name": {"type": "string"},
-    "image_url": {"type": ["string", "null"]},
-    "email": {"type": "string"},
-    "auth_token": {"type": "string"}
+    "user": {
+      "name": {"type": "string"},
+      "image_url": {"type": ["string", "null"]},
+      "email": {"type": "string"},
+      "auth_token": {"type": "string"}
+    }
   },
   "required": [
-    "name",
-    "image_url",
-    "email",
-    "auth_token"
+    "user"
   ]
 }

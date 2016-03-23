@@ -1,9 +1,30 @@
 module Users
   class Api < Grape::API
     resources :users do
+      desc 'get current user'
+      get '/current' do
+        authenticate!
+        current_user
+      end
+
+      desc 'update current user'
+      put ':id' do
+        authenticate!
+        current_user.name = params.user.name
+        current_user.email = params.user.email
+        current_user.handle = params.user.handle
+        send_notification = current_user.changes[:email]
+        if current_user.save
+          UserNotifier.confirm_email(current_user).deliver_later if send_notification
+        else
+          status(:unprocessable_entity)
+        end
+        current_user
+      end
+
       desc 'return user by id'
       get ':id' do
-        {user: UserPublicSerializer.new(User.find(params[:id])) }
+        UserPublicSerializer.new(User.find(params[:id]))
       end
     end
   end

@@ -10,10 +10,9 @@ class User < ActiveRecord::Base
 
   attr_accessor :oauth_registration
 
-  validates :email, presence: true, email: true, uniqueness: true, unless: :oauth_registration?, on: :create
+  validates :email, presence: true, email: true, uniqueness: true, unless: :oauth_registration?
   validates :handle, uniqueness: { allow_nil: true, allow_blank: true }, presence: { if: :artist }
   validates :name, presence: true, uniqueness: true
-  validates_with ArtistValidator
   validate do |record|
     record.errors.add(:password, :blank) unless record.password_digest.present? || oauth_registration?
   end
@@ -42,11 +41,7 @@ class User < ActiveRecord::Base
   scope :not_artists, -> { where(artist: false) }
 
   def as_json(params = {})
-    UserPublicSerializer.new(self).as_json(params).merge(
-      email: email,
-      artist: artist,
-      status: status,
-      auth_token: auth_token )
+    UserPublicSerializer.new(self, true).as_json(params)
   end
 
   def sales_count

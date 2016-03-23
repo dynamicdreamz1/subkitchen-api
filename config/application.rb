@@ -22,7 +22,14 @@ module SubKitchen
 
     # config.paths.add File.join('app'), glob: File.join('**', '*.rb')
     config.autoload_paths += %W(#{config.root}/app/api)
-    config.autoload_paths += %W(#{config.root}/app/services)
+    config.autoload_paths += %W(#{config.root}/app/services/order_services)
+    config.autoload_paths += %W(#{config.root}/app/services/payment_services)
+    config.autoload_paths += %W(#{config.root}/app/services/product_services)
+    config.autoload_paths += %W(#{config.root}/app/services/user_services)
+    config.autoload_paths += %W(#{config.root}/app/serializers/account_serializers)
+    config.autoload_paths += %W(#{config.root}/app/serializers/comment_serializers)
+    config.autoload_paths += %W(#{config.root}/app/serializers/order_serializers)
+    config.autoload_paths += %W(#{config.root}/app/serializers/product_serializers)
     config.autoload_paths += %W(#{config.root}/app/presenters)
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
