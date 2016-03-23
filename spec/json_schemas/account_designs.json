@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": ["integer", "null"]},
+          "name": {"type": "string"},
+          "product_image": {"type": "string"},
+          "tags": {"type": "array"},
+          "published": {"type": "boolean"},
+          "errors": {"type": "object"}
+        },
+        "required": [
+          "id",
+          "name",
+          "product_image",
+          "published",
+          "tags"
+        ]
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "current_page": {"type": "integer"},
+        "total_pages": {"type": "integer"}
+      }
+    }
+  },
+  "required": [
+    "products",
+    "meta"
+  ]
+}
