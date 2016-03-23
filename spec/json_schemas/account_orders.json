@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "orders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uuid": {"type": "string"},
+          "created_at": {"type": "string"},
+          "order_status": {"type": "string"},
+          "total_cost": {"type": "string"},
+          "errors": {"type": "object"}},
+        "required": [
+          "uuid",
+          "created_at",
+          "order_status",
+          "total_cost"
+        ]
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "current_page": {"type": "integer"},
+        "total_pages": {"type": "integer"}
+      }
+    }
+  },
+  "required": [
+    "orders",
+    "meta"
+  ]
+}

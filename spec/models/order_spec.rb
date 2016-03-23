@@ -36,8 +36,8 @@ RSpec.describe Order, type: :model do
 
   describe 'SetTaxAndShipping on create callback' do
     it 'should set tax and shipping cost' do
-      expect(@order.shipping_cost).to eq(Config.shipping_cost)
-      expect(@order.tax).to eq(Config.tax)
+      expect(@order.shipping_cost).to eq(Config.shipping_cost.to_d)
+      expect(@order.tax).to eq(Config.tax.to_d)
     end
   end
 

@@ -24,6 +24,15 @@ module Sessions
 
       desc 'register new user'
       params do
+        optional :order_uuid, type: String
+        optional :first_name, type: String, default: ''
+        optional :last_name, type: String, default: ''
+        optional :address, type: String, default: ''
+        optional :city, type: String, default: ''
+        optional :zip, type: String, default: ''
+        optional :country, type: String, default: ''
+        optional :region, type: String, default: ''
+
         optional :email, type: String
         optional :password, type: String
         optional :password_confirmation, type: String
@@ -33,6 +42,10 @@ module Sessions
       post 'register' do
         user = CreateUser.new(params).call
         if user.save
+          if params.order_uuid
+            UpdateUserAddress.new(user, params).call
+            SetUserInOrder.new(user, params.order_uuid).call
+          end
           UserNotifier.confirm_email(user).deliver_later
         else
           status :unprocessable_entity
