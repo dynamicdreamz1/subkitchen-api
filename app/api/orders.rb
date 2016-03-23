@@ -18,6 +18,22 @@ module Orders
       end
     end
 
+    desc 'Through6 customer information'
+    params do
+      requires :order_uuid, type: String
+    end
+    get 'receipt' do
+      order = Order.find_by!(uuid: params.order_uuid)
+      OrderAddressSerializer.new(order).as_json
+    end
+
+    desc 'Through6 updates'
+    params do
+      requires :order_uuid, type: String
+    end
+    get 'track' do
+    end
+
     resources :orders do
       resources :item do
 

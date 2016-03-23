@@ -1,6 +1,8 @@
 describe Products::Api, type: :request do
   let(:user) { create(:user) }
   let(:product) { create(:product) }
+  let(:image){ fixture_file_upload(Rails.root.join('app/assets/images/sizechart-hoodie.jpg'), 'image/jpg') }
+  let(:design){ fixture_file_upload(Rails.root.join('app/assets/images/design.pdf'), 'application/pdf') }
 
   before(:all) do
     create(:config, name: 'tax', value: '6')
