@@ -5,7 +5,7 @@ class StatsSerializer
     data = {
         total_sales: artist.sales_count,
         total_sales_percentage: artist.sales_weekly,
-        earnings: number_to_price(artist.earnings_count),
+        earnings: artist.earnings_count,
         earnings_percentage: artist.earnings_weekly,
         published_designs: artist.published_count,
         published_designs_percentage: artist.published_weekly,

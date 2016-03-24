@@ -6,11 +6,11 @@ class CheckoutSerializer
                  { uuid: order.uuid,
                    purchased_at: order.purchased_at,
                    status: order.order_status,
-                   subtotal: number_to_price(order.subtotal_cost),
-                   shipping_cost: number_to_price(order.shipping_cost),
-                   tax: number_to_price(order.tax),
-                   tax_cost: number_to_price(order.tax_cost),
-                   total_cost: number_to_price(order.total_cost),
+                   subtotal: order.subtotal_cost,
+                   shipping_cost: order.shipping_cost,
+                   tax: order.tax,
+                   tax_cost: order.tax_cost,
+                   total_cost: order.total_cost,
                    items: items }}
     data.merge(shipping_address) if order.user
 
@@ -33,8 +33,8 @@ class CheckoutSerializer
     order.order_items
       .reject{|item| item.product.is_deleted}
       .map do |item|
-      { price: number_to_price(item.price),
-        subtotal: number_to_price(item.price*item.quantity),
+      { price: item.price,
+        subtotal: item.price*item.quantity,
         name: item.product.name,
         id: item.id,
         is_deleted: item.product.is_deleted,
@@ -46,7 +46,7 @@ class CheckoutSerializer
 
   def deleted_items
     @deleted_items.map do |item|
-      { price: number_to_price(item.price),
+      { price: item.price,
         name: item.product.name,
         id: item.id,
         quantity: item.quantity,

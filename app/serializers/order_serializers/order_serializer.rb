@@ -6,11 +6,11 @@ class OrderSerializer
         order: {
             uuid: order.uuid,
             user_id: (order.user ? order.user_id : nil),
-            subtotal: number_to_price(order.subtotal_cost),
-            shipping_cost: number_to_price(order.shipping_cost),
-            tax: number_to_price(order.tax),
-            tax_cost: number_to_price(order.tax_cost),
-            total_cost: number_to_price(order.total_cost),
+            subtotal: order.subtotal_cost,
+            shipping_cost: order.shipping_cost,
+            tax: order.tax,
+            tax_cost: order.tax_cost,
+            total_cost: order.total_cost,
             items: items
         }
     }
@@ -32,7 +32,7 @@ class OrderSerializer
     order.order_items.map do |item|
       {
           id: item.id,
-          price: number_to_price(item.price),
+          price: item.price,
           name: item.product.name,
           product_id: item.product.id,
           quantity: item.quantity,

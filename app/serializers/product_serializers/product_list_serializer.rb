@@ -34,7 +34,7 @@ class ProductListSerializer
     {
         id: product.id,
         author: (product.author ? product.author.name : nil),
-        price: number_to_price(product.product_template.price),
+        price: product.product_template.price,
         size: product.product_template.size,
         description: product.description,
         name: product.name,

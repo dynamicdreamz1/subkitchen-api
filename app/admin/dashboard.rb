@@ -13,7 +13,7 @@ ActiveAdmin.register_page "Dashboard" do
               ? link_to(order.user.email, admin_user_path(order.user)) \
               : 'unknown'
             end
-            column('Total')   {|order| number_to_currency order.total_cost }
+            column('Total')   {|order| order.total_cost }
             column(''){ |order| link_to 'View', admin_order_path(order)}
           end
         end
