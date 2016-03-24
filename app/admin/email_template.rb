@@ -27,7 +27,7 @@ ActiveAdmin.register EmailTemplate do
 
   form do |f|
     f.inputs 'Email Template' do
-      f.input :content, as: :html_editor
+      f.input :content, as: :wysihtml5
       f.actions
     end
   end

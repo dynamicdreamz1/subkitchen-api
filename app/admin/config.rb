@@ -37,7 +37,7 @@ ActiveAdmin.register Config do
     f.inputs 'Config', multipart: true do
       case f.object.input_type
         when 'long_text'
-          f.input :value, as: :html_editor
+          f.input :value, as: :wysihtml5
         when 'short_text'
           f.input :value
         when 'image'

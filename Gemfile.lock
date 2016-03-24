@@ -33,6 +33,23 @@ GIT
     fakeredis (0.5.0)
       redis (~> 3.2)
 
+GIT
+  remote: git://github.com/jsetiadarma/activeadmin-wysihtml5.git
+  revision: e73eac70b136c64e42e0a82e60d998d71bf192de
+  specs:
+    activeadmin-wysihtml5 (1.0.0)
+      activeadmin
+      activeadmin-dragonfly
+
+GIT
+  remote: git://github.com/stefanoverna/activeadmin-dragonfly.git
+  revision: 611164ff0255c66a3e555b5d46dd99f0eff1f115
+  specs:
+    activeadmin-dragonfly (0.0.2)
+      activeadmin
+      dragonfly (= 0.9.15)
+      rack-cache
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -128,6 +145,9 @@ GEM
     docile (1.1.5)
     domain_name (0.5.20160309)
       unf (>= 0.0.5, < 1.0.0)
+    dragonfly (0.9.15)
+      multi_json (~> 1.0)
+      rack
     ejs (1.1.1)
     email_validator (1.6.0)
       activemodel
@@ -264,6 +284,8 @@ GEM
     puma (3.1.0)
     rack (1.6.4)
     rack-accept (0.4.5)
+      rack (>= 0.4)
+    rack-cache (1.6.1)
       rack (>= 0.4)
     rack-cors (0.4.0)
     rack-mount (0.8.3)
@@ -441,6 +463,8 @@ PLATFORMS
 DEPENDENCIES
   active_admin_editor!
   activeadmin!
+  activeadmin-dragonfly!
+  activeadmin-wysihtml5!
   acts-as-taggable-on (~> 3.4)
   awesome_print
   bcrypt
