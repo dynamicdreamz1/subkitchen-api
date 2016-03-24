@@ -43,6 +43,7 @@ class Api < Grape::API
   mount Comments::Api
   mount AccountsOrders::Api
   mount AccountsDesigns::Api
+  mount ProductTemplates::Api
 
 
   add_swagger_documentation(api_version: 'v1', hide_documentation_path: true, base_path: '/api')

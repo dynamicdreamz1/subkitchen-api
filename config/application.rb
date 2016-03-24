@@ -30,6 +30,7 @@ module SubKitchen
     config.autoload_paths += %W(#{config.root}/app/serializers/comment_serializers)
     config.autoload_paths += %W(#{config.root}/app/serializers/order_serializers)
     config.autoload_paths += %W(#{config.root}/app/serializers/product_serializers)
+    config.autoload_paths += %W(#{config.root}/app/serializers/product_template_serializers)
     config.autoload_paths += %W(#{config.root}/app/callbacks/order_callbacks)
     config.autoload_paths += %W(#{config.root}/app/callbacks/order_item_callbacks)
     config.autoload_paths += %W(#{config.root}/app/callbacks/product_callbacks)

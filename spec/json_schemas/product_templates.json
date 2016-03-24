@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "product_templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "integer"},
+          "price": {"type": "string"},
+          "size": {"type": "array"},
+          "template_image": {"type": "string"},
+          "size_chart": {"type": "string"},
+          "product_type": {"type": "string"},
+          "profit": {"type": "string"}
+        },
+        "required": [
+          "id",
+          "price",
+          "size",
+          "template_image",
+          "size_chart",
+          "product_type",
+          "profit"
+        ]
+      }
+    }
+  },
+  "required": [
+    "product_templates"
+  ]
+}
