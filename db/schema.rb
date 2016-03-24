@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317203414) do
+ActiveRecord::Schema.define(version: 20160324102749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,14 @@ ActiveRecord::Schema.define(version: 20160317203414) do
     t.datetime "updated_at",      null: false
     t.string   "input_type"
     t.string   "config_image_id"
+  end
+
+  create_table "email_templates", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "content"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "likes", force: :cascade do |t|
@@ -165,6 +173,8 @@ ActiveRecord::Schema.define(version: 20160317203414) do
     t.datetime "published_at"
     t.string   "design_id"
     t.integer  "order_items_count",                           default: 0
+    t.integer  "design_size"
+    t.string   "design_content_type"
   end
 
   create_table "taggings", force: :cascade do |t|
