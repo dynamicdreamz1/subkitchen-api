@@ -4,6 +4,8 @@ ActiveAdmin.register Order do
   filter :order_status, as: :select, collection: ['creating', 'completed', 'payment pending', 'cooking', 'processing']
   filter :purchased_at
 
+  scope :all
+  scope :processing
 
   index do
     column('Date') { |order| order.created_at }

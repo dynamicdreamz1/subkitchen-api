@@ -10,6 +10,7 @@ class Order < ActiveRecord::Base
 
   scope :completed, -> { where(purchased: true) }
   scope :waiting_products, ->(order) { order.products.where(design_id: nil) }
+  scope :processing, -> { where(order_status: 'processing') }
 
   validates :full_name, presence: true, on: :address
   validates :city,      presence: true, on: :address
