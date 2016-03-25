@@ -14,6 +14,10 @@ AdminUser.destroy_all
 size_chart = "#{Rails.root}/app/assets/images/sizechart-hoodie.jpg"
 product_image = "#{Rails.root}/app/assets/images/t-shirt.png"
 
+def template_image(img_name)
+  "#{Rails.root}/app/assets/images/templates/#{img_name}.jpg"
+end
+
 shipping_info = <<-EOT
 <p>
   Many of our items are made to order.&nbsp;
@@ -48,11 +52,11 @@ Config.create(name: 'promo_3_img', config_image: '', input_type: 'image')
 Config.create(name: 'promo_3_url', value: '', input_type: 'short_text')
 Config.create(name: 'designers', value: 'designer@example.com', input_type: 'short_text')
 
-template1 = ProductTemplate.create(price: 69.95, profit: 25.00, size: %w(s m l xl), product_type: 'hoodie', size_chart: File.new(size_chart))
-template2 = ProductTemplate.create(price: 65.00, profit: 25.00, size: %w(s m l xl), product_type: 'sweatshirt', size_chart: File.new(size_chart))
-template3 = ProductTemplate.create(price: 39.95, profit: 15.00, size: %w(s m l xl), product_type: 'tee', size_chart: File.new(size_chart))
-template4 = ProductTemplate.create(price: 35.00, profit: 15.00, size: %w(s m l xl), product_type: 'tank_top', size_chart: File.new(size_chart))
-template5 = ProductTemplate.create(price: 79.95, profit: 30.00, size: %w(s m l xl), product_type: 'yoga_pants', size_chart: File.new(size_chart))
+template1 = ProductTemplate.create(price: 69.95, profit: 25.00, size: %w(SM MD LG XL 2X 3X), template_image: File.new(template_image('hoodie')), product_type: 'hoodie', size_chart: File.new(size_chart))
+template2 = ProductTemplate.create(price: 65.00, profit: 25.00, size: %w(SM MD LG XL 2X 3X), template_image: File.new(template_image('sweatshirt')), product_type: 'sweatshirt', size_chart: File.new(size_chart))
+template3 = ProductTemplate.create(price: 39.95, profit: 15.00, size: %w(SM MD LG XL 2X 3X), template_image: File.new(template_image('shirt')), product_type: 'tee', size_chart: File.new(size_chart))
+template4 = ProductTemplate.create(price: 35.00, profit: 15.00, size: %w(SM MD LG XL 2X 3X), template_image: File.new(template_image('tank')), product_type: 'tank_top', size_chart: File.new(size_chart))
+template5 = ProductTemplate.create(price: 79.95, profit: 30.00, size: %w(SM MD LG XL 2X 3X), template_image: File.new(template_image('yoga_pants')), product_type: 'yoga_pants', size_chart: File.new(size_chart))
 
 u1 = User.create!(name: "user1", handle: "user1", email: "t1@example.com", password: "password", password_confirmation: "password", email_confirmed: true, artist: true)
 u2 = User.create!(name: "user2", handle: "user2", email: "t2@example.com", password: "password", password_confirmation: "password", email_confirmed: true, artist: true)
