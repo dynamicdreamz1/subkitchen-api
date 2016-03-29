@@ -52,6 +52,5 @@ describe Accounts::Api, type: :request do
       expect(params[:address][:city]).to eq(user.city)
       expect(params[:address][:country]).to eq(user.country)
     end
-
   end
 end
