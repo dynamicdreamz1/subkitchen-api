@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20160324124901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
   enable_extension "uuid-ossp"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -187,8 +188,6 @@ ActiveRecord::Schema.define(version: 20160324124901) do
     t.datetime "published_at"
     t.string   "design_id"
     t.integer  "order_items_count",                           default: 0
-    t.integer  "design_size"
-    t.string   "design_content_type"
   end
 
   create_table "taggings", force: :cascade do |t|
