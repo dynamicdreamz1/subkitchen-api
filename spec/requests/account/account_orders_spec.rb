@@ -1,11 +1,6 @@
 describe AccountsOrders::Api, type: :request do
   let(:user){ create(:user) }
 
-  before do
-    create(:config, name: 'tax', value: '6.00')
-    create(:config, name: 'shipping_cost', value: '7.00')
-  end
-
   describe '/api/v1/account/orders' do
     it 'should return status success' do
       get '/api/v1/account/orders', {}, auth_header_for(user)

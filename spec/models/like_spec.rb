@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Like, type: :model do
-  before do
+  before(:each) do
     @artist = create(:user, artist: true)
     @user = create(:user, artist: false)
     @product = create(:product, author: @user)

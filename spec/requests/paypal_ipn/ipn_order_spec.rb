@@ -1,9 +1,8 @@
 describe PaypalHooks::Api, type: :request do
-  before(:all) do
+  before(:each) do
     create(:config, name: 'tax', value: '6')
     create(:config, name: 'shipping_cost', value: '7.00')
     create(:config, name: 'shipping_info', value: 'info')
-    User.destroy_all
     @order = create(:order, total_cost: 1.00)
     @order_payment = create(:payment, payable: @order)
 
@@ -104,8 +103,7 @@ describe PaypalHooks::Api, type: :request do
 
     context 'malformed' do
 
-      before do
-        AdminUser.destroy_all
+      before(:each) do
         4.times{ create(:admin_user) }
       end
 

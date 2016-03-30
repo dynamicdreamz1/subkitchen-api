@@ -4,12 +4,6 @@ RSpec.describe User, type: :model do
   let(:artist){create(:user, artist: true, status: 'verified')}
   let(:user){create(:user)}
 
-  before do
-    create(:config, name: 'tax', value: '6')
-    create(:config, name: 'shipping_cost', value: '7.00')
-    create(:config, name: 'shipping_info', value: 'info')
-  end
-
   context 'sales_counter' do
     let(:product){create(:product, author: artist)}
     let(:order){create(:order)}

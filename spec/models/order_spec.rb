@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Order, type: :model do
-  before do
-    create(:config, name: 'tax', value: '6')
-    create(:config, name: 'shipping_cost', value: '7.00')
-    create(:config, name: 'shipping_info', value: 'info')
+  before(:each) do
     @order = create(:order)
     @user = create(:user)
   end

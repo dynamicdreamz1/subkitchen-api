@@ -6,12 +6,6 @@ RSpec.describe Product, type: :model do
   let(:artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
   let(:other_artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
 
-  before do
-    create(:config, name: 'tax', value: '6')
-    create(:config, name: 'shipping_cost', value: '7.00')
-    create(:config, name: 'shipping_info', value: 'info')
-  end
-
   it 'has name' do
     expect(product.name).to_not be_blank
   end
@@ -106,7 +100,7 @@ RSpec.describe Product, type: :model do
   end
 
   describe 'sort by scope' do
-    before do
+    before(:each) do
       @p1 = create(:product, order_items_count: 10, name: 'AAA', created_at: 1.week.ago, product_template: create(:product_template, price: 300, product_type: 'tee'))
       @p2 = create(:product, order_items_count: 20, name: 'CCC', created_at: 2.weeks.ago, product_template: create(:product_template, price: 100, product_type: 'yoga_pants'))
       @p3 = create(:product, order_items_count: 30, name: 'BBB', created_at: 3.weeks.ago, product_template: create(:product_template, price: 200, product_type: 'hoodie'))
@@ -170,7 +164,7 @@ RSpec.describe Product, type: :model do
   end
 
   describe 'filters' do
-    before do
+    before(:each) do
       @p1 = create(:product, product_template: create(:product_template, price: 300, product_type: 'tee'))
       @p2 = create(:product, product_template: create(:product_template, price: 100, product_type: 'yoga_pants'))
       @p3 = create(:product, product_template: create(:product_template, price: 200, product_type: 'hoodie'))

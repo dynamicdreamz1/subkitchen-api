@@ -1,13 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
-  let(:artist){create(:user, artist: true, status: 'verified')}
-  let(:user){create(:user)}
+RSpec.describe Payment, type: :model do
 
-  before do
-    create(:config, name: 'tax', value: '6')
-    create(:config, name: 'shipping_cost', value: '7.00')
-    create(:config, name: 'shipping_info', value: 'info')
+  before(:each) do
     @completed = create(:payment, payment_status: 'completed')
     @denied = create(:payment, payment_status: 'denied')
     @malformed = create(:payment, payment_status: 'malformed')

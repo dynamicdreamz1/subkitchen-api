@@ -1,8 +1,5 @@
 RSpec.describe OrderItem, type: :model do
-  before do
-    create(:config, name: 'tax', value: '6')
-    create(:config, name: 'shipping_cost', value: '7.00')
-    create(:config, name: 'shipping_info', value: 'info')
+  before(:each) do
     user = create(:user)
     @order = create(:order)
     @product = create(:product, author: user)

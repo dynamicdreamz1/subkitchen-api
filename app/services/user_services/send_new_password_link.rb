@@ -10,7 +10,7 @@ class SendNewPasswordLink
   end
 
   def send_link
-    UserNotifier.set_new_password(@user).deliver_later
+    AccountResetPassword.notify(@user)
     @user.password_reminder_expiration = DateTime.now + 2.hours
     @user.save
     @user

@@ -35,7 +35,7 @@ describe Products::Api, type: :request do
 
       context 'sort' do
 
-        before do
+        before(:each) do
           create(:product, name: 'AAA', created_at: 1.week.ago, product_template: create(:product_template, price: 100))
           create(:product, name: 'BBB', created_at: 2.weeks.ago, product_template: create(:product_template, price: 200))
           create(:product, name: 'CCC', created_at: 3.weeks.ago, product_template: create(:product_template, price: 300))
@@ -106,7 +106,7 @@ describe Products::Api, type: :request do
 
       context 'filter' do
 
-        before do
+        before(:each) do
           @p1 = create(:product, name: 'AAA', created_at: 1.week.ago, product_template: create(:product_template, price: 100, product_type: 'tee'))
           @p2 = create(:product, name: 'BBB', created_at: 2.weeks.ago, product_template: create(:product_template, price: 200, product_type: 'hoodie'))
           @p3 = create(:product, name: 'CCC', created_at: 3.weeks.ago, product_template: create(:product_template, price: 300, product_type: 'yoga_pants'))

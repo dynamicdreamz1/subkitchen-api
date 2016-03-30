@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160324124901) do
+ActiveRecord::Schema.define(version: 20160324164907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 20160324124901) do
     t.string   "content"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "subject"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -187,8 +188,6 @@ ActiveRecord::Schema.define(version: 20160324124901) do
     t.datetime "published_at"
     t.string   "design_id"
     t.integer  "order_items_count",                           default: 0
-    t.integer  "design_size"
-    t.string   "design_content_type"
   end
 
   create_table "taggings", force: :cascade do |t|

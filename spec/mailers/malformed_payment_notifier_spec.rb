@@ -1,15 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe AdminNotifier, type: :mailer do
+RSpec.describe MalformedPaymentNotifier, type: :mailer do
   describe 'malformed payment' do
-    before do
-      create(:config, name: 'tax', value: '6')
-      create(:config, name: 'shipping_cost', value: '7.00')
-      create(:config, name: 'shipping_info', value: 'info')
-      AdminUser.destroy_all
+    before(:each) do
       @admin = create(:admin_user)
       @payment = create(:payment, payment_status: 'malformed')
-      @mail = AdminNotifier.malformed_payment(@payment, @admin)
+      @mail = MalformedPaymentNotifier.notify_single(@admin.email, @payment)
     end
 
     it 'renders the headers' do
@@ -19,7 +15,7 @@ RSpec.describe AdminNotifier, type: :mailer do
     end
 
     it 'renders the body' do
-      expect(@mail.body.parts.first.body.encoded).to be_include("Payment ID: #{@payment.id}")
+      expect(@mail.body.raw_source).to be_include("href=\"#{Figaro.env.frontend_host}admin/payments/#{@payment.id}\">#{@payment.id}")
     end
   end
 end

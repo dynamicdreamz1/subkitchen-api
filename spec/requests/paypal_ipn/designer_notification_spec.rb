@@ -1,10 +1,8 @@
 describe PaypalHooks::Api, type: :request do
-  before(:all) do
+  before(:each) do
     create(:config, name: 'tax', value: '6')
     create(:config, name: 'shipping_cost', value: '7.00')
     create(:config, name: 'shipping_info', value: 'info')
-    AdminUser.destroy_all
-    User.destroy_all
     create(:admin_user)
     @order_with_designs = create(:order, total_cost: 1.00, order_items: [create(:order_item, product: create(:product, design_id: '123'))])
     @order_without_designs = create(:order, total_cost: 1.00, order_items: [create(:order_item, product: create(:product, design_id: nil))])
@@ -24,7 +22,7 @@ describe PaypalHooks::Api, type: :request do
 
     context 'with designer emails' do
 
-      before do
+      before(:each) do
         create(:config, name: 'designers', value: 'designer@example.com')
       end
 
@@ -43,7 +41,7 @@ describe PaypalHooks::Api, type: :request do
 
     context 'with no designer emails' do
 
-      before do
+      before(:each) do
         create(:config, name: 'designers', value: '')
       end
 

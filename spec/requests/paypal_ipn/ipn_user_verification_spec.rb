@@ -1,16 +1,15 @@
 describe PaypalHooks::Api, type: :request do
-  before(:all) do
+  before(:each) do
     create(:config, name: 'tax', value: '6')
     create(:config, name: 'shipping_cost', value: '7.00')
     create(:config, name: 'shipping_info', value: 'info')
-    User.destroy_all
     @user = create(:user, artist: true)
     @user_payment = create(:payment, payable: @user)
-    @valid_user_params =             { 'receiver_email'=>"#{Figaro.env.paypal_seller}",
-                                       'payment_gross'=>'1.00',
-                                       'invoice'=>@user_payment.id,
-                                       'payment_status'=>'Completed',
-                                       'txn_id'=>'61E67681CH3238416' }
+    @valid_user_params = { 'receiver_email'=>"#{Figaro.env.paypal_seller}",
+                           'payment_gross'=>'1.00',
+                           'invoice'=>@user_payment.id,
+                           'payment_status'=>'Completed',
+                           'txn_id'=>'61E67681CH3238416' }
     @denied_user_params =            { 'receiver_email'=>"#{Figaro.env.paypal_seller}",
                                        'payment_gross'=>'1.00',
                                        'invoice'=>@user_payment.id,
@@ -89,8 +88,7 @@ describe PaypalHooks::Api, type: :request do
 
     context 'malformed' do
 
-      before do
-        AdminUser.destroy_all
+      before(:each) do
         4.times{ create(:admin_user) }
       end
 

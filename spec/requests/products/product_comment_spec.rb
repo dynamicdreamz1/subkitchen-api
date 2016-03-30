@@ -4,7 +4,7 @@ describe Products::Api, type: :request do
 
   describe '/api/v1/comments' do
 
-    before do
+    before(:each) do
       5.times{ create(:comment, product: product, user: user) }
       @post_params = {product_id: product.id, content: 'test comment'}
       @get_params = {product_id: product.id}

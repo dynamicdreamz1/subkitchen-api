@@ -9,7 +9,7 @@ describe Accounts::Api, type: :request do
 
     describe 'VERIFICATION' do
 
-      before do
+      before(:each) do
         @params = {
             has_company: true,
             handle: 'asd',
