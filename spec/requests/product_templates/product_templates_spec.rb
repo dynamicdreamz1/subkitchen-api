@@ -3,7 +3,7 @@ describe ProductTemplates::Api, type: :request do
 
   describe '/api/v1/product_templates' do
     it 'should return serialized product templates' do
-      create(:product_template, template_image: image, size_chart: image)
+      create(:product_template, template_image: image, template_mask: image, size_chart: image)
 
       get '/api/v1/product_templates'
 
@@ -12,7 +12,7 @@ describe ProductTemplates::Api, type: :request do
     end
 
     it 'should match json schema' do
-      create(:product_template, template_image: image, size_chart: image)
+      create(:product_template, template_image: image, template_mask: image, size_chart: image)
 
       get '/api/v1/product_templates'
 

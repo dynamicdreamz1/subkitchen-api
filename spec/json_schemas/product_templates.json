@@ -10,6 +10,8 @@
           "price": {"type": "string"},
           "size": {"type": "array"},
           "template_image": {"type": "string"},
+          "template_image_large": {"type": "string"},
+          "template_mask_large": {"type": "string"},
           "size_chart": {"type": "string"},
           "product_type": {"type": "string"},
           "profit": {"type": "string"}
@@ -19,6 +21,8 @@
           "price",
           "size",
           "template_image",
+          "template_image_large",
+          "template_mask_large",
           "size_chart",
           "product_type",
           "profit"
