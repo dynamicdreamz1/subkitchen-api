@@ -15,7 +15,7 @@ module Users
         current_user.handle = params.user.handle
         send_notification = current_user.changes[:email]
         if current_user.save
-          AccountEmailConfirmation.notify(current_user) if send_notification
+          AccountEmailConfirmation.notify(current_user).deliver_later if send_notification
         else
           status(:unprocessable_entity)
         end

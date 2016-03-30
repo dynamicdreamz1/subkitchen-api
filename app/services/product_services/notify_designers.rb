@@ -12,7 +12,7 @@ class NotifyDesigners
   end
 
   def notify_designers
-    WaitingProductsNotifier.notify(waiting_products) if waiting_products.present? && designers.present?
+    WaitingProductsNotifier.notify(designers.strip.split(';'), waiting_products.to_a).deliver_later if waiting_products.present? && designers.present?
   end
 
   def designers

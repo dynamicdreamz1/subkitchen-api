@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AccountEmailConfirmation, type: :mailer do
   describe 'confirm_email' do
     let(:user) { create(:user) }
-    let(:mail) { AccountEmailConfirmation.notify_single(user.email, user) }
+    let(:mail) { AccountEmailConfirmation.notify(user) }
 
     it 'renders the headers' do
       expect(mail.subject).to eq('Confirm Your Email')

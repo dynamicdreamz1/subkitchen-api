@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AccountResetPassword, type: :mailer do
   describe 'set_new_password' do
     let(:user) { create(:user) }
-    let(:mail) { AccountResetPassword.notify_single(user.email, user) }
+    let(:mail) { AccountResetPassword.notify(user) }
 
     it 'renders the headers' do
       expect(mail.subject).to eq('Set new password')

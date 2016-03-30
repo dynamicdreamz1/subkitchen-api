@@ -104,19 +104,19 @@ describe PaypalHooks::Api, type: :request do
     context 'malformed' do
 
       before(:each) do
-        4.times{ create(:admin_user) }
+        create(:admin_user)
       end
 
       it 'should notify all admins when receiver email invalid' do
         expect do
           post '/api/v1/payment_notification', @invalid_receiver_order_params
-        end.to change { ActionMailer::Base.deliveries.count }.by(4)
+        end.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
 
       it 'should notify all admins when payment gross invalid' do
         expect do
           post '/api/v1/payment_notification', @invalid_payment_order_params
-        end.to change { ActionMailer::Base.deliveries.count }.by(4)
+        end.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
 
       it 'should change status to malformed' do

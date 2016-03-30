@@ -6,7 +6,7 @@ RSpec.describe WaitingProductsNotifier, type: :mailer do
       @designer_email = 'designer@example.com'
       @product = create(:product)
       @products = [@product]
-      @mail = WaitingProductsNotifier.notify_single(@designer_email, @products)
+      @mail = WaitingProductsNotifier.notify(@designer_email, @products)
     end
 
     it 'renders the headers' do

@@ -1,40 +1,22 @@
 require 'concerns/email_key_replacer'
 
 class WaitingProductsNotifier < ApplicationMailer
+  KEYS = {'PRODUCTS_LIST' => '(required) - list of all products (by names) that are waiting for designs'}
   include EmailKeyReplacer
 
-  KEYS = ['PRODUCTS_LIST']
-
-  def self.notify(products)
-    emails = Config.designers.strip.split(';')
-    emails.each do |email|
-      notify_single(email, products.to_a).deliver_later
-    end
-  end
-
-  def notify_single(email, products=nil)
+  def notify(recipients, products)
     template = EmailTemplate.where(name: "#{self.class.name}").first
     content = template.content
 
     replace_keys(content, values(products))
 
-    mail to: email,
+    mail to: recipients,
          body: content,
          content_type: 'text/html',
          subject: template.subject
   end
 
-  def self.keys
-    ["PRODUCTS_LIST (required) - list of all products (by names) that are waiting for designs"]
-  end
-
   private
-
-  KEYS.each do |key|
-    define_method("replace_#{key.downcase}") do |content, values|
-      content.gsub!(key, values[key.downcase])
-    end
-  end
 
   def products_list(products)
     returns = ""

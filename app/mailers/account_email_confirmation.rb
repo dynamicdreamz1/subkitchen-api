@@ -1,38 +1,23 @@
 require 'concerns/email_key_replacer'
 
 class AccountEmailConfirmation < ApplicationMailer
+  KEYS = {'CONFIRMATION_URL' =>  ' (required) - url to confirm email from registration form',
+          'USER_NAME' => " - user's name"}
   include EmailKeyReplacer
 
-  KEYS = ['CONFIRMATION_URL', 'USER_NAME']
-
-  def self.notify(user)
-    notify_single(user.email, user).deliver_later
-  end
-
-  def notify_single(email, user=nil)
+  def notify(user)
     template = EmailTemplate.where(name: "#{self.class.name}").first
     content = template.content
 
     replace_keys(content, values(user))
 
-    mail to: email,
+    mail to: user.email,
          body: content,
          content_type: 'text/html',
          subject: template.subject
   end
 
-  def self.keys
-    ["CONFIRMATION_URL (required) - url to confirm email from registration form",
-     "USER_NAME - user's name"]
-  end
-
   private
-
-  KEYS.each do |key|
-    define_method("replace_#{key.downcase}") do |content, values|
-      content.gsub!(key, values[key.downcase])
-    end
-  end
 
   def values(user)
     if user

@@ -12,7 +12,7 @@ module PaypalHooks
           NotifyDesigners.new(payment.payable).call
           ConfirmPayment.new(payment, params).call
         else
-          MalformedPaymentNotifier.notify(payment)
+          MalformedPaymentNotifier.notify(AdminUser.pluck(:email), payment).deliver_later
           payment.update(payment_status: 'malformed')
         end
       else
@@ -31,7 +31,7 @@ module PaypalHooks
         if CheckForFraud.new(params, payment).call
           ConfirmUserVerification.new(payment, params).call
         else
-          MalformedPaymentNotifier.notify(payment)
+          MalformedPaymentNotifier.notify(AdminUser.pluck(:email), payment).deliver_later
           payment.update(payment_status: 'malformed')
         end
       else

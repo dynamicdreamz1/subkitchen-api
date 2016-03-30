@@ -40,8 +40,8 @@ ActiveAdmin.register EmailTemplate do
   form do |f|
     panel 'KEYS' do
       text_node "Keys will be replaced with real information:</br></br>".html_safe
-      f.object.name.constantize.keys.each do |key|
-        text_node "#{key}</br>".html_safe
+      f.object.name.constantize::KEYS.each do |key, value|
+        text_node "#{key+value}</br>".html_safe
       end
     end
     f.inputs 'Email Template' do
