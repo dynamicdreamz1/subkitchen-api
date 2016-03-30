@@ -39,22 +39,22 @@ shipping_info = <<-EOT
   For more information on customs or duty fees, please contact your local customs office.
 </p>
 EOT
-EmailTemplate.create(name: 'admin_malformed_payment',
-                     description: 'Sent automatically to all admins when malformed payment detected.',
-                     subject: 'Malformed payment',
-                     content: '<b></b>Hi, <br><br>You have <b></b>received malformed payment confirmation request.<br><br>Payment ID: <%= link_to @payment.id, admin_payment_url(@payment) %><br><br><p>Regards,<br>Cloud Team</p>')
-EmailTemplate.create(name: 'designer_waiting_products',
-                     description: 'Sent automatically/manually to the designer when customer orders product without design.',
-                     subject: 'New products are waiting for design',
-                     content: '<h3> Hi, </h3><p>New products are waiting for your design<br/><br/><% @products.each do |product| %>Product ID: <%= link_to product.id, admin_product_url(product) %><br/><% end %><br/></p><p>Regards,<br/>Cloud Team</p>')
-EmailTemplate.create(name: 'customer_account_password_reset',
-                     description: 'Sent automatically to the customer when they ask to reset their password.',
-                     subject: 'Set new password',
-                     content: "<h3> Hi, </h3><p>Here is your reset password link<br/><br/><a href='<%= @reminder_url %>' target='_blank'><%= @reminder_url %></a><br/><br/></p><p>Regards,<br/>Cloud Team</p>")
-EmailTemplate.create(name: 'user_account_email_confirmation',
-                     description: 'Sent automatically to the customer when they complete their account registration.	',
-                     subject: 'Confirm Your Email',
-                     content: "<h3> Hi, </h3><p>Please, confirm your email<br/><br/><a href='<%= @confirmation_url %>' target='_blank'><%= @confirmation_url %></a><br/><br/></p><p>Regards,<br/>Cloud Team</p>")
+EmailTemplate.create(name: 'MalformedPaymentNotifier',
+       description: 'Sent automatically to all admins when malformed payment detected.',
+       subject: 'Malformed payment',
+       content: '<h3>Hi,</h3>You have <b></b>received malformed payment confirmation request.<br><br>Payment ID: <a target="_blank" title="Link: PAYMENT_ID" href="PAYMENT_URL">PAYMENT_ID</a><br><br><p>Regards,<br>Cloud Team</p>')
+EmailTemplate.create(name: 'WaitingProductsNotifier',
+       description: 'Sent automatically/manually to the designer when customer orders product without design.',
+       subject: 'New products are waiting for design',
+       content: '<h3> Hi, </h3><p>New products are waiting for your design<br><br></p><p>PRODUCTS_LIST</p><p>Regards,</p><p>Cloud Team</p>')
+EmailTemplate.create(name: 'AccountResetPassword',
+       description: 'Sent automatically to the customer when they ask to reset their password.',
+       subject: 'Set new password',
+       content: '<h3> Hi, </h3><p>Here is your reset password link:<br><br><a target="_blank" href="REMINDER_URL">REMINDER_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
+EmailTemplate.create(name: 'AccountEmailConfirmation',
+       description: 'Sent automatically to the customer when they complete their account registration.	',
+       subject: 'Confirm Your Email',
+       content: '<h3> Hi, </h3><p>Please, confirm your email<br><br><a target="_blank" title="Link: CONFIRMATION_URL" href="CONFIRMATION_URL">CONFIRMATION_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
 
 
 Config.create(name: 'tax', value: '7.00', input_type: 'short_text')
