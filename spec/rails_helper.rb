@@ -52,19 +52,19 @@ RSpec.configure do |config|
     create(:config, name: 'tax', value: '6')
     create(:config, name: 'shipping_cost', value: '7.00')
     create(:config, name: 'shipping_info', value: 'info')
-    create(:email_template, name: 'admin_malformed_payment',
+    create(:email_template, name: 'MalformedPaymentNotifier',
                          description: 'Sent automatically to all admins when malformed payment detected.',
                          subject: 'Malformed payment',
                          content: '<h3>Hi,</h3>You have <b></b>received malformed payment confirmation request.<br><br>Payment ID: <a target="_blank" title="Link: PAYMENT_ID" href="PAYMENT_URL">PAYMENT_ID</a><br><br><p>Regards,<br>Cloud Team</p>')
-    create(:email_template, name: 'designer_waiting_products',
+    create(:email_template, name: 'WaitingProductsNotifier',
                          description: 'Sent automatically/manually to the designer when customer orders product without design.',
                          subject: 'New products are waiting for design',
                          content: '<h3> Hi, </h3><p>New products are waiting for your design<br><br></p><p>PRODUCTS_LIST</p><p>Regards,</p><p>Cloud Team</p>')
-    create(:email_template, name: 'customer_account_password_reset',
+    create(:email_template, name: 'AccountResetPassword',
                          description: 'Sent automatically to the customer when they ask to reset their password.',
                          subject: 'Set new password',
                          content: '<h3> Hi, </h3><p>Here is your reset password link:<br><br><a target="_blank" href="REMINDER_URL">REMINDER_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
-    create(:email_template, name: 'user_account_email_confirmation',
+    create(:email_template, name: 'AccountEmailConfirmation',
                          description: 'Sent automatically to the customer when they complete their account registration.	',
                          subject: 'Confirm Your Email',
                          content: '<h3> Hi, </h3><p>Please, confirm your email<br><br><a target="_blank" title="Link: CONFIRMATION_URL" href="CONFIRMATION_URL">CONFIRMATION_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')

@@ -1,6 +1,32 @@
-class AccountEmailConfirmation < ApplicationMailer
+require 'concerns/email_key_replacer'
 
-  KEYS = ['CONFIRMATION_URL']
+class AccountEmailConfirmation < ApplicationMailer
+  include EmailKeyReplacer
+
+  KEYS = ['CONFIRMATION_URL', 'USER_NAME']
+
+  def self.notify(user)
+    notify_single(user.email, user).deliver_later
+  end
+
+  def notify_single(email, user=nil)
+    template = EmailTemplate.where(name: "#{self.class.name}").first
+    content = template.content
+
+    replace_keys(content, values(user))
+
+    mail to: email,
+         body: content,
+         content_type: 'text/html',
+         subject: template.subject
+  end
+
+  def self.keys
+    ["CONFIRMATION_URL (required) - url to confirm email from registration form",
+     "USER_NAME - user's name"]
+  end
+
+  private
 
   KEYS.each do |key|
     define_method("replace_#{key.downcase}") do |content, values|
@@ -8,23 +34,17 @@ class AccountEmailConfirmation < ApplicationMailer
     end
   end
 
-  def self.notify(user)
-    notify_single(user.email, user).deliver_later
-  end
-
-  def notify_single(email, user=nil)
-    template = EmailTemplate.where(name: 'user_account_email_confirmation').first
-    content = template.content
-    token = user.confirm_token || 'confirm_token'
-    values = { 'confirmation_url' => "#{Figaro.env.frontend_host}/confirm_email/#{token}" }
-
-    KEYS.each do |key|
-      send("replace_#{key.downcase}", content, values)
+  def values(user)
+    if user
+      token = user.confirm_token
+      user_name = user.name
+    else
+      token = 'confirm_token'
+      user_name = 'TestName'
     end
-
-    mail to: email,
-         body: content,
-         content_type: 'text/html',
-         subject: template.subject
+    {
+        'confirmation_url' => "#{Figaro.env.frontend_host}/confirm_email/#{token}",
+        'user_name' => user_name
+    }
   end
 end

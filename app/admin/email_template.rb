@@ -17,8 +17,9 @@ ActiveAdmin.register EmailTemplate do
   end
 
   member_action :send_email, method: :post do
-    emails = params[:emails].strip.split(';')
-    redirect_to admin_email_template_path(params[:template]), notice: 'Email has been send'
+    template = EmailTemplate.find(params[:template])
+    template.name.constantize.notify_single(params[:email]).deliver_now
+    redirect_to admin_email_template_path(template), notice: 'Email has been send'
   end
 
   show do |template|
@@ -40,6 +41,12 @@ ActiveAdmin.register EmailTemplate do
   end
 
   form do |f|
+    panel 'KEYS' do
+      text_node "Keys will be replaced with real information:</br></br>".html_safe
+      f.object.name.constantize.keys.each do |key|
+        text_node "#{key}</br>".html_safe
+      end
+    end
     f.inputs 'Email Template' do
       f.input :subject, as: :string
       f.input :content, as: :wysihtml5

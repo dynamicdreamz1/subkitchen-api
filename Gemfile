@@ -70,6 +70,7 @@ end
 group :development do
   gem 'rspec-nc'
   gem 'guard-rspec', require: false
+  gem 'letter_opener_web', '~> 1.2.0'
 end
 
 group :test do
