@@ -4,7 +4,9 @@ ActiveAdmin.register ProductTemplate do
                 :size_chart,
                 :profit,
                 :is_deleted,
-                :template_image
+                :template_image,
+                :template_mask,
+                :sizes_raw
   config.filters = false
   config.batch_actions = false
   actions :index, :show, :edit, :new, :create, :update, :delete
@@ -29,6 +31,9 @@ ActiveAdmin.register ProductTemplate do
     column('Image') do |template|
       attachment_image_tag(template, :template_image, :fit, 50, 50)
     end
+    column('Image Mask') do |template|
+      attachment_image_tag(template, :template_mask, :fit, 50, 50)
+    end
     column(:product_type)
     column(:profit)
     column(:created_at)
@@ -47,10 +52,12 @@ ActiveAdmin.register ProductTemplate do
   show do |template|
     attributes_table do
       row('Image'){ attachment_image_tag(template, :template_image, :fit, 150, 150) }
+      row('Image Mask'){ attachment_image_tag(template, :template_mask, :fit, 150, 150) }
       row(:product_type)
       row(:profit)
       row(:created_at)
       row(:price)
+      row(:size)
       row('Size Chart'){ attachment_image_tag(template, :size_chart, :fit, 150, 150) }
       row(:is_deleted)
     end
@@ -59,9 +66,11 @@ ActiveAdmin.register ProductTemplate do
   form do |f|
     f.inputs 'Template', multipart: true do
       f.input :template_image, as: :refile
+      f.input :template_mask, as: :refile
       f.input :size_chart, as: :refile
       f.input :product_type
       f.input :price
+      f.input :sizes_raw, :as => :text
       f.actions
     end
   end

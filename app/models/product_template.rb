@@ -11,4 +11,12 @@ class ProductTemplate < ActiveRecord::Base
 
   default_scope { where(is_deleted: false) }
   scope :deleted, -> { unscoped.where(is_deleted: true) }
+
+  def sizes_raw
+    self.size.join("\n") unless self.size.nil?
+  end
+
+  def sizes_raw=(values)
+    self.size = values.to_s.split(/[\r\n]+/).reject{|e| e.blank?}
+  end
 end
