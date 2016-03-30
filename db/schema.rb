@@ -189,6 +189,8 @@ ActiveRecord::Schema.define(version: 20160330095028) do
     t.datetime "published_at"
     t.string   "design_id"
     t.integer  "order_items_count",                           default: 0
+    t.integer  "design_size"
+    t.string   "design_content_type"
   end
 
   create_table "taggings", force: :cascade do |t|

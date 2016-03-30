@@ -10,9 +10,6 @@ ActiveAdmin.register EmailTemplate do
       truncate(template.description, length: 150, escape: false)
     end
     column(:subject)
-    column 'Content' do |template|
-      truncate(template.content, length: 150, escape: false)
-    end
     actions
   end
 
