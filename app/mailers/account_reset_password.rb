@@ -20,13 +20,8 @@ class AccountResetPassword < ApplicationMailer
   private
 
   def values(user)
-    if user
-      token = user.password_reminder_token
-      user_name = user.name
-    else
-      token = 'password_reminder_token'
-      user_name = 'TestName'
-    end
+    token = user.try(:password_reminder_token) || 'password_reminder_token'
+    user_name = user.try(:name) || 'TestName'
     {
         'reminder_url' => "#{Figaro.env.frontend_host}/new_password/#{token}",
         'user_name' => user_name

@@ -19,23 +19,14 @@ class WaitingProductsNotifier < ApplicationMailer
   private
 
   def products_list(products)
-    returns = ""
-
+    list = ''
     products.each.with_index do |product, index|
-      returns << "#{index+1}. <a href=\"#{admin_product_url(product)}\">#{product.name}</a><br/>"
+      list << "#{index+1}. <a href=\"#{admin_product_url(product)}\">#{product.name}</a><br/>"
     end
-
-    returns
+    list
   end
 
   def values(products)
-    if products
-      products
-    else
-      products = Product.all.limit(3)
-    end
-    {
-        'products_list' => products_list(products)
-    }
+    { 'products_list' => products_list(products || Product.last(3)) }
   end
 end

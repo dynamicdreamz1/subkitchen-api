@@ -5,7 +5,7 @@ RSpec.describe MalformedPaymentNotifier, type: :mailer do
     before(:each) do
       @admin = create(:admin_user)
       @payment = create(:payment, payment_status: 'malformed')
-      @mail = MalformedPaymentNotifier.notify(@admin.email, @payment)
+      @mail = MalformedPaymentNotifier.notify(@admin.email, @payment.id)
     end
 
     it 'renders the headers' do

@@ -5,11 +5,11 @@ class MalformedPaymentNotifier < ApplicationMailer
           'PAYMENT_URL' => ' - malformed payment id'}
   include EmailKeyReplacer
 
-  def notify(recipients, payment)
+  def notify(recipients, payment_id)
     template = EmailTemplate.where(name: "#{self.class.name}").first
     content = template.content
 
-    replace_keys(content, values(payment))
+    replace_keys(content, values(payment_id || 1))
 
     mail(to: recipients,
          body: content,
@@ -19,12 +19,7 @@ class MalformedPaymentNotifier < ApplicationMailer
 
   private
 
-  def values(payment)
-    if payment
-      payment_id = payment.id
-    else
-      payment_id = 1
-    end
+  def values(payment_id)
     {
         'payment_id' => "#{payment_id}",
         'payment_url' => "#{Figaro.env.frontend_host}admin/payments/#{payment_id}"

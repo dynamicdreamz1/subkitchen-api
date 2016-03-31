@@ -20,13 +20,8 @@ class AccountEmailConfirmation < ApplicationMailer
   private
 
   def values(user)
-    if user
-      token = user.confirm_token
-      user_name = user.name
-    else
-      token = 'confirm_token'
-      user_name = 'TestName'
-    end
+    token = user.try(:confirm_token) || 'confirm_token'
+    user_name = user.try(:name) || 'TestName'
     {
         'confirmation_url' => "#{Figaro.env.frontend_host}/confirm_email/#{token}",
         'user_name' => user_name
