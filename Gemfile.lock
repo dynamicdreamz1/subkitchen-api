@@ -212,8 +212,15 @@ GEM
     hashdiff (0.3.0)
     hashie (3.4.3)
     hirb (0.7.3)
+    http (1.0.4)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 1.0.1)
+      http_parser.rb (~> 0.6.0)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
+    http-form_data (1.0.1)
+    http_parser.rb (0.6.0)
     i18n (0.7.0)
     ice_nine (0.11.2)
     inherited_resources (1.6.0)
@@ -491,6 +498,7 @@ DEPENDENCIES
   grape-swagger
   guard-rspec
   hirb
+  http
   iso_country_codes
   jbuilder (~> 2.0)
   jquery-rails
