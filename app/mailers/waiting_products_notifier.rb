@@ -1,7 +1,7 @@
 require 'concerns/email_key_replacer'
 
 class WaitingProductsNotifier < ApplicationMailer
-  KEYS = {'PRODUCTS_LIST' => '(required) - list of all products (by names) that are waiting for designs'}
+  KEYS = { 'PRODUCTS_LIST' => '(required) - list of all products (by names) that are waiting for designs' }
   include EmailKeyReplacer
 
   def notify(recipients, products)

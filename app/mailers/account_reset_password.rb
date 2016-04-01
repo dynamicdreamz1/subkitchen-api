@@ -1,8 +1,8 @@
 require 'concerns/email_key_replacer'
 
 class AccountResetPassword < ApplicationMailer
-  KEYS = {'REMINDER_URL' => ' (required) - url for user to reset forgotten password',
-          'USER_NAME' => " - user's name"}
+  KEYS = { 'REMINDER_URL' => ' (required) - url for user to reset forgotten password',
+          'USER_NAME' => " - user's name" }
   include EmailKeyReplacer
 
   def notify(user)
@@ -22,9 +22,7 @@ class AccountResetPassword < ApplicationMailer
   def values(user)
     token = user.try(:password_reminder_token) || 'password_reminder_token'
     user_name = user.try(:name) || 'TestName'
-    {
-        'reminder_url' => "#{Figaro.env.frontend_host}/new_password/#{token}",
-        'user_name' => user_name
-    }
+    { 'reminder_url' => "#{Figaro.env.frontend_host}/new_password/#{token}",
+      'user_name' => user_name }
   end
 end

@@ -1,8 +1,8 @@
 require 'concerns/email_key_replacer'
 
 class MalformedPaymentNotifier < ApplicationMailer
-  KEYS = {'PAYMENT_ID' => ' (required) - admin url for the malformed payment',
-          'PAYMENT_URL' => ' - malformed payment id'}
+  KEYS = { 'PAYMENT_ID' => ' (required) - admin url for the malformed payment',
+          'PAYMENT_URL' => ' - malformed payment id' }
   include EmailKeyReplacer
 
   def notify(recipients, payment_id)
@@ -20,9 +20,7 @@ class MalformedPaymentNotifier < ApplicationMailer
   private
 
   def values(payment_id)
-    {
-        'payment_id' => "#{payment_id}",
-        'payment_url' => "#{Figaro.env.frontend_host}admin/payments/#{payment_id}"
-    }
+    { 'payment_id' => "#{payment_id}",
+      'payment_url' => "#{Figaro.env.frontend_host}admin/payments/#{payment_id}" }
   end
 end
