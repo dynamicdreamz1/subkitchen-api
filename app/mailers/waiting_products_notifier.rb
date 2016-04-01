@@ -4,11 +4,11 @@ class WaitingProductsNotifier < ApplicationMailer
   KEYS = {'PRODUCTS_LIST' => '(required) - list of all products (by names) that are waiting for designs'}
   include EmailKeyReplacer
 
-  def notify(recipients, products)
+  def notify(recipients, options = {})
     template = EmailTemplate.where(name: "#{self.class.name}").first
     content = template.content
 
-    replace_keys(content, values(products))
+    replace_keys(content, values(options))
 
     mail to: recipients,
          body: content,
@@ -26,7 +26,7 @@ class WaitingProductsNotifier < ApplicationMailer
     list
   end
 
-  def values(products)
-    { 'products_list' => products_list(products || Product.last(3)) }
+  def values(options)
+    { 'products_list' => products_list(options[:products] || Product.last(3)) }
   end
 end

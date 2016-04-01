@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe AccountEmailConfirmation, type: :mailer do
   describe 'confirm_email' do
     let(:user) { create(:user) }
-    let(:mail) { AccountEmailConfirmation.notify(user) }
+    let(:mail) { options = {confirmation_token: user.confirm_token, name: user.name}
+                  AccountEmailConfirmation.notify(user.email, options) }
 
     it 'renders the headers' do
       expect(mail.subject).to eq('Confirm Your Email')
@@ -12,7 +13,7 @@ RSpec.describe AccountEmailConfirmation, type: :mailer do
     end
 
     it 'renders the body' do
-      url = "#{Figaro.env.frontend_host}/confirm_email/#{user.confirm_token}"
+      url = "#{Figaro.env.frontend_host}confirm_email/#{user.confirm_token}"
       expect(mail.body.raw_source).to be_include(url)
     end
   end

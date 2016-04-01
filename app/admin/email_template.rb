@@ -15,7 +15,7 @@ ActiveAdmin.register EmailTemplate do
 
   member_action :send_email, method: :post do
     template = EmailTemplate.find(params[:template])
-    template.name.constantize.notify_single(params[:email]).deliver_now
+    template.name.constantize.notify(params[:email]).deliver_now
     redirect_to admin_email_template_path(template), notice: 'Email has been send'
   end
 

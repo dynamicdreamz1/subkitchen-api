@@ -46,7 +46,8 @@ module Sessions
             UpdateUserAddress.new(user, params).call
             SetUserInOrder.new(user, params.order_uuid).call
           end
-          AccountEmailConfirmation.notify(user).deliver_later
+          options = {confirmation_token: user.confirm_token, name: user.name}
+          AccountEmailConfirmation.notify(user.email, options).deliver_later
         else
           status :unprocessable_entity
         end
