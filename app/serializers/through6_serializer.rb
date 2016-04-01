@@ -3,23 +3,34 @@ class Through6Serializer
 
   def as_json(options = {})
     data = {
-        type: 'Order',
-        version: '1.0',
-        time: DateTime.now,
-        method: 'create',
-        xid: order.uuid,
-        status: 'In Production',
-        created: order.created_at,
-        updated: order.updated_at,
-        track_url: Figaro.env.app_host + "api/v1/track?order_uuid=#{order.uuid}",
-        receipt_url: Figaro.env.app_host + "api/v1/receipt?order_uuid=#{order.uuid}" ,
-        client: 'SublimationKitchen',
-        shipping_country: 'US',
-        mode: 'auto',
-        items_quantity: order.order_items.count,
-        items_amount: order.total_cost,
-        items: items,
-        shipping: shipping
+        'id': order.id,
+        'email': order.email,
+        'created_at': order.created_at,
+        'updated_at': order.updated_at,
+        'token': order.uuid,
+        'total_price': order.total_cost,
+        'subtotal_price': order.subtotal_cost,
+        'total_tax': order.tax_cost,
+        'taxes_included':false,
+        'currency':'USD',
+        'total_discounts': nil,
+        'processed_at': DateTime.now,
+        'tax_lines':[
+            {
+                'title': 'Tax',
+                'price': order.tax_cost,
+                'rate': Config.tax.to_d*0.01
+            }
+        ],
+        'shipping_address': [
+            'address1': order.address,
+            'city': order.city,
+            'country': order.country,
+            'name': order.full_name,
+            'zip': order.zip,
+            'province': order.region
+        ],
+        'line_items': items
     }
 
     data.as_json(options)
@@ -37,14 +48,12 @@ class Through6Serializer
     order.order_items.map do |item|
       {
           id: item.id,
-          type: 'on-demand',
-          code: '',
           name: item.product.name,
           description: item.product.description,
           quantity: item.quantity,
           attributes: { size: item.size },
-          unit_amount: number_to_price(item.price),
-          subtotal_amount: number_to_price(item.price*item.quantity),
+          unit_amount: item.price,
+          subtotal_amount: item.price*item.quantity,
           thumbnail: Figaro.env.app_host + Refile.attachment_url(item.product, :image, :fill, 100, 100, format: :png),
           preview: Figaro.env.app_host + Refile.attachment_url(item.product, :image, :fill, 400, 400, format: :png),
           file_url: Figaro.env.app_host + Refile.attachment_url(item.product, :design, format: :pdf),
@@ -54,13 +63,5 @@ class Through6Serializer
           file_hash: item.product.design_id
       }
     end
-  end
-
-  def shipping
-    {
-        courier: "DHL",
-        service: "PLP",
-        package: "Bag"
-    }
   end
 end

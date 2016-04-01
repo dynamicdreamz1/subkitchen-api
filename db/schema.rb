@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317203414) do
+ActiveRecord::Schema.define(version: 20160330095028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,20 @@ ActiveRecord::Schema.define(version: 20160317203414) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "assets", force: :cascade do |t|
+    t.string   "storage_uid"
+    t.string   "storage_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "storage_width"
+    t.integer  "storage_height"
+    t.float    "storage_aspect_ratio"
+    t.integer  "storage_depth"
+    t.string   "storage_format"
+    t.string   "storage_mime_type"
+    t.string   "storage_size"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.integer  "product_id"
     t.integer  "user_id"
@@ -79,6 +93,15 @@ ActiveRecord::Schema.define(version: 20160317203414) do
     t.datetime "updated_at",      null: false
     t.string   "input_type"
     t.string   "config_image_id"
+  end
+
+  create_table "email_templates", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "content"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "subject"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -148,6 +171,7 @@ ActiveRecord::Schema.define(version: 20160317203414) do
     t.boolean  "is_deleted",                                default: false
     t.decimal  "profit",            precision: 8, scale: 2
     t.string   "template_image_id"
+    t.string   "template_mask_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -165,6 +189,8 @@ ActiveRecord::Schema.define(version: 20160317203414) do
     t.datetime "published_at"
     t.string   "design_id"
     t.integer  "order_items_count",                           default: 0
+    t.integer  "design_size"
+    t.string   "design_content_type"
   end
 
   create_table "taggings", force: :cascade do |t|

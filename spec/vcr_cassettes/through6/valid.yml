@@ -1,0 +1,53 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://t6ordertest.azurewebsites.net/api/createorder
+    body:
+      encoding: UTF-8
+      string: '{"id":16,"email":"test@example.com","created_at":"2016-04-01T08:34:59.916Z","updated_at":"2016-04-01T08:35:00.066Z","token":"bf05b935-f14b-4876-bed8-4a7ae6f570be","total_price":"0.0","subtotal_price":"0.0","total_tax":"0.0","taxes_included":false,"currency":"USD","total_discounts":null,"processed_at":"2016-04-01T10:35:00.074+02:00","tax_lines":[{"title":"Tax","price":"0.0","rate":"0.06"}],"shipping_address":[{"address1":"Kaliskiego
+        100","city":"Warszawa","country":"Polska","name":"Klara Hirao","zip":"00-000","province":"mazowieckie"}],"line_items":[{"id":15,"name":"product1","description":"description","quantity":1,"attributes":{"size":"s"},"unit_amount":"19.99","subtotal_amount":"19.99","thumbnail":"http://localhost:3000/attachments/8242d457be06e43167af952c607d0bd2a8320495/store/fill/100/100/44858155d6b1b2ddf20becb2355baec5c76429ecb5d18d701567f67ddad9/image.png","preview":"http://localhost:3000/attachments/80bd1efa0d8fda638da64380baa576864bfc2f25/store/fill/400/400/44858155d6b1b2ddf20becb2355baec5c76429ecb5d18d701567f67ddad9/image.png","file_url":"http://localhost:3000/attachments/4b46aa4d1fb8a8f2deaea54dd1e4814135510b5f/store/6acd80073c22d85e7fe49b9305862d4a112b5e52574c720801d7246f34ad/design.pdf","file_extension":"pdf","file_type":"application/pdf","file_size":1171246,"file_hash":"6acd80073c22d85e7fe49b9305862d4a112b5e52574c720801d7246f34ad"}]}'
+    headers:
+      Authorization:
+      - Basic c3Via2l0Y2hlbjpQYXNzMXdvcmQ=
+      Connection:
+      - close
+      Content-Type:
+      - application/json
+      Host:
+      - t6ordertest.azurewebsites.net
+      User-Agent:
+      - http.rb/1.0.4
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Pragma:
+      - no-cache
+      Content-Length:
+      - '20'
+      Content-Type:
+      - application/json; charset=utf-8
+      Expires:
+      - "-1"
+      Server:
+      - Microsoft-IIS/8.0
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      Set-Cookie:
+      - ARRAffinity=fe09bbf3093fe39d7b7e0316b81503007d0e6b52565d4d87a5c92c820b75a7be;Path=/;Domain=t6ordertest.azurewebsites.net
+      Date:
+      - Fri, 01 Apr 2016 08:35:00 GMT
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: '{"status":"Success"}'
+    http_version: 
+  recorded_at: Fri, 01 Apr 2016 08:35:01 GMT
+recorded_with: VCR 3.0.1
