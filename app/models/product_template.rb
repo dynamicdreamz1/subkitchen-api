@@ -6,8 +6,8 @@ class ProductTemplate < ActiveRecord::Base
   serialize :size
 
   attachment :size_chart
-  attachment :template_image
-  attachment :template_mask
+  attachment :template_image, content_type: %w(image/jpeg image/png image/jpg)
+  attachment :template_mask, content_type: %w(image/png)
 
   default_scope { where(is_deleted: false) }
   scope :deleted, -> { unscoped.where(is_deleted: true) }
