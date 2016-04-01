@@ -4,6 +4,9 @@ development:
   s3_bucket: ""
   app_host: 'http://localhost:3000'
   front_host: 'http://localhost:4200'
+  paypal_cert_id: ''
+  paypal_url:  ''
+  t6_endpoint: ''
 
 test:
   paypal_seller: "klara.hirao-facilitator@elpassion.pl"
@@ -14,4 +17,7 @@ test:
   s3_access_key: "https://github.com/refile/refile-s3"
   s3_secret: ""
   s3_bucket: ""
+  paypal_cert_id: ''
+  paypal_url:  ''
+  t6_endpoint: ''
 
