@@ -58,20 +58,16 @@ module Accounts
       post 'profile_image' do
         authenticate!
         image = ActionDispatch::Http::UploadedFile.new(params.image)
-        if CheckProfileImageSize.new(params.image).call
-          current_user.profile_image = image
-          current_user.valid?
-          if current_user.errors[:profile_image].blank?
-            current_user.errors.delete(:profile_image)
-            current_user.save(validate: false)
-            current_user.reload
-          else
-            status(:unprocessable_entity)
-          end
-          UserPublicSerializer.new(current_user)
+        current_user.profile_image = image
+        current_user.valid?
+        if current_user.errors[:profile_image].blank?
+          current_user.errors.delete(:profile_image)
+          current_user.save(validate: false)
+          current_user.reload
         else
-          error!({errors: {profile_image: ['image is too small']}}, 422)
+          status(:unprocessable_entity)
         end
+        UserPublicSerializer.new(current_user)
       end
 
       desc 'upload shop banner'
@@ -81,17 +77,18 @@ module Accounts
       post 'shop_banner' do
         authenticate!
         banner = ActionDispatch::Http::UploadedFile.new(params.banner)
-        if CheckShopBannerSize.new(params.banner).call
-          if current_user.artist
-            current_user.update(shop_banner: banner)
+        if current_user.artist
+          current_user.shop_banner = banner
+          if current_user.valid?
+            current_user.save
             data = { shop_banner_url: current_user.shop_banner_url }
             data[:errors] = current_user.errors if current_user.errors.any?
             data
           else
-            error!({errors: {base: ['user must be an artist']}}, 422)
+            error!({errors: current_user.errors.messages}, 422)
           end
         else
-          error!({errors: {base: ['image is too small']}}, 422)
+          error!({errors: {base: ['user must be an artist']}}, 422)
         end
       end
     end

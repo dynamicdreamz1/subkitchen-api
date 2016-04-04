@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true, email: true, uniqueness: true, unless: :oauth_registration?
   validates :handle, uniqueness: { allow_nil: true, allow_blank: true }, presence: { if: :artist }
   validates :name, presence: true, uniqueness: true
+  validates :shop_banner, image: { width: 1920, height: 750 }
   validate do |record|
     record.errors.add(:password, :blank) unless record.password_digest.present? || oauth_registration?
   end

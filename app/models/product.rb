@@ -7,7 +7,7 @@ class Product < ActiveRecord::Base
   has_many :comments
 
   validates_with PublishedValidator
-  validates :image, product_image: true
+  validates :image, image: { range: 1024...5000 }
 
   after_create SetProduct.new
   after_update SendOrderIfItemsReady.new, if: :design_id_changed?
