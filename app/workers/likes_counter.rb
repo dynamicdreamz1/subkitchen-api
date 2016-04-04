@@ -22,7 +22,7 @@ class LikesCounter
 
   def calculate_percentage(user)
     count = get_counter(user)
-    count == 0 ? 0 : ((user.likes_count_weekly * 100) / count)
+    count == 0 ? 0 : ((likes_count_weekly(user) * 100) / count)
   end
 
   def get_counter(user)
@@ -31,5 +31,14 @@ class LikesCounter
 
   def get_user(author_id)
     User.find(author_id)
+  end
+
+  def likes_count_weekly(user)
+    count = 0
+    user.products.each do |product|
+      count += Like.this_week(product.id)
+    end
+    count
+    # Like.week(products.pluck(:id), 'Product').count
   end
 end

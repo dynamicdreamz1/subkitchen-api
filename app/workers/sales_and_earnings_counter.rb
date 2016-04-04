@@ -64,11 +64,33 @@ class SalesAndEarningsCounter
 
   def calculate_earnings_percentage(user)
     earnings = get_earnings_count(user)
-    earnings == 0 ? 0 : (user.earnings_count_weekly * 100 / earnings)
+    earnings == 0 ? 0 : (earnings_count_weekly(user) * 100 / earnings)
   end
 
   def calculate_sales_percentage(user)
     sales = get_sales_counter(user)
-    sales == 0 ? 0 : (user.sales_count_weekly * 100 / sales)
+    sales == 0 ? 0 : (sales_count_weekly(user) * 100 / sales)
+  end
+
+  def sales_count_weekly(user)
+    count = 0
+    user.order_items.each do |item|
+      if item.order.purchased_at > 1.week.ago
+        count += item.quantity
+      end
+    end
+    count
+    # order_items.pluck(:id)
+    # OrderItem.where(user_id: order_items.pluck(:id)).select('SUM(quantity) AS quantity_sum').order('quantity_sum')
+  end
+
+  def earnings_count_weekly(user)
+    count = 0
+    user.order_items.each do |item|
+      if item.order.purchased_at > 1.week.ago
+        count += item.quantity * item.product.product_template.profit
+      end
+    end
+    count
   end
 end

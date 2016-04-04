@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
   after_update ChangeStatusIfArtist.new, if: :artist_changed?
 
   include SecureToken
+  include RedisCounterGetters
+
   uses_secure_token :auth_token
   uses_secure_token :password_reminder_token
   uses_secure_token :confirm_token
@@ -43,73 +45,6 @@ class User < ActiveRecord::Base
 
   def as_json(params = {})
     UserPublicSerializer.new(self, true).as_json(params)
-  end
-
-  def sales_count
-    $redis.get("user_#{id}_sales_counter").to_i
-  end
-
-  def sales_weekly
-    $redis.get("user_#{id}_sales_weekly").to_i
-  end
-
-  def sales_count_weekly
-    count = 0
-    order_items.each do |item|
-      if item.order.purchased_at > 1.week.ago
-        count += item.quantity
-      end
-    end
-    count
-    # order_items.pluck(:id)
-    # OrderItem.where(user_id: order_items.pluck(:id)).select('SUM(quantity) AS quantity_sum').order('quantity_sum')
-  end
-
-  def likes_count
-    $redis.get("user_#{id}_likes_counter").to_i
-  end
-
-  def likes_weekly
-    $redis.get("user_#{id}_likes_weekly").to_i
-  end
-
-  def likes_count_weekly
-    count = 0
-    products.each do |product|
-      count += Like.this_week(product.id)
-    end
-    count
-    # Like.week(products.pluck(:id), 'Product').count
-  end
-
-  def published_count
-    $redis.get("user_#{id}_published_counter").to_i
-  end
-
-  def published_weekly
-    $redis.get("user_#{id}_published_weekly").to_i
-  end
-
-  def published_count_weekly
-    products.select{ |product| product.published_at > 1.week.ago }.count
-  end
-
-  def earnings_count
-    $redis.get("user_#{id}_earnings_counter").to_i
-  end
-
-  def earnings_weekly
-    $redis.get("user_#{id}_earnings_weekly").to_i
-  end
-
-  def earnings_count_weekly
-    count = 0
-    order_items.each do |item|
-      if item.order.purchased_at > 1.week.ago
-        count += item.quantity * item.product.product_template.profit
-      end
-    end
-    count
   end
 
   private

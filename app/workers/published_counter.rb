@@ -22,7 +22,7 @@ class PublishedCounter
 
   def calculate_percentage(user)
     count = get_counter(user)
-    count == 0 ? 0 : ((user.published_count_weekly * 100) / count)
+    count == 0 ? 0 : ((published_count_weekly(user) * 100) / count)
   end
 
   def get_counter(user)
@@ -31,5 +31,9 @@ class PublishedCounter
 
   def get_user(product_id)
     Product.find_by(id: product_id).author
+  end
+
+  def published_count_weekly(user)
+    user.products.select{ |product| product.published_at > 1.week.ago }.count
   end
 end
