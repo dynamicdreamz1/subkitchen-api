@@ -7,6 +7,8 @@ class Product < ActiveRecord::Base
   has_many :comments
 
   validates_with PublishedValidator
+  validates :image, product_image: true
+
   after_create SetProduct.new
   after_update SendOrderIfItemsReady.new, if: :design_id_changed?
   after_save SetPublishedAt.new, if: :published_changed?

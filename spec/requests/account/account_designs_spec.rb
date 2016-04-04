@@ -9,7 +9,7 @@ describe AccountsDesigns::Api, type: :request do
     end
 
     it 'should match json schema' do
-      create(:product, author: user)
+      create(:product, author: user, )
 
       get '/api/v1/account/designs', {}, auth_header_for(user)
 

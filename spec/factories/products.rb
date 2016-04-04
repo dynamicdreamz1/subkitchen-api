@@ -1,3 +1,5 @@
+include ActionDispatch::TestProcess
+
 FactoryGirl.define do
   factory :product do
     sequence :name do |n|
@@ -6,8 +8,8 @@ FactoryGirl.define do
     description 'description'
     author { create(:user) }
     product_template {create(:product_template)}
+    image { fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
     price 1
-    image_id '1234'
     published false
   end
 end

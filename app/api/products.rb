@@ -40,17 +40,13 @@ module Products
         requires :tags, type: Array[String]
       end
       post do
-        if CheckProductImageSize.new(params.image)
-          product = CreateProduct.new(params, current_user).call
-          if product.valid?
-            product.save
-          else
-            error!({errors: product.errors.messages}, 422)
-          end
-          ProductSerializer.new(product).as_json
+        product = CreateProduct.new(params, current_user).call
+        if product.valid?
+          product.save
         else
-          error!({errors: {base: ['image is too small']}}, 422)
+          error!({errors: product.errors.messages}, 422)
         end
+        ProductSerializer.new(product).as_json
       end
 
       desc 'remove product'

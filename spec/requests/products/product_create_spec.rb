@@ -1,5 +1,5 @@
 describe Products::Api, type: :request do
-  let(:image){ fixture_file_upload(Rails.root.join('app/assets/images/sizechart-hoodie.jpg'), 'image/jpg') }
+  let(:image){ fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
   let(:product_template){ create(:product_template) }
   let(:artist){ create(:user, status: 'verified', artist: true) }
   let(:user){ create(:user, artist: false) }
