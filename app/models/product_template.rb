@@ -11,6 +11,7 @@ class ProductTemplate < ActiveRecord::Base
 
   default_scope { where(is_deleted: false) }
   scope :deleted, -> { unscoped.where(is_deleted: true) }
+  validates_with ImageMaskValidator
 
   def sizes_raw
     self.size.join("\n") unless self.size.nil?

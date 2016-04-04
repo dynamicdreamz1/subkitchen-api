@@ -70,7 +70,7 @@ ActiveAdmin.register ProductTemplate do
       f.input :size_chart, as: :refile
       f.input :product_type
       f.input :price
-      f.input :sizes_raw, :as => :text
+      f.input :sizes_raw, as: :text
       f.actions
     end
   end
