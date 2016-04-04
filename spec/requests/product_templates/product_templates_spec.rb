@@ -1,9 +1,10 @@
 describe ProductTemplates::Api, type: :request do
-  let(:image){ fixture_file_upload(Rails.root.join('app/assets/images/sizechart-hoodie.jpg'), 'image/jpg') }
+  let(:image){ fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
+  let(:mask){ fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
 
   describe '/api/v1/product_templates' do
     it 'should return serialized product templates' do
-      create(:product_template, template_image: image, template_mask: image, size_chart: image)
+      create(:product_template, template_image: image, template_mask: mask, size_chart: image)
 
       get '/api/v1/product_templates'
 
@@ -12,7 +13,7 @@ describe ProductTemplates::Api, type: :request do
     end
 
     it 'should match json schema' do
-      create(:product_template, template_image: image, template_mask: image, size_chart: image)
+      create(:product_template, template_image: image, template_mask: mask, size_chart: image)
 
       get '/api/v1/product_templates'
 
