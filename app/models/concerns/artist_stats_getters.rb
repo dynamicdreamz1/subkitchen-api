@@ -1,4 +1,4 @@
-module RedisCounterGetters
+module ArtistStatsGetters
   def sales_count
     $redis.get("user_#{id}_sales_counter").to_i
   end

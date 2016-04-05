@@ -22,7 +22,8 @@ class PublishedCounter
 
   def calculate_percentage(user)
     count = get_counter(user)
-    count == 0 ? 0 : ((published_count_weekly(user) * 100) / count)
+    return 0 if count == 0
+    (published_count_weekly(user) * 100) / count
   end
 
   def get_counter(user)

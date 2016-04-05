@@ -63,13 +63,15 @@ class SalesAndEarningsCounter
   end
 
   def calculate_earnings_percentage(user)
-    earnings = get_earnings_count(user)
-    earnings == 0 ? 0 : (earnings_count_weekly(user) * 100 / earnings)
+    count = get_earnings_count(user)
+    return 0 if count == 0
+    (earnings_count_weekly(user) * 100) / count
   end
 
   def calculate_sales_percentage(user)
-    sales = get_sales_counter(user)
-    sales == 0 ? 0 : (sales_count_weekly(user) * 100 / sales)
+    count = get_sales_counter(user)
+    return 0 if count == 0
+    (sales_count_weekly(user) * 100) / count
   end
 
   def sales_count_weekly(user)

@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   after_update ChangeStatusIfArtist.new, if: :artist_changed?
 
   include SecureToken
-  include RedisCounterGetters
+  include ArtistStatsGetters
 
   uses_secure_token :auth_token
   uses_secure_token :password_reminder_token

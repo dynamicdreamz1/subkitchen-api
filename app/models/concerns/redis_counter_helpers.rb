@@ -1,3 +1,0 @@
-module RedisCounterHelpers
-
-end
