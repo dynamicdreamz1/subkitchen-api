@@ -7,12 +7,14 @@ module Artists
         optional :per_page, type: Integer, default: 30
       end
       get do
-        User.artists.page(params.page).per(params.per_page)
+        artists = User.artists.page(params.page).per(params.per_page)
+        ArtistListSerializer.new(artists).as_json
       end
 
       desc 'return artist by id'
       get ':id' do
-        User.find_by!(id: params[:id])
+        artist = User.find_by!(id: params[:id])
+        ArtistSerializer.new(artist).as_json
       end
     end
   end

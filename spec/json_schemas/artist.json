@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "artist": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "integer"},
+        "name": {"type": "string"},
+        "image_url": {"type": ["null", "string"]},
+        "handle": {"type": "string"},
+        "company": {"type": ["null","object"]},
+        "designs": {"type": "integer"},
+        "likes": {"type": "integer"}
+      },
+      "required": [
+        "id",
+        "name",
+        "image_url",
+        "handle",
+        "company",
+        "designs",
+        "likes"
+      ]
+    }
+  },
+  "required": [
+    "artist"
+  ]
+}

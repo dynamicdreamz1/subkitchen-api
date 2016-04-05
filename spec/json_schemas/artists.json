@@ -1,0 +1,56 @@
+{
+  "type": "object",
+  "properties": {
+    "artists": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "integer"},
+          "name": {"type": "string"},
+          "image_url": {"type": ["null", "string"]},
+          "handle": {"type": "string"},
+          "company": {"type": ["null", "object"]},
+          "designs": {"type": "integer"},
+          "likes": {"type": "integer"},
+          "verified": {"type": "string"},
+          "location": {"type": ["string", "null"]},
+          "website": {"type": ["string", "null"]},
+          "bio": {"type": ["string", "null"]},
+          "shop_banner": {"type": ["string", "null"]},
+          "promoted": {"type": ["integer", "null"]},
+          "followers": {"type": ["integer", "null"]},
+          "following": {"type": ["integer", "null"]}
+        },
+        "required": [
+          "id",
+          "name",
+          "image_url",
+          "handle",
+          "company",
+          "designs",
+          "likes",
+          "verified",
+          "location",
+          "website",
+          "bio",
+          "shop_banner",
+          "promoted",
+          "followers",
+          "following"
+        ]
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "current_page": {"type": "integer"},
+        "total_pages": {"type": "integer"}
+      }
+    }
+  },
+  "required": [
+    "artists",
+    "meta"
+  ]
+}
