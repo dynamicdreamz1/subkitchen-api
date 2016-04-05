@@ -17,7 +17,8 @@ class CreateOrderItem
         product_id: product.id,
         order_id: @order.id,
         size: @params[:size],
-        quantity: @params[:quantity]
+        quantity: @params[:quantity],
+        profit: product.product_template.profit
     )
   end
 end

@@ -43,7 +43,7 @@ class SalesAndEarningsCounter
   end
 
   def earnings_increment_value(item)
-    item.quantity * item.product.product_template.profit
+    item.quantity * item.profit
   end
 
   def increment_sales_counter(user, item)
@@ -73,24 +73,18 @@ class SalesAndEarningsCounter
   end
 
   def sales_count_weekly(user)
-    count = 0
-    user.order_items.each do |item|
-      if item.order.purchased_at > 1.week.ago
-        count += item.quantity
-      end
-    end
-    count
-    # order_items.pluck(:id)
-    # OrderItem.where(user_id: order_items.pluck(:id)).select('SUM(quantity) AS quantity_sum').order('quantity_sum')
+    OrderItem.joins("RIGHT JOIN orders ON orders.id = order_items.order_id")
+             .where("orders.purchased_at > ?", 1.week.ago)
+             .joins("RIGHT  JOIN products ON products.id = order_items.product_id")
+             .where("products.author_id = ?", user.id)
+             .sum("order_items.quantity")
   end
 
   def earnings_count_weekly(user)
-    count = 0
-    user.order_items.each do |item|
-      if item.order.purchased_at > 1.week.ago
-        count += item.quantity * item.product.product_template.profit
-      end
-    end
-    count
+    OrderItem.joins("RIGHT JOIN orders ON orders.id = order_items.order_id")
+        .joins("RIGHT  JOIN products ON products.id = order_items.product_id")
+        .where("products.author_id = ?", user.id)
+        .where("orders.purchased_at > ?", 1.week.ago)
+        .sum("order_items.quantity*order_items.profit")
   end
 end

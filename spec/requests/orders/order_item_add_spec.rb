@@ -30,6 +30,13 @@ describe Products::Api, type: :request do
         expect(response).to match_response_schema('order')
       end
 
+      it 'should set profit' do
+        post '/api/v1/orders/item', { product_id: product.id, size: 's', quantity: 1 }, auth_header_for(user)
+
+        item = Order.find_by(user_id: user.id, active: true).order_items.first
+        expect(item.profit).to eq(product.product_template.profit)
+      end
+
       it 'should increment quantity' do
         order = create(:order, user: user)
         create(:order_item, product: product, order: order, size: 'm')

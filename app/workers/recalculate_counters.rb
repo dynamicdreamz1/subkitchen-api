@@ -10,28 +10,22 @@ class RecalculateCounters
     end
   end
 
-  def earnings(user)
-    count = 0
-    user.order_items.each do |item|
-      count += item.quantity * item.product.product_template.profit
-    end
-    count
+  def sales(user)
+    OrderItem.joins("RIGHT JOIN orders ON orders.id = order_items.order_id")
+        .joins("RIGHT  JOIN products ON products.id = order_items.product_id")
+        .where("products.author_id = ?", user.id)
+        .sum("order_items.quantity")
   end
 
-  def sales(user)
-    count = 0
-    user.order_items.each do |item|
-      count += item.quantity
-    end
-    count
+  def earnings(user)
+    OrderItem.joins("RIGHT JOIN orders ON orders.id = order_items.order_id")
+        .joins("RIGHT  JOIN products ON products.id = order_items.product_id")
+        .where("products.author_id = ?", user.id)
+        .sum("order_items.quantity*order_items.profit")
   end
 
   def likes(user)
-    count = 0
-    user.products.each do |product|
-      count += product.likes_count
-    end
-    count
+    Like.where(likeable_id: user.products.pluck(:id), likeable_type: 'Product').count
   end
 
   def published(user)

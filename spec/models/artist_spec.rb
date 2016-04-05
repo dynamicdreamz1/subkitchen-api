@@ -7,9 +7,26 @@ RSpec.describe User, type: :model do
   context 'sales_counter' do
     let(:product){create(:product, author: artist)}
     let(:order){create(:order)}
+    let(:order2){create(:order)}
 
     it 'should increment sales counter after buying an item' do
-      OrderItem.create!(order: order, product: product, quantity: 3)
+      OrderItem.create!(order: order, product: product, quantity: 3, profit: 5.0)
+      payment = create(:payment, payable: order)
+      expect do
+        ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
+        SalesAndEarningsCounter.drain
+      end.to change{artist.sales_count}.by(3)
+    end
+
+    it 'should count only past week sales' do
+      Timecop.freeze(DateTime.now - 30.days) do
+        OrderItem.create!(order: order2, product: product, quantity: 3, profit: 5.0)
+        payment2 = create(:payment, payable: order2)
+        ConfirmPayment.new(payment2, Hashie::Mash.new(payment_status: 'Completed')).call
+        SalesAndEarningsCounter.drain
+      end
+
+      OrderItem.create!(order: order, product: product, quantity: 3, profit: 5.0)
       payment = create(:payment, payable: order)
       expect do
         ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
@@ -18,11 +35,27 @@ RSpec.describe User, type: :model do
     end
 
     it 'should set weekly percentage after buying an item' do
-      OrderItem.create!(order: order, product: product, quantity: 3)
+      OrderItem.create!(order: order, product: product, quantity: 3, profit: 5.0)
       payment = create(:payment, payable: order)
       ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
       SalesAndEarningsCounter.drain
       expect(artist.sales_weekly).to eq(100)
+    end
+
+    it 'should set only past week percentage' do
+      Timecop.freeze(DateTime.now - 30.days) do
+        OrderItem.create!(order: order2, product: product, quantity: 3, profit: 5.0)
+        payment2 = create(:payment, payable: order2)
+        ConfirmPayment.new(payment2, Hashie::Mash.new(payment_status: 'Completed')).call
+        SalesAndEarningsCounter.drain
+      end
+
+      OrderItem.create!(order: order, product: product, quantity: 3, profit: 5.0)
+      payment = create(:payment, payable: order)
+      ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
+      SalesAndEarningsCounter.drain
+
+      expect(artist.sales_weekly).to eq(50)
     end
   end
 
@@ -98,9 +131,27 @@ RSpec.describe User, type: :model do
   context 'earnings_counter' do
     let(:product){create(:product, author: artist)}
     let(:order){create(:order)}
+    let(:order2){create(:order)}
 
     it 'should increment earnings counter after buying an item' do
-      OrderItem.create!(order: order, product: product, quantity: 3)
+      OrderItem.create!(order: order, product: product, quantity: 3, profit: 5.0)
+      payment = create(:payment, payable: order)
+      profit = product.product_template.profit * 3
+      expect do
+        ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
+        SalesAndEarningsCounter.drain
+      end.to change{artist.earnings_count}.by(profit)
+    end
+
+    it 'should count only past week earnings' do
+      Timecop.freeze(DateTime.now - 30.days) do
+        OrderItem.create!(order: order2, product: product, quantity: 3, profit: 5.0)
+        payment2 = create(:payment, payable: order2)
+        ConfirmPayment.new(payment2, Hashie::Mash.new(payment_status: 'Completed')).call
+        SalesAndEarningsCounter.drain
+      end
+
+      OrderItem.create!(order: order, product: product, quantity: 3, profit: 5.0)
       payment = create(:payment, payable: order)
       profit = product.product_template.profit * 3
       expect do
@@ -110,11 +161,26 @@ RSpec.describe User, type: :model do
     end
 
     it 'should set weekly percentage after buying an item' do
-      OrderItem.create!(order: order, product: product, quantity: 3)
+      OrderItem.create!(order: order, product: product, quantity: 3, profit: 5.0)
       payment = create(:payment, payable: order)
       ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
       SalesAndEarningsCounter.drain
       expect(artist.earnings_weekly).to eq(100)
+    end
+
+    it 'should set only past week percentage' do
+      Timecop.freeze(DateTime.now - 30.days) do
+        OrderItem.create!(order: order2, product: product, quantity: 3, profit: 5.0)
+        payment2 = create(:payment, payable: order2)
+        ConfirmPayment.new(payment2, Hashie::Mash.new(payment_status: 'Completed')).call
+        SalesAndEarningsCounter.drain
+      end
+
+      OrderItem.create!(order: order, product: product, quantity: 3, profit: 5.0)
+      payment = create(:payment, payable: order)
+      ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
+      SalesAndEarningsCounter.drain
+      expect(artist.earnings_weekly).to eq(50)
     end
   end
 end

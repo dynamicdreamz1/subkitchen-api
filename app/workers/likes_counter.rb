@@ -34,6 +34,7 @@ class LikesCounter
   end
 
   def likes_count_weekly(user)
-    Like.where(likeable_id: user.products.pluck(:id), likeable_type: 'Product').where('created_at >= ?', 1.week.ago).count
+    Like.where(likeable_id: user.products.pluck(:id), likeable_type: 'Product')
+        .where('created_at >= ?', 1.week.ago).count
   end
 end
