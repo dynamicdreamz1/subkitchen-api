@@ -54,6 +54,8 @@ gem 'stripe-ruby-mock', '~> 2.2.2', :require => 'stripe_mock'
 gem 'activeadmin-dragonfly', github: 'stefanoverna/activeadmin-dragonfly'
 gem 'activeadmin-wysihtml5', github: 'jsetiadarma/activeadmin-wysihtml5'
 gem 'http'
+gem 'prawn'
+gem 'prawn-table'
 
 group :production do
   gem 'rails_12factor'
