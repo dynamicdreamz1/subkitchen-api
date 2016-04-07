@@ -70,6 +70,13 @@ Config.create(name: 'promo_3_img', config_image: File.new(Rails.root.join('db/se
 Config.create(name: 'promo_3_url', value: 'http://localhost:4200/products', input_type: 'short_text')
 Config.create(name: 'designers', value: 'designer@example.com', input_type: 'short_text')
 
+Config.create(name: 'invoice_line_1', value: 'SubKitchen', input_type: 'short_text')
+Config.create(name: 'invoice_line_2', value: 'SubKitchen', input_type: 'short_text')
+Config.create(name: 'invoice_line_3', value: 'SubKitchen', input_type: 'short_text')
+Config.create(name: 'invoice_line_4', value: 'SubKitchen', input_type: 'short_text')
+Config.create(name: 'invoice_line_5', value: 'SubKitchen', input_type: 'short_text')
+Config.create(name: 'invoice_line_6', value: 'SubKitchen', input_type: 'short_text')
+
 sizes = %w(SM MD LG XL 2X 3X)
 
 template1 = ProductTemplate.create(price: 69.95, profit: 25.00, size: sizes, template_image: File.new(template_image('hoodie')), template_mask: File.new(template_image('hoodie-mask', 'png')), product_type: 'hoodie', size_chart: File.new(size_chart))

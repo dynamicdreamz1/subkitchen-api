@@ -49,6 +49,30 @@ class Config < ActiveRecord::Base
     def designers
       where(name: 'designers').first.value
     end
+
+    def invoice_line_1
+      where(name: 'invoice_line_1').first.value
+    end
+
+    def invoice_line_2
+      where(name: 'invoice_line_2').first.value
+    end
+
+    def invoice_line_3
+      where(name: 'invoice_line_3').first.value
+    end
+
+    def invoice_line_4
+      where(name: 'invoice_line_4').first.value
+    end
+
+    def invoice_line_5
+      where(name: 'invoice_line_5').first.value
+    end
+
+    def invoice_line_6
+      where(name: 'invoice_line_6').first.value
+    end
   end
 end
 
