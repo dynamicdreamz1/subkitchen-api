@@ -9,7 +9,6 @@ RSpec.describe MalformedPaymentNotifier, type: :mailer do
     end
 
     it 'renders the headers' do
-      expect(@mail.subject).to eq('Malformed payment')
       expect(@mail.to).to eq([@admin.email])
       expect(@mail.from).to eq(["contact@#{ENV['MAILGUN_DOMAIN']}"])
     end

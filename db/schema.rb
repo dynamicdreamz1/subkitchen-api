@@ -106,14 +106,14 @@ ActiveRecord::Schema.define(version: 20160407130040) do
 
   create_table "invoices", force: :cascade do |t|
     t.integer  "order_id"
-    t.string   "line_1"
-    t.string   "line_2"
-    t.string   "line_3"
-    t.string   "line_4"
-    t.string   "line_5"
-    t.string   "line_6"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "line_1",     default: ""
+    t.string   "line_2",     default: ""
+    t.string   "line_3",     default: ""
+    t.string   "line_4",     default: ""
+    t.string   "line_5",     default: ""
+    t.string   "line_6",     default: ""
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "likes", force: :cascade do |t|

@@ -84,6 +84,7 @@ group :test do
   gem 'json-schema'
   gem 'fakeredis', git: 'git://github.com/guilleiguaran/fakeredis.git', require: 'fakeredis/rspec'
   gem 'timecop'
+  gem 'pdf-inspector', require: 'pdf/inspector'
 end
 
 group :development, :test do

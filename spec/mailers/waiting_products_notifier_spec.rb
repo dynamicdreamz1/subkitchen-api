@@ -10,7 +10,6 @@ RSpec.describe WaitingProductsNotifier, type: :mailer do
     end
 
     it 'renders the headers' do
-      expect(@mail.subject).to eq('New products are waiting for design')
       expect(@mail.to).to eq([@designer_email])
       expect(@mail.from).to eq(["contact@#{ENV['MAILGUN_DOMAIN']}"])
     end
