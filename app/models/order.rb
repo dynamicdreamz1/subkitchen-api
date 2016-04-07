@@ -3,6 +3,7 @@ class Order < ActiveRecord::Base
   has_many :order_items
   has_one :payment, as: :payable
   has_many :products, through: :order_items
+  has_one :invoice
 
   after_create SetTaxAndShipping.new
 

@@ -4,9 +4,10 @@ class InvoicePdf < Prawn::Document
 
   include ActionView::Helpers::NumberHelper
 
-  def initialize(order)
+  def initialize(invoice)
     super(top_margin: 70)
-    @order = order
+    @order = invoice.order
+    @invoice = invoice
     define_grid(columns: 4, rows: 8, gutter: 10)
     company_address
     image open(Rails.root+'app/assets/images/logo_1024x1024.jpg'), width: 100, height: 100, at: [425,700]
@@ -43,13 +44,13 @@ class InvoicePdf < Prawn::Document
   def company_address
     grid([1, 3],[2,3]).bounding_box do
       move_down 30
-      text "#{Config.invoice_line_1}", size: 13, style: :bold, align: :right
+      text "#{@invoice.line_1}", size: 13, style: :bold, align: :right
       move_down 10
-      text "#{Config.invoice_line_2}", size: 12, align: :right
-      text "#{Config.invoice_line_3}", size: 12, align: :right
-      text "#{Config.invoice_line_4}", size: 12, align: :right
-      text "#{Config.invoice_line_5}", size: 12, align: :right
-      text "#{Config.invoice_line_6}", size: 12, align: :right
+      text "#{@invoice.line_2}", size: 12, align: :right
+      text "#{@invoice.line_3}", size: 12, align: :right
+      text "#{@invoice.line_4}", size: 12, align: :right
+      text "#{@invoice.line_5}", size: 12, align: :right
+      text "#{@invoice.line_6}", size: 12, align: :right
     end
   end
 

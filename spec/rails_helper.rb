@@ -54,6 +54,13 @@ RSpec.configure do |config|
     create(:config, name: 'tax', value: '6')
     create(:config, name: 'shipping_cost', value: '7.00')
     create(:config, name: 'shipping_info', value: 'info')
+    create(:config, name: 'invoice_line_1', value: '')
+    create(:config, name: 'invoice_line_2', value: '')
+    create(:config, name: 'invoice_line_3', value: '')
+    create(:config, name: 'invoice_line_4', value: '')
+    create(:config, name: 'invoice_line_5', value: '')
+    create(:config, name: 'invoice_line_6', value: '')
+    create(:config, name: 'designers', value: '')
     create(:email_template, name: 'MalformedPaymentNotifier',
                          description: 'Sent automatically to all admins when malformed payment detected.',
                          subject: 'Malformed payment',

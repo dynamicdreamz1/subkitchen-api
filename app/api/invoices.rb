@@ -11,7 +11,8 @@ module Invoices
       end
       get do
         order = Order.find_by!(uuid: params.uuid)
-        pdf = InvoicePdf.new(order)
+        invoice = FindOrCreateInvoice.new(order).call
+        pdf = InvoicePdf.new(invoice)
         header['Content-Disposition'] = "attachment; filename=order_#{order.id}_#{order.purchased_at.strftime('%d_%m_%Y')}"
         pdf.render
       end

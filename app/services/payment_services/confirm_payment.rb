@@ -15,6 +15,7 @@ class ConfirmPayment
 
   def update_order
     Order.transaction do
+      FindOrCreateInvoice.new(order).call
       payment.update(payment_token: params.txn_id, payment_status: 'completed')
       if CheckOrderIfReady.new(order).call
         SendOrder.new(order).call

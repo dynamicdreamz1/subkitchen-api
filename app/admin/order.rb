@@ -6,12 +6,22 @@ ActiveAdmin.register Order do
 
   scope :all
   scope :processing
+  scope :paid
+
+  member_action :invoice, method: :get do
+    redirect_to Figaro.env.app_host+"/api/v1/invoices?uuid=#{resource.uuid}"
+  end
 
   index do
     column('Date') { |order| order.created_at }
     column(:order_status)
     column(:total_cost)
-    actions
+    actions defaults: false do |order|
+      link_to('View', admin_order_path(order), method: :get) + ' ' +
+      if order.payment && order.payment.payment_status == 'completed'
+        link_to('Invoice', invoice_admin_order_path(order), method: :get )
+      end
+    end
   end
 
   show do |order|
