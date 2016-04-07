@@ -154,19 +154,23 @@ describe Payments::Api, type: :request do
         end
 
         it 'should not notify designer when no designers' do
+          create(:config, name: 'designers', value: '')
           create(:order_item, order: order, product: create(:product, design_id: nil))
 
           expect do
             post "/api/v1/orders/#{order.uuid}/payment", params
+
 
           end.to change { ActionMailer::Base.deliveries.count }.by(0)
         end
 
         it 'should new invoice' do
+          create(:config, name: 'designers', value: '')
           create(:order_item, order: order, product: create(:product, design_id: nil))
 
           expect do
             post "/api/v1/orders/#{order.uuid}/payment", params
+
 
           end.to change(Invoice, :count).by(1)
         end
