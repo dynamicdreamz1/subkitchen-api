@@ -1,10 +1,12 @@
 require 'open-uri'
 
 class InvoicePdf < Prawn::Document
-  def initialize(order, view)
+
+  include ActionView::Helpers::NumberHelper
+
+  def initialize(order)
     super(top_margin: 70)
     @order = order
-    @view = view
     order_number
     shipping_address
     line_items
@@ -51,7 +53,7 @@ class InvoicePdf < Prawn::Document
   end
 
   def price(num)
-    @view.number_to_currency(num)
+    number_to_currency(num)
   end
 
   def total_price

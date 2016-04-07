@@ -10,12 +10,14 @@
           "created_at": {"type": "string"},
           "order_status": {"type": "string"},
           "total_cost": {"type": "string"},
+          "pdf": {"type": "string"},
           "errors": {"type": "object"}},
         "required": [
           "uuid",
           "created_at",
           "order_status",
-          "total_cost"
+          "total_cost",
+          "pdf"
         ]
       }
     },

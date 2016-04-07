@@ -35,7 +35,8 @@ class OrderListSerializer
         uuid: order.uuid,
         created_at: order.created_at,
         order_status: order.order_status,
-        total_cost: order.total_cost
+        total_cost: order.total_cost,
+        pdf: Figaro.env.app_host+"api/v1/invoices?uuid=#{order.uuid}"
     }
   end
 end
