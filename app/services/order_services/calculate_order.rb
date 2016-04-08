@@ -1,4 +1,4 @@
-class UpdateOrder
+class CalculateOrder
   def call
     update_order
   end

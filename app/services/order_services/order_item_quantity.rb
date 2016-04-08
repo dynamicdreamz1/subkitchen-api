@@ -12,6 +12,7 @@ class OrderItemQuantity
 
   def change_quantity
     @order_item.quantity += @quantity
+    @order_item.profit = @order_item.product.product_template.profit * @order_item.quantity
     @order_item.save
   end
 end

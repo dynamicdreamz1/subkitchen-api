@@ -42,7 +42,7 @@ describe Payments::Api, type: :request do
         product = create(:product, price: 30)
         product.update(price: 30)
         create(:order_item, order: order, product: product, price: 30)
-        UpdateOrder.new(order).call
+        CalculateOrder.new(order).call
         DeleteProduct.new(product).call
 
         get "/api/v1/orders/#{order.uuid}/payment"
@@ -164,7 +164,7 @@ describe Payments::Api, type: :request do
           end.to change { ActionMailer::Base.deliveries.count }.by(0)
         end
 
-        it 'should new invoice' do
+        it 'should create new invoice' do
           create(:config, name: 'designers', value: '')
           create(:order_item, order: order, product: create(:product, design_id: nil))
 

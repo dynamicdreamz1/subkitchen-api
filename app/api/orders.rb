@@ -54,7 +54,7 @@ module Orders
           else
             CreateOrderItem.new(params.product_id, order, params).call
           end
-          UpdateOrder.new(order).call
+          CalculateOrder.new(order).call
           OrderSerializer.new(order.reload).as_json
         end
 
@@ -68,7 +68,7 @@ module Orders
           order = Order.find_by!(uuid: params.uuid)
           item = order.order_items.find(params.id)
           item.update(quantity: params.quantity)
-          UpdateOrder.new(order).call
+          CalculateOrder.new(order).call
           OrderSerializer.new(order.reload).as_json
         end
 
@@ -81,7 +81,7 @@ module Orders
           item = order.order_items.find(params.id)
           order = item.order
           item.destroy
-          UpdateOrder.new(order).call
+          CalculateOrder.new(order).call
           OrderSerializer.new(order.reload).as_json
         end
       end

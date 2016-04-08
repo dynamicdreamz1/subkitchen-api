@@ -30,12 +30,8 @@ RSpec.describe InvoicePdf do
     expect(@text_analysis.strings).to include("Order \##{@order.id}/#{@order.purchased_at.strftime('%d/%m/%Y')}")
   end
 
-  it 'should has order status' do
-    expect(@text_analysis.strings).to include("Order Status: #{@order.order_status}")
-  end
-
   it 'should has date' do
-    expect(@text_analysis.strings).to include("Order Placed: #{@order.purchased_at.strftime('%B %d, %Y - %I:%M %p')}")
+    expect(@text_analysis.strings).to include("Order Placed: #{@order.purchased_at.strftime('%B %d, %Y - %I:%M %p %Z')}")
   end
 
   it 'should has shipping address' do
@@ -52,15 +48,13 @@ RSpec.describe InvoicePdf do
     expect(@text_analysis.strings).to include("#{@invoice.line_2}")
     expect(@text_analysis.strings).to include("#{@invoice.line_3}")
     expect(@text_analysis.strings).to include("#{@invoice.line_4}")
-    expect(@text_analysis.strings).to include("#{@invoice.line_5}")
-    expect(@text_analysis.strings).to include("#{@invoice.line_6}")
   end
 
   it 'should has prices' do
-    expect(@text_analysis.strings).to include("ORDER SUBTOTAL: #{number_to_currency(@order.subtotal_cost)}")
-    expect(@text_analysis.strings).to include("SHIPPING: #{number_to_currency(@order.shipping_cost)}")
-    expect(@text_analysis.strings).to include("TAX(#{number_to_currency(@order.tax)}%): #{@order.tax_cost}")
-    expect(@text_analysis.strings).to include("Total: #{number_to_currency(@order.total_cost)}")
+    expect(@text_analysis.strings).to include("ORDER SUBTOTAL:","               #{number_to_currency(@order.subtotal_cost)}")
+    expect(@text_analysis.strings).to include("SHIPPING:","                   #{number_to_currency(@order.shipping_cost)}")
+    expect(@text_analysis.strings).to include("TAX(#{@order.tax}%):","                 #{number_to_currency(@order.tax_cost)}")
+    expect(@text_analysis.strings).to include("Total:     #{number_to_currency(@order.total_cost)}")
   end
 
   it 'should has items' do

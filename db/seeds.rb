@@ -120,3 +120,10 @@ Product.all.each do |p|
 end
 
 AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+
+product = Product.find(248)
+order = Order.create(purchased_at: DateTime.now, purchased: true, email: 'johndoe@example.com', order_status: 'cooking', full_name: 'John Doe', address: '123 Main St', city: 'Anytown', region: 'CA', zip: '12345-6789', country: 'USA')
+OrderItem.create(order: order, product: product, quantity: 2, size: 's', profit: product.product_template.profit*2)
+OrderItem.create(order: order, product: product, quantity: 3, size: 'm', profit: product.product_template.profit*3)
+CalculateOrder.new(order).call
+payment = Payment.create(payable: order, payment_status: 'completed')
