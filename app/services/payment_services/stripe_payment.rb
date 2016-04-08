@@ -22,6 +22,7 @@ class StripePayment
                           metadata: {'order_id' => order.id}
 
     NotifyDesigners.new(order).call
+    FindOrCreateInvoice.new(order).call
     order.update_attributes(purchased: true, purchased_at: DateTime.now, active: false)
     payment.update_attribute(:payment_status, 'completed')
   rescue Stripe::InvalidRequestError => e

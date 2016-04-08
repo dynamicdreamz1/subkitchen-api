@@ -18,6 +18,7 @@ class ConfirmPayment
       payment.update(payment_token: params.txn_id, payment_status: 'completed')
       if CheckOrderIfReady.new(order).call
         SendOrder.new(order).call
+        FindOrCreateInvoice.new(order).call
       else
         order.update(order_status: 'processing')
       end

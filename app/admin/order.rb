@@ -17,7 +17,7 @@ ActiveAdmin.register Order do
     column(:total_cost)
     actions defaults: false do |order|
       link_to('View', admin_order_path(order), method: :get) + ' ' +
-      if order.payment && order.payment.payment_status != 'creating'
+      if order.payment && order.payment.payment_status != ('creating' || 'payment pending')
         link_to('Invoice', invoice_admin_order_path(order), method: :get )
       end
     end
