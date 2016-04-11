@@ -1,7 +1,7 @@
-require 'rails_helper'
-
 RSpec.describe EmailTemplate, type: :model do
+
   describe 'EmailKeysValidator' do
+
     context 'AccountEmailConfirmation' do
       it 'should not save without required key' do
         expect do

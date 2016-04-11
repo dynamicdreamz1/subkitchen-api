@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe Comment, type: :model do
   let(:product1){ create(:product) }
   let(:product2){ create(:product) }
