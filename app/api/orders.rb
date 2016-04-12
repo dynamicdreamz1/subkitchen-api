@@ -47,6 +47,7 @@ module Orders
         post do
           params[:quantity] = params[:quantity].to_i.abs
           order = find_or_create_order(params.uuid)
+
           error!({errors:{'base'=>['cannot change already paid order']}}, 422) if order.payment
           item = order.order_items.find_by(product_id: params.product_id, order_id: order.id, size: params[:size])
           if item

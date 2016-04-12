@@ -41,7 +41,8 @@ module Payments
           return UpdateOrderItems.new(order).call
         end
 
-        CreatePayment.new(order, params.payment_type, params.stripe_token, params.return_path).call || error!({errors: {base: ['already paid']}}, 422)
+        CreatePayment.new(order, params.payment_type, params.stripe_token, params.return_path).call ||
+            error!({errors: {base: ['already paid']}}, 422)
       end
     end
   end

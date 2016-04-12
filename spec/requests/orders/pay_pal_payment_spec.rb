@@ -3,58 +3,72 @@ describe Products::Api, type: :request do
   let(:product) { create(:product) }
   let(:order){ create(:order, user: user) }
   let(:order_item){ create(:order_item, order: order, product: product) }
+  let(:params){ { return_path: '',
+                  payment_type: 'paypal',
+                  full_name: 'full name',
+                  address: 'address',
+                  city: 'city',
+                  zip: 'zip',
+                  region: 'region',
+                  country: 'country',
+                  email: 'test@example.com' } }
 
-  before(:all) do
-    create(:config, name: 'tax', value: '6')
-    create(:config, name: 'shipping_cost', value: '7.00')
-    create(:config, name: 'shipping_info', value: 'info')
-    @params = { return_path: '',
-                payment_type: 'paypal',
-                full_name: 'full name',
-                address: 'address',
-                city: 'city',
-                zip: 'zip',
-                region: 'region',
-                country: 'country',
-                email: 'test@example.com'}
-  end
+  context 'with valid params' do
+    before(:each) do
+      post "/api/v1/orders/#{order.uuid}/payment", params
+      @payment = Payment.find_by(payable: order)
+    end
 
-  describe 'PAYPAL' do
     it 'should return payment link to paypal' do
-      post "/api/v1/orders/#{order.uuid}/payment", @params
+      expect(json['url']).to eq(PaypalPayment.new(@payment, '').call)
+    end
 
-      payment = Payment.find_by(payable: order)
-      expect(json['url']).to eq(PaypalPayment.new(payment, '').call)
+    it 'should match json schema response' do
       expect(response).to match_response_schema('paypal')
     end
 
-    it 'should check if product exists' do
+    it 'should return status success' do
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+  context 'with deleted products' do
+
+    before(:each) do
       create(:order_item, order: order, product: product)
       DeleteProduct.new(product).call
 
+      post "/api/v1/orders/#{order.uuid}/payment", params
+    end
 
-      post "/api/v1/orders/#{order.uuid}/payment", @params
-
-      expect(response).to have_http_status(:unprocessable_entity)
+    it 'should return deleted items' do
       expect(json['deleted_items']).to_not be_empty
     end
 
-    it 'should not update address' do
-      changed_params = { return_path: '',
-                  payment_type: 'paypal',
-                  full_name: 'changed',
-                  address: 'changed',
-                  city: 'changed',
-                  zip: 'changed',
-                  region: 'changed',
-                  country: 'changed',
-                  email: 'test@.com'}
+    it 'should return status unprocessable_entity' do
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
 
-      post "/api/v1/orders/#{order.uuid}/payment", @params
+  context 'after payment is created' do
 
+    before(:each) do
+      changed_params = {
+        return_path: '',
+        payment_type: 'paypal',
+        full_name: 'changed',
+        address: 'changed',
+        city: 'changed',
+        zip: 'changed',
+        region: 'changed',
+        country: 'changed',
+        email: 'test@.com' }
+      post "/api/v1/orders/#{order.uuid}/payment", params
       post "/api/v1/orders/#{order.uuid}/payment", changed_params
-
       order.reload
+    end
+
+    it 'should not update order address' do
       expect(order.full_name).not_to eq('changed')
       expect(order.address).not_to eq('changed')
       expect(order.city).not_to eq('changed')
@@ -64,18 +78,30 @@ describe Products::Api, type: :request do
       expect(order.email).not_to eq('changed')
     end
 
-    it 'should return error when parameters wrong' do
-      no_return_path = {payment_type: 'paypal',
-                         full_name: 'full name',
-                         address: 'address',
-                         city: 'city',
-                         zip: 'zip',
-                         region: 'region',
-                         country: 'country',
-                         email: 'test@example.com'}
-      post "/api/v1/orders/#{order.uuid}/payment", no_return_path
+    it 'should return status not_found' do
+      expect(response).to have_http_status(:not_found)
+    end
+  end
 
+  context 'with invlid params' do
+    before(:each) do
+      no_return_path =  { payment_type: 'paypal',
+                          full_name: 'full name',
+                          address: 'address',
+                          city: 'city',
+                          zip: 'zip',
+                          region: 'region',
+                          country: 'country',
+                          email: 'test@example.com' }
+      post "/api/v1/orders/#{order.uuid}/payment", no_return_path
+    end
+
+    it 'should return error' do
       expect(json['errors']).to eq({'base'=>['invalid payment parameters!']})
+    end
+
+    it 'should return status unprocessable_entity' do
+      expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 end

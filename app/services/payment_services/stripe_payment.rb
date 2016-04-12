@@ -27,7 +27,7 @@ class StripePayment
     payment.update_attribute(:payment_status, 'completed')
   rescue Stripe::InvalidRequestError => e
       {errors: {base: [e.message]}}
-    rescue Stripe::CardError => e
+  rescue Stripe::CardError => e
       {errors: {base: [e.message]}}
   end
 end
