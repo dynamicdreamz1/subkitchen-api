@@ -46,7 +46,7 @@ describe Accounts::Api, type: :request do
 
       it 'should change user status' do
         expect(artist.artist).to be_truthy
-        expect(artist.status).to eq('pending')
+        expect(artist.pending?).to be_truthy
       end
     end
 

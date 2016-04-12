@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   has_many :likes
   has_many :order_items, through: :products
 
+  enum status: { unverified: 0, verified: 1, pending: 2 }
+
   accepts_nested_attributes_for :company
 
   attr_accessor :oauth_registration

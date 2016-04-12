@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160407130040) do
+ActiveRecord::Schema.define(version: 20160412143200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -231,14 +231,13 @@ ActiveRecord::Schema.define(version: 20160407130040) do
     t.string   "email"
     t.string   "provider"
     t.string   "uid"
-    t.string   "auth_token",                                          null: false
+    t.string   "auth_token",                                   null: false
     t.string   "password_reminder_token"
     t.datetime "password_reminder_expiration"
-    t.datetime "created_at",                                          null: false
-    t.datetime "updated_at",                                          null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.boolean  "artist"
     t.string   "password_digest"
-    t.string   "status",                       default: "unverified"
     t.boolean  "email_confirmed",              default: false
     t.string   "confirm_token"
     t.string   "handle"
@@ -253,6 +252,7 @@ ActiveRecord::Schema.define(version: 20160407130040) do
     t.string   "profile_image_id"
     t.string   "shop_banner_id"
     t.boolean  "is_deleted",                   default: false
+    t.integer  "status",                       default: 0
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

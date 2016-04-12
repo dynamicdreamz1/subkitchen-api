@@ -10,6 +10,6 @@ class ChangeStatusIfArtist
   private
 
   def set_status(record)
-    record.update_column(:status, 'pending') if record.artist && record.status != 'verified'
+    record.update_column(:status, 2) if record.artist && !record.verified?
   end
 end
