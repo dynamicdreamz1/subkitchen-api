@@ -1,7 +1,9 @@
 class Payment < ActiveRecord::Base
   belongs_to :payable, polymorphic: true
-  scope :completed, -> { where(payment_status: 'completed') }
-  scope :denied, -> { where(payment_status: 'denied') }
-  scope :malformed, -> { where(payment_status: 'malformed') }
-  scope :pending, -> { where(payment_status: 'pending') }
+  scope :completed, -> { where(payment_status: 1) }
+  scope :denied, -> { where(payment_status: 0) }
+  scope :malformed, -> { where(payment_status: 3) }
+  scope :pending, -> { where(payment_status: 2) }
+
+  enum payment_status: { denied: 0, completed: 1, pending: 2, malformed: 3 }
 end
