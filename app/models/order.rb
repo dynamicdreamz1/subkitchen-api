@@ -7,6 +7,8 @@ class Order < ActiveRecord::Base
 
   after_create SetTaxAndShipping.new
 
+  enum order_status: { creating: 0, 'payment pending': 1, processing: 2, cooking: 3, completed: 4 }
+
   validates_with AddressValidator, on: :update
 
   scope :completed, -> { where(purchased: true) }

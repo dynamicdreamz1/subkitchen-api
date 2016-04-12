@@ -13,6 +13,6 @@ class SendOrderIfItemsReady
   private
 
   def get_orders(product)
-    product.orders.where(order_status: 'processing').distinct
+    product.orders.where(order_status: 2).distinct
   end
 end

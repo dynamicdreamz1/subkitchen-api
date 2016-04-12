@@ -14,6 +14,10 @@ describe Products::Api, type: :request do
       expect(Order.count).to eq(1)
     end
 
+    it 'should has creating status' do
+      expect(@order.creating?).to be_truthy
+    end
+
     it 'should associate user to order' do
       expect(@order.user).to eq(user)
     end

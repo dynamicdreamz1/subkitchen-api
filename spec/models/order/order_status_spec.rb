@@ -41,7 +41,7 @@ RSpec.describe Order, type: :model do
         product1.update(design_id: '123123')
 
         processing_order.reload
-        expect(processing_order.order_status).to eq('cooking')
+        expect(processing_order.cooking?).to be_truthy
       end
 
       it 'should not change status when design is not updated' do
