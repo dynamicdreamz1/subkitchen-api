@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe InvoicePdf do
 
   include ActionView::Helpers::NumberHelper

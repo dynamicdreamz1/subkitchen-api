@@ -3,18 +3,33 @@ describe AccountsArtist::Api, type: :request do
   let(:artist){ create(:user, artist: true) }
 
   describe '/account/artist/stats' do
-    it 'should get statistics for artist' do
-      get '/api/v1/account/artist/stats', {}, auth_header_for(artist)
 
-      expect(response).to have_http_status(:success)
-      expect(response).to match_response_schema('stats')
+    context 'artist' do
+      before(:each) do
+        get '/api/v1/account/artist/stats', {}, auth_header_for(artist)
+      end
+
+      it 'should get statistics for artist' do
+        expect(response).to match_response_schema('stats')
+      end
+
+      it 'should return status success' do
+        expect(response).to have_http_status(:success)
+      end
     end
 
-    it 'should not get statistics for user' do
-      get '/api/v1/account/artist/stats', {}, auth_header_for(user)
+    context 'not artist' do
+      before(:each) do
+        get '/api/v1/account/artist/stats', {}, auth_header_for(user)
+      end
 
-      expect(response).to have_http_status(:unauthorized)
-      expect(json['errors']).to eq({'base'=>['you are not authorized']})
+      it 'should not get statistics for user' do
+        expect(json['errors']).to eq({'base'=>['you are not authorized']})
+      end
+
+      it 'should return status unauthorized' do
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
   end
 end

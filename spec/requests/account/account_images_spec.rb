@@ -25,30 +25,48 @@ describe Accounts::Api, type: :request do
     end
 
     describe 'SHOP BANNER' do
-      it 'should upload banner' do
-        post '/api/v1/account/shop_banner', {banner: banner}, auth_header_for(artist)
 
-        artist.reload
-        expect(artist.shop_banner_id).not_to be_nil
-        expect(json['shop_banner_url']).to eq(artist.shop_banner_url)
+      context 'with valid banner' do
+
+        before(:each) do
+          post '/api/v1/account/shop_banner', {banner: banner}, auth_header_for(artist)
+          artist.reload
+        end
+
+        it 'should upload banner' do
+          expect(json['shop_banner_url']).to eq(artist.shop_banner_url)
+        end
+
+        it 'should update shop banner id' do
+          expect(artist.shop_banner_id).not_to be_nil
+        end
       end
 
-      it 'should not upload banner when artist false' do
-        post '/api/v1/account/shop_banner', {banner: banner}, auth_header_for(user)
+      context 'with false artist' do
 
-        expect(json['errors']).to eq({'base'=>['user must be an artist']})
+        before(:each) do
+          post '/api/v1/account/shop_banner', {banner: banner}, auth_header_for(user)
+          artist.reload
+        end
+
+        it 'should not upload banner when artist false' do
+          expect(json['errors']).to eq({'base'=>['user must be an artist']})
+        end
       end
 
-      it 'should not upload banner when invalid type' do
-        post '/api/v1/account/shop_banner', {banner: invalid_image}, auth_header_for(artist)
+      context 'with invalid banner' do
 
-        expect(json['errors']).to eq({'shop_banner'=>['has an invalid file format']})
-      end
+        it 'should not upload banner when invalid type' do
+          post '/api/v1/account/shop_banner', {banner: invalid_image}, auth_header_for(artist)
 
-      it 'should not upload profile image when image too small' do
-        post '/api/v1/account/shop_banner', {banner: too_small_image}, auth_header_for(artist)
+          expect(json['errors']).to eq({'shop_banner'=>['has an invalid file format']})
+        end
 
-        expect(json['errors']).to eq({'shop_banner'=>['Shop banner must be 1920x750']})
+        it 'should not upload profile image when image too small' do
+          post '/api/v1/account/shop_banner', {banner: too_small_image}, auth_header_for(artist)
+
+          expect(json['errors']).to eq({'shop_banner'=>['Shop banner must be 1920x750']})
+        end
       end
     end
   end

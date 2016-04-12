@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe 'Through6' do
   let(:image){ fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
   let(:design){ fixture_file_upload(Rails.root.join('app/assets/images/design.pdf'), 'application/pdf') }
