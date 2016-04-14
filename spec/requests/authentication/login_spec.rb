@@ -1,10 +1,9 @@
 describe Sessions::Api, type: :request do
   describe '/api/v1/sessions' do
     describe '/login' do
-      let(:user){ create(:user) }
+      let(:user) { create(:user) }
 
       context 'with valid data' do
-
         before(:each) do
           @params = { email: user.email, password: 'password' }
           post '/api/v1/sessions/login', @params
@@ -30,7 +29,6 @@ describe Sessions::Api, type: :request do
       end
 
       context 'with invalid data' do
-
         before(:each) do
           @invalid_params = { email: 'test@test.test', password: 'password' }
           post '/api/v1/sessions/login', @invalid_params
@@ -42,7 +40,7 @@ describe Sessions::Api, type: :request do
         end
 
         it 'should return error' do
-          expect(json['errors']).to eq({'base'=>['record not found']})
+          expect(json['errors']).to eq('base' => ['record not found'])
         end
       end
     end

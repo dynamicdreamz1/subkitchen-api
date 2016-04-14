@@ -1,9 +1,7 @@
 module AccountsOrders
   class Api < Grape::API
-
     resource :account do
       resource :orders do
-
         desc 'orders of user'
         params do
           optional :page, type: Integer, default: 1

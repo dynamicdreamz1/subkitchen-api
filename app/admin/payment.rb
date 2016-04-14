@@ -8,7 +8,7 @@ ActiveAdmin.register Payment do
   scope :malformed
 
   filter :created_at
-  filter :payment_type, as: :select, collection: %w[stripe paypal]
+  filter :payment_type, as: :select, collection: %w(stripe paypal)
   filter :id_cont, as: :string, label: 'ID'
   filter :payment_token_cont, as: :string, label: 'Token'
 

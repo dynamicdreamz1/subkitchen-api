@@ -8,18 +8,18 @@ ActiveAdmin.register Order do
   scope :processing
 
   member_action :invoice, method: :get do
-    redirect_to Figaro.env.app_host+"/api/v1/invoices?uuid=#{resource.uuid}"
+    redirect_to Figaro.env.app_host + "/api/v1/invoices?uuid=#{resource.uuid}"
   end
 
   index do
-    column('Date') { |order| order.created_at }
+    column('Date', &:created_at)
     column(:order_status)
     column(:total_cost)
     actions defaults: false do |order|
       link_to('View', admin_order_path(order), method: :get) + ' ' +
-      if order.payment && order.payment.payment_status != ('creating' || 'payment pending')
-        link_to('Invoice', invoice_admin_order_path(order), method: :get )
-      end
+        if order.payment && order.payment.payment_status != ('creating' || 'payment pending')
+          link_to('Invoice', invoice_admin_order_path(order), method: :get)
+        end
     end
   end
 
@@ -57,18 +57,18 @@ ActiveAdmin.register Order do
           column(:price)
           column(:quantity)
           column(:size)
-          column('Product Name'){ |item| item.product.name }
-          column('Product Author'){ |item| item.product.author.name }
-          column(''){ |item| link_to 'View', admin_product_path(item.product)}
+          column('Product Name') { |item| item.product.name }
+          column('Product Author') { |item| item.product.author.name }
+          column('') { |item| link_to 'View', admin_product_path(item.product) }
         end
       end
 
       tab 'Payment' do
         attributes_table do
-          row('Type'){ order.payment.payment_type }
-          row('Token'){ order.payment.payment_token }
-          row('Status'){ order.payment.payment_status }
-          row('Created At'){ order.payment.created_at }
+          row('Type') { order.payment.payment_type }
+          row('Token') { order.payment.payment_token }
+          row('Status') { order.payment.payment_status }
+          row('Created At') { order.payment.created_at }
         end
       end
     end

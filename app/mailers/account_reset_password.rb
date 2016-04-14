@@ -2,11 +2,11 @@ require 'concerns/email_key_replacer'
 
 class AccountResetPassword < ApplicationMailer
   KEYS = { 'REMINDER_URL' => ' (required) - url for user to reset forgotten password',
-          'USER_NAME' => " - user's name" }
+           'USER_NAME' => " - user's name" }.freeze
   include EmailKeyReplacer
 
   def notify(email, options = {})
-    template = EmailTemplate.where(name: "#{self.class.name}").first
+    template = EmailTemplate.where(name: self.class.name.to_s).first
     content = template.content
 
     replace_keys(content, values(options))

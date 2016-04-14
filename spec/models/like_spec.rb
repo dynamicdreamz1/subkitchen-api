@@ -1,7 +1,7 @@
 RSpec.describe Like, type: :model do
-  let(:artist){ create(:user, artist: true, status: 'verified') }
-  let(:user){ create(:user, artist: false) }
-  let(:product){ create(:product, author: user) }
+  let(:artist) { create(:user, artist: true, status: 'verified') }
+  let(:user) { create(:user, artist: false) }
+  let(:product) { create(:product, author: user) }
 
   it 'should create like' do
     expect do
@@ -17,7 +17,7 @@ RSpec.describe Like, type: :model do
 
   it 'should raise error when product already liked' do
     expect do
-      2.times{ create(:like, likeable: product, user: artist) }
+      2.times { create(:like, likeable: product, user: artist) }
     end.to raise_error(ActiveRecord::RecordInvalid)
   end
 end

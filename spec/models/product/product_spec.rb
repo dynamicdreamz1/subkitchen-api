@@ -1,8 +1,6 @@
 RSpec.describe Product, type: :model do
-  let(:product_template){ create(:product_template) }
-  let(:product){ create(:product, author: create(:user), product_template: product_template) }
-  let(:artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
-  let(:other_artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
+  let(:product_template) { create(:product_template) }
+  let(:product) { create(:product, author: create(:user), product_template: product_template) }
 
   it 'has name' do
     expect(product.name).to_not be_blank

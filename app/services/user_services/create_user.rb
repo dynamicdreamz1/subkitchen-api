@@ -11,12 +11,12 @@ class CreateUser
 
   def create_user
     User.new(
-        name: @params.name,
-        password: @params.password,
-        password_confirmation: @params.password_confirmation,
-        email: @params.email,
-        artist: @params.artist,
-        handle: create_handle(@params.name)
+      name: @params.name,
+      password: @params.password,
+      password_confirmation: @params.password_confirmation,
+      email: @params.email,
+      artist: @params.artist,
+      handle: create_handle(@params.name)
     )
   end
 

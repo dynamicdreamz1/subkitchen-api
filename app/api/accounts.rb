@@ -81,10 +81,10 @@ module Accounts
             data[:errors] = current_user.errors if current_user.errors.any?
             data
           else
-            error!({errors: current_user.errors.messages}, 422)
+            error!({ errors: current_user.errors.messages }, 422)
           end
         else
-          error!({errors: {base: ['user must be an artist']}}, 422)
+          error!({ errors: { base: ['user must be an artist'] } }, 422)
         end
       end
     end

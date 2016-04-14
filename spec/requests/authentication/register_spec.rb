@@ -1,9 +1,6 @@
 describe Sessions::Api, type: :request do
-
   describe '/api/v1/sessions' do
-
     describe 'REGISTER by form' do
-
       context 'with valid params' do
         before(:each) do
           @valid_params = { email: 'test@gmail.com',
@@ -32,13 +29,12 @@ describe Sessions::Api, type: :request do
       end
 
       context 'with invalid params' do
-
         before(:each) do
-          params =  { email: 'test@gmail.com',
-                      name: 'test',
-                      password: '',
-                      password_confirmation: '',
-                      artist: 'false' }
+          params = { email: 'test@gmail.com',
+                     name: 'test',
+                     password: '',
+                     password_confirmation: '',
+                     artist: 'false' }
           post '/api/v1/sessions/register', params
         end
 
@@ -47,7 +43,7 @@ describe Sessions::Api, type: :request do
         end
 
         it 'should return error' do
-          expect(json['errors']).to eq({'password'=>"can't be blank"})
+          expect(json['errors']).to eq('password' => "can't be blank")
         end
 
         it 'should return status unprocessable_entity' do

@@ -13,6 +13,6 @@ class ValidPaymentParams
 
   def check_if_valid
     (params.payment_type == 'stripe' && params.stripe_token) || \
-    (params.payment_type == 'paypal' && params.return_path)
+      (params.payment_type == 'paypal' && params.return_path)
   end
 end

@@ -1,17 +1,15 @@
 describe Products::Api, type: :request do
-  let(:product){ create(:product) }
-  let(:user){ create(:user, artist: false) }
+  let(:product) { create(:product) }
+  let(:user) { create(:user, artist: false) }
 
   describe '/api/v1/comments' do
-
     before(:each) do
-      5.times{ create(:comment, product: product, user: user, content: 'test comment') }
+      5.times { create(:comment, product: product, user: user, content: 'test comment') }
       @post_params = { product_id: product.id, content: 'test comment' }
       @get_params = { product_id: product.id }
     end
 
     describe 'get list of comments' do
-
       before(:each) do
         get '/api/v1/comments', @get_params
       end
@@ -32,9 +30,7 @@ describe Products::Api, type: :request do
     end
 
     describe 'create new comment' do
-
       context 'when user authorized' do
-
         before(:each) do
           post '/api/v1/comments', @post_params, auth_header_for(user)
         end
@@ -53,13 +49,12 @@ describe Products::Api, type: :request do
       end
 
       context 'unauthorized' do
-
         before(:each) do
           post '/api/v1/comments', @post_params
         end
 
         it 'should not add comment' do
-          expect(json['errors']).to eq('base'=> ['401 Unauthorized'])
+          expect(json['errors']).to eq('base' => ['401 Unauthorized'])
         end
 
         it 'should return status unauthorized' do

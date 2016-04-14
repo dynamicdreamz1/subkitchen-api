@@ -1,8 +1,8 @@
 RSpec.describe Payment, type: :model do
-  let(:completed){create(:payment, payment_status: 'completed')}
-  let(:denied){create(:payment, payment_status: 'denied')}
-  let(:malformed){create(:payment, payment_status: 'malformed')}
-  let(:pending){create(:payment, payment_status: 'pending')}
+  let(:completed) { create(:payment, payment_status: 'completed') }
+  let(:denied) { create(:payment, payment_status: 'denied') }
+  let(:malformed) { create(:payment, payment_status: 'malformed') }
+  let(:pending) { create(:payment, payment_status: 'pending') }
 
   describe 'scopes' do
     it 'should return completed payments' do

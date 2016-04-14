@@ -1,17 +1,16 @@
 describe Accounts::Api, type: :request do
-  let(:artist){ create(:user, artist: true, handle: 'artist') }
+  let(:artist) { create(:user, artist: true, handle: 'artist') }
 
   describe '/api/v1/account/company_address' do
-
     before(:each) do
       create(:company, user: artist)
       @params = {
-          company_name: 'elpassion',
-          address: 'plac Europejski 6',
-          city: 'Warszawa',
-          zip: '01-111',
-          region: 'mazowieckie',
-          country: 'PL'
+        company_name: 'elpassion',
+        address: 'plac Europejski 6',
+        city: 'Warszawa',
+        zip: '01-111',
+        region: 'mazowieckie',
+        country: 'PL'
       }
       post '/api/v1/account/company_address', @params, auth_header_for(artist)
       artist.reload

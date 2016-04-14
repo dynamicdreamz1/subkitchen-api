@@ -4,25 +4,25 @@ describe Payments::Api, type: :request do
   after { StripeMock.stop }
 
   let(:order) { create(:order, user: nil, total_cost: 100) }
-  let(:params){ { payment_type: 'stripe',
-                  stripe_token:  stripe_helper.generate_card_token,
-                  full_name: 'full name',
-                  address: 'address',
-                  city: 'city',
-                  zip: 'zip',
-                  region: 'region',
-                  country: 'country',
-                  email: 'test@example.com' } }
+  let(:params) do
+    { payment_type: 'stripe',
+      stripe_token:  stripe_helper.generate_card_token,
+      full_name: 'full name',
+      address: 'address',
+      city: 'city',
+      zip: 'zip',
+      region: 'region',
+      country: 'country',
+      email: 'test@example.com' }
+  end
 
   describe '/api/v1/orders/:uuid/payment' do
     context 'with designers' do
-
       before(:each) do
         create(:config, name: 'designers', value: 'designer@example.com')
       end
 
       context 'with no design products' do
-
         before(:each) do
           create(:order_item, order: order, product: create(:product, design_id: nil))
           post "/api/v1/orders/#{order.uuid}/payment", params
@@ -34,7 +34,6 @@ describe Payments::Api, type: :request do
       end
 
       context 'with design products' do
-
         before(:each) do
           create(:order_item, order: order, product: create(:product, design_id: '1234'))
           post "/api/v1/orders/#{order.uuid}/payment", params
@@ -47,7 +46,6 @@ describe Payments::Api, type: :request do
     end
 
     context 'with no designers' do
-
       before(:each) do
         create(:config, name: 'designers', value: '')
         create(:order_item, order: order, product: create(:product, design_id: nil))

@@ -1,8 +1,7 @@
 describe AccountsOrders::Api, type: :request do
-  let(:user){ create(:user) }
+  let(:user) { create(:user) }
 
   describe '/api/v1/account/orders/:uuid' do
-
     before(:each) do
       @order = create(:order, user: user)
       create(:order_item, order: @order, product: create(:product))

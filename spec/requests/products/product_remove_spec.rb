@@ -1,11 +1,9 @@
 describe Products::Api, type: :request do
-  let(:user){ create(:user, artist: false) }
+  let(:user) { create(:user, artist: false) }
 
   describe '/api/v1/products/:id' do
-
     describe 'delete product' do
       context 'when user is authenticated' do
-
         before(:each) do
           @product = create(:product, author: user)
           delete "/api/v1/products/#{@product.id}", {}, auth_header_for(user)
@@ -29,7 +27,6 @@ describe Products::Api, type: :request do
         end
 
         context 'and is not a product author' do
-
           before(:each) do
             @product = create(:product, author: create(:user))
             delete "/api/v1/products/#{@product.id}", {}, auth_header_for(user)
@@ -37,7 +34,7 @@ describe Products::Api, type: :request do
           end
 
           it 'should return error' do
-            expect(json['errors']).to eq({'base'=>['unauthorized']})
+            expect(json['errors']).to eq('base' => ['unauthorized'])
           end
 
           it 'should return status unauthorized' do
@@ -51,10 +48,9 @@ describe Products::Api, type: :request do
       end
 
       context 'unauthenticated user' do
-
         before(:each) do
           @product = create(:product)
-          delete "/api/v1/products/#{@product.id}", { uuid: @product.uuid }
+          delete "/api/v1/products/#{@product.id}", uuid: @product.uuid
         end
 
         it 'should remove product' do
@@ -75,15 +71,14 @@ describe Products::Api, type: :request do
         end
 
         context 'and is not a product author' do
-
           before(:each) do
             @product = create(:product)
-            delete "/api/v1/products/#{@product.id}", { uuid: '123' }
+            delete "/api/v1/products/#{@product.id}", uuid: '123'
             @product.reload
           end
 
           it 'should return error' do
-            expect(json['errors']).to eq({'base'=>['record not found']})
+            expect(json['errors']).to eq('base' => ['record not found'])
           end
 
           it 'should return status not_found' do

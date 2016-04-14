@@ -1,16 +1,13 @@
 describe Products::Api, type: :request do
-  let(:product_template){ create(:product_template) }
-  let(:artist){ create(:user, artist: true) }
-  let(:user){ create(:user, artist: false) }
+  let(:product_template) { create(:product_template) }
+  let(:artist) { create(:user, artist: true) }
+  let(:user) { create(:user, artist: false) }
 
   describe '/api/v1/products' do
-
     describe 'list of products' do
-
       context 'without page params' do
-
         before(:each) do
-          2.times{ create(:product) }
+          2.times { create(:product) }
           get '/api/v1/products'
         end
 
@@ -29,7 +26,6 @@ describe Products::Api, type: :request do
       end
 
       context 'with page params' do
-
         before(:each) do
           create(:product)
           create(:product)

@@ -1,10 +1,8 @@
 describe Sessions::Api, type: :request do
-
   describe '/api/v1/sessions' do
-    let(:user){ create(:user, password: 'password') }
+    let(:user) { create(:user, password: 'password') }
 
     describe '/set_password' do
-
       context 'with valid params' do
         before(:each) do
           @valid_params = { token: user.password_reminder_token,
@@ -29,7 +27,6 @@ describe Sessions::Api, type: :request do
       end
 
       context 'with invalid password confirmation' do
-
         before(:each) do
           @invalid_params = { token: user.password_reminder_token,
                               password: 'newpassword',
@@ -48,12 +45,11 @@ describe Sessions::Api, type: :request do
         end
 
         it 'should return error' do
-          expect(json['errors']).to eq({'base'=>['password and password confirmation does not match']})
+          expect(json['errors']).to eq('base' => ['password and password confirmation does not match'])
         end
       end
 
       context 'with expired token' do
-
         before(:each) do
           @invalid_params = { token: user.password_reminder_token,
                               password: 'newpassword',
@@ -73,7 +69,7 @@ describe Sessions::Api, type: :request do
         end
 
         it 'should return error' do
-          expect(json['errors']).to eq({'base'=>['invalid or expired reminder token']})
+          expect(json['errors']).to eq('base' => ['invalid or expired reminder token'])
         end
       end
     end

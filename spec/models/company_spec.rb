@@ -1,6 +1,6 @@
 RSpec.describe Company, type: :model do
-  let(:artist){ create(:user, artist: true, status: 'verified') }
-  let(:user){ create(:user, artist: false) }
+  let(:artist) { create(:user, artist: true, status: 'verified') }
+  let(:user) { create(:user, artist: false) }
 
   it 'should create company' do
     company = create(:company, user: artist)
@@ -8,6 +8,6 @@ RSpec.describe Company, type: :model do
   end
 
   it 'should not create company when user is not an artist' do
-    expect{ create(:company, user: user) }.to raise_error{ ActiveRecord::RecordInvalid }
+    expect { create(:company, user: user) }.to raise_error { ActiveRecord::RecordInvalid }
   end
 end

@@ -1,12 +1,10 @@
 describe Products::Api, type: :request do
-  let(:product_template){ create(:product_template) }
-  let(:artist){ create(:user, status: 'verified', artist: true) }
-  let(:user){ create(:user, artist: false) }
+  let(:product_template) { create(:product_template) }
+  let(:artist) { create(:user, status: 'verified', artist: true) }
+  let(:user) { create(:user, artist: false) }
 
   describe '/api/v1/products/publish' do
-
     context 'when user is an artist' do
-
       before(:each) do
         @product = create(:product, author: artist)
         post '/api/v1/products/publish', { product_id: @product.id }, auth_header_for(artist)
@@ -31,7 +29,6 @@ describe Products::Api, type: :request do
       end
 
       context 'and is not an author' do
-
         before(:each) do
           other_artist = create(:user, artist: true)
           @product = create(:product, author: other_artist)
@@ -48,13 +45,12 @@ describe Products::Api, type: :request do
         end
 
         it 'should return error' do
-          expect(json['errors']).to eq({'base'=>['cannot publish not own product']})
+          expect(json['errors']).to eq('base' => ['cannot publish not own product'])
         end
       end
     end
 
     context 'when user is not an artist' do
-
       before(:each) do
         @product = create(:product, author: user)
         post '/api/v1/products/publish', { product_id: @product.id }, auth_header_for(user)
@@ -69,7 +65,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should return error' do
-        expect(json['errors']).to eq({'base'=>["Validation failed: Published can't be true when you're not an artist"]})
+        expect(json['errors']).to eq('base' => ["Validation failed: Published can't be true when you're not an artist"])
       end
     end
   end

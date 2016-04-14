@@ -1,11 +1,9 @@
 describe Accounts::Api, type: :request do
-  let(:artist){ create(:user, artist: true, handle: 'artist') }
+  let(:artist) { create(:user, artist: true, handle: 'artist') }
 
   describe '/api/v1/account' do
-
     describe 'update user' do
       context 'with email' do
-
         before(:each) do
           params = { user: { name: 'test', handle: 'testtest', email: 'testartist@gmail.com' } }
           put "/api/v1/users/#{artist.id}", params, auth_header_for(artist)
@@ -34,7 +32,6 @@ describe Accounts::Api, type: :request do
       end
 
       context 'without email' do
-
         before(:each) do
           params = { user: { name: 'test', handle: 'testtest' } }
           put "/api/v1/users/#{artist.id}", params, auth_header_for(artist)

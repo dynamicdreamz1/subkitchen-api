@@ -14,11 +14,11 @@ class CreateOrderItem
   def create
     product = Product.find_by(id: @product_id)
     OrderItem.create!(
-        product_id: product.id,
-        order_id: @order.id,
-        size: @params[:size],
-        quantity: @params[:quantity],
-        profit: product.product_template.profit * @params[:quantity]
+      product_id: product.id,
+      order_id: @order.id,
+      size: @params[:size],
+      quantity: @params[:quantity],
+      profit: product.product_template.profit * @params[:quantity]
     )
   end
 end

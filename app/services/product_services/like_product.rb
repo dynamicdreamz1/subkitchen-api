@@ -7,7 +7,7 @@ class LikeProduct
 
   attr_accessor :product, :current_user, :uuid
 
-  def initialize(product, current_user, uuid=nil)
+  def initialize(product, current_user, uuid = nil)
     @product = product
     @current_user = current_user
     @uuid = uuid

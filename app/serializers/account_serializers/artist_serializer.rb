@@ -1,13 +1,13 @@
 class ArtistSerializer
   def as_json(options = {})
     data = {
-        artist: { id: artist.id,
-                  name: artist.name,
-                  image_url: (artist.profile_image_url || image_url),
-                  handle: artist.handle,
-                  company: artist.company,
-                  designs: artist.products.count,
-                  likes: artist.likes_count }}
+      artist: { id: artist.id,
+                name: artist.name,
+                image_url: (artist.profile_image_url || image_url),
+                handle: artist.handle,
+                company: artist.company,
+                designs: artist.products.count,
+                likes: artist.likes_count } }
 
     data[:errors] = artist.errors.to_h if artist.errors.any?
 

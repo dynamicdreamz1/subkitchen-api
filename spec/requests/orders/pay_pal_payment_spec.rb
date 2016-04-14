@@ -1,17 +1,19 @@
 describe Products::Api, type: :request do
   let(:user) { create(:user) }
   let(:product) { create(:product) }
-  let(:order){ create(:order, user: user) }
-  let(:order_item){ create(:order_item, order: order, product: product) }
-  let(:params){ { return_path: '',
-                  payment_type: 'paypal',
-                  full_name: 'full name',
-                  address: 'address',
-                  city: 'city',
-                  zip: 'zip',
-                  region: 'region',
-                  country: 'country',
-                  email: 'test@example.com' } }
+  let(:order) { create(:order, user: user) }
+  let(:order_item) { create(:order_item, order: order, product: product) }
+  let(:params) do
+    { return_path: '',
+      payment_type: 'paypal',
+      full_name: 'full name',
+      address: 'address',
+      city: 'city',
+      zip: 'zip',
+      region: 'region',
+      country: 'country',
+      email: 'test@example.com' }
+  end
 
   context 'with valid params' do
     before(:each) do
@@ -33,7 +35,6 @@ describe Products::Api, type: :request do
   end
 
   context 'with deleted products' do
-
     before(:each) do
       create(:order_item, order: order, product: product)
       DeleteProduct.new(product).call
@@ -51,7 +52,6 @@ describe Products::Api, type: :request do
   end
 
   context 'after payment is created' do
-
     before(:each) do
       changed_params = {
         return_path: '',
@@ -85,19 +85,19 @@ describe Products::Api, type: :request do
 
   context 'with invlid params' do
     before(:each) do
-      no_return_path =  { payment_type: 'paypal',
-                          full_name: 'full name',
-                          address: 'address',
-                          city: 'city',
-                          zip: 'zip',
-                          region: 'region',
-                          country: 'country',
-                          email: 'test@example.com' }
+      no_return_path = { payment_type: 'paypal',
+                         full_name: 'full name',
+                         address: 'address',
+                         city: 'city',
+                         zip: 'zip',
+                         region: 'region',
+                         country: 'country',
+                         email: 'test@example.com' }
       post "/api/v1/orders/#{order.uuid}/payment", no_return_path
     end
 
     it 'should return error' do
-      expect(json['errors']).to eq({'base'=>['invalid payment parameters!']})
+      expect(json['errors']).to eq('base' => ['invalid payment parameters!'])
     end
 
     it 'should return status unprocessable_entity' do

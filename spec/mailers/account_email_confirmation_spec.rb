@@ -3,8 +3,10 @@ require 'rails_helper'
 RSpec.describe AccountEmailConfirmation, type: :mailer do
   describe 'confirm_email' do
     let(:user) { create(:user) }
-    let(:mail) { options = {confirmation_token: user.confirm_token, name: user.name}
-                  AccountEmailConfirmation.notify(user.email, options) }
+    let(:mail) do
+      options = { confirmation_token: user.confirm_token, name: user.name }
+      AccountEmailConfirmation.notify(user.email, options)
+    end
 
     it 'renders the headers' do
       expect(mail.to).to eq([user.email])

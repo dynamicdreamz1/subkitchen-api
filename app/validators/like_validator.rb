@@ -7,7 +7,7 @@ class LikeValidator < ActiveModel::Validator
         record.errors.add(:user_id, 'cannot follow yourself')
       elsif !record.likeable.artist
         record.errors.add(:user_id, 'cannot be followed')
-      elsif record.user_id == nil
+      elsif record.user_id.nil?
         record.errors.add(:user_id, 'has to be signed in to follow')
       end
     end

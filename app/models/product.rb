@@ -20,38 +20,38 @@ class Product < ActiveRecord::Base
 
   default_scope { where(is_deleted: false) }
   scope :deleted, -> { unscoped.where(is_deleted: true) }
-  scope :ready_to_print, -> { where.not(design_id: nil)}
-  scope :waiting, -> { joins(:orders).where(design_id: nil).where(orders: { order_status: 2 } ) }
+  scope :ready_to_print, -> { where.not(design_id: nil) }
+  scope :waiting, -> { joins(:orders).where(design_id: nil).where(orders: { order_status: 2 }) }
   scope :published_all, -> { where(published: true) }
   scope :published, -> (user) { where(published: true, author: user) }
   scope :published_weekly, -> (user) { where(published: true, author: user, published_at: 1.week.ago..DateTime.now) }
-  scope :with_product_type, -> (type) { joins(:product_template).where(product_templates: {product_type: type}) }
+  scope :with_product_type, -> (type) { joins(:product_template).where(product_templates: { product_type: type }) }
   scope :with_price_range, -> (range) { where(price: range[0]..range[1]) }
   scope :with_tags, -> (tags) { tagged_with(tags, any: true) }
   scope :sorted_by, lambda { |sort_option|
-    direction = (sort_option =~ /asc$/) ? 'ASC' : 'DESC'
-    case sort_option.to_s
-      when /^created_at_/
-        Product.order("created_at #{ direction }")
-      when /^name/
-        Product.order("name #{ direction }")
-      when /^price_/
-        Product.order("price #{ direction }")
-      when /^best_sellers/
-        Product.order("order_items_count #{ direction }")
-      else
-        raise(ArgumentError, 'Invalid sort option')
-    end
-   }
+                      direction = (sort_option =~ /asc$/) ? 'ASC' : 'DESC'
+                      case sort_option.to_s
+                      when /^created_at_/
+                        Product.order("created_at #{direction}")
+                      when /^name/
+                        Product.order("name #{direction}")
+                      when /^price_/
+                        Product.order("price #{direction}")
+                      when /^best_sellers/
+                        Product.order("order_items_count #{direction}")
+                      else
+                        raise(ArgumentError, 'Invalid sort option')
+                      end
+                    }
 
   filterrific(
-      default_filter_params: { sorted_by: 'created_at_desc' },
-      available_filters: [
-          :sorted_by,
-          :with_price_range,
-          :with_product_type,
-          :with_tags
-      ]
+    default_filter_params: { sorted_by: 'created_at_desc' },
+    available_filters: [
+      :sorted_by,
+      :with_price_range,
+      :with_product_type,
+      :with_tags
+    ]
   )
 
   def product_template

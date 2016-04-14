@@ -1,12 +1,11 @@
 class UserDesignsSerializer
-
-  def as_json(options={})
+  def as_json(options = {})
     data = {
-        products: serialized_products,
-        meta: {
-            current_page: products.current_page,
-            total_pages: products.total_pages
-        }
+      products: serialized_products,
+      meta: {
+        current_page: products.current_page,
+        total_pages: products.total_pages
+      }
     }
 
     data.as_json(options)
@@ -31,11 +30,11 @@ class UserDesignsSerializer
 
   def single_product(product)
     {
-        id: product.id,
-        name: product.name,
-        product_image: product.image_url,
-        published: product.published,
-        tags: product.tag_list
+      id: product.id,
+      name: product.name,
+      product_image: product.image_url,
+      published: product.published,
+      tags: product.tag_list
     }
   end
 end

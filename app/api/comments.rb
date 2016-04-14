@@ -1,7 +1,6 @@
 module Comments
   class Api < Grape::API
     resources :comments do
-
       desc 'add comment'
       params do
         requires :product_id, type: Integer
@@ -13,7 +12,6 @@ module Comments
         comment = product.comments.create(user_id: current_user.try(:id), content: params.content)
         CommentSerializer.new(comment).as_json
       end
-
 
       desc 'list all product comments'
       params do

@@ -16,6 +16,6 @@ class SendOrder
   def send_order
     order.update(order_status: 'cooking')
     serialized_order = Through6Serializer.new(order).as_json
-    HTTP.basic_auth(:user => 'subkitchen', :pass => 'Pass1word').post(Figaro.env.t6_endpoint, json: serialized_order)
+    HTTP.basic_auth(user: 'subkitchen', pass: 'Pass1word').post(Figaro.env.t6_endpoint, json: serialized_order)
   end
 end

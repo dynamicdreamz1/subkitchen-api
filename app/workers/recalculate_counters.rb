@@ -11,17 +11,17 @@ class RecalculateCounters
   end
 
   def sales(user)
-    OrderItem.joins("RIGHT JOIN orders ON orders.id = order_items.order_id")
-        .joins("RIGHT  JOIN products ON products.id = order_items.product_id")
-        .where("products.author_id = ?", user.id)
-        .sum("order_items.quantity")
+    OrderItem.joins('RIGHT JOIN orders ON orders.id = order_items.order_id')
+             .joins('RIGHT  JOIN products ON products.id = order_items.product_id')
+             .where('products.author_id = ?', user.id)
+             .sum('order_items.quantity')
   end
 
   def earnings(user)
-    OrderItem.joins("RIGHT JOIN orders ON orders.id = order_items.order_id")
-        .joins("RIGHT  JOIN products ON products.id = order_items.product_id")
-        .where("products.author_id = ?", user.id)
-        .sum("order_items.quantity*order_items.profit")
+    OrderItem.joins('RIGHT JOIN orders ON orders.id = order_items.order_id')
+             .joins('RIGHT  JOIN products ON products.id = order_items.product_id')
+             .where('products.author_id = ?', user.id)
+             .sum('order_items.quantity*order_items.profit')
   end
 
   def likes(user)
@@ -29,6 +29,6 @@ class RecalculateCounters
   end
 
   def published(user)
-    user.products.select{ |product| product.published }.count
+    user.products.select(&:published).count
   end
 end

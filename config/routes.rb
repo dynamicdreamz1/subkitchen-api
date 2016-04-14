@@ -3,9 +3,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   mount Api => '/api'
   root 'welcome#index'
-  if Rails.env.development?
-    mount LetterOpenerWeb::Engine, at: "/letter_opener"
-  end
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

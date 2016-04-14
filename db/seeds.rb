@@ -40,21 +40,21 @@ shipping_info = <<-EOT
 </p>
 EOT
 EmailTemplate.create(name: 'MalformedPaymentNotifier',
-       description: 'Sent automatically to all admins when malformed payment detected.',
-       subject: 'Malformed payment',
-       content: '<h3>Hi,</h3>You have <b></b>received malformed payment confirmation request.<br><br>Payment ID: <a target="_blank" title="Link: PAYMENT_ID" href="PAYMENT_URL">PAYMENT_ID</a><br><br><p>Regards,<br>Cloud Team</p>')
+                     description: 'Sent automatically to all admins when malformed payment detected.',
+                     subject: 'Malformed payment',
+                     content: '<h3>Hi,</h3>You have <b></b>received malformed payment confirmation request.<br><br>Payment ID: <a target="_blank" title="Link: PAYMENT_ID" href="PAYMENT_URL">PAYMENT_ID</a><br><br><p>Regards,<br>Cloud Team</p>')
 EmailTemplate.create(name: 'WaitingProductsNotifier',
-       description: 'Sent automatically/manually to the designer when customer orders product without design.',
-       subject: 'New products are waiting for design',
-       content: '<h3> Hi, </h3><p>New products are waiting for your design<br><br></p><p>PRODUCTS_LIST</p><p>Regards,</p><p>Cloud Team</p>')
+                     description: 'Sent automatically/manually to the designer when customer orders product without design.',
+                     subject: 'New products are waiting for design',
+                     content: '<h3> Hi, </h3><p>New products are waiting for your design<br><br></p><p>PRODUCTS_LIST</p><p>Regards,</p><p>Cloud Team</p>')
 EmailTemplate.create(name: 'AccountResetPassword',
-       description: 'Sent automatically to the customer when they ask to reset their password.',
-       subject: 'Set new password',
-       content: '<h3> Hi, </h3><p>Here is your reset password link:<br><br><a target="_blank" href="REMINDER_URL">REMINDER_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
+                     description: 'Sent automatically to the customer when they ask to reset their password.',
+                     subject: 'Set new password',
+                     content: '<h3> Hi, </h3><p>Here is your reset password link:<br><br><a target="_blank" href="REMINDER_URL">REMINDER_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
 EmailTemplate.create(name: 'AccountEmailConfirmation',
-       description: 'Sent automatically to the customer when they complete their account registration.	',
-       subject: 'Confirm Your Email',
-       content: '<h3> Hi, </h3><p>Please, confirm your email<br><br><a target="_blank" title="Link: CONFIRMATION_URL" href="CONFIRMATION_URL">CONFIRMATION_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
+                     description: 'Sent automatically to the customer when they complete their account registration.	',
+                     subject: 'Confirm Your Email',
+                     content: '<h3> Hi, </h3><p>Please, confirm your email<br><br><a target="_blank" title="Link: CONFIRMATION_URL" href="CONFIRMATION_URL">CONFIRMATION_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
 
 Config.create(name: 'themes', value: '3D, Abstract, Animal, Galaxy, Digital, Comic', input_type: 'short_text')
 Config.create(name: 'tax', value: '7.00', input_type: 'short_text')
@@ -85,10 +85,10 @@ template3 = ProductTemplate.create(price: 39.95, profit: 15.00, size: sizes, tem
 template4 = ProductTemplate.create(price: 35.00, profit: 15.00, size: sizes, template_image: File.new(template_image('tank')), template_mask: File.new(template_image('tank-mask', 'png')), product_type: 'tank_top', size_chart: File.new(size_chart))
 template5 = ProductTemplate.create(price: 79.95, profit: 30.00, size: sizes, template_image: File.new(template_image('yoga_pants')), template_mask: File.new(template_image('yoga_pants-mask', 'png')), product_type: 'yoga_pants', size_chart: File.new(size_chart))
 
-u1 = User.create!(name: "user1", handle: "user1", email: "t1@example.com", password: "password", password_confirmation: "password", email_confirmed: true, artist: true)
-u2 = User.create!(name: "user2", handle: "user2", email: "t2@example.com", password: "password", password_confirmation: "password", email_confirmed: true, artist: true)
-u3 = User.create!(name: "user3", handle: "user3", email: "t3@example.com", password: "password", password_confirmation: "password", email_confirmed: true, artist: true)
-u4 = User.create!(name: "user4", handle: "user4", email: "t4@example.com", password: "password", password_confirmation: "password", email_confirmed: true, artist: true)
+u1 = User.create!(name: 'user1', handle: 'user1', email: 't1@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true)
+u2 = User.create!(name: 'user2', handle: 'user2', email: 't2@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true)
+u3 = User.create!(name: 'user3', handle: 'user3', email: 't3@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true)
+u4 = User.create!(name: 'user4', handle: 'user4', email: 't4@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true)
 
 description = <<-EOT
 <p>This 'all over' print crewneck sweatshirt is made using a special sublimation technique to provide a vivid graphic image throughout the shirt.</p>
@@ -109,7 +109,7 @@ EOT
 end
 
 100.times do |n|
-  User.create(name: "user#{n}", email: "t#{n}@example.com", password: "password", password_confirmation: "password", artist: false)
+  User.create(name: "user#{n}", email: "t#{n}@example.com", password: 'password', password_confirmation: 'password', artist: false)
 end
 
 Product.all.each do |p|
@@ -123,7 +123,7 @@ AdminUser.create!(email: 'admin@example.com', password: 'password', password_con
 
 product = Product.find(248)
 order = Order.create(purchased_at: DateTime.now, purchased: true, email: 'johndoe@example.com', order_status: 'cooking', full_name: 'John Doe', address: '123 Main St', city: 'Anytown', region: 'CA', zip: '12345-6789', country: 'USA')
-OrderItem.create(order: order, product: product, quantity: 2, size: 's', profit: product.product_template.profit*2)
-OrderItem.create(order: order, product: product, quantity: 3, size: 'm', profit: product.product_template.profit*3)
+OrderItem.create(order: order, product: product, quantity: 2, size: 's', profit: product.product_template.profit * 2)
+OrderItem.create(order: order, product: product, quantity: 3, size: 'm', profit: product.product_template.profit * 3)
 CalculateOrder.new(order).call
 payment = Payment.create(payable: order, payment_status: 'completed')

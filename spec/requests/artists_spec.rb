@@ -17,18 +17,17 @@ describe Artists::Api, type: :request do
       expect(response).to have_http_status(:success)
     end
 
-
     it 'should paginate' do
       create(:user, artist: true, status: 'verified')
       create(:user, artist: true, status: 'verified')
 
-      get '/api/v1/artists', { page: 1, per_page: 1 }
+      get '/api/v1/artists', page: 1, per_page: 1
 
       serialized_artists = ArtistListSerializer.new(User.artists.page(1).per(1)).as_json
       expect(response).to match_response_schema('artists')
       expect(response.body).to eq(serialized_artists.to_json)
 
-      get '/api/v1/artists', { page: 2, per_page: 1 }
+      get '/api/v1/artists', page: 2, per_page: 1
 
       serialized_artists = ArtistListSerializer.new(User.artists.page(2).per(1)).as_json
       expect(response).to match_response_schema('artists')

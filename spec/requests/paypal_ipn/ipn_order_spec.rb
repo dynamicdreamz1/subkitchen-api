@@ -3,37 +3,35 @@ describe PaypalHooks::Api, type: :request do
     @order = create(:order, total_cost: 1.00)
     @order_payment = create(:payment, payable: @order)
     @valid_order_params = {
-        'receiver_email'=>"#{Figaro.env.paypal_seller}",
-        'payment_gross'=>@order.total_cost,
-        'invoice'=>@order_payment.id,
-        'payment_status'=>'Completed',
-        'txn_id'=>'61E67681CH3238416' }
-    @denied_order_params = { 'receiver_email'=>"#{Figaro.env.paypal_seller}",
-        'payment_gross'=>@order.total_cost,
-        'invoice'=>@order_payment.id,
-        'payment_status'=>'Denied',
-        'txn_id'=>'61E67681CH3238416' }
+      'receiver_email' => Figaro.env.paypal_seller.to_s,
+      'payment_gross' => @order.total_cost,
+      'invoice' => @order_payment.id,
+      'payment_status' => 'Completed',
+      'txn_id' => '61E67681CH3238416' }
+    @denied_order_params = { 'receiver_email' => Figaro.env.paypal_seller.to_s,
+                             'payment_gross' => @order.total_cost,
+                             'invoice' => @order_payment.id,
+                             'payment_status' => 'Denied',
+                             'txn_id' => '61E67681CH3238416' }
     @invalid_receiver_order_params = {
-        'receiver_email'=>'invalid receiver email',
-        'payment_gross'=>@order.total_cost,
-        'invoice'=>@order_payment.id,
-        'payment_status'=>'Completed',
-        'txn_id'=>'61E67681CH3238416' }
+      'receiver_email' => 'invalid receiver email',
+      'payment_gross' => @order.total_cost,
+      'invoice' => @order_payment.id,
+      'payment_status' => 'Completed',
+      'txn_id' => '61E67681CH3238416' }
     @invalid_payment_order_params = {
-        'receiver_email'=>"#{Figaro.env.paypal_seller}",
-        'payment_gross'=>'2.00',
-        'invoice'=>@order_payment.id,
-        'payment_status'=>'Completed',
-        'txn_id'=>'61E67681CH3238416' }
+      'receiver_email' => Figaro.env.paypal_seller.to_s,
+      'payment_gross' => '2.00',
+      'invoice' => @order_payment.id,
+      'payment_status' => 'Completed',
+      'txn_id' => '61E67681CH3238416' }
   end
 
   describe 'ORDER PAYMENT' do
-
     context 'completed' do
       context 'with valid order params' do
-
         before(:each) do
-          post '/api/v1/payment_notification',  @valid_order_params
+          post '/api/v1/payment_notification', @valid_order_params
           @order.reload
           @order_payment.reload
         end
@@ -60,7 +58,6 @@ describe PaypalHooks::Api, type: :request do
       end
 
       context 'with time freeze' do
-
         before(:each) do
           @new_time = Time.local(2008, 9, 1, 12, 0, 0)
           Timecop.freeze(@new_time)
@@ -76,9 +73,8 @@ describe PaypalHooks::Api, type: :request do
     end
 
     context 'denied' do
-
       before(:each) do
-        post '/api/v1/payment_notification',  @denied_order_params
+        post '/api/v1/payment_notification', @denied_order_params
         @order.reload
         @order_payment.reload
       end
@@ -93,7 +89,6 @@ describe PaypalHooks::Api, type: :request do
     end
 
     context 'malformed' do
-
       context 'invalid receiver params' do
         before(:each) do
           create(:admin_user)

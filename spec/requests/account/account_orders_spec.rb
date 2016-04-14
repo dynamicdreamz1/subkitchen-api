@@ -1,8 +1,7 @@
 describe AccountsOrders::Api, type: :request do
-  let(:user){ create(:user) }
+  let(:user) { create(:user) }
 
   describe '/api/v1/account/orders' do
-
     context 'with no params' do
       before(:each) do
         order = create(:order, user: user)
@@ -25,10 +24,9 @@ describe AccountsOrders::Api, type: :request do
     end
 
     context 'with pagination params' do
-
       before(:each) do
-        2.times{ create(:order, user: user) }
-        get '/api/v1/account/orders', {per_page: 1, page: 1}, auth_header_for(user)
+        2.times { create(:order, user: user) }
+        get '/api/v1/account/orders', { per_page: 1, page: 1 }, auth_header_for(user)
         @user_orders = user.orders.page(1).per(1)
       end
 

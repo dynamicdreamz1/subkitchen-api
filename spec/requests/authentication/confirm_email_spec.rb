@@ -1,10 +1,8 @@
 describe Sessions::Api, type: :request do
-  let(:user){ create(:user)}
+  let(:user) { create(:user) }
 
   describe '/api/v1/confirm_email' do
-
     context 'with valid token' do
-
       before(:each) do
         post '/api/v1/sessions/confirm_email', confirm_token: user.confirm_token
         user.reload
@@ -20,14 +18,13 @@ describe Sessions::Api, type: :request do
     end
 
     context 'with invalid token' do
-
       before(:each) do
         post '/api/v1/sessions/confirm_email', confirm_token: '1234567890'
         user.reload
       end
 
       it 'should return error' do
-        expect(json['errors']).to eq({'base'=>['invalid confirmation token']})
+        expect(json['errors']).to eq('base' => ['invalid confirmation token'])
       end
 
       it 'should return status unprocessable_entity' do

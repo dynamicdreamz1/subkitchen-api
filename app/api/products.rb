@@ -1,7 +1,6 @@
 module Products
   class Api < Grape::API
     resources :products do
-
       desc 'return all products'
       params do
         optional :page, type: Integer, default: 1
@@ -12,15 +11,15 @@ module Products
         optional :with_tags, type: Array[String]
       end
       get do
-        filterrific = Filterrific::ParamSet.new(Product, {sorted_by: params.sorted_by,
-                                                          with_price_range: params.with_price_range,
-                                                          with_product_type: params.with_product_type,
-                                                          with_tags: params.with_tags})
+        filterrific = Filterrific::ParamSet.new(Product, sorted_by: params.sorted_by,
+                                                         with_price_range: params.with_price_range,
+                                                         with_product_type: params.with_product_type,
+                                                         with_tags: params.with_tags)
         products = Product.filterrific_find(filterrific).page(params.page).per(params.per_page)
         if products
           ProductListSerializer.new(products).as_json
         else
-          error!({errors: {base: ['no products matching given criteria']}}, 404)
+          error!({ errors: { base: ['no products matching given criteria'] } }, 404)
         end
       end
 
@@ -44,7 +43,7 @@ module Products
         if product.valid?
           product.save
         else
-          error!({errors: product.errors.messages}, 422)
+          error!({ errors: product.errors.messages }, 422)
         end
         ProductSerializer.new(product).as_json
       end
@@ -56,7 +55,7 @@ module Products
       delete ':id' do
         if current_user
           product = Product.find_by!(id: params.id)
-          error!({errors: {base: ['unauthorized']}}, 401) if product.author_id != current_user.id
+          error!({ errors: { base: ['unauthorized'] } }, 401) if product.author_id != current_user.id
         else
           product = Product.find_by!(id: params.id, uuid: params.uuid)
         end
@@ -74,7 +73,7 @@ module Products
         if PublishProduct.new(product, current_user).call
           ProductSerializer.new(product).as_json
         else
-          error!({errors: {base: ['cannot publish not own product']}}, 422)
+          error!({ errors: { base: ['cannot publish not own product'] } }, 422)
         end
       end
     end

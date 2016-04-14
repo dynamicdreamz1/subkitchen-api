@@ -1,11 +1,11 @@
 class ArtistListSerializer
   def as_json(options = {})
     data = {
-        artists: serialized_artists,
-        meta: {
-            current_page: artists.current_page,
-            total_pages: artists.total_pages
-        }
+      artists: serialized_artists,
+      meta: {
+        current_page: artists.current_page,
+        total_pages: artists.total_pages
+      }
     }
 
     data.as_json(options)

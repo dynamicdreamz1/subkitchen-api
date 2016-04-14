@@ -1,4 +1,4 @@
-class CreateLikes< ActiveRecord::Migration
+class CreateLikes < ActiveRecord::Migration
   def change
     create_table :likes do |t|
       t.belongs_to :likeable, polymorphic: true

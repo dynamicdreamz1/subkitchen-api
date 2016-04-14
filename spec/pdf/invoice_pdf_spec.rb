@@ -1,5 +1,4 @@
 RSpec.describe InvoicePdf do
-
   include ActionView::Helpers::NumberHelper
 
   before(:each) do
@@ -13,12 +12,12 @@ RSpec.describe InvoicePdf do
       country: 'UK',
       region: 'London')
     @invoice = create(:invoice, order: @order,
-      line_1: 'line1',
-      line_2: 'line2',
-      line_3: 'line3',
-      line_4: 'line4',
-      line_5: 'line5',
-      line_6: 'line6')
+                                line_1: 'line1',
+                                line_2: 'line2',
+                                line_3: 'line3',
+                                line_4: 'line4',
+                                line_5: 'line5',
+                                line_6: 'line6')
     @item = create(:order_item, order: @order, product: create(:product), quantity: 2, price: 2)
     pdf = InvoicePdf.new(@invoice)
     @text_analysis = PDF::Inspector::Text.analyze(pdf.render)
@@ -33,32 +32,32 @@ RSpec.describe InvoicePdf do
   end
 
   it 'should has shipping address' do
-    expect(@text_analysis.strings).to include("#{@order.full_name}")
-    expect(@text_analysis.strings).to include("#{@order.address}")
+    expect(@text_analysis.strings).to include(@order.full_name.to_s)
+    expect(@text_analysis.strings).to include(@order.address.to_s)
     expect(@text_analysis.strings).to include("#{@order.city}, #{@order.region}")
-    expect(@text_analysis.strings).to include("#{@order.zip}")
-    expect(@text_analysis.strings).to include("#{@order.country}")
-    expect(@text_analysis.strings).to include("#{@order.email}")
+    expect(@text_analysis.strings).to include(@order.zip.to_s)
+    expect(@text_analysis.strings).to include(@order.country.to_s)
+    expect(@text_analysis.strings).to include(@order.email.to_s)
   end
 
   it 'should has company info' do
-    expect(@text_analysis.strings).to include("#{@invoice.line_1}")
-    expect(@text_analysis.strings).to include("#{@invoice.line_2}")
-    expect(@text_analysis.strings).to include("#{@invoice.line_3}")
-    expect(@text_analysis.strings).to include("#{@invoice.line_4}")
+    expect(@text_analysis.strings).to include(@invoice.line_1.to_s)
+    expect(@text_analysis.strings).to include(@invoice.line_2.to_s)
+    expect(@text_analysis.strings).to include(@invoice.line_3.to_s)
+    expect(@text_analysis.strings).to include(@invoice.line_4.to_s)
   end
 
   it 'should has prices' do
-    expect(@text_analysis.strings).to include("ORDER SUBTOTAL:","               #{number_to_currency(@order.subtotal_cost)}")
-    expect(@text_analysis.strings).to include("SHIPPING:","                   #{number_to_currency(@order.shipping_cost)}")
-    expect(@text_analysis.strings).to include("TAX(#{@order.tax}%):","                 #{number_to_currency(@order.tax_cost)}")
+    expect(@text_analysis.strings).to include('ORDER SUBTOTAL:', "               #{number_to_currency(@order.subtotal_cost)}")
+    expect(@text_analysis.strings).to include('SHIPPING:', "                   #{number_to_currency(@order.shipping_cost)}")
+    expect(@text_analysis.strings).to include("TAX(#{@order.tax}%):", "                 #{number_to_currency(@order.tax_cost)}")
     expect(@text_analysis.strings).to include("Total:     #{number_to_currency(@order.total_cost)}")
   end
 
   it 'should has items' do
-    expect(@text_analysis.strings).to include("#{@item.product.name}")
-    expect(@text_analysis.strings).to include("#{@item.quantity}")
-    expect(@text_analysis.strings).to include("#{number_to_currency(@item.price)}")
-    expect(@text_analysis.strings).to include("#{number_to_currency(@item.quantity*@item.price)}")
+    expect(@text_analysis.strings).to include(@item.product.name.to_s)
+    expect(@text_analysis.strings).to include(@item.quantity.to_s)
+    expect(@text_analysis.strings).to include(number_to_currency(@item.price).to_s)
+    expect(@text_analysis.strings).to include(number_to_currency(@item.quantity * @item.price).to_s)
   end
 end

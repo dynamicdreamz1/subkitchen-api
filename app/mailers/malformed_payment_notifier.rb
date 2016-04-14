@@ -2,11 +2,11 @@ require 'concerns/email_key_replacer'
 
 class MalformedPaymentNotifier < ApplicationMailer
   KEYS = { 'PAYMENT_ID' => ' (required) - admin url for the malformed payment',
-          'PAYMENT_URL' => ' - malformed payment id' }
+           'PAYMENT_URL' => ' - malformed payment id' }.freeze
   include EmailKeyReplacer
 
   def notify(recipients, options = {})
-    template = EmailTemplate.where(name: "#{self.class.name}").first
+    template = EmailTemplate.where(name: self.class.name.to_s).first
     content = template.content
 
     replace_keys(content, values(options))
@@ -21,7 +21,7 @@ class MalformedPaymentNotifier < ApplicationMailer
 
   def values(options)
     payment_id = options[:payment_id] || 1
-    { 'payment_id' => "#{payment_id}",
+    { 'payment_id' => payment_id.to_s,
       'payment_url' => "#{Figaro.env.frontend_host}admin/payments/#{payment_id}" }
   end
 end

@@ -1,9 +1,6 @@
 describe Payments::Api, type: :request do
-
   describe '/api/v1/orders/:uuid/payment' do
-
     context 'checkout' do
-
       before(:each) do
         order = create(:order, user: nil)
         get "/api/v1/orders/#{order.uuid}/payment"
@@ -19,15 +16,14 @@ describe Payments::Api, type: :request do
     end
 
     context 'after deleting product' do
-
       before(:each) do
         order = create(:order, user: nil)
         create(:order_item,
-               order: order,
-               product: create(:product, product_template: create(:product_template, price: 12)))
+          order: order,
+          product: create(:product, product_template: create(:product_template, price: 12)))
         create(:order_item,
-               order: order,
-               product: create(:product, product_template: create(:product_template, price: 30)))
+          order: order,
+          product: create(:product, product_template: create(:product_template, price: 30)))
         CalculateOrder.new(order).call
         DeleteProduct.new(Product.last).call
 

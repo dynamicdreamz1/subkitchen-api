@@ -8,13 +8,13 @@ ActiveAdmin.register User do
 
   filter :email_cont, as: :string
   filter :name_cont, as: :string
-  filter :status, as: :select, collection: %w[pending verified unverified]
+  filter :status, as: :select, collection: %w(pending verified unverified)
   filter :email_confirmed
   filter :created_at
 
   member_action :delete, method: :put do
     DeleteUser.new(resource).call
-    resource.products.map{ |p| p.update(is_deleted: true) }
+    resource.products.map { |p| p.update(is_deleted: true) }
     redirect_to admin_users_path, notice: 'User Deleted'
   end
 
@@ -28,7 +28,7 @@ ActiveAdmin.register User do
       f.input :password_confirmation, required: true
       f.input :email_confirmed
       f.input :artist
-      f.input :status, as: :select, collection: %w[verified unverified pending]
+      f.input :status, as: :select, collection: %w(verified unverified pending)
     end
     f.inputs 'Address' do
       f.input :first_name
@@ -71,7 +71,7 @@ ActiveAdmin.register User do
     actions defaults: false do |user|
       unless user.is_deleted
         link_to('View', admin_user_path(user), method: :get) + ' ' +
-        link_to('Delete', delete_admin_user_path(user), method: :put, data: {confirm: 'Are you sure? If you delete this user, all the products created by this user will be deleted'})
+          link_to('Delete', delete_admin_user_path(user), method: :put, data: { confirm: 'Are you sure? If you delete this user, all the products created by this user will be deleted' })
       end
     end
   end
@@ -109,10 +109,10 @@ ActiveAdmin.register User do
         tab 'Shop' do
           attributes_table do
             row(:handle)
-            row('Number of Likes'){ user.likes_count }
-            row('Number of Sales'){ user.sales_count }
-            row('Profit'){ user.earnings_count }
-            row('Published'){ user.published_count }
+            row('Number of Likes') { user.likes_count }
+            row('Number of Sales') { user.sales_count }
+            row('Profit') { user.earnings_count }
+            row('Published') { user.published_count }
           end
         end
       end
@@ -120,33 +120,33 @@ ActiveAdmin.register User do
       if user.company
         tab 'Company' do
           attributes_table do
-            row('Company Name'){ user.company.company_name }
-            row('Address'){ user.company.address }
-            row('Region'){ user.company.region }
-            row('Zip'){ user.company.zip }
-            row('City'){ user.company.city }
-            row('Country'){ user.company.country }
+            row('Company Name') { user.company.company_name }
+            row('Address') { user.company.address }
+            row('Region') { user.company.region }
+            row('Zip') { user.company.zip }
+            row('City') { user.company.city }
+            row('Country') { user.company.country }
           end
         end
       end
 
       tab 'Orders' do
         table_for user.orders do
-          column('Date') { |order| order.created_at.strftime('%d-%m-%Y')  }
+          column('Date') { |order| order.created_at.strftime('%d-%m-%Y') }
           column(:order_status)
           column(:total_cost)
           column(:payment)
-          column(''){ |order| link_to 'View', admin_order_path(order)}
+          column('') { |order| link_to 'View', admin_order_path(order) }
         end
       end
 
       if user.payment
         tab 'Verification' do
           attributes_table do
-            row('Created At'){ user.payment.created_at }
-            row('Status'){ user.payment.payment_status }
-            row('Type'){ user.payment.payment_type }
-            row('Token'){ user.payment.payment_token }
+            row('Created At') { user.payment.created_at }
+            row('Status') { user.payment.payment_status }
+            row('Type') { user.payment.payment_type }
+            row('Token') { user.payment.payment_token }
           end
         end
       end

@@ -1,8 +1,6 @@
 module Payments
   class Api < Grape::API
-
     resources :orders do
-
       desc 'payment page'
       get ':uuid/payment' do
         order = Order.find_by!(uuid: params.uuid)
@@ -23,13 +21,13 @@ module Payments
         requires :region, type: String
         requires :country, type: String
 
-        requires :payment_type, type: String, values: ['stripe', 'paypal']
+        requires :payment_type, type: String, values: %w(stripe paypal)
         optional :stripe_token, type: String
         optional :return_path, type: String
       end
       post ':uuid/payment' do
         order = Order.find_by!(uuid: params.uuid, active: true, order_status: 'creating')
-        error!({errors: {base: ['invalid payment parameters!']}}, 422) unless ValidPaymentParams.new(params).call
+        error!({ errors: { base: ['invalid payment parameters!'] } }, 422) unless ValidPaymentParams.new(params).call
 
         unless AddOrderAddress.new(params, order).call
           status :unprocessable_entity
@@ -42,7 +40,7 @@ module Payments
         end
 
         CreatePayment.new(order, params.payment_type, params.stripe_token, params.return_path).call ||
-            error!({errors: {base: ['already paid']}}, 422)
+          error!({ errors: { base: ['already paid'] } }, 422)
       end
     end
   end

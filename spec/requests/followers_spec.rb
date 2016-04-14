@@ -1,9 +1,6 @@
 describe Followers::Api, type: :request do
-
   context 'toggle like' do
-
     context 'when followed is an artist' do
-
       before(:each) do
         @artist = create(:user, artist: true, status: :verified)
         @user = create(:user)
@@ -33,10 +30,9 @@ describe Followers::Api, type: :request do
     end
 
     context 'when followed is not an artist' do
-
       before(:each) do
         @user = create(:user)
-        post "/api/v1/users/#{create(:user).id}/toggle_follow", {},  auth_header_for(@user)
+        post "/api/v1/users/#{create(:user).id}/toggle_follow", {}, auth_header_for(@user)
       end
 
       it 'should not create like' do
@@ -48,15 +44,14 @@ describe Followers::Api, type: :request do
       end
 
       it 'should return error' do
-        expect(json['errors']).to eq({'base'=>['Validation failed: User cannot be followed']})
+        expect(json['errors']).to eq('base' => ['Validation failed: User cannot be followed'])
       end
     end
 
     context 'followed and follower are same user' do
-
       before(:each) do
         @user = create(:user)
-        post "/api/v1/users/#{@user.id}/toggle_follow", {},  auth_header_for(@user)
+        post "/api/v1/users/#{@user.id}/toggle_follow", {}, auth_header_for(@user)
       end
 
       it 'should not create like' do
@@ -68,16 +63,15 @@ describe Followers::Api, type: :request do
       end
 
       it 'should return error' do
-        expect(json['errors']).to eq({'base'=>['Validation failed: User cannot follow yourself']})
+        expect(json['errors']).to eq('base' => ['Validation failed: User cannot follow yourself'])
       end
     end
   end
 
   context 'when artist is followed' do
-
     before(:each) do
       @artist = create(:user, artist: true, status: :verified)
-      2.times{ Like.create(likeable: @artist, user: create(:user)) }
+      2.times { Like.create(likeable: @artist, user: create(:user)) }
       get "/api/v1/users/#{@artist.id}/followers"
       @artist.reload
     end
@@ -104,10 +98,9 @@ describe Followers::Api, type: :request do
   end
 
   context 'when user is follower' do
-
     before(:each) do
       @user = create(:user)
-      2.times{ create(:like, likeable: create(:user, artist: true, status: :verified), user: @user) }
+      2.times { create(:like, likeable: create(:user, artist: true, status: :verified), user: @user) }
       get "/api/v1/users/#{@user.id}/followers"
     end
 

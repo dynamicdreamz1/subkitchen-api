@@ -1,7 +1,7 @@
 class CheckoutSerializer
   include ApplicationHelper
 
-  def as_json(options={})
+  def as_json(options = {})
     data = { order:
                  { uuid: order.uuid,
                    purchased_at: order.purchased_at,
@@ -12,7 +12,7 @@ class CheckoutSerializer
                    tax_cost: order.tax_cost,
                    total_cost: order.total_cost,
                    items: items,
-                   pdf: Figaro.env.app_host+"api/v1/invoices?uuid=#{order.uuid}" }}
+                   pdf: Figaro.env.app_host + "api/v1/invoices?uuid=#{order.uuid}" } }
     data.merge(shipping_address) if order.user
 
     data[:errors] = order.errors if order.errors.any?
@@ -25,23 +25,23 @@ class CheckoutSerializer
 
   attr_accessor :order
 
-  def initialize(order, deleted_items=nil)
+  def initialize(order, deleted_items = nil)
     @order = order
     @deleted_items = deleted_items
   end
 
   def items
     order.order_items
-      .reject{|item| item.product.is_deleted}
-      .map do |item|
+         .reject { |item| item.product.is_deleted }
+         .map do |item|
       { price: item.price,
-        subtotal: item.price*item.quantity,
+        subtotal: item.price * item.quantity,
         name: item.product.name,
         id: item.id,
         is_deleted: item.product.is_deleted,
         quantity: item.quantity,
         size: item.size,
-        image: Figaro.env.app_host + Refile.attachment_url(item.product, :image, format: :png)}
+        image: Figaro.env.app_host + Refile.attachment_url(item.product, :image, format: :png) }
     end
   end
 
@@ -52,7 +52,7 @@ class CheckoutSerializer
         id: item.id,
         quantity: item.quantity,
         size: item.size,
-        image: Figaro.env.app_host + Refile.attachment_url(item.product, :image, format: :png)}
+        image: Figaro.env.app_host + Refile.attachment_url(item.product, :image, format: :png) }
     end
   end
 

@@ -24,9 +24,7 @@ class OauthRegister
 
   def find_or_create_user(provider: '', uid: '', email: '', name: '')
     user = User.where(provider: provider, uid: uid).first
-    if email.present?
-      user ||= User.where(email: email).first
-    end
+    user ||= User.where(email: email).first if email.present?
     user ||= User.new
     user.oauth_registration = true
     user.uid = uid

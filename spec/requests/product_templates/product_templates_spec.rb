@@ -1,13 +1,12 @@
 describe ProductTemplates::Api, type: :request do
-  let(:valid_image){ fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
-  let(:valid_mask){ fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
-  let(:too_big_image){ fixture_file_upload(Rails.root.join('app/assets/images/1920x1080.png'), 'image/png') }
-  let(:too_big_mask){ fixture_file_upload(Rails.root.join('app/assets/images/1920x1080.png'), 'image/png') }
-  let(:too_small_image){ fixture_file_upload(Rails.root.join('app/assets/images/image.png'), 'image/png') }
-  let(:too_small_mask){ fixture_file_upload(Rails.root.join('app/assets/images/image.png'), 'image/png') }
+  let(:valid_image) { fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
+  let(:valid_mask) { fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
+  let(:too_big_image) { fixture_file_upload(Rails.root.join('app/assets/images/1920x1080.png'), 'image/png') }
+  let(:too_big_mask) { fixture_file_upload(Rails.root.join('app/assets/images/1920x1080.png'), 'image/png') }
+  let(:too_small_image) { fixture_file_upload(Rails.root.join('app/assets/images/image.png'), 'image/png') }
+  let(:too_small_mask) { fixture_file_upload(Rails.root.join('app/assets/images/image.png'), 'image/png') }
 
   describe '/api/v1/product_templates' do
-
     before(:each) do
       create(:product_template, template_image: valid_image, template_mask: valid_mask, size_chart: valid_image)
       get '/api/v1/product_templates'

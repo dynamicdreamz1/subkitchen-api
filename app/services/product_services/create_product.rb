@@ -13,12 +13,12 @@ class CreateProduct
   def create_product
     User.transaction do
       product = Product.new(name: @params.name,
-                  product_template_id: @params.product_template_id,
-                  description: @params.description,
-                  image: image,
-                  published: @params.published,
-                  published_at: (@params.published ? DateTime.now : nil)
-      )
+                            product_template_id: @params.product_template_id,
+                            description: @params.description,
+                            image: image,
+                            published: @params.published,
+                            published_at: (@params.published ? DateTime.now : nil)
+                           )
       product.tag_list.add(@params.tags)
       product.author_id = @user.id if @user
       product

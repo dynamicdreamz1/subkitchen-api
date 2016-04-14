@@ -36,7 +36,6 @@ module Orders
 
     resources :orders do
       resources :item do
-
         desc 'add item to order'
         params do
           requires :product_id, type: Integer
@@ -48,7 +47,7 @@ module Orders
           params[:quantity] = params[:quantity].to_i.abs
           order = find_or_create_order(params.uuid)
 
-          error!({errors:{'base'=>['cannot change already paid order']}}, 422) if order.payment
+          error!({ errors: { 'base' => ['cannot change already paid order'] } }, 422) if order.payment
           item = order.order_items.find_by(product_id: params.product_id, order_id: order.id, size: params[:size])
           if item
             OrderItemQuantity.new(item, params.quantity).call

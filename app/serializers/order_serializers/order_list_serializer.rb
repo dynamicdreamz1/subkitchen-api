@@ -1,13 +1,13 @@
 class OrderListSerializer
   include ApplicationHelper
 
-  def as_json(options={})
+  def as_json(options = {})
     data = {
-        orders: serialized_orders,
-        meta: {
-            current_page: orders.current_page,
-            total_pages: orders.total_pages
-        }
+      orders: serialized_orders,
+      meta: {
+        current_page: orders.current_page,
+        total_pages: orders.total_pages
+      }
     }
 
     data.as_json(options)
@@ -32,11 +32,11 @@ class OrderListSerializer
 
   def single_order(order)
     {
-        uuid: order.uuid,
-        created_at: order.created_at,
-        order_status: order.order_status,
-        total_cost: order.total_cost,
-        pdf: Figaro.env.app_host+"api/v1/invoices?uuid=#{order.uuid}"
+      uuid: order.uuid,
+      created_at: order.created_at,
+      order_status: order.order_status,
+      total_cost: order.total_cost,
+      pdf: Figaro.env.app_host + "api/v1/invoices?uuid=#{order.uuid}"
     }
   end
 end

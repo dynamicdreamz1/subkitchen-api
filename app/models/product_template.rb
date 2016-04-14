@@ -15,10 +15,10 @@ class ProductTemplate < ActiveRecord::Base
   validates :template_mask, image: { width: 1024, height: 1024 }
 
   def sizes_raw
-    self.size.join("\n") unless self.size.nil?
+    size.join("\n") unless size.nil?
   end
 
   def sizes_raw=(values)
-    self.size = values.to_s.split(/[\r\n]+/).reject{|e| e.blank?}
+    self.size = values.to_s.split(/[\r\n]+/).reject(&:blank?)
   end
 end

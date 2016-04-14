@@ -1,9 +1,8 @@
 describe AccountsArtist::Api, type: :request do
-  let(:user){ create(:user) }
-  let(:artist){ create(:user, artist: true) }
+  let(:user) { create(:user) }
+  let(:artist) { create(:user, artist: true) }
 
   describe '/account/artist/stats' do
-
     context 'artist' do
       before(:each) do
         get '/api/v1/account/artist/stats', {}, auth_header_for(artist)
@@ -24,7 +23,7 @@ describe AccountsArtist::Api, type: :request do
       end
 
       it 'should not get statistics for user' do
-        expect(json['errors']).to eq({'base'=>['you are not authorized']})
+        expect(json['errors']).to eq('base' => ['you are not authorized'])
       end
 
       it 'should return status unauthorized' do

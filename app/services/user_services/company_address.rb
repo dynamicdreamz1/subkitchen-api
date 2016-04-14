@@ -1,12 +1,12 @@
 class CompanyAddress
   def call
     company.update(
-        company_name: params.company_name,
-        address: params.address,
-        city: params.city,
-        zip: params[:zip],
-        region: params.region,
-        country: params.country
+      company_name: params.company_name,
+      address: params.address,
+      city: params.city,
+      zip: params[:zip],
+      region: params.region,
+      country: params.country
     )
   end
 

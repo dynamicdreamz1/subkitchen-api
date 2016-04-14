@@ -11,7 +11,7 @@ class CalculateOrder
 
   def update_order
     subtotal_cost = 0
-    @order.order_items.each{ |item| subtotal_cost += item.quantity * item.price }
+    @order.order_items.each { |item| subtotal_cost += item.quantity * item.price }
     @order.subtotal_cost = subtotal_cost
     @order.tax_cost = @order.subtotal_cost * @order.tax.to_d * 0.01
     @order.total_cost = @order.subtotal_cost + @order.tax_cost

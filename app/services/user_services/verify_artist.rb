@@ -20,7 +20,7 @@ class VerifyArtist
   end
 
   def update_user
-    user_params = { artist: true, handle: params.handle}
+    user_params = { artist: true, handle: params.handle }
     user.update(user_params)
   end
 

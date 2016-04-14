@@ -1,9 +1,4 @@
 RSpec.describe Product, type: :model do
-  let(:product_template){ create(:product_template) }
-  let(:product){ create(:product, author: create(:user), product_template: product_template) }
-  let(:artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
-  let(:other_artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
-
   describe 'sort by scope' do
     before(:each) do
       @p1 = create(:product, order_items_count: 10, name: 'AAA', created_at: 1.week.ago, product_template: create(:product_template, price: 300, product_type: 'tee'))

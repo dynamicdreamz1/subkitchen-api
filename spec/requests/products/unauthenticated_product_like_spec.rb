@@ -1,11 +1,9 @@
 describe Products::Api, type: :request do
-  let(:product){ create(:product, author: create(:user, artist: true, status: 'verified'), published: true) }
+  let(:product) { create(:product, author: create(:user, artist: true, status: 'verified'), published: true) }
 
   describe '/api/v1/products/:id/toggle_like' do
-
     context 'when user is not authenticated' do
       context 'when product is not liked' do
-
         before(:each) do
           post "/api/v1/products/#{product.id}/toggle_like"
           product.reload
@@ -25,10 +23,9 @@ describe Products::Api, type: :request do
       end
 
       context 'when product is liked' do
-
         before(:each) do
           like = create(:like, likeable: product)
-          post "/api/v1/products/#{product.id}/toggle_like", { uuid: like.uuid }
+          post "/api/v1/products/#{product.id}/toggle_like", uuid: like.uuid
         end
 
         it 'should unlike product' do

@@ -21,4 +21,3 @@ class ConfirmUserVerification
     end
   end
 end
-

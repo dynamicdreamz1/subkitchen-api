@@ -1,38 +1,35 @@
 describe PaypalHooks::Api, type: :request do
-
   before(:each) do
     @user = create(:user, artist: true)
     @user_payment = create(:payment, payable: @user)
     @valid_user_params = {
-        'receiver_email'=>"#{Figaro.env.paypal_seller}",
-        'payment_gross'=>'1.00',
-        'invoice'=>@user_payment.id,
-        'payment_status'=>'Completed',
-        'txn_id'=>'61E67681CH3238416' }
+      'receiver_email' => Figaro.env.paypal_seller.to_s,
+      'payment_gross' => '1.00',
+      'invoice' => @user_payment.id,
+      'payment_status' => 'Completed',
+      'txn_id' => '61E67681CH3238416' }
     @denied_user_params = {
-        'receiver_email'=>"#{Figaro.env.paypal_seller}",
-        'payment_gross'=>'1.00',
-        'invoice'=>@user_payment.id,
-        'payment_status'=>'Denied',
-        'txn_id'=>'61E67681CH3238416' }
+      'receiver_email' => Figaro.env.paypal_seller.to_s,
+      'payment_gross' => '1.00',
+      'invoice' => @user_payment.id,
+      'payment_status' => 'Denied',
+      'txn_id' => '61E67681CH3238416' }
     @invalid_receiver_user_params =  {
-        'receiver_email'=>'invalid receiver email',
-        'payment_gross'=>'1.00',
-        'invoice'=>@user_payment.id,
-        'payment_status'=>'Completed',
-        'txn_id'=>'61E67681CH3238416' }
+      'receiver_email' => 'invalid receiver email',
+      'payment_gross' => '1.00',
+      'invoice' => @user_payment.id,
+      'payment_status' => 'Completed',
+      'txn_id' => '61E67681CH3238416' }
     @invalid_payment_user_params =   {
-        'receiver_email'=>"#{Figaro.env.paypal_seller}",
-        'payment_gross'=>'100.00',
-        'invoice'=>@user_payment.id,
-        'payment_status'=>'Completed',
-        'txn_id'=>'61E67681CH3238416' }
+      'receiver_email' => Figaro.env.paypal_seller.to_s,
+      'payment_gross' => '100.00',
+      'invoice' => @user_payment.id,
+      'payment_status' => 'Completed',
+      'txn_id' => '61E67681CH3238416' }
   end
 
   describe 'USER VERIFICATION' do
-
     context 'completed' do
-
       before(:each) do
         post '/api/v1/user_verify_notification', @valid_user_params
         @user.reload
@@ -57,7 +54,6 @@ describe PaypalHooks::Api, type: :request do
     end
 
     context 'denied' do
-
       before(:each) do
         post '/api/v1/user_verify_notification', @denied_user_params
         @user.reload
@@ -73,15 +69,12 @@ describe PaypalHooks::Api, type: :request do
       end
     end
 
-
     context 'malformed' do
-
       context 'invalid receiver params' do
         before(:each) do
           create(:admin_user)
-          post '/api/v1/user_verify_notification',  @invalid_receiver_user_params
+          post '/api/v1/user_verify_notification', @invalid_receiver_user_params
           @user_payment.reload
-
         end
 
         it 'should notify all admins when receiver email invalid' do

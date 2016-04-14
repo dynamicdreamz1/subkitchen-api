@@ -1,12 +1,12 @@
 require 'concerns/email_key_replacer'
 
 class AccountEmailConfirmation < ApplicationMailer
-  KEYS = { 'CONFIRMATION_URL' =>  ' (required) - url to confirm email from registration form',
-          'USER_NAME' => " - user's name" }
+  KEYS = { 'CONFIRMATION_URL' => ' (required) - url to confirm email from registration form',
+           'USER_NAME' => " - user's name" }.freeze
   include EmailKeyReplacer
 
   def notify(email, options = {})
-    template = EmailTemplate.where(name: "#{self.class.name}").first
+    template = EmailTemplate.where(name: self.class.name.to_s).first
     content = template.content
 
     replace_keys(content, values(options))

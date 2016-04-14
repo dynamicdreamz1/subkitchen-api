@@ -1,16 +1,16 @@
 describe Accounts::Api, type: :request do
-  let(:user){ create(:user,
-                     first_name: 'Jorge',
-                     last_name: 'Countryman',
-                     address: 'Slump 14',
-                     zip: '12340',
-                     city: 'CountrySide',
-                     country: 'US') }
+  let(:user) do
+    create(:user,
+      first_name: 'Jorge',
+      last_name: 'Countryman',
+      address: 'Slump 14',
+      zip: '12340',
+      city: 'CountrySide',
+      country: 'US')
+  end
 
   describe '/api/v1/address/current' do
-
     context 'get address' do
-
       before(:each) do
         get '/api/v1/addresses/current', {}, auth_header_for(user)
       end
@@ -31,7 +31,6 @@ describe Accounts::Api, type: :request do
     end
 
     context 'update address' do
-
       before(:each) do
         @params = { address:
                        { first_name: 'John',
@@ -39,8 +38,8 @@ describe Accounts::Api, type: :request do
                          address: 'No 14',
                          zip: '00340',
                          city: 'Morgue',
-                         country: 'DE' }}
-        put '/api/v1/addresses/current', @params , auth_header_for(user)
+                         country: 'DE' } }
+        put '/api/v1/addresses/current', @params, auth_header_for(user)
         user.reload
       end
 

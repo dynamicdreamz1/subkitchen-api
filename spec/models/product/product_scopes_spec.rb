@@ -1,53 +1,76 @@
 RSpec.describe Product, type: :model do
-  let(:product_template){ create(:product_template) }
-  let(:product){ create(:product, author: create(:user), product_template: product_template) }
-  let(:artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
-  let(:other_artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
+  let(:product) { create(:product, author: create(:user), product_template: create(:product_template)) }
+  let(:artist) { create(:user, status: 'verified', artist: true) }
+  let(:other_artist) { create(:user, status: 'verified', artist: true) }
 
   describe 'scopes' do
+    context 'deleted products' do
+      before(:each) do
+        DeleteProduct.new(product).call
+      end
 
-    it 'should return deleted products' do
-      DeleteProduct.new(product).call
-      expect(Product.deleted).to contain_exactly(product)
+      it 'should return deleted products' do
+        expect(Product.deleted).to contain_exactly(product)
+      end
     end
 
-    it 'should return ready to print products' do
-      product = create(:product, design_id: nil)
-      ready_product = create(:product, design_id: '123')
+    context 'ready to print' do
+      before(:each) do
+        product = create(:product, design_id: nil)
+        @ready_product = create(:product, design_id: '123')
+      end
 
-      expect(Product.ready_to_print).to contain_exactly(ready_product)
+      it 'should return ready to print products' do
+        expect(Product.ready_to_print).to contain_exactly(@ready_product)
+      end
     end
 
-    it 'should return waiting products' do
-      product = create(:product, design_id: '123')
-      waiting_product = create(:product, design_id: nil)
-      order = create(:order, order_status: 'processing')
-      create(:order_item, product: product, order: order)
-      create(:order_item, product: waiting_product, order: order)
+    context 'waiting products' do
+      before(:each) do
+        product = create(:product, design_id: '123')
+        @waiting_product = create(:product, design_id: nil)
+        order = create(:order, order_status: 'processing')
+        create(:order_item, product: product, order: order)
+        create(:order_item, product: @waiting_product, order: order)
+      end
 
-      expect(Product.waiting).to contain_exactly(waiting_product)
+      it 'should return waiting products' do
+        expect(Product.waiting).to contain_exactly(@waiting_product)
+      end
     end
 
-    it 'should return all published products' do
-      product = create(:product, design_id: nil)
-      published_product = create(:product, author: artist, published: true)
+    context 'published products' do
+      before(:each) do
+        product = create(:product, design_id: nil)
+        @published_product = create(:product, author: artist, published: true)
+      end
 
-      expect(Product.published_all).to contain_exactly(published_product)
+      it 'should return all published products' do
+        expect(Product.published_all).to contain_exactly(@published_product)
+      end
     end
 
-    it 'should return all published products by given artist' do
-      product = create(:product, design_id: nil)
-      create(:product, author: other_artist, published: true)
-      published_product = create(:product, author: artist, published: true)
+    context 'published by given artist' do
+      before(:each) do
+        product = create(:product, design_id: nil)
+        create(:product, author: other_artist, published: true)
+        @published_product = create(:product, author: artist, published: true)
+      end
 
-      expect(Product.published(artist)).to contain_exactly(published_product)
+      it 'should return all published products by given artist' do
+        expect(Product.published(artist)).to contain_exactly(@published_product)
+      end
     end
 
-    it 'should return all published weekly products by given artist' do
-      Timecop.freeze(DateTime.now - 30.days) { create(:product, author: artist, published: true) }
-      new_product = create(:product, author: artist, published: true)
+    context 'published weekly by given artist' do
+      before(:each) do
+        Timecop.freeze(DateTime.now - 30.days) { create(:product, author: artist, published: true) }
+        @new_product = create(:product, author: artist, published: true)
+      end
 
-      expect(Product.published_weekly(artist)).to contain_exactly(new_product)
+      it 'should return all published weekly products by given artist' do
+        expect(Product.published_weekly(artist)).to contain_exactly(@new_product)
+      end
     end
   end
 end

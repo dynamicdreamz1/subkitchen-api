@@ -5,7 +5,7 @@ class Api < Grape::API
   format :json
 
   rescue_from ActiveRecord::RecordNotFound do
-    error!({errors: {base: ['record not found']}}, 404)
+    error!({ errors: { base: ['record not found'] } }, 404)
   end
 
   rescue_from ActiveRecord::RecordNotUnique do
@@ -13,12 +13,12 @@ class Api < Grape::API
   end
 
   rescue_from ActiveRecord::RecordInvalid do |e|
-    error!({errors: {base: [e.message]}}, 422)
+    error!({ errors: { base: [e.message] } }, 422)
   end
 
   helpers do
     def authenticate!
-      error!({errors: {base: ['401 Unauthorized']}}, 401) unless current_user
+      error!({ errors: { base: ['401 Unauthorized'] } }, 401) unless current_user
     end
 
     def current_user
@@ -46,7 +46,6 @@ class Api < Grape::API
   mount ProductTemplates::Api
   mount Invoices::Api
   mount Followers::Api
-
 
   add_swagger_documentation(api_version: 'v1', hide_documentation_path: true, base_path: '/api')
 end

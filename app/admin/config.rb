@@ -2,7 +2,7 @@ ActiveAdmin.register Config do
   permit_params :value, :config_image
   config.filters = false
   config.batch_actions = false
-  actions :all, :except => [:destroy, :create, :new]
+  actions :all, except: [:destroy, :create, :new]
 
   index do
     column 'Config' do |config|
@@ -36,12 +36,12 @@ ActiveAdmin.register Config do
   form do |f|
     f.inputs 'Config', multipart: true do
       case f.object.input_type
-        when 'long_text'
-          f.input :value, as: :wysihtml5
-        when 'short_text'
-          f.input :value
-        when 'image'
-          f.input :config_image, as: :refile
+      when 'long_text'
+        f.input :value, as: :wysihtml5
+      when 'short_text'
+        f.input :value
+      when 'image'
+        f.input :config_image, as: :refile
       end
       f.actions
     end

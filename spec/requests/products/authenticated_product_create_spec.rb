@@ -1,22 +1,19 @@
 describe Products::Api, type: :request do
-  let(:image){ fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
-  let(:product_template){ create(:product_template) }
-  let(:artist){ create(:user, status: 'verified', artist: true) }
-  let(:user){ create(:user, artist: false) }
+  let(:image) { fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
+  let(:product_template) { create(:product_template) }
+  let(:artist) { create(:user, status: 'verified', artist: true) }
+  let(:user) { create(:user, artist: false) }
 
   describe '/api/v1/products' do
-
     describe 'CREATE product' do
-
       context 'when user is an artist' do
-
         before(:each) do
           @params = { name: 'new_product',
-                     product_template_id: product_template.id,
-                     description: 'description',
-                     image: image,
-                     tags: ['cats'],
-                     published: true }
+                      product_template_id: product_template.id,
+                      description: 'description',
+                      image: image,
+                      tags: ['cats'],
+                      published: true }
           post '/api/v1/products', @params, auth_header_for(artist)
 
           @product = Product.last
@@ -52,7 +49,6 @@ describe Products::Api, type: :request do
       end
 
       context 'when user is not an artist' do
-
         before(:each) do
           @params = { name: 'new_product',
                       product_template_id: product_template.id,
@@ -90,20 +86,19 @@ describe Products::Api, type: :request do
         end
 
         context 'and try to publish product' do
-
           before(:each) do
             post '/api/v1/products', { name: 'new_product',
                                        product_template_id: product_template.id,
                                        description: 'description',
                                        image: image,
                                        tags: ['cats'],
-                                       published: true}, auth_header_for(user)
+                                       published: true }, auth_header_for(user)
 
             @product = Product.first
           end
 
           it 'should return error' do
-            expect(json['errors']).to eq({'published'=>["can't be true when you're not an artist"]})
+            expect(json['errors']).to eq('published' => ["can't be true when you're not an artist"])
           end
 
           it 'should return status unprocessable_entity' do

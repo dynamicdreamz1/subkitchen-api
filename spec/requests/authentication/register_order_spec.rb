@@ -1,24 +1,21 @@
 describe Sessions::Api, type: :request do
-
   describe '/api/v1/register' do
-
     context 'Register when placing order' do
-
       before(:each) do
         @order = create(:order)
-        @params =  { order_uuid: @order.uuid,
-                     first_name: 'John',
-                     last_name: 'Doe',
-                     address: 'No 14',
-                     zip: '00340',
-                     city: 'Morgue',
-                     country: 'DE',
-                     region: '',
-                     email: 'test@gmail.com',
-                     name: 'test',
-                     password: 'password',
-                     password_confirmation: 'password',
-                     artist: 'false' }
+        @params = { order_uuid: @order.uuid,
+                    first_name: 'John',
+                    last_name: 'Doe',
+                    address: 'No 14',
+                    zip: '00340',
+                    city: 'Morgue',
+                    country: 'DE',
+                    region: '',
+                    email: 'test@gmail.com',
+                    name: 'test',
+                    password: 'password',
+                    password_confirmation: 'password',
+                    artist: 'false' }
         post '/api/v1/sessions/register', @params
         @user = User.last
         @order.reload

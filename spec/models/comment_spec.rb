@@ -1,12 +1,14 @@
 RSpec.describe Comment, type: :model do
-  let(:product1){ create(:product) }
-  let(:product2){ create(:product) }
-  let(:user){ create(:user, artist: false) }
+  let(:user) { create(:user, artist: false) }
+
+  before(:each) do
+    @product1 = create(:product)
+    product2 = create(:product)
+    @p1 = create(:comment, product: @product1, user: user)
+    p2 = create(:comment, product: product2, user: user)
+  end
 
   it 'should return comments by given product' do
-    p1 = create(:comment, product: product1, user: user)
-    p2 = create(:comment, product: product2, user: user)
-
-    expect(Comment.product(product1.id)).to contain_exactly(p1)
+    expect(Comment.product(@product1.id)).to contain_exactly(@p1)
   end
 end

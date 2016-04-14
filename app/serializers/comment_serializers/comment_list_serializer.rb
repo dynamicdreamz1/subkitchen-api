@@ -1,11 +1,11 @@
 class CommentListSerializer
-  def as_json(options={})
+  def as_json(options = {})
     data = {
-        comments: serialized_comments,
-        meta: {
-            current_page: comments.current_page,
-            total_pages: comments.total_pages
-        }
+      comments: serialized_comments,
+      meta: {
+        current_page: comments.current_page,
+        total_pages: comments.total_pages
+      }
     }
 
     data.as_json(options)
@@ -30,11 +30,11 @@ class CommentListSerializer
 
   def single_comment(comment)
     {
-        id: comment.id,
-        product_id: comment.product_id,
-        user_id: comment.user_id,
-        content: comment.content,
-        created_at: comment.created_at
+      id: comment.id,
+      product_id: comment.product_id,
+      user_id: comment.user_id,
+      content: comment.content,
+      created_at: comment.created_at
     }
   end
 end

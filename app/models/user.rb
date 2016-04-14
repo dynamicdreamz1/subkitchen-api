@@ -24,7 +24,6 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password, allow_blank: true
   has_secure_password validations: false
 
-
   after_create ChangeStatusIfArtist.new
   after_update ChangeStatusIfArtist.new, if: :artist_changed?
 
@@ -34,7 +33,6 @@ class User < ActiveRecord::Base
   uses_secure_token :auth_token
   uses_secure_token :password_reminder_token
   uses_secure_token :confirm_token
-
 
   attachment :profile_image, content_type: %w(image/jpeg image/png image/jpg)
   attachment :shop_banner, content_type: %w(image/jpeg image/png image/jpg)

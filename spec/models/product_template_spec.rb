@@ -1,7 +1,7 @@
 RSpec.describe ProductTemplate, type: :model do
-  let(:template){ create(:product_template) }
-  let(:product1){ create(:product, product_template: template) }
-  let(:product2){ create(:product, product_template: template) }
+  let(:template) { create(:product_template) }
+  let(:product1) { create(:product, product_template: template) }
+  let(:product2) { create(:product, product_template: template) }
 
   describe 'UpdateProductPrices on update callback' do
     it 'should update all products after price change' do

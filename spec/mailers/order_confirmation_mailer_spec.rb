@@ -5,8 +5,10 @@ RSpec.describe AccountEmailConfirmation, type: :mailer do
     let(:user) { create(:user) }
     let(:order) { create(:order, purchased: true, purchased_at: DateTime.now) }
     let(:invoice) { create(:invoice, order: order) }
-    let(:mail) { options = { order: order, invoice: invoice }
-                  OrderConfirmationMailer.notify(user.email, options) }
+    let(:mail) do
+      options = { order: order, invoice: invoice }
+      OrderConfirmationMailer.notify(user.email, options)
+    end
 
     it 'renders the headers' do
       expect(mail.to).to eq([user.email])

@@ -24,7 +24,7 @@ Prawn::Font::AFM.hide_m17n_warning = true
 
 VCR.configure do |config|
   config.allow_http_connections_when_no_cassette = true
-  config.cassette_library_dir = "spec/vcr_cassettes"
+  config.cassette_library_dir = 'spec/vcr_cassettes'
   config.hook_into :webmock # or :fakeweb
   config.ignore_hosts 'codeclimate.com'
 end
@@ -65,25 +65,25 @@ RSpec.configure do |config|
     create(:config, name: 'invoice_line_6', value: '')
     create(:config, name: 'themes', value: '3D, Abstract, Animal, Galaxy, Digital, Comic')
     create(:email_template, name: 'MalformedPaymentNotifier',
-                         description: 'Sent automatically to all admins when malformed payment detected.',
-                         subject: 'Malformed payment',
-                         content: '<h3>Hi,</h3>You have <b></b>received malformed payment confirmation request.<br><br>Payment ID: <a target="_blank" title="Link: PAYMENT_ID" href="PAYMENT_URL">PAYMENT_ID</a><br><br><p>Regards,<br>Cloud Team</p>')
+                            description: 'Sent automatically to all admins when malformed payment detected.',
+                            subject: 'Malformed payment',
+                            content: '<h3>Hi,</h3>You have <b></b>received malformed payment confirmation request.<br><br>Payment ID: <a target="_blank" title="Link: PAYMENT_ID" href="PAYMENT_URL">PAYMENT_ID</a><br><br><p>Regards,<br>Cloud Team</p>')
     create(:email_template, name: 'WaitingProductsNotifier',
-                         description: 'Sent automatically/manually to the designer when customer orders product without design.',
-                         subject: 'New products are waiting for design',
-                         content: '<h3> Hi, </h3><p>New products are waiting for your design<br><br></p><p>PRODUCTS_LIST</p><p>Regards,</p><p>Cloud Team</p>')
+                            description: 'Sent automatically/manually to the designer when customer orders product without design.',
+                            subject: 'New products are waiting for design',
+                            content: '<h3> Hi, </h3><p>New products are waiting for your design<br><br></p><p>PRODUCTS_LIST</p><p>Regards,</p><p>Cloud Team</p>')
     create(:email_template, name: 'AccountResetPassword',
-                         description: 'Sent automatically to the customer when they ask to reset their password.',
-                         subject: 'Set new password',
-                         content: '<h3> Hi, </h3><p>Here is your reset password link:<br><br><a target="_blank" href="REMINDER_URL">REMINDER_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
+                            description: 'Sent automatically to the customer when they ask to reset their password.',
+                            subject: 'Set new password',
+                            content: '<h3> Hi, </h3><p>Here is your reset password link:<br><br><a target="_blank" href="REMINDER_URL">REMINDER_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
     create(:email_template, name: 'AccountEmailConfirmation',
-                         description: 'Sent automatically to the customer when they complete their account registration.	',
-                         subject: 'Confirm Your Email',
-                         content: '<h3> Hi, </h3><p>Please, confirm your email<br><br><a target="_blank" title="Link: CONFIRMATION_URL" href="CONFIRMATION_URL">CONFIRMATION_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
+                            description: 'Sent automatically to the customer when they complete their account registration.	',
+                            subject: 'Confirm Your Email',
+                            content: '<h3> Hi, </h3><p>Please, confirm your email<br><br><a target="_blank" title="Link: CONFIRMATION_URL" href="CONFIRMATION_URL">CONFIRMATION_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
     create(:email_template, name: 'OrderConfirmationMailer',
-                         description: 'Sent automatically to the customer when order payment is received.',
-                         subject: 'Thank you for your order',
-                         content: '' )
+                            description: 'Sent automatically to the customer when order payment is received.',
+                            subject: 'Thank you for your order',
+                            content: '')
   end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -116,5 +116,5 @@ RSpec.configure do |config|
 end
 
 def auth_header_for(user)
-  {"Auth-Token" => user.auth_token}
+  { 'Auth-Token' => user.auth_token }
 end

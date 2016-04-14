@@ -1,9 +1,7 @@
-ActiveAdmin.register_page "Dashboard" do
+ActiveAdmin.register_page 'Dashboard' do
+  menu priority: 1, label: proc { I18n.t('active_admin.dashboard') }
 
-  menu priority: 1, label: proc{ I18n.t("active_admin.dashboard") }
-
-  content title: proc{ I18n.t("active_admin.dashboard") } do
-
+  content title: proc { I18n.t('active_admin.dashboard') } do
     columns do
       column do
         panel 'Recent Orders' do
@@ -13,8 +11,8 @@ ActiveAdmin.register_page "Dashboard" do
               ? link_to(order.user.email, admin_user_path(order.user)) \
               : 'unknown'
             end
-            column('Total')   {|order| order.total_cost }
-            column(''){ |order| link_to 'View', admin_order_path(order)}
+            column('Total', &:total_cost)
+            column('') { |order| link_to 'View', admin_order_path(order) }
           end
         end
       end
@@ -26,7 +24,7 @@ ActiveAdmin.register_page "Dashboard" do
               attachment_image_tag(user, :profile_image, :fit, 50, 50)
             end
             column(:name)
-            column(:email){ |user| link_to(user.email, admin_user_path(user)) }
+            column(:email) { |user| link_to(user.email, admin_user_path(user)) }
           end
         end
       end
@@ -40,7 +38,7 @@ ActiveAdmin.register_page "Dashboard" do
               attachment_image_tag(product, :image, :fit, 50, 50)
             end
             column(:author)
-            column(:name){ |product| link_to(product.name, admin_product_path(product)) }
+            column(:name) { |product| link_to(product.name, admin_product_path(product)) }
           end
         end
       end
@@ -52,7 +50,7 @@ ActiveAdmin.register_page "Dashboard" do
               attachment_image_tag(product, :image, :fit, 50, 50)
             end
             column(:author)
-            column(:name){ |product| link_to(product.name, admin_product_path(product)) }
+            column(:name) { |product| link_to(product.name, admin_product_path(product)) }
           end
         end
       end

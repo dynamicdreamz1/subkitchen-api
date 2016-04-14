@@ -1,8 +1,8 @@
 RSpec.describe OrderItem, type: :model do
-  let(:user){ create(:user) }
-  let(:order){ create(:order) }
-  let(:product){ create(:product, author: user) }
-  let(:order_item){ create(:order_item, product: product, order: order) }
+  let(:user) { create(:user) }
+  let(:order) { create(:order) }
+  let(:product) { create(:product, author: user) }
+  let(:order_item) { create(:order_item, product: product, order: order) }
 
   describe 'SetOrderItem on create callback' do
     it 'should set price' do

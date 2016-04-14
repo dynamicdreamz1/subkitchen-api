@@ -3,9 +3,7 @@ describe Products::Api, type: :request do
   let(:product) { create(:product) }
 
   describe '/api/v1/orders/item/:id' do
-
     context 'authorized user' do
-
       before(:each) do
         order = create(:order, user: user)
         item = create(:order_item, order: order, product: product, size: 's')
@@ -29,12 +27,11 @@ describe Products::Api, type: :request do
     end
 
     describe 'unauthorized user' do
-
       before(:each) do
         @order = create(:order, user: user)
         item = create(:order_item, order: @order, product: product)
 
-        delete "/api/v1/orders/item/#{item.id}", { uuid: @order.uuid }
+        delete "/api/v1/orders/item/#{item.id}", uuid: @order.uuid
 
         @item = OrderItem.find_by(order: @order, product: product)
         @order.reload
@@ -54,12 +51,11 @@ describe Products::Api, type: :request do
     end
 
     context 'after delete' do
-
       before(:each) do
         @order = create(:order, user: user, shipping_cost: 7.00, tax: 6, subtotal_cost: 10, total_cost: 17.6, tax_cost: 0.6)
         item = create(:order_item, order: @order, product: product, price: 10)
 
-        delete "/api/v1/orders/item/#{item.id}", { uuid: @order.uuid }
+        delete "/api/v1/orders/item/#{item.id}", uuid: @order.uuid
 
         @order.reload
       end

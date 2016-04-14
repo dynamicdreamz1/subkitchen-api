@@ -11,20 +11,20 @@ class DeleteUser
 
   def delete_user
     @user.update(
-             is_deleted: true,
-             email: '',
-             status: '',
-             provider: '',
-             uid: '',
-             first_name: '',
-             last_name: '',
-             address: '',
-             city: '',
-             zip: '',
-             region: '',
-             phone: '',
-             profile_image_id: '',
-             shop_banner_id: ''
+      is_deleted: true,
+      email: '',
+      status: '',
+      provider: '',
+      uid: '',
+      first_name: '',
+      last_name: '',
+      address: '',
+      city: '',
+      zip: '',
+      region: '',
+      phone: '',
+      profile_image_id: '',
+      shop_banner_id: ''
     )
   end
 end

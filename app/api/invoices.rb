@@ -4,7 +4,6 @@ module Invoices
     format :pdf
 
     resources :invoices do
-
       desc 'get pdf invoice'
       params do
         requires :uuid, type: String

@@ -1,6 +1,5 @@
 module Sessions
   class Api < Grape::API
-
     helpers do
       def match?(password, confirmation)
         password == confirmation
@@ -18,7 +17,7 @@ module Sessions
         if user.authenticate(params.password)
           user
         else
-          error!({errors: {base: ['invalid email or password']}}, 422)
+          error!({ errors: { base: ['invalid email or password'] } }, 422)
         end
       end
 
@@ -46,7 +45,7 @@ module Sessions
             UpdateUserAddress.new(user, params).call
             SetUserInOrder.new(user, params.order_uuid).call
           end
-          options = {confirmation_token: user.confirm_token, name: user.name}
+          options = { confirmation_token: user.confirm_token, name: user.name }
           AccountEmailConfirmation.notify(user.email, options).deliver_later
         else
           status :unprocessable_entity
@@ -64,7 +63,7 @@ module Sessions
           ConfirmEmail.new(user).call
           user
         else
-          error!({errors: {base: ['invalid confirmation token']}}, 422)
+          error!({ errors: { base: ['invalid confirmation token'] } }, 422)
         end
       end
 
@@ -82,10 +81,10 @@ module Sessions
                                  password_confirmation: params.password_confirmation)
             current_user
           else
-            error!({errors: {base: ['invalid password']}}, 422)
+            error!({ errors: { base: ['invalid password'] } }, 422)
           end
         else
-          error!({errors: {base: ['password and password confirmation does not match']}}, 422)
+          error!({ errors: { base: ['password and password confirmation does not match'] } }, 422)
         end
       end
 
@@ -111,10 +110,10 @@ module Sessions
             SetNewPassword.new(user, params).call
             user
           else
-            error!({errors: {base: ['invalid or expired reminder token']}}, 422)
+            error!({ errors: { base: ['invalid or expired reminder token'] } }, 422)
           end
         else
-          error!({errors: {base: ['password and password confirmation does not match']}}, 422)
+          error!({ errors: { base: ['password and password confirmation does not match'] } }, 422)
         end
       end
     end

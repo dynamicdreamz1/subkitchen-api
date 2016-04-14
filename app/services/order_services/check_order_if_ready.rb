@@ -12,6 +12,6 @@ class CheckOrderIfReady
   end
 
   def check
-    !order.order_items.joins(:product).where(products: {design_id: nil}).exists?
+    !order.order_items.joins(:product).where(products: { design_id: nil }).exists?
   end
 end

@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Sales Counter' do
-  let(:artist){create(:user, artist: true)}
-  let(:user){create(:user)}
-  let(:product){create(:product, author: artist)}
-  let(:order){create(:order)}
-  let(:order2){create(:order)}
+  let(:artist) { create(:user, artist: true) }
+  let(:user) { create(:user) }
+  let(:product) { create(:product, author: artist) }
+  let(:order) { create(:order) }
+  let(:order2) { create(:order) }
 
   before(:each) do
     create(:order_item, order: order, product: product, quantity: 3, profit: 5.0)
@@ -18,7 +18,7 @@ RSpec.describe 'Sales Counter' do
       expect do
         ConfirmPayment.new(@payment, Hashie::Mash.new(payment_status: 'Completed')).call
         SalesAndEarningsCounter.drain
-      end.to change{artist.sales_count}.by(3)
+      end.to change { artist.sales_count }.by(3)
     end
 
     it 'should set weekly percentage' do
@@ -28,7 +28,6 @@ RSpec.describe 'Sales Counter' do
     end
 
     context 'with sales older than one week' do
-
       before(:each) do
         Timecop.freeze(DateTime.now - 30.days) do
           create(:order_item, order: order2, product: product, quantity: 3, profit: 5.0)
@@ -42,7 +41,7 @@ RSpec.describe 'Sales Counter' do
         expect do
           ConfirmPayment.new(@payment, Hashie::Mash.new(payment_status: 'Completed')).call
           SalesAndEarningsCounter.drain
-        end.to change{artist.sales_count}.by(3)
+        end.to change { artist.sales_count }.by(3)
       end
 
       it 'should set only past week percentage' do

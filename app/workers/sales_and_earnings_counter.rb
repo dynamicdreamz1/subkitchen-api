@@ -12,11 +12,10 @@ class SalesAndEarningsCounter
         set_earnings_weekly(user, earnings)
       end
 
-      if (item.quantity + get_sales_counter(user)) >= 0
-        increment_sales_counter(user, item)
-        sales = calculate_sales_percentage(user)
-        set_sales_weekly(user, sales)
-      end
+      next unless (item.quantity + get_sales_counter(user)) >= 0
+      increment_sales_counter(user, item)
+      sales = calculate_sales_percentage(user)
+      set_sales_weekly(user, sales)
     end
   end
 
@@ -75,18 +74,18 @@ class SalesAndEarningsCounter
   end
 
   def sales_count_weekly(user)
-    OrderItem.joins("RIGHT JOIN orders ON orders.id = order_items.order_id")
-             .where("orders.purchased_at > ?", 1.week.ago)
-             .joins("RIGHT  JOIN products ON products.id = order_items.product_id")
-             .where("products.author_id = ?", user.id)
-             .sum("order_items.quantity")
+    OrderItem.joins('RIGHT JOIN orders ON orders.id = order_items.order_id')
+             .where('orders.purchased_at > ?', 1.week.ago)
+             .joins('RIGHT  JOIN products ON products.id = order_items.product_id')
+             .where('products.author_id = ?', user.id)
+             .sum('order_items.quantity')
   end
 
   def earnings_count_weekly(user)
-    OrderItem.joins("RIGHT JOIN orders ON orders.id = order_items.order_id")
-        .joins("RIGHT  JOIN products ON products.id = order_items.product_id")
-        .where("products.author_id = ?", user.id)
-        .where("orders.purchased_at > ?", 1.week.ago)
-        .sum("order_items.quantity*order_items.profit")
+    OrderItem.joins('RIGHT JOIN orders ON orders.id = order_items.order_id')
+             .joins('RIGHT  JOIN products ON products.id = order_items.product_id')
+             .where('products.author_id = ?', user.id)
+             .where('orders.purchased_at > ?', 1.week.ago)
+             .sum('order_items.quantity*order_items.profit')
   end
 end

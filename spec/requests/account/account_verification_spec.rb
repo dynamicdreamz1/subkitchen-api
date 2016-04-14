@@ -1,21 +1,19 @@
 describe Accounts::Api, type: :request do
-  let(:artist){ create(:user, artist: true, handle: 'artist') }
+  let(:artist) { create(:user, artist: true, handle: 'artist') }
 
   describe '/api/v1/account/verification' do
-
     context 'with company params' do
-
       before(:each) do
         @params = {
-            has_company: true,
-            handle: 'asd',
-            company_name: 'elpassion',
-            address: 'plac Europejski 6',
-            city: 'Warszawa',
-            zip: '01-111',
-            region: 'mazowieckie',
-            country: 'PL',
-            return_path: ''
+          has_company: true,
+          handle: 'asd',
+          company_name: 'elpassion',
+          address: 'plac Europejski 6',
+          city: 'Warszawa',
+          zip: '01-111',
+          region: 'mazowieckie',
+          country: 'PL',
+          return_path: ''
         }
         post '/api/v1/account/verification', @params, auth_header_for(artist)
         artist.reload
@@ -51,7 +49,6 @@ describe Accounts::Api, type: :request do
     end
 
     context 'with no company params' do
-
       before(:each) do
         params = { has_company: false, return_path: '', handle: 'asd' }
         post '/api/v1/account/verification', params, auth_header_for(artist)

@@ -3,9 +3,8 @@ describe Products::Api, type: :request do
   let(:product) { create(:product) }
 
   describe '/api/v1/orders/item' do
-
     before(:each) do
-      post '/api/v1/orders/item', { product_id: product.id, size: 's', quantity: 1 }
+      post '/api/v1/orders/item', product_id: product.id, size: 's', quantity: 1
       @order = Order.last
       @item = @order.order_items.first
     end
@@ -35,10 +34,9 @@ describe Products::Api, type: :request do
     end
 
     context 'after payment is completed' do
-
       before(:each) do
         create(:payment, payable: @order, payment_status: 'completed')
-        post '/api/v1/orders/item', { product_id: create(:product).id, size: 's', quantity: 1, uuid: @order.uuid  }
+        post '/api/v1/orders/item', product_id: create(:product).id, size: 's', quantity: 1, uuid: @order.uuid
       end
 
       it 'should return status unprocessable_entity when trying to add new item' do
@@ -46,7 +44,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should return error when trying to add new item' do
-        expect(json['errors']).to eq({'base'=>['cannot change already paid order']})
+        expect(json['errors']).to eq('base' => ['cannot change already paid order'])
       end
 
       it 'should not create order item' do
@@ -55,9 +53,8 @@ describe Products::Api, type: :request do
     end
 
     context 'adding duplicate items' do
-
       before(:each) do
-        post '/api/v1/orders/item', { product_id: product.id, size: 's', quantity: 5, uuid: @order.uuid }
+        post '/api/v1/orders/item', product_id: product.id, size: 's', quantity: 5, uuid: @order.uuid
         @item.reload
       end
 
@@ -75,9 +72,8 @@ describe Products::Api, type: :request do
     end
 
     context 'adding different items' do
-
       before(:each) do
-        post '/api/v1/orders/item', { product_id: product.id, size: 'm', quantity: 1, uuid: @order.uuid }
+        post '/api/v1/orders/item', product_id: product.id, size: 'm', quantity: 1, uuid: @order.uuid
       end
 
       it 'should return status success' do
@@ -98,12 +94,11 @@ describe Products::Api, type: :request do
     end
 
     context 'update costs' do
-
       before(:each) do
         @order = create(:order, user: user)
         product_template = create(:product_template, price: 10)
         product = create(:product, product_template: product_template)
-        post '/api/v1/orders/item', { product_id: product.id, size: 'm', quantity: 1, uuid: @order.uuid }
+        post '/api/v1/orders/item', product_id: product.id, size: 'm', quantity: 1, uuid: @order.uuid
         @order.reload
       end
 

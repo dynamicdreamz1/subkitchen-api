@@ -1,5 +1,5 @@
 RSpec.describe User, type: :model do
-  let(:user){ create(:user, handle: 'test') }
+  let(:user) { create(:user, handle: 'test') }
 
   it 'should have auth_token' do
     expect(user.auth_token).to_not be_blank
@@ -30,7 +30,6 @@ RSpec.describe User, type: :model do
   end
 
   describe 'ChangeStatusIfArtist callback' do
-
     context 'on create' do
       it 'should change status' do
         user = create(:user, artist: true)

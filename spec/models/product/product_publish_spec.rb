@@ -1,15 +1,9 @@
 RSpec.describe Product, type: :model do
-  let(:product_template){ create(:product_template) }
-  let(:product){ create(:product, author: create(:user), product_template: product_template) }
-  let(:artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
-  let(:other_artist){ create(:user, status: 'verified', artist: true, email_confirmed: true) }
+  let(:user) { create(:user, artist: false, status: 'unverified') }
+  let(:unverified_artist) { create(:user, artist: true, status: 'unverified') }
+  let(:verified_artist) { create(:user, artist: true, status: 'verified') }
 
   describe 'publish' do
-
-    let(:user){create(:user, artist: false, status: 'unverified')}
-    let(:unverified_artist){create(:user, artist: true, status: 'unverified')}
-    let(:verified_artist){create(:user, artist: true, status: 'verified')}
-
     it 'should publish' do
       product = create(:product, author: verified_artist, published: true)
       expect(product.published).to be_truthy

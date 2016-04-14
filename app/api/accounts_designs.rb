@@ -1,9 +1,7 @@
 module AccountsDesigns
   class Api < Grape::API
-
     resource :account do
       resource :designs do
-
         desc 'user designs'
         params do
           optional :page, type: Integer, default: 1
