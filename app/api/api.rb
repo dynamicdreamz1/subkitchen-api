@@ -46,6 +46,7 @@ class Api < Grape::API
   mount ProductTemplates::Api
   mount Invoices::Api
   mount Followers::Api
+  mount WishList::Api
 
   add_swagger_documentation(api_version: 'v1', hide_documentation_path: true, base_path: '/api')
 end
