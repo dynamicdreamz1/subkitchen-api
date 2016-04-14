@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   has_many :likes
   has_many :user_likes, as: :likeable, class_name: 'Like'
   has_many :order_items, through: :products
+  has_many :product_wishes
+  has_many :wished_products, through: :product_wishes
 
   enum status: { unverified: 0, verified: 1, pending: 2 }
 

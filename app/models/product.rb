@@ -5,6 +5,7 @@ class Product < ActiveRecord::Base
   has_many :likes, as: :likeable
   has_many :orders, through: :order_items
   has_many :comments
+  has_many :product_wishes
 
   validates_with PublishedValidator
   validates :image, image: { range: 1024...5000 }
