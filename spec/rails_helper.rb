@@ -61,6 +61,7 @@ RSpec.configure do |config|
     create(:config, name: 'invoice_line_4', value: '')
     create(:config, name: 'invoice_line_5', value: '')
     create(:config, name: 'invoice_line_6', value: '')
+    create(:config, name: 'themes', value: '3D, Abstract, Animal, Galaxy, Digital, Comic')
     create(:email_template, name: 'MalformedPaymentNotifier',
                          description: 'Sent automatically to all admins when malformed payment detected.',
                          subject: 'Malformed payment',

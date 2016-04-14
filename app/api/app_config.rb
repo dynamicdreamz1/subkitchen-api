@@ -12,5 +12,10 @@ module AppConfig
        promo_2_url: Config.promo_2_url,
        promo_3_url: Config.promo_3_url }
     end
+
+    desc 'get themes'
+    get 'themes' do
+      { themes: Config.themes }
+    end
   end
 end

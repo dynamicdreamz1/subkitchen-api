@@ -56,7 +56,7 @@ EmailTemplate.create(name: 'AccountEmailConfirmation',
        subject: 'Confirm Your Email',
        content: '<h3> Hi, </h3><p>Please, confirm your email<br><br><a target="_blank" title="Link: CONFIRMATION_URL" href="CONFIRMATION_URL">CONFIRMATION_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
 
-
+Config.create(name: 'themes', value: '3D, Abstract, Animal, Galaxy, Digital, Comic', input_type: 'short_text')
 Config.create(name: 'tax', value: '7.00', input_type: 'short_text')
 Config.create(name: 'shipping_info', value: shipping_info, input_type: 'long_text')
 Config.create(name: 'shipping_cost', value: '6', input_type: 'short_text')

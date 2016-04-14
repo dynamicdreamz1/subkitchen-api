@@ -73,6 +73,10 @@ class Config < ActiveRecord::Base
     def invoice_line_6
       where(name: 'invoice_line_6').first.value
     end
+
+    def themes
+      where(name: 'themes').first.value
+    end
   end
 end
 
