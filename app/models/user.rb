@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_one :payment, as: :payable
   has_one :company
   has_many :likes
+  has_many :user_likes, as: :likeable, class_name: 'Like'
   has_many :order_items, through: :products
 
   enum status: { unverified: 0, verified: 1, pending: 2 }
@@ -44,6 +45,10 @@ class User < ActiveRecord::Base
   scope :with_confirm_token, -> (token) { where(confirm_token: token) }
   scope :artists, -> { where(artist: true) }
   scope :not_artists, -> { where(artist: false) }
+  scope :followers, -> (user) { where(id: user.user_likes.pluck(:user_id)) }
+  scope :followings, -> (user) {
+    where(id: user.likes.where(likeable_type: 'User').pluck(:likeable_id))
+  }
 
   def as_json(params = {})
     UserPublicSerializer.new(self, true).as_json(params)
