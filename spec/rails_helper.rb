@@ -20,6 +20,8 @@ require 'fakeredis/rspec'
 require 'vcr'
 require 'webmock/rspec'
 
+Prawn::Font::AFM.hide_m17n_warning = true
+
 VCR.configure do |config|
   config.allow_http_connections_when_no_cassette = true
   config.cassette_library_dir = "spec/vcr_cassettes"

@@ -50,8 +50,16 @@ module Products
       end
 
       desc 'remove product'
+      params do
+        optional :uuid, type: String
+      end
       delete ':id' do
-        product = Product.find(params.id)
+        if current_user
+          product = Product.find_by!(id: params.id)
+          error!({errors: {base: ['unauthorized']}}, 401) if product.author_id != current_user.id
+        else
+          product = Product.find_by!(id: params.id, uuid: params.uuid)
+        end
         DeleteProduct.new(product).call
         ProductSerializer.new(product).as_json
       end

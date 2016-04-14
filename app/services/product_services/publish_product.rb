@@ -14,7 +14,7 @@ class PublishProduct
 
   def publish
     return false unless is_author?
-    product.update(published: true, published_at: DateTime.now)
+    product.update!(published: true, published_at: DateTime.now)
     PublishedCounter.perform_async(product.id, 1)
   end
 

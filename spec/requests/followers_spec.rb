@@ -77,7 +77,7 @@ describe Followers::Api, type: :request do
 
     before(:each) do
       @artist = create(:user, artist: true, status: :verified)
-      2.times{ create(:like, likeable: @artist, user: create(:user)) }
+      2.times{ Like.create(likeable: @artist, user: create(:user)) }
       get "/api/v1/users/#{@artist.id}/followers"
       @artist.reload
     end
@@ -123,7 +123,7 @@ describe Followers::Api, type: :request do
       expect(json['followers']).to eq([])
     end
 
-    it 'should return followings' do
+    it 'should return(@user).inspect' do
       expect(json['followings']).to eq(User.followings(@user).as_json)
     end
 

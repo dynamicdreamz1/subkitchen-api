@@ -16,18 +16,8 @@ RSpec.describe Like, type: :model do
   end
 
   it 'should raise error when product already liked' do
-    create(:like, likeable: product, user: artist)
-
     expect do
-      create(:like, likeable: product, user: artist)
-    end.to raise_error(ActiveRecord::RecordInvalid)
-  end
-
-  it 'should raise error when product already liked' do
-    create(:like, likeable: product, uuid: '1234')
-
-    expect do
-      create(:like, likeable: product, uuid: '1234')
+      2.times{ create(:like, likeable: product, user: artist) }
     end.to raise_error(ActiveRecord::RecordInvalid)
   end
 end

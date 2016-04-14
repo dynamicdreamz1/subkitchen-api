@@ -7,21 +7,23 @@ describe ProductTemplates::Api, type: :request do
   let(:too_small_mask){ fixture_file_upload(Rails.root.join('app/assets/images/image.png'), 'image/png') }
 
   describe '/api/v1/product_templates' do
-    it 'should return serialized product templates' do
+
+    before(:each) do
       create(:product_template, template_image: valid_image, template_mask: valid_mask, size_chart: valid_image)
-
       get '/api/v1/product_templates'
+    end
 
+    it 'should return serialized product templates' do
       serialized_product = ProductTemplateListSerializer.new(ProductTemplate.all).as_json
       expect(response.body).to eq(serialized_product.to_json)
     end
 
     it 'should match json schema' do
-      create(:product_template, template_image: valid_image, template_mask: valid_mask, size_chart: valid_image)
-
-      get '/api/v1/product_templates'
-
       expect(response).to match_response_schema('product_templates')
+    end
+
+    it 'should return status success' do
+      expect(response).to have_http_status(:success)
     end
   end
 
