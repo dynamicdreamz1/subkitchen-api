@@ -1,5 +1,7 @@
 class ProductTemplate < ActiveRecord::Base
   has_many :products
+  has_many :template_variants
+  has_many :colors, through: :template_variants
 
   after_update UpdateProductPrices.new, if: :price_changed?
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414213343) do
+ActiveRecord::Schema.define(version: 20160415082424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,13 @@ ActiveRecord::Schema.define(version: 20160414213343) do
     t.string   "storage_format"
     t.string   "storage_mime_type"
     t.string   "storage_size"
+  end
+
+  create_table "colors", force: :cascade do |t|
+    t.string   "name"
+    t.string   "color_image_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "comments", force: :cascade do |t|
@@ -233,6 +240,15 @@ ActiveRecord::Schema.define(version: 20160414213343) do
   end
 
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
+
+  create_table "template_variants", force: :cascade do |t|
+    t.string   "name"
+    t.string   "template_color_image_id"
+    t.integer  "color_id"
+    t.integer  "product_template_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
