@@ -2,9 +2,9 @@ describe Products::Api, type: :request do
   describe '/api/v1/products' do
     context 'filter' do
       before(:each) do
-        @p1 = create(:product, name: 'AAA', created_at: 1.week.ago, product_template: create(:product_template, price: 100, product_type: 'tee'))
-        @p2 = create(:product, name: 'BBB', created_at: 2.weeks.ago, product_template: create(:product_template, price: 200, product_type: 'hoodie'))
-        @p3 = create(:product, name: 'CCC', created_at: 3.weeks.ago, product_template: create(:product_template, price: 300, product_type: 'yoga_pants'))
+        @p1 = create(:product, name: 'AAA', created_at: 1.week.ago, template_variant: create(:template_variant, product_template: create(:product_template, price: 100, product_type: 'tee')))
+        @p2 = create(:product, name: 'BBB', created_at: 2.weeks.ago, template_variant: create(:template_variant, product_template: create(:product_template, price: 200, product_type: 'hoodie')))
+        @p3 = create(:product, name: 'CCC', created_at: 3.weeks.ago, template_variant: create(:template_variant, product_template: create(:product_template, price: 300, product_type: 'yoga_pants')))
         @p1.tag_list.add(%w(cats space))
         @p1.save
         @p3.tag_list.add(['music'])

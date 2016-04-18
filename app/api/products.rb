@@ -32,7 +32,7 @@ module Products
       desc 'create product'
       params do
         requires :name, type: String
-        requires :product_template_id, type: Integer
+        requires :template_variant_id, type: Integer
         requires :description, type: String
         requires :image, type: File
         requires :published, type: Boolean

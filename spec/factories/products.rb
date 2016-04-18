@@ -7,7 +7,7 @@ FactoryGirl.define do
     end
     description 'description'
     author { create(:user) }
-    product_template { create(:product_template) }
+    template_variant { create(:template_variant) }
     image { fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
     price 1
     published false

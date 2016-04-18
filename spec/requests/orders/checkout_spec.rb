@@ -20,10 +20,10 @@ describe Payments::Api, type: :request do
         order = create(:order, user: nil)
         create(:order_item,
           order: order,
-          product: create(:product, product_template: create(:product_template, price: 12)))
+          product: create(:product, template_variant: create(:template_variant, product_template: create(:product_template, price: 12))))
         create(:order_item,
           order: order,
-          product: create(:product, product_template: create(:product_template, price: 30)))
+          product: create(:product, template_variant: create(:template_variant, product_template: create(:product_template, price: 30))))
         CalculateOrder.new(order).call
         DeleteProduct.new(Product.last).call
 

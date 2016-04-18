@@ -13,7 +13,7 @@ class CreateProduct
   def create_product
     User.transaction do
       product = Product.new(name: @params.name,
-                            product_template_id: @params.product_template_id,
+                            template_variant_id: @params.template_variant_id,
                             description: @params.description,
                             image: image,
                             published: @params.published,

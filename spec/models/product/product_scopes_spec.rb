@@ -1,5 +1,5 @@
 RSpec.describe Product, type: :model do
-  let(:product) { create(:product, author: create(:user), product_template: create(:product_template)) }
+  let(:product) { create(:product, author: create(:user)) }
   let(:artist) { create(:user, status: 'verified', artist: true) }
   let(:other_artist) { create(:user, status: 'verified', artist: true) }
 
