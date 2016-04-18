@@ -56,6 +56,8 @@ gem 'activeadmin-wysihtml5', github: 'jsetiadarma/activeadmin-wysihtml5'
 gem 'http'
 gem 'prawn'
 gem 'prawn-table'
+gem 'jquery-minicolors-rails'
+gem 'activeadmin-minicolors', github: 'kholdrex/activeadmin-minicolors'
 
 group :production do
   gem 'rails_12factor'

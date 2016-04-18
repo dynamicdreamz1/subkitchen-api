@@ -42,6 +42,15 @@ GIT
       activeadmin-dragonfly
 
 GIT
+  remote: git://github.com/kholdrex/activeadmin-minicolors.git
+  revision: 3447134369561a8fe5ef152edbf60261f75538ce
+  specs:
+    activeadmin-minicolors (0.0.1)
+      activeadmin
+      jquery-minicolors-rails
+      jquery-rails
+
+GIT
   remote: git://github.com/stefanoverna/activeadmin-dragonfly.git
   revision: 611164ff0255c66a3e555b5d46dd99f0eff1f115
   specs:
@@ -241,6 +250,9 @@ GEM
       rack (~> 1.4)
       rest-client (~> 1.0)
     jmespath (1.1.3)
+    jquery-minicolors-rails (2.2.3.0)
+      jquery-rails
+      rails (>= 3.2.8)
     jquery-rails (4.1.0)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
@@ -497,6 +509,7 @@ DEPENDENCIES
   active_admin_editor!
   activeadmin!
   activeadmin-dragonfly!
+  activeadmin-minicolors!
   activeadmin-wysihtml5!
   acts-as-taggable-on (~> 3.4)
   awesome_print
@@ -520,6 +533,7 @@ DEPENDENCIES
   http
   iso_country_codes
   jbuilder (~> 2.0)
+  jquery-minicolors-rails
   jquery-rails
   json-schema
   kaminari
