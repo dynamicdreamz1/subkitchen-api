@@ -6,7 +6,7 @@ describe WishList::Api, type: :request do
 
       before(:each) do
         @user = create(:user)
-        @product = create(:product)
+        @product = create(:product, :published)
         post '/api/v1/wish_list', { product_id: @product.id }, auth_header_for(@user)
       end
 
@@ -21,23 +21,38 @@ describe WishList::Api, type: :request do
       it 'should return status success' do
         expect(response).to have_http_status(:success)
       end
-    end
 
-    context 'remove product from wish list' do
+      context 'does not add unpublished product to wish list' do
 
-      before(:each) do
-        @user = create(:user)
-        @product = create(:product)
-        create(:product_wish, user: @user, wished_product: @product)
-        delete '/api/v1/wish_list', { product_id: @product.id }, auth_header_for(@user)
+        before(:each) do
+          @product = create(:product)
+          post '/api/v1/wish_list', { product_id: @product.id }, auth_header_for(@user)
+        end
+
+        it 'should return status not_found ' do
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'should not add unpublished product' do
+          expect(@user.wished_products.count).to eq(1)
+        end
       end
 
-      it 'should remove product from wish list' do
-        expect(@user.wished_products.count).to eq(0)
-      end
+      context 'remove product from wish list' do
 
-      it 'should return status success' do
-        expect(response).to have_http_status(:success)
+        before(:each) do
+          @product = create(:product)
+          create(:product_wish, user: @user, wished_product: @product)
+          delete '/api/v1/wish_list', { product_id: @product.id }, auth_header_for(@user)
+        end
+
+        it 'should remove product from wish list' do
+          expect(@user.wished_products.count).to eq(1)
+        end
+
+        it 'should return status success' do
+          expect(response).to have_http_status(:success)
+        end
       end
     end
 
@@ -55,7 +70,7 @@ describe WishList::Api, type: :request do
 
       it 'should return wish list' do
         serialized_products = ProductListSerializer.new(@user.wished_products.page(1)).as_json
-        expect(json['wish_list']).to eq(serialized_products)
+        expect(response.body).to eq(serialized_products.to_json)
       end
     end
   end

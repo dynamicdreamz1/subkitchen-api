@@ -42,7 +42,7 @@ RSpec.describe Product, type: :model do
     context 'published products' do
       before(:each) do
         product = create(:product, design_id: nil)
-        @published_product = create(:product, author: artist, published: true)
+        @published_product = create(:product, :published)
       end
 
       it 'should return all published products' do

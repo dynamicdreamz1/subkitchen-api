@@ -44,4 +44,11 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  it 'should destroy dependent' do
+    product_wish_id = create(:product_wish, user: user).id
+    user.destroy
+
+    expect{ ProductWish.find(product_wish_id) }.to raise_error(ActiveRecord::RecordNotFound)
+  end
 end

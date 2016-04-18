@@ -2,13 +2,16 @@ module WishList
   class Api < Grape::API
     resources :wish_list do
 
+      before do
+        authenticate!
+      end
+
       desc 'add product to wish list'
       params do
         requires :product_id, type: Integer
       end
       post do
-        authenticate!
-        product = Product.find(params.product_id)
+        product = Product.find_by!(id: params.product_id, published: true)
         AddWishedProduct.new(current_user, product).call
       end
 
@@ -17,7 +20,6 @@ module WishList
         requires :product_id, type: Integer
       end
       delete do
-        authenticate!
         product = Product.find(params.product_id)
         RemoveWishedProduct.new(current_user, product).call
       end
@@ -28,9 +30,8 @@ module WishList
         optional :per_page, type: Integer, default: 20
       end
       get do
-        authenticate!
         products = current_user.wished_products.page(params.page).per(params.per_page)
-        { wish_list: ProductListSerializer.new(products).as_json }
+        ProductListSerializer.new(products).as_json
       end
     end
   end

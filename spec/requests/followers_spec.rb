@@ -116,7 +116,7 @@ describe Followers::Api, type: :request do
       expect(json['followers']).to eq([])
     end
 
-    it 'should return(@user).inspect' do
+    it 'should return followings' do
       expect(json['followings']).to eq(User.followings(@user).as_json)
     end
 

@@ -15,4 +15,11 @@ RSpec.describe Product, type: :model do
       expect(product.price).to eq(product_template.price)
     end
   end
+
+  it 'should destroy dependent' do
+    product_wish_id = create(:product_wish, wished_product: product).id
+    product.destroy
+
+    expect{ ProductWish.find(product_wish_id) }.to raise_error(ActiveRecord::RecordNotFound)
+  end
 end
