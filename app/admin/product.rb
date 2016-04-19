@@ -1,7 +1,7 @@
 ActiveAdmin.register Product do
-  permit_params :design
+  permit_params :design, :name, :author_id, :description, :template_variant_id, :image, :published, :published_at, :tag_list
   config.batch_actions = false
-  actions :index, :show, :update, :edit
+  actions :all, except: :destroy
 
   scope :all
   scope :ready_to_print
@@ -10,7 +10,7 @@ ActiveAdmin.register Product do
 
   filter :published
   filter :name_cont, as: :string, label: 'Name'
-  filter :product_template_product_type_cont, as: :select, collection: proc { ProductTemplate.pluck(:product_type) }
+  filter :template_variant_product_template_product_type_cont, as: :select, collection: proc { ProductTemplate.pluck(:product_type) }
   filter :price
 
   member_action :delete, method: :put do
@@ -44,6 +44,16 @@ ActiveAdmin.register Product do
   form do |f|
     f.inputs 'Product Design', multipart: true do
       f.input :design, as: :refile
+      if f.object.new_record?
+        f.input :image, as: :refile
+        f.input :name
+        f.input :description
+        f.input :author, collection: User.artists
+        f.input :template_variant, collection: TemplateVariant.all.map{ |var| ["#{var.try(:name)}- #{var.color.try(:name)} - #{var.product_template.try(:product_type)}", var.id] }.to_h
+        f.input :published, input_html: { value: true }, as: :hidden
+        f.input :published_at, input_html: { value: DateTime.now }, as: :hidden
+        f.input :tag_list, as: :tags
+      end
       f.actions
     end
   end
@@ -54,11 +64,12 @@ ActiveAdmin.register Product do
       row('Date') { product.created_at }
       row(:author)
       row(:name)
+      row('Tags') { product.tag_list }
       row(:published)
       row(:price)
       row('Sold') { product.order_items_count }
       row('Likes') { product.likes_count }
-      row('Design') { attachment_image_tag(product, :design, :fit, 50, 50) }
+      row('Design') { link_to 'Download', product.design_url }
     end
   end
 end

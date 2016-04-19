@@ -26,9 +26,9 @@ ActiveAdmin.register User do
       f.input :handle, required: true
       f.input :password, required: true
       f.input :password_confirmation, required: true
-      f.input :email_confirmed
+      f.input :email_confirmed, input_html: { value: true }, as: :hidden
       f.input :artist
-      f.input :status, as: :select, collection: %w(verified unverified pending)
+      f.input :status, input_html: { value: :verified }, as: :hidden
     end
     f.inputs 'Address' do
       f.input :first_name
