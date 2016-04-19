@@ -6,6 +6,11 @@ module Accounts
     end
 
     resources :account do
+
+      before do
+        authenticate!
+      end
+
       desc 'get current user'
       get do
         authenticate!
@@ -25,7 +30,6 @@ module Accounts
         optional :country, type: String
       end
       post 'verification' do
-        authenticate!
         result = VerifyArtist.new(current_user, params).call
         return result if result
         status(:unprocessable_entity)
@@ -42,7 +46,6 @@ module Accounts
         requires :country, type: String
       end
       post 'company_address' do
-        authenticate!
         CompanyAddress.new(current_user, params).call
         current_user
       end
@@ -52,7 +55,6 @@ module Accounts
         requires :image, type: File
       end
       post 'profile_image' do
-        authenticate!
         image = ActionDispatch::Http::UploadedFile.new(params.image)
         current_user.profile_image = image
         current_user.valid?
@@ -71,7 +73,6 @@ module Accounts
         requires :banner, type: File
       end
       post 'shop_banner' do
-        authenticate!
         banner = ActionDispatch::Http::UploadedFile.new(params.banner)
         if current_user.artist
           current_user.shop_banner = banner

@@ -9,6 +9,9 @@ class UserPublicSerializer
 
     if include_sensitive_data
       data[:user][:email] = user.email
+      data[:user][:location] = user.location
+      data[:user][:website] = user.website
+      data[:user][:bio] = user.bio
       data[:user][:artist] = user.artist
       data[:user][:status] = user.status
       data[:user][:auth_token] = user.auth_token

@@ -5,7 +5,8 @@ class UpdateUserAddress
 
   private
 
-  attr_accessor :user, :params
+  attr_accessor :user
+  attr_reader :params
 
   def update_address
     user.update_attributes(
