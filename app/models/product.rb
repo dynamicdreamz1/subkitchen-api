@@ -5,7 +5,8 @@ class Product < ActiveRecord::Base
   has_many :orders, through: :order_items
   has_many :comments
   has_many :product_wishes, foreign_key: 'wished_product_id', dependent: :destroy
-  belongs_to :template_variant
+  belongs_to :product_template
+  has_many :template_variants, through: :product_template
 
   validates_with PublishedValidator
   validates :image, image: { range: 1024...5000 }
@@ -26,10 +27,7 @@ class Product < ActiveRecord::Base
   scope :published_all, -> { where(published: true) }
   scope :published, -> (user) { where(published: true, author: user) }
   scope :published_weekly, -> (user) { where(published: true, author: user, published_at: 1.week.ago..DateTime.now) }
-  scope :with_product_type, -> (type) {
-    joins('INNER JOIN template_variants ON products.template_variant_id = template_variants.id
-          INNER JOIN product_templates ON template_variants.product_template_id = product_templates.id')
-    .where(product_templates: { product_type: type }) }
+  scope :with_product_type, -> (type) { joins(:product_template).where(product_templates: {product_type: type}) }
   scope :with_price_range, -> (range) { where(price: range[0]..range[1]) }
   scope :with_tags, -> (tags) { tagged_with(tags, any: true) }
   scope :sorted_by, lambda { |sort_option|
@@ -59,7 +57,7 @@ class Product < ActiveRecord::Base
   )
 
   def product_template
-    ProductTemplate.unscoped.find_by(id: template_variant.product_template_id)
+    ProductTemplate.unscoped.find_by(id: product_template_id)
   end
 
   def author

@@ -10,7 +10,7 @@ ActiveAdmin.register Product do
 
   filter :published
   filter :name_cont, as: :string, label: 'Name'
-  filter :template_variant_product_template_product_type_cont, as: :select, collection: proc { ProductTemplate.pluck(:product_type) }
+  filter :product_template_product_type_cont, as: :select, collection: proc { ProductTemplate.pluck(:product_type) }
   filter :price
 
   member_action :delete, method: :put do
@@ -49,7 +49,7 @@ ActiveAdmin.register Product do
         f.input :name
         f.input :description
         f.input :author, collection: User.artists
-        f.input :template_variant, collection: TemplateVariant.all.map{ |var| ["#{var.try(:name)}- #{var.color.try(:name)} - #{var.product_template.try(:product_type)}", var.id] }.to_h
+        t.input :product_template
         f.input :published, input_html: { value: true }, as: :hidden
         f.input :published_at, input_html: { value: DateTime.now }, as: :hidden
         f.input :tag_list, as: :tags

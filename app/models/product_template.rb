@@ -1,6 +1,7 @@
 class ProductTemplate < ActiveRecord::Base
-  has_many :products, through: :template_variants
+  has_many :products
   has_many :template_variants
+  has_many :products
   has_many :colors, through: :template_variants
   accepts_nested_attributes_for :template_variants
 

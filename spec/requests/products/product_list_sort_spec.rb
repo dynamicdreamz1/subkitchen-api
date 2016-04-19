@@ -2,9 +2,9 @@ describe Products::Api, type: :request do
   describe '/api/v1/products' do
     context 'sort' do
       before(:each) do
-        create(:product, name: 'AAA', created_at: 1.week.ago, template_variant: create(:template_variant, product_template: create(:product_template, price: 100)))
-        create(:product, name: 'BBB', created_at: 2.weeks.ago, template_variant: create(:template_variant, product_template: create(:product_template, price: 200)))
-        create(:product, name: 'CCC', created_at: 3.weeks.ago, template_variant: create(:template_variant, product_template: create(:product_template, price: 300)))
+        create(:product, name: 'AAA', created_at: 1.week.ago, product_template: create(:product_template, price: 100))
+        create(:product, name: 'BBB', created_at: 2.weeks.ago, product_template: create(:product_template, price: 200))
+        create(:product, name: 'CCC', created_at: 3.weeks.ago, product_template: create(:product_template, price: 300))
       end
 
       it 'should sort by created_at param desc' do

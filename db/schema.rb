@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160419091120) do
+ActiveRecord::Schema.define(version: 20160419130007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -218,7 +218,7 @@ ActiveRecord::Schema.define(version: 20160419091120) do
     t.integer  "design_size"
     t.string   "design_content_type"
     t.uuid     "uuid",                                        default: "uuid_generate_v4()"
-    t.integer  "template_variant_id"
+    t.integer  "product_template_id"
   end
 
   create_table "taggings", force: :cascade do |t|

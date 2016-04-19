@@ -1,6 +1,6 @@
 describe Products::Api, type: :request do
   let(:image) { fixture_file_upload(Rails.root.join('app/assets/images/1024x1024.png'), 'image/png') }
-  let(:template_variant) { create(:template_variant) }
+  let(:product_template) { create(:product_template) }
   let(:artist) { create(:user, status: 'verified', artist: true) }
   let(:user) { create(:user, artist: false) }
 
@@ -9,7 +9,7 @@ describe Products::Api, type: :request do
       context 'when user is an artist' do
         before(:each) do
           @params = { name: 'new_product',
-                      template_variant_id: template_variant.id,
+                      product_template_id: product_template.id,
                       description: 'description',
                       image: image,
                       tags: ['cats'],
@@ -26,7 +26,7 @@ describe Products::Api, type: :request do
         it 'should create product with correct data' do
           expect(@product.name).to eq(@params[:name])
           expect(@product.description).to eq(@params[:description])
-          expect(@product.template_variant.id).to eq(@params[:template_variant_id])
+          expect(@product.product_template.id).to eq(@params[:product_template_id])
           expect(@product.tag_list).to eq(@params[:tags])
         end
 
@@ -51,7 +51,7 @@ describe Products::Api, type: :request do
       context 'when user is not an artist' do
         before(:each) do
           @params = { name: 'new_product',
-                      template_variant_id: template_variant.id,
+                      product_template_id: product_template.id,
                       description: 'description',
                       image: image,
                       tags: ['cats'],
@@ -64,7 +64,7 @@ describe Products::Api, type: :request do
         it 'should create product with correct data' do
           expect(@product.name).to eq(@params[:name])
           expect(@product.description).to eq(@params[:description])
-          expect(@product.template_variant.id).to eq(@params[:template_variant_id])
+          expect(@product.product_template.id).to eq(@params[:product_template_id])
           expect(@product.tag_list).to eq(@params[:tags])
         end
 
@@ -88,7 +88,7 @@ describe Products::Api, type: :request do
         context 'and try to publish product' do
           before(:each) do
             post '/api/v1/products', { name: 'new_product',
-                                       template_variant_id: template_variant.id,
+                                       product_template_id: product_template.id,
                                        description: 'description',
                                        image: image,
                                        tags: ['cats'],

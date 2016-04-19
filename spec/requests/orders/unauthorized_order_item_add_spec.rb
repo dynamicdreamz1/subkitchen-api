@@ -97,7 +97,7 @@ describe Products::Api, type: :request do
       before(:each) do
         @order = create(:order, user: user)
         product_template = create(:product_template, price: 10)
-        product = create(:product, template_variant: create(:template_variant, product_template: product_template))
+        product = create(:product, product_template: product_template)
         post '/api/v1/orders/item', product_id: product.id, size: 'm', quantity: 1, uuid: @order.uuid
         @order.reload
       end
