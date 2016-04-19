@@ -14,7 +14,7 @@ module AppConfig
 
     desc 'get themes'
     get 'themes' do
-      { themes: Config.themes.split(',').map(&:strip).compact.reject(&:blank?) }
+      { themes: Config.themes.split(',').map(&:strip).reject(&:blank?).map(&:downcase) }
     end
   end
 end
