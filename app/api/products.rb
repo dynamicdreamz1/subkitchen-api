@@ -15,7 +15,7 @@ module Products
                                                          with_price_range: params.with_price_range,
                                                          with_product_type: params.with_product_type,
                                                          with_tags: params.with_tags)
-        products = Product.filterrific_find(filterrific).page(params.page).per(params.per_page)
+        products = Product.includes(product_template: [:template_variants]).filterrific_find(filterrific).page(params.page).per(params.per_page)
         if products
           ProductListSerializer.new(products).as_json
         else

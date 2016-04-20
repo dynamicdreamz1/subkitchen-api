@@ -35,7 +35,7 @@ class ProductListSerializer
       id: product.id,
       author: (product.author ? product.author.name : nil),
       price: product.product_template.price,
-      size: product.product_template.size,
+      sizes: product.product_template.size,
       description: product.description,
       name: product.name,
       likes_count: product.likes_count,
@@ -43,7 +43,8 @@ class ProductListSerializer
       shipping: Config.shipping_info,
       shipping_cost: Config.shipping_cost,
       tax: Config.tax,
-      size_chart: product.product_template.size_chart_url
+      size_chart: product.product_template.size_chart_url,
+      variants: variants(product)
     }
   end
 
@@ -51,5 +52,9 @@ class ProductListSerializer
   def product_image(product)
     img_key = product.preview ? :preview : :image
     Figaro.env.app_host.to_s + Refile.attachment_url(product, img_key, :fill, 400, 400, format: :png)
+  end
+
+  def variants(product)
+    product.product_template.template_variants.map{|v| {id: v.id, color: v.color.color_value}}
   end
 end
