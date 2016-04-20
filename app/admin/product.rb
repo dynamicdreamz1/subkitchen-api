@@ -1,5 +1,5 @@
 ActiveAdmin.register Product do
-  permit_params :design, :name, :author_id, :description, :template_variant_id, :image, :published, :published_at, :tag_list
+  permit_params :design, :name, :author_id, :description, :template_variant_id, :image, :preview, :published, :published_at, :tag_list
   config.batch_actions = false
   actions :all, except: :destroy
 
@@ -22,6 +22,9 @@ ActiveAdmin.register Product do
     column(:id)
     column('Image') do |product|
       attachment_image_tag(product, :image, :fit, 50, 50)
+    end
+    column('Preview') do |product|
+      attachment_image_tag(product, :preview, :fit, 50, 50)
     end
     column('Author') do |product|
       if product.author
@@ -46,6 +49,7 @@ ActiveAdmin.register Product do
       f.input :design, as: :refile
       if f.object.new_record?
         f.input :image, as: :refile
+        f.input :preview, as: :refile
         f.input :name
         f.input :description
         f.input :author, collection: User.artists
@@ -61,6 +65,7 @@ ActiveAdmin.register Product do
   show do |product|
     attributes_table do
       row('Image') { attachment_image_tag(product, :image, :fit, 50, 50) }
+      row('Preview') { attachment_image_tag(product, :preview, :fit, 50, 50) }
       row('Date') { product.created_at }
       row(:author)
       row(:name)
