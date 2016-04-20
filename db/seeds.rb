@@ -77,6 +77,9 @@ Config.create(name: 'invoice_line_4', value: 'SubKitchen', input_type: 'short_te
 Config.create(name: 'invoice_line_5', value: 'SubKitchen', input_type: 'short_text')
 Config.create(name: 'invoice_line_6', value: 'SubKitchen', input_type: 'short_text')
 
+black = Color.create(name: 'Black', color_value: '#000000')
+white = Color.create(name: 'White', color_value: '#ffffff')
+
 sizes = %w(SM MD LG XL 2X 3X)
 
 template1 = ProductTemplate.create(price: 69.95, profit: 25.00, size: sizes, template_image: File.new(template_image('hoodie')), template_mask: File.new(template_image('hoodie-mask', 'png')), product_type: 'hoodie', size_chart: File.new(size_chart))
@@ -84,6 +87,18 @@ template2 = ProductTemplate.create(price: 65.00, profit: 25.00, size: sizes, tem
 template3 = ProductTemplate.create(price: 39.95, profit: 15.00, size: sizes, template_image: File.new(template_image('shirt')), template_mask: File.new(template_image('shirt-mask', 'png')), product_type: 'tee', size_chart: File.new(size_chart))
 template4 = ProductTemplate.create(price: 35.00, profit: 15.00, size: sizes, template_image: File.new(template_image('tank')), template_mask: File.new(template_image('tank-mask', 'png')), product_type: 'tank_top', size_chart: File.new(size_chart))
 template5 = ProductTemplate.create(price: 79.95, profit: 30.00, size: sizes, template_image: File.new(template_image('yoga_pants')), template_mask: File.new(template_image('yoga_pants-mask', 'png')), product_type: 'yoga_pants', size_chart: File.new(size_chart))
+
+TemplateVariant.create(name: 'all over', color: white, product_template: template1)
+TemplateVariant.create(name: 'all over', color: white, product_template: template2)
+TemplateVariant.create(name: 'all over', color: white, product_template: template3)
+TemplateVariant.create(name: 'all over', color: white, product_template: template4)
+TemplateVariant.create(name: 'all over', color: white, product_template: template5)
+
+TemplateVariant.create(name: 'center', color: black, product_template: template1)
+TemplateVariant.create(name: 'center', color: black, product_template: template2)
+TemplateVariant.create(name: 'center', color: black, product_template: template3)
+TemplateVariant.create(name: 'center', color: black, product_template: template4)
+
 
 u1 = User.create!(name: 'user1', handle: 'user1', email: 't1@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true)
 u2 = User.create!(name: 'user2', handle: 'user2', email: 't2@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true)
