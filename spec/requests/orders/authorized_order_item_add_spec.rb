@@ -1,10 +1,12 @@
 describe Products::Api, type: :request do
   let(:user) { create(:user) }
   let(:product) { create(:product) }
+  let(:variant) { create(:template_variant) }
 
   describe '/api/v1/orders/item' do
     before(:each) do
-      post '/api/v1/orders/item', { product_id: product.id, size: 's', quantity: 1 }, auth_header_for(user)
+      params = { product_id: product.id, size: 's', quantity: 1, template_variant_id: variant.id }
+      post '/api/v1/orders/item', params, auth_header_for(user)
       @order = Order.last
       @item = @order.order_items.first
     end
@@ -40,7 +42,8 @@ describe Products::Api, type: :request do
     context 'after payment is completed' do
       before(:each) do
         create(:payment, payable: @order, payment_status: 'completed')
-        post '/api/v1/orders/item', { product_id: create(:product).id, size: 's', quantity: 1 }, auth_header_for(user)
+        params = { product_id: create(:product).id, size: 's', quantity: 1, template_variant_id: variant.id }
+        post '/api/v1/orders/item', params, auth_header_for(user)
       end
 
       it 'should return status unprocessable_entity when trying to add new item' do
@@ -58,7 +61,8 @@ describe Products::Api, type: :request do
 
     context 'adding duplicate items' do
       before(:each) do
-        post '/api/v1/orders/item', { product_id: product.id, size: 's', quantity: 5 }, auth_header_for(user)
+        params = { product_id: product.id, size: 's', quantity: 5, template_variant_id: variant.id }
+        post '/api/v1/orders/item', params, auth_header_for(user)
         @item.reload
       end
 
@@ -77,7 +81,8 @@ describe Products::Api, type: :request do
 
     context 'adding different items' do
       before(:each) do
-        post '/api/v1/orders/item', { product_id: product.id, size: 'm', quantity: 1 }, auth_header_for(user)
+        params = { product_id: product.id, size: 'm', quantity: 1, template_variant_id: variant.id }
+        post '/api/v1/orders/item', params, auth_header_for(user)
       end
 
       it 'should not increment quantity' do
@@ -102,7 +107,7 @@ describe Products::Api, type: :request do
         @order = create(:order, user: user)
         product_template = create(:product_template, price: 10)
         product = create(:product, product_template: product_template)
-        params = { product_id: product.id, size: 'm', quantity: 1, uuid: @order.uuid }
+        params = { product_id: product.id, size: 'm', quantity: 1, uuid: @order.uuid, template_variant_id: variant.id }
         post '/api/v1/orders/item', params, auth_header_for(user)
         @order.reload
       end

@@ -9,7 +9,10 @@ class Product < ActiveRecord::Base
   has_many :template_variants, through: :product_template
 
   validates_with PublishedValidator
-  validates :image, image: { range: 1024...5000 }
+  validates :image, image: { range: 1024...5000 }, presence: true
+  validates :name, presence: true
+  validates :description, presence: true
+  validates :product_template_id, presence: true
 
   after_create SetProduct.new
   after_update SendOrderIfItemsReady.new, if: :design_id_changed?

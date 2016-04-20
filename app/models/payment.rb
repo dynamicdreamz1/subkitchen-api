@@ -6,4 +6,8 @@ class Payment < ActiveRecord::Base
   scope :pending, -> { where(payment_status: 2) }
 
   enum payment_status: { denied: 0, completed: 1, pending: 2, malformed: 3 }
+
+  validates :payable_id, presence: true
+  validates :payable_type, presence: true
+  validates :payment_type, presence: true, inclusion: { in: %w(stripe paypal) }
 end

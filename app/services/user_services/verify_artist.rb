@@ -1,6 +1,6 @@
 class VerifyArtist
   def call
-    payment = Payment.find_or_create_by(payable: user, payment_status: 'pending')
+    payment = Payment.find_or_create_by!(payable: user, payment_status: 'pending', payment_type: 'paypal')
     return false unless update_user && update_address && !already_paid?
     url = PaypalUserVerification.new(payment, params.return_path).call
     { url: url }

@@ -39,6 +39,7 @@ module Orders
         desc 'add item to order'
         params do
           requires :product_id, type: Integer
+          requires :template_variant_id, type: Integer
           requires :size, type: String
           requires :quantity, type: Integer
           optional :uuid, type: String

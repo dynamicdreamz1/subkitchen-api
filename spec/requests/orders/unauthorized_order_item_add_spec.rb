@@ -1,10 +1,12 @@
 describe Products::Api, type: :request do
   let(:user) { create(:user) }
   let(:product) { create(:product) }
+  let(:variant) { create(:template_variant) }
 
   describe '/api/v1/orders/item' do
     before(:each) do
-      post '/api/v1/orders/item', product_id: product.id, size: 's', quantity: 1
+      params = { product_id: product.id, size: 's', quantity: 1, template_variant_id: variant.id }
+      post '/api/v1/orders/item', params
       @order = Order.last
       @item = @order.order_items.first
     end
@@ -36,7 +38,8 @@ describe Products::Api, type: :request do
     context 'after payment is completed' do
       before(:each) do
         create(:payment, payable: @order, payment_status: 'completed')
-        post '/api/v1/orders/item', product_id: create(:product).id, size: 's', quantity: 1, uuid: @order.uuid
+        params = { product_id: create(:product).id, size: 's', quantity: 1, uuid: @order.uuid, template_variant_id: variant.id }
+        post '/api/v1/orders/item', params
       end
 
       it 'should return status unprocessable_entity when trying to add new item' do
@@ -54,7 +57,8 @@ describe Products::Api, type: :request do
 
     context 'adding duplicate items' do
       before(:each) do
-        post '/api/v1/orders/item', product_id: product.id, size: 's', quantity: 5, uuid: @order.uuid
+        params = { product_id: product.id, size: 's', quantity: 5, uuid: @order.uuid, template_variant_id: variant.id }
+        post '/api/v1/orders/item', params
         @item.reload
       end
 
@@ -73,7 +77,8 @@ describe Products::Api, type: :request do
 
     context 'adding different items' do
       before(:each) do
-        post '/api/v1/orders/item', product_id: product.id, size: 'm', quantity: 1, uuid: @order.uuid
+        params = { product_id: product.id, size: 'm', quantity: 1, uuid: @order.uuid, template_variant_id: variant.id }
+        post '/api/v1/orders/item', params
       end
 
       it 'should return status success' do
@@ -98,7 +103,8 @@ describe Products::Api, type: :request do
         @order = create(:order, user: user)
         product_template = create(:product_template, price: 10)
         product = create(:product, product_template: product_template)
-        post '/api/v1/orders/item', product_id: product.id, size: 'm', quantity: 1, uuid: @order.uuid
+        params = { product_id: product.id, size: 'm', quantity: 1, uuid: @order.uuid, template_variant_id: variant.id }
+        post '/api/v1/orders/item', params
         @order.reload
       end
 
