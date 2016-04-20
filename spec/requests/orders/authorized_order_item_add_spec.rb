@@ -13,29 +13,14 @@ describe Products::Api, type: :request do
 
     it 'should create order' do
       expect(Order.count).to eq(1)
-    end
-
-    it 'should has creating status' do
       expect(@order.creating?).to be_truthy
-    end
-
-    it 'should associate user to order' do
       expect(@order.user).to eq(user)
-    end
-
-    it 'should match json response schema' do
       expect(response).to match_response_schema('order')
-    end
-
-    it 'should return status success' do
       expect(response).to have_http_status(:success)
     end
 
     it 'should add item to order' do
       expect(@order.order_items.size).to eq(1)
-    end
-
-    it 'should set profit' do
       expect(@item.profit).to eq(product.product_template.profit)
     end
 
@@ -46,15 +31,9 @@ describe Products::Api, type: :request do
         post '/api/v1/orders/item', params, auth_header_for(user)
       end
 
-      it 'should return status unprocessable_entity when trying to add new item' do
-        expect(response).to have_http_status(:unprocessable_entity)
-      end
-
-      it 'should return error when trying to add new item' do
-        expect(json['errors']).to eq('base' => ['cannot change already paid order'])
-      end
-
       it 'should not create order item' do
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(json['errors']).to eq('base' => ['cannot change already paid order'])
         expect(OrderItem.count).to eq(1)
       end
     end
@@ -68,13 +47,7 @@ describe Products::Api, type: :request do
 
       it 'should increment quantity' do
         expect(@item.quantity).to eq(6)
-      end
-
-      it 'should match response schema' do
         expect(response).to match_response_schema('order')
-      end
-
-      it 'should return status success' do
         expect(response).to have_http_status(:success)
       end
     end
@@ -91,13 +64,7 @@ describe Products::Api, type: :request do
 
       it 'should create another order item' do
         expect(@order.order_items.size).to eq(2)
-      end
-
-      it 'should match response schema' do
         expect(response).to match_response_schema('order')
-      end
-
-      it 'should return status success' do
         expect(response).to have_http_status(:success)
       end
     end

@@ -11,13 +11,7 @@ describe Products::Api, type: :request do
 
         it 'should like product' do
           expect(product.likes.count).to eq(1)
-        end
-
-        it 'should return status success' do
           expect(response).to have_http_status(:success)
-        end
-
-        it 'should return likes count' do
           expect(json['likes_count']).to eq(1)
         end
       end
@@ -30,13 +24,7 @@ describe Products::Api, type: :request do
 
         it 'should unlike product' do
           expect(product.likes.count).to eq(0)
-        end
-
-        it 'should return status success' do
           expect(response).to have_http_status(:success)
-        end
-
-        it 'should return likes count' do
           expect(json['likes_count']).to eq(0)
         end
       end

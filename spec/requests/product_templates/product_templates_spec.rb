@@ -15,13 +15,7 @@ describe ProductTemplates::Api, type: :request do
     it 'should return serialized product templates' do
       serialized_product = ProductTemplateListSerializer.new(ProductTemplate.all).as_json
       expect(response.body).to eq(serialized_product.to_json)
-    end
-
-    it 'should match json schema' do
       expect(response).to match_response_schema('product_templates')
-    end
-
-    it 'should return status success' do
       expect(response).to have_http_status(:success)
     end
   end

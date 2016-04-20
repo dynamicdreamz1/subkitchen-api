@@ -15,13 +15,7 @@ describe Products::Api, type: :request do
         it 'should like product' do
           like = Like.where(likeable: product, user: artist)
           expect(like.exists?).to eq(true)
-        end
-
-        it 'should return status success' do
           expect(response).to have_http_status(:success)
-        end
-
-        it 'should return likes count' do
           expect(json['likes_count']).to eq(1)
         end
 
@@ -33,13 +27,7 @@ describe Products::Api, type: :request do
 
           it 'should not like own product' do
             expect(artist_product.likes.count).to eq(0)
-          end
-
-          it 'should return error' do
             expect(json['errors']).to eq('base' => ['cannot like own product'])
-          end
-
-          it 'should return status unprocessable_entity' do
             expect(response).to have_http_status(:unprocessable_entity)
           end
         end
@@ -54,13 +42,7 @@ describe Products::Api, type: :request do
 
         it 'should unlike product' do
           expect(product.likes.count).to eq(0)
-        end
-
-        it 'should return status success' do
           expect(response).to have_http_status(:success)
-        end
-
-        it 'should return likes count' do
           expect(json['likes_count']).to eq(0)
         end
       end

@@ -21,6 +21,9 @@ describe Accounts::Api, type: :request do
 
       it 'should create Company' do
         expect(artist.company).to be_a Company
+        expect(response).to have_http_status(:success)
+        expect(artist.artist).to be_truthy
+        expect(artist.pending?).to be_truthy
       end
 
       it 'should save company address' do
@@ -32,19 +35,10 @@ describe Accounts::Api, type: :request do
         expect(@params[:country]).to eq(artist.company.country)
       end
 
-      it 'should return status success' do
-        expect(response).to have_http_status(:success)
-      end
-
       it 'should return url' do
         payment = Payment.find_by!(payable: artist)
 
         expect(json['url']).to eq(PaypalUserVerification.new(payment, '').call)
-      end
-
-      it 'should change user status' do
-        expect(artist.artist).to be_truthy
-        expect(artist.pending?).to be_truthy
       end
     end
 

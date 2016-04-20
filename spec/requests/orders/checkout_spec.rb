@@ -8,9 +8,6 @@ describe Payments::Api, type: :request do
 
       it 'should match response schema' do
         expect(response).to match_response_schema('checkout')
-      end
-
-      it 'should return status success' do
         expect(response).to have_http_status(:success)
       end
     end
@@ -40,9 +37,6 @@ describe Payments::Api, type: :request do
 
       it 'should match response schema' do
         expect(response).to match_response_schema('checkout')
-      end
-
-      it 'should return status success' do
         expect(response).to have_http_status(:success)
       end
     end

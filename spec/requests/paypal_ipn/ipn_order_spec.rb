@@ -36,23 +36,11 @@ describe PaypalHooks::Api, type: :request do
           @order_payment.reload
         end
 
-        it 'should change payment status' do
-          expect(@order_payment.payment_status).to eq('completed')
-        end
-
-        it 'should return status success' do
+        it 'should change payment and order' do
           expect(response).to have_http_status(:success)
-        end
-
-        it 'should change order purchased' do
+          expect(@order_payment.payment_status).to eq('completed')
           expect(@order.purchased).to be_truthy
-        end
-
-        it 'should have transaction id' do
           expect(@order_payment.payment_token).to eq('61E67681CH3238416')
-        end
-
-        it 'should change order active' do
           expect(@order.active).to be_falsey
         end
       end
@@ -79,11 +67,8 @@ describe PaypalHooks::Api, type: :request do
         @order_payment.reload
       end
 
-      it 'should change payment status to denied' do
+      it 'should change payment and order' do
         expect(@order_payment.payment_status).to eq('denied')
-      end
-
-      it 'should not change order purchased' do
         expect(@order.purchased).to be_falsey
       end
     end

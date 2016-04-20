@@ -32,9 +32,6 @@ describe Accounts::Api, type: :request do
 
         it 'should upload banner' do
           expect(json['shop_banner_url']).to eq(artist.shop_banner_url)
-        end
-
-        it 'should update shop banner id' do
           expect(artist.shop_banner_id).not_to be_nil
         end
       end

@@ -36,19 +36,10 @@ describe PaypalHooks::Api, type: :request do
         @user_payment.reload
       end
 
-      it 'should change artist status' do
-        expect(@user.status).to eq('verified')
-      end
-
-      it 'should return status success' do
+      it 'should change user and payment' do
         expect(response).to have_http_status(:success)
-      end
-
-      it 'should change payment status to completed' do
+        expect(@user.status).to eq('verified')
         expect(@user_payment.payment_status).to eq('completed')
-      end
-
-      it 'should have transaction id' do
         expect(@user_payment.payment_token).to eq('61E67681CH3238416')
       end
     end
@@ -60,11 +51,8 @@ describe PaypalHooks::Api, type: :request do
         @user_payment.reload
       end
 
-      it 'should change payment status to denied' do
-        expect(@user_payment.payment_status).to eq('denied')
-      end
-
       it 'should not change artist status' do
+        expect(@user_payment.payment_status).to eq('denied')
         expect(@user.status).to eq('unverified')
       end
     end

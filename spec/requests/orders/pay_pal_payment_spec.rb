@@ -23,13 +23,7 @@ describe Products::Api, type: :request do
 
     it 'should return payment link to paypal' do
       expect(json['url']).to eq(PaypalPayment.new(@payment, '').call)
-    end
-
-    it 'should match json schema response' do
       expect(response).to match_response_schema('paypal')
-    end
-
-    it 'should return status success' do
       expect(response).to have_http_status(:success)
     end
   end
@@ -44,9 +38,6 @@ describe Products::Api, type: :request do
 
     it 'should return deleted items' do
       expect(json['deleted_items']).to_not be_empty
-    end
-
-    it 'should return status unprocessable_entity' do
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end
@@ -69,6 +60,8 @@ describe Products::Api, type: :request do
     end
 
     it 'should not update order address' do
+      expect(response).to have_http_status(:not_found)
+
       expect(order.full_name).not_to eq('changed')
       expect(order.address).not_to eq('changed')
       expect(order.city).not_to eq('changed')
@@ -76,10 +69,6 @@ describe Products::Api, type: :request do
       expect(order.region).not_to eq('changed')
       expect(order.country).not_to eq('changed')
       expect(order.email).not_to eq('changed')
-    end
-
-    it 'should return status not_found' do
-      expect(response).to have_http_status(:not_found)
     end
   end
 
@@ -98,9 +87,6 @@ describe Products::Api, type: :request do
 
     it 'should return error' do
       expect(json['errors']).to eq('base' => ['invalid payment parameters!'])
-    end
-
-    it 'should return status unprocessable_entity' do
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end

@@ -14,13 +14,7 @@ describe Sessions::Api, type: :request do
 
         it 'should change password' do
           expect(user.authenticate(@valid_params[:password])).to be_truthy
-        end
-
-        it 'should return status success' do
           expect(response).to have_http_status(:success)
-        end
-
-        it 'should match json schema response' do
           expect(response).to match_response_schema('user_public')
         end
       end
@@ -37,13 +31,7 @@ describe Sessions::Api, type: :request do
 
           it 'should not change password' do
             expect(user.authenticate(@invalid_params[:password])).to be_falsey
-          end
-
-          it 'should return error' do
             expect(json['errors']).to eq('base' => ['invalid password'])
-          end
-
-          it 'should return status unprocessable_entity' do
             expect(response).to have_http_status(:unprocessable_entity)
           end
         end
@@ -59,13 +47,7 @@ describe Sessions::Api, type: :request do
 
           it 'should not change password' do
             expect(user.authenticate(@invalid_params[:password])).to be_falsey
-          end
-
-          it 'should return error' do
             expect(json['errors']).to eq('base' => ['password and password confirmation does not match'])
-          end
-
-          it 'should return status unprocessable_entity' do
             expect(response).to have_http_status(:unprocessable_entity)
           end
         end

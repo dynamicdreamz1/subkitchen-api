@@ -12,13 +12,7 @@ describe WishList::Api, type: :request do
 
       it 'should create product wishes' do
         expect(ProductWish.count).to eq(1)
-      end
-
-      it 'should add products to wish list' do
         expect(@user.wished_products.count).to eq(1)
-      end
-
-      it 'should return status success' do
         expect(response).to have_http_status(:success)
       end
 
@@ -29,11 +23,8 @@ describe WishList::Api, type: :request do
           post '/api/v1/wish_list', { product_id: @product.id }, auth_header_for(@user)
         end
 
-        it 'should return status not_found ' do
-          expect(response).to have_http_status(:not_found)
-        end
-
         it 'should not add unpublished product' do
+          expect(response).to have_http_status(:not_found)
           expect(@user.wished_products.count).to eq(1)
         end
       end
@@ -48,9 +39,6 @@ describe WishList::Api, type: :request do
 
         it 'should remove product from wish list' do
           expect(@user.wished_products.count).to eq(1)
-        end
-
-        it 'should return status success' do
           expect(response).to have_http_status(:success)
         end
       end
@@ -64,11 +52,8 @@ describe WishList::Api, type: :request do
         get '/api/v1/wish_list', {}, auth_header_for(@user)
       end
 
-      it 'should return status success' do
-        expect(response).to have_http_status(:success)
-      end
-
       it 'should return wish list' do
+        expect(response).to have_http_status(:success)
         serialized_products = ProductListSerializer.new(@user.wished_products.page(1)).as_json
         expect(response.body).to eq(serialized_products.to_json)
       end

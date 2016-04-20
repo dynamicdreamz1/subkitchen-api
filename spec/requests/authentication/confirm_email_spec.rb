@@ -10,9 +10,6 @@ describe Sessions::Api, type: :request do
 
       it 'should update email_confirmed to true' do
         expect(user.email_confirmed).to be_truthy
-      end
-
-      it 'should return confirmed user' do
         expect(response).to match_response_schema('user_public')
       end
     end
@@ -25,9 +22,6 @@ describe Sessions::Api, type: :request do
 
       it 'should return error' do
         expect(json['errors']).to eq('base' => ['invalid confirmation token'])
-      end
-
-      it 'should return status unprocessable_entity' do
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end

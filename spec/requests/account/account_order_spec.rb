@@ -8,17 +8,11 @@ describe AccountsOrders::Api, type: :request do
       get "/api/v1/account/orders/#{@order.uuid}", {}, auth_header_for(user)
     end
 
-    it 'should return status success' do
-      expect(response).to have_http_status(:success)
-    end
-
-    it 'should match json schema' do
-      expect(response).to match_response_schema('checkout')
-    end
-
     it 'should match serialized order' do
       serialized_order = CheckoutSerializer.new(@order).as_json
       expect(response.body).to eq(serialized_order.to_json)
+      expect(response).to match_response_schema('checkout')
+      expect(response).to have_http_status(:success)
     end
   end
 end

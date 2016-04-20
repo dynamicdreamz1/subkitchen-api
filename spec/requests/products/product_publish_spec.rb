@@ -11,16 +11,10 @@ describe Products::Api, type: :request do
         @product.reload
       end
 
-      it 'should return status success' do
-        expect(response).to have_http_status(:success)
-      end
-
       it 'should return published product' do
         serialized_product = ProductSerializer.new(@product.reload).as_json
         expect(response.body).to eq(serialized_product.to_json)
-      end
-
-      it 'should match response schema' do
+        expect(response).to have_http_status(:success)
         expect(response).to match_response_schema('single_product')
       end
 
@@ -38,13 +32,7 @@ describe Products::Api, type: :request do
 
         it 'should not publish when artist is not an author' do
           expect(@product.published).to eq(false)
-        end
-
-        it 'should return status unprocessable_entity' do
           expect(response).to have_http_status(:unprocessable_entity)
-        end
-
-        it 'should return error' do
           expect(json['errors']).to eq('base' => ['cannot publish not own product'])
         end
       end
@@ -58,13 +46,7 @@ describe Products::Api, type: :request do
 
       it 'should not publish product' do
         expect(@product.published).to be_falsey
-      end
-
-      it 'should return status unprocessable_entity' do
         expect(response).to have_http_status(:unprocessable_entity)
-      end
-
-      it 'should return error' do
         expect(json['errors']).to eq('base' => ["Validation failed: Published can't be true when you're not an artist"])
       end
     end

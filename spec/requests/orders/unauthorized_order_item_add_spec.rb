@@ -13,25 +13,13 @@ describe Products::Api, type: :request do
 
     it 'should create order' do
       expect(Order.count).to eq(1)
-    end
-
-    it 'should not associate user to order' do
       expect(@order.user).to eq(nil)
-    end
-
-    it 'should match json response schema' do
       expect(response).to match_response_schema('order')
-    end
-
-    it 'should return status success' do
       expect(response).to have_http_status(:success)
     end
 
     it 'should add item to order' do
       expect(@order.order_items.size).to eq(1)
-    end
-
-    it 'should set profit' do
       expect(@item.profit).to eq(product.product_template.profit)
     end
 
@@ -42,15 +30,9 @@ describe Products::Api, type: :request do
         post '/api/v1/orders/item', params
       end
 
-      it 'should return status unprocessable_entity when trying to add new item' do
-        expect(response).to have_http_status(:unprocessable_entity)
-      end
-
-      it 'should return error when trying to add new item' do
-        expect(json['errors']).to eq('base' => ['cannot change already paid order'])
-      end
-
       it 'should not create order item' do
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(json['errors']).to eq('base' => ['cannot change already paid order'])
         expect(OrderItem.count).to eq(1)
       end
     end
@@ -62,15 +44,9 @@ describe Products::Api, type: :request do
         @item.reload
       end
 
-      it 'should return status success' do
-        expect(response).to have_http_status(:success)
-      end
-
       it 'should increment quantity' do
+        expect(response).to have_http_status(:success)
         expect(@item.quantity).to eq(6)
-      end
-
-      it 'should match response schema' do
         expect(response).to match_response_schema('order')
       end
     end
@@ -81,19 +57,13 @@ describe Products::Api, type: :request do
         post '/api/v1/orders/item', params
       end
 
-      it 'should return status success' do
-        expect(response).to have_http_status(:success)
-      end
-
       it 'should not increment quantity' do
         expect(@item.quantity).to eq(1)
       end
 
       it 'should create another order item' do
+        expect(response).to have_http_status(:success)
         expect(@order.order_items.size).to eq(2)
-      end
-
-      it 'should match response schema' do
         expect(response).to match_response_schema('order')
       end
     end
@@ -108,11 +78,9 @@ describe Products::Api, type: :request do
         @order.reload
       end
 
-      it 'should return status success' do
-        expect(response).to have_http_status(:success)
-      end
-
       it 'should update costs after adding item to order' do
+        expect(response).to have_http_status(:success)
+
         expect(@order.subtotal_cost).to eq(10)
         expect(@order.total_cost).to eq(17.6)
         expect(@order.tax_cost).to eq(0.6)

@@ -15,13 +15,7 @@ describe Sessions::Api, type: :request do
 
         it 'should set new password' do
           expect(user.authenticate(@valid_params[:password])).to be_truthy
-        end
-
-        it 'should return status success' do
           expect(response).to have_http_status(:success)
-        end
-
-        it 'should match json response schema' do
           expect(response).to match_response_schema('user_public')
         end
       end
@@ -38,13 +32,7 @@ describe Sessions::Api, type: :request do
 
         it 'should not set new password' do
           expect(user.authenticate(@invalid_params[:password])).to be_falsey
-        end
-
-        it 'should return status unprocessable_entity' do
           expect(response).to have_http_status(:unprocessable_entity)
-        end
-
-        it 'should return error' do
           expect(json['errors']).to eq('base' => ['password and password confirmation does not match'])
         end
       end
@@ -62,13 +50,7 @@ describe Sessions::Api, type: :request do
 
         it 'should not set new password' do
           expect(user.authenticate(@invalid_params[:password])).to be_falsey
-        end
-
-        it 'should return status unprocessable_entity' do
           expect(response).to have_http_status(:unprocessable_entity)
-        end
-
-        it 'should return error' do
           expect(json['errors']).to eq('base' => ['invalid or expired reminder token'])
         end
       end

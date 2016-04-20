@@ -18,13 +18,7 @@ describe Products::Api, type: :request do
         comments = Comment.product(product.id).page(1)
         serialized_comments = CommentListSerializer.new(comments).as_json
         expect(response.body).to eq(serialized_comments.to_json)
-      end
-
-      it 'should match json schema' do
         expect(response).to match_response_schema('comments')
-      end
-
-      it 'should return status success' do
         expect(response).to have_http_status(:success)
       end
     end
@@ -35,15 +29,9 @@ describe Products::Api, type: :request do
           post '/api/v1/comments', @post_params, auth_header_for(user)
         end
 
-        it 'should match json schema' do
-          expect(response).to match_response_schema('single_comment')
-        end
-
         it 'should add comment when authorized' do
           expect(product.comments.count). to eq(6)
-        end
-
-        it 'should return status success' do
+          expect(response).to match_response_schema('single_comment')
           expect(response).to have_http_status(:success)
         end
       end
@@ -55,9 +43,6 @@ describe Products::Api, type: :request do
 
         it 'should not add comment' do
           expect(json['errors']).to eq('base' => ['401 Unauthorized'])
-        end
-
-        it 'should return status unauthorized' do
           expect(response).to have_http_status(:unauthorized)
         end
       end

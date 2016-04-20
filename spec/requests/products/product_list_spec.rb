@@ -14,13 +14,7 @@ describe Products::Api, type: :request do
         it 'should return first page of products' do
           serialized_products = ProductListSerializer.new(Product.sorted_by('created_at_desc').page(1)).as_json
           expect(response.body).to eq(serialized_products.to_json)
-        end
-
-        it 'should return status success' do
           expect(response).to have_http_status(:success)
-        end
-
-        it 'should match response schema' do
           expect(response).to match_response_schema('products')
         end
       end
@@ -34,17 +28,10 @@ describe Products::Api, type: :request do
           @products = Product.sorted_by('created_at_desc').page(@params[:page]).per(@params[:per_page])
         end
 
-        it 'should match response schema' do
-          expect(response).to match_response_schema('products')
-        end
-
-        it 'should return status success' do
-          expect(response).to have_http_status(:success)
-        end
-
         it 'should return page of products' do
+          expect(response).to match_response_schema('products')
+          expect(response).to have_http_status(:success)
           serialized_products = ProductListSerializer.new(@products).as_json
-
           expect(response.body).to eq(serialized_products.to_json)
         end
       end

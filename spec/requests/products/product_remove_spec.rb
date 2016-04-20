@@ -11,13 +11,7 @@ describe Products::Api, type: :request do
 
         it 'should remove product' do
           expect(Product.count).to eq(0)
-        end
-
-        it 'should return status success' do
           expect(response).to have_http_status(:success)
-        end
-
-        it 'should match response schema' do
           expect(response).to match_response_schema('single_product')
         end
 
@@ -35,9 +29,6 @@ describe Products::Api, type: :request do
 
           it 'should return error' do
             expect(json['errors']).to eq('base' => ['unauthorized'])
-          end
-
-          it 'should return status unauthorized' do
             expect(response).to have_http_status(:unauthorized)
           end
 
@@ -55,13 +46,7 @@ describe Products::Api, type: :request do
 
         it 'should remove product' do
           expect(Product.count).to eq(0)
-        end
-
-        it 'should return status success' do
           expect(response).to have_http_status(:success)
-        end
-
-        it 'should match response schema' do
           expect(response).to match_response_schema('single_product')
         end
 
@@ -79,9 +64,6 @@ describe Products::Api, type: :request do
 
           it 'should return error' do
             expect(json['errors']).to eq('base' => ['record not found'])
-          end
-
-          it 'should return status not_found' do
             expect(response).to have_http_status(:not_found)
           end
 

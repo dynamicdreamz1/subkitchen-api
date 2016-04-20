@@ -25,11 +25,8 @@ describe Sessions::Api, type: :request do
         expect(User.count).to eq(1)
       end
 
-      it 'should return status success' do
+      it 'should return user' do
         expect(response).to have_http_status(:success)
-      end
-
-      it 'should mathc json response schema' do
         expect(response).to match_response_schema('user_public')
       end
 

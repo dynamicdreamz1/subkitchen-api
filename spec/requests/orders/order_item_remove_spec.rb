@@ -15,13 +15,7 @@ describe Products::Api, type: :request do
 
       it 'should remove item from order' do
         expect(@item).to be_nil
-      end
-
-      it 'should match response schema' do
         expect(response).to match_response_schema('order')
-      end
-
-      it 'should return status success' do
         expect(response).to have_http_status(:success)
       end
     end
@@ -39,13 +33,7 @@ describe Products::Api, type: :request do
 
       it 'should remove item from order' do
         expect(@item).to be_nil
-      end
-
-      it 'should match response schema' do
         expect(response).to match_response_schema('order')
-      end
-
-      it 'should return status success' do
         expect(response).to have_http_status(:success)
       end
     end

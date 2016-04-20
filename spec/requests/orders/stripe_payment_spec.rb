@@ -25,21 +25,9 @@ describe Payments::Api, type: :request do
 
       it 'should create stripe payment' do
         expect(order.payment).not_to be_nil
-      end
-
-      it 'should be success' do
         expect(response).to have_http_status(:success)
-      end
-
-      it 'should change payment status' do
         expect(order.payment.payment_status).to eq('completed')
-      end
-
-      it 'should change order purchased' do
         expect(order.purchased).to be_truthy
-      end
-
-      it 'should change order state' do
         expect(order.active).to be_falsey
       end
 

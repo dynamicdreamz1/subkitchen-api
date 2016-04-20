@@ -9,17 +9,11 @@ describe AccountsOrders::Api, type: :request do
         get '/api/v1/account/orders', {}, auth_header_for(user)
       end
 
-      it 'should return status success' do
-        expect(response).to have_http_status(:success)
-      end
-
-      it 'should match json schema' do
-        expect(response).to match_response_schema('account_orders')
-      end
-
       it 'should return orders of user' do
         serialized_orders = OrderListSerializer.new(user.orders.page(1).per(5)).as_json
         expect(response.body).to eq(serialized_orders.to_json)
+        expect(response).to match_response_schema('account_orders')
+        expect(response).to have_http_status(:success)
       end
     end
 
@@ -33,13 +27,7 @@ describe AccountsOrders::Api, type: :request do
       it 'should paginate orders of user' do
         serialized_orders = OrderListSerializer.new(@user_orders).as_json
         expect(response.body).to eq(serialized_orders.to_json)
-      end
-
-      it 'should has pages' do
         expect(@user_orders.total_pages).to eq(2)
-      end
-
-      it 'should return status success' do
         expect(response).to have_http_status(:success)
       end
     end

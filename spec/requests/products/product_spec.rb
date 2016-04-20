@@ -11,13 +11,7 @@ describe Products::Api, type: :request do
       it 'should return product' do
         serialized_product = ProductSerializer.new(@product).as_json
         expect(response.body).to eq(serialized_product.to_json)
-      end
-
-      it 'should match response schema' do
         expect(response).to match_response_schema('single_product')
-      end
-
-      it 'should return status success' do
         expect(response).to have_http_status(:success)
       end
     end

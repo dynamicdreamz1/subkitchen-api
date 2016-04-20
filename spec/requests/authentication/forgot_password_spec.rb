@@ -28,9 +28,6 @@ describe Sessions::Api, type: :request do
 
         it 'should return status not_found' do
           expect(response).to have_http_status(:not_found)
-        end
-
-        it 'should return error' do
           expect(json['errors']).to eq('base' => ['record not found'])
         end
       end
