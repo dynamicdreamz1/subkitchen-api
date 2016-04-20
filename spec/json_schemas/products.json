@@ -9,30 +9,20 @@
           "id": {"type": ["integer", "null"]},
           "author": {"type": ["string", "null"]},
           "price": {"type": "string"},
-          "size": {"type": "array"},
-          "description": {"type": "string"},
+          "sizes": {"type": "array"},
           "name": {"type": "string"},
           "likes_count": {"type": "integer"},
           "product_image": {"type": "string"},
-          "shipping": {"type": "string"},
-          "shipping_cost": {"type": "string"},
-          "tax": {"type": "string"},
-          "size_chart": {"type": "string"},
           "errors": {"type": "object"}
         },
         "required": [
           "id",
           "author",
           "price",
-          "size",
-          "description",
+          "sizes",
           "name",
           "likes_count",
-          "product_image",
-          "shipping",
-          "shipping_cost",
-          "tax",
-          "size_chart"
+          "product_image"
         ]
       }
     },

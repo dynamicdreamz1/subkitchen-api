@@ -36,14 +36,9 @@ class ProductListSerializer
       author: (product.author ? product.author.name : nil),
       price: product.product_template.price,
       sizes: product.product_template.size,
-      description: product.description,
       name: product.name,
       likes_count: product.likes_count,
       product_image: product_image(product),
-      shipping: Config.shipping_info,
-      shipping_cost: Config.shipping_cost,
-      tax: Config.tax,
-      size_chart: product.product_template.size_chart_url,
       variants: variants(product)
     }
   end
