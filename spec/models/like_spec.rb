@@ -20,4 +20,10 @@ RSpec.describe Like, type: :model do
       2.times { create(:like, likeable: product, user: artist) }
     end.to raise_error(ActiveRecord::RecordInvalid)
   end
+
+  it 'should have attributes' do
+    like = Like.create
+    expect(like.errors[:likeable_type].present?).to eq(true)
+    expect(like.errors[:likeable_id].present?).to eq(true)
+  end
 end

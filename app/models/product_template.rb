@@ -15,6 +15,7 @@ class ProductTemplate < ActiveRecord::Base
 
   default_scope { where(is_deleted: false) }
   scope :deleted, -> { unscoped.where(is_deleted: true) }
+
   validates :template_image, image: { width: 1024, height: 1024 }, presence: true
   validates :template_mask, image: { width: 1024, height: 1024 }, presence: true
   validates :price, presence: true

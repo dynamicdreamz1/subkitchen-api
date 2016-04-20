@@ -11,4 +11,10 @@ RSpec.describe Comment, type: :model do
   it 'should return comments by given product' do
     expect(Comment.product(@product1.id)).to contain_exactly(@p1)
   end
+
+  it 'should have product and user' do
+    comment = Comment.create
+    expect(comment.errors[:product_id].present?).to eq(true)
+    expect(comment.errors[:user_id].present?).to eq(true)
+  end
 end

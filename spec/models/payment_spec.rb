@@ -21,4 +21,11 @@ RSpec.describe Payment, type: :model do
       expect(Payment.pending).to contain_exactly(pending)
     end
   end
+
+  it 'should have attributes' do
+    payment = Payment.create
+    expect(payment.errors[:payable_id].present?).to eq(true)
+    expect(payment.errors[:payable_type].present?).to eq(true)
+    expect(payment.errors[:payment_type].present?).to eq(true)
+  end
 end

@@ -22,4 +22,14 @@ RSpec.describe Product, type: :model do
 
     expect{ ProductWish.find(product_wish_id) }.to raise_error(ActiveRecord::RecordNotFound)
   end
+
+  it 'should have attributes' do
+    product = Product.new
+    product.save
+
+    expect(product.errors[:image].present?).to eq(true)
+    expect(product.errors[:name].present?).to eq(true)
+    expect(product.errors[:description].present?).to eq(true)
+    expect(product.errors[:product_template_id].present?).to eq(true)
+  end
 end

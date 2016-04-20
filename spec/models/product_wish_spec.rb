@@ -15,4 +15,11 @@ RSpec.describe ProductWish, type: :model do
       create(:product_wish, user: @user, wished_product: @product)
     end.to raise_error(ActiveRecord::RecordInvalid)
   end
+
+  it 'should have attributes' do
+    wish = ProductWish.create
+
+    expect(wish.errors[:wished_product_id].present?).to eq(true)
+    expect(wish.errors[:user_id].present?).to eq(true)
+  end
 end

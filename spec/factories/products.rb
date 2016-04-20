@@ -12,7 +12,6 @@ FactoryGirl.define do
     author { create(:user) }
     uuid SecureRandom.uuid
 
-
     trait :published do
       published true
       author { create(:user, artist: true, status: :verified) }

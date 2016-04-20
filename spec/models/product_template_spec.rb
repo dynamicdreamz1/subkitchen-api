@@ -13,4 +13,15 @@ RSpec.describe ProductTemplate, type: :model do
       expect(product2.price).to eq(123)
     end
   end
+
+  it 'should have attributes' do
+    template = ProductTemplate.create
+
+    expect(template.errors[:template_image].present?).to eq(true)
+    expect(template.errors[:template_mask].present?).to eq(true)
+    expect(template.errors[:price].present?).to eq(true)
+    expect(template.errors[:size].present?).to eq(true)
+    expect(template.errors[:profit].present?).to eq(true)
+    expect(template.errors[:product_type].present?).to eq(true)
+  end
 end
