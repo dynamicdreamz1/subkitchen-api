@@ -48,6 +48,24 @@ module Products
         ProductSerializer.new(product).as_json
       end
 
+      desc 'update product'
+      params do
+        optional :published, type: Boolean
+        optional :tags, type: Array[String]
+        optional :description, type: String
+        optional :name, type: String
+      end
+      put ':id' do
+        authenticate!
+        product = UpdateProduct.new(params, current_user).call
+        if product.valid?
+          product.save
+        else
+          error!({ errors: product.errors.messages }, 422)
+        end
+        ProductSerializer.new(product).as_json
+      end
+
       desc 'remove product'
       params do
         optional :uuid, type: String
