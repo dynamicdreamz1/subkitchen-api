@@ -39,11 +39,17 @@ class ProductListSerializer
       description: product.description,
       name: product.name,
       likes_count: product.likes_count,
-      product_image: product.image_url,
+      product_image: product_image(product),
       shipping: Config.shipping_info,
       shipping_cost: Config.shipping_cost,
       tax: Config.tax,
       size_chart: product.product_template.size_chart_url
     }
+  end
+
+
+  def product_image(product)
+    img_key = product.preview ? :preview : :image
+    Figaro.env.app_host.to_s + Refile.attachment_url(product, img_key, :fill, 400, 400, format: :png)
   end
 end
