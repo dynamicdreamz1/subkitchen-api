@@ -12,6 +12,7 @@ describe Products::Api, type: :request do
                       product_template_id: product_template.id,
                       description: 'description',
                       image: image,
+                      preview: image,
                       tags: ['cats'],
                       published: true }
           post '/api/v1/products', @params, auth_header_for(artist)
@@ -54,6 +55,7 @@ describe Products::Api, type: :request do
                       product_template_id: product_template.id,
                       description: 'description',
                       image: image,
+                      preview: image,
                       tags: ['cats'],
                       published: false }
           post '/api/v1/products', @params, auth_header_for(user)
@@ -91,6 +93,7 @@ describe Products::Api, type: :request do
                                        product_template_id: product_template.id,
                                        description: 'description',
                                        image: image,
+                                       preview: image,
                                        tags: ['cats'],
                                        published: true }, auth_header_for(user)
 

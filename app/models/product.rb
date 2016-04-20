@@ -19,6 +19,7 @@ class Product < ActiveRecord::Base
   after_save SetPublishedAt.new, if: :published_changed?
 
   attachment :image, content_type: %w(image/jpeg image/png image/jpg)
+  attachment :preview, content_type: %w(image/jpeg image/png image/jpg)
   attachment :design, content_type: 'application/pdf'
 
   acts_as_taggable

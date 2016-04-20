@@ -31,12 +31,13 @@ module Products
 
       desc 'create product'
       params do
-        requires :name, type: String
-        requires :product_template_id, type: Integer
-        requires :description, type: String
-        requires :image, type: File
-        requires :published, type: Boolean
-        requires :tags, type: Array[String]
+        optional :name, type: String
+        optional :product_template_id, type: Integer
+        optional :description, type: String
+        optional :image, type: File
+        optional :preview, type: File
+        optional :published, type: Boolean
+        optional :tags, type: Array[String]
       end
       post do
         product = CreateProduct.new(params, current_user).call

@@ -12,6 +12,7 @@ describe Products::Api, type: :request do
                       product_template_id: product_template.id,
                       description: 'description',
                       image: image,
+                      preview: image,
                       tags: ['cats'],
                       published: false }
           post '/api/v1/products', @params
@@ -49,6 +50,7 @@ describe Products::Api, type: :request do
                                      product_template_id: product_template.id,
                                      description: 'description',
                                      image: image,
+                                     preview: image,
                                      tags: ['cats'],
                                      published: true
 

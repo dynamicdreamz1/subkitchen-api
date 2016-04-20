@@ -16,6 +16,7 @@ class CreateProduct
                             product_template_id: @params.product_template_id,
                             description: @params.description,
                             image: image,
+                            preview: preview,
                             published: @params.published,
                             published_at: (@params.published ? DateTime.now : nil)
                            )
@@ -27,5 +28,9 @@ class CreateProduct
 
   def image
     ActionDispatch::Http::UploadedFile.new(@params.image)
+  end
+
+  def preview
+    ActionDispatch::Http::UploadedFile.new(@params.preview)
   end
 end
