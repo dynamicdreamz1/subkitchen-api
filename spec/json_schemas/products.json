@@ -10,6 +10,8 @@
           "author": {"type": ["string", "null"]},
           "price": {"type": "string"},
           "sizes": {"type": "array"},
+          "description": {"type": "string"},
+          "description": {"type": "string"},
           "name": {"type": "string"},
           "likes_count": {"type": "integer"},
           "product_image": {"type": "string"},
@@ -20,6 +22,7 @@
           "author",
           "price",
           "sizes",
+          "description",
           "name",
           "likes_count",
           "product_image"
