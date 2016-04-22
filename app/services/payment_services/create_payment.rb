@@ -19,6 +19,7 @@ class CreatePayment
     order.update(order_status: 'payment pending')
     return false if already_paid?
     payment = Payment.create!(payable: order, payment_type: payment_type)
+    RedemptionsCounter.perform_async(order.coupon.id) if order.coupon
     if payment_type == 'stripe'
       payment.update(payment_token: payment_token)
       payment.save

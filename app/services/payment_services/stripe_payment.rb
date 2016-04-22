@@ -24,7 +24,6 @@ class StripePayment
     FindOrCreateInvoice.new(order).call
     order.update_attributes(purchased: true, purchased_at: DateTime.now, active: false)
     payment.update_attribute(:payment_status, 'completed')
-    RedemptionsCounter.perform_async(order.coupon.id) if order.coupon
     SalesAndEarningsCounter.perform_async(order.id)
   rescue Stripe::InvalidRequestError => e
     { errors: { base: [e.message] } }

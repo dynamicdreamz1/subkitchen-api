@@ -5,7 +5,6 @@ class PaypalPayment
     send_order_and_create_invoice
     NotifyDesigners.new(order).call
     SalesAndEarningsCounter.perform_async(order.id)
-    RedemptionsCounter.perform_async(order.coupon.id) if order.coupon
     payment
   end
 
