@@ -1,6 +1,6 @@
 module Coupons
   class Api < Grape::API
-    desc ''
+    desc 'Validates coupon and recalculates order with discount'
     params do
       requires :order_uuid, type: String
       requires :coupon_code, type: String

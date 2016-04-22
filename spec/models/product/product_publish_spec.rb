@@ -10,11 +10,10 @@ RSpec.describe Product, type: :model do
 
     it 'should set published at' do
       new_time = Time.local(2008, 9, 1, 12, 0, 0)
-      Timecop.freeze(new_time)
-
-      product = create(:product, :published)
-
-      expect(product.published_at).to eq(new_time)
+      Timecop.freeze(new_time) do
+        product = create(:product, :published)
+        expect(product.published_at).to eq(new_time)
+      end
     end
 
     it 'should raise error when artist false' do

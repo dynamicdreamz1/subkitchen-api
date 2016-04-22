@@ -3,7 +3,7 @@ FactoryGirl.define do
     description 'Coupon'
     code SecureRandom.hex(3)
     discount 20
-    valid_from DateTime.now
+    valid_from DateTime.now - 1.day
     valid_until DateTime.now + 2.days
 
     trait :percentage do

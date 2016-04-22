@@ -45,10 +45,10 @@ describe Payments::Api, type: :request do
     context 'with time freeze' do
       before(:each) do
         @new_time = Time.local(2008, 9, 1, 12, 0, 0)
-        Timecop.freeze(@new_time)
-
-        post "/api/v1/orders/#{order.uuid}/payment", params
-        order.reload
+        Timecop.freeze(@new_time) do
+          post "/api/v1/orders/#{order.uuid}/payment", params
+          order.reload
+        end
       end
 
       it 'should set order purchased at' do
