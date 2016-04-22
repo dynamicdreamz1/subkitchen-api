@@ -15,9 +15,10 @@ RSpec.describe Order, type: :model do
       let(:payment) { create(:payment, payable: order) }
 
       it 'should change status to "processing" when order items have no design' do
+        create(:config, name: 'designers', value: '')
         create(:order_item, order: order, product: no_design_product)
 
-        ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
+        PaypalPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
 
         expect(order.order_status).to eq('processing')
       end
@@ -25,7 +26,7 @@ RSpec.describe Order, type: :model do
       it 'should change status to "cooking" when all order items have design' do
         create(:order_item, order: order, product: design_product)
 
-        ConfirmPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
+        PaypalPayment.new(payment, Hashie::Mash.new(payment_status: 'Completed')).call
 
         expect(order.order_status).to eq('cooking')
       end

@@ -22,7 +22,7 @@ describe Products::Api, type: :request do
     end
 
     it 'should return payment link to paypal' do
-      expect(json['url']).to eq(PaypalPayment.new(@payment, '').call)
+      expect(json['url']).to eq(PaypalPaymentRequest.new(@payment, '').call)
       expect(response).to match_response_schema('paypal')
       expect(response).to have_http_status(:success)
     end

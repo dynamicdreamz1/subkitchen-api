@@ -4,6 +4,7 @@ class Order < ActiveRecord::Base
   has_one :payment, as: :payable
   has_many :products, through: :order_items
   has_one :invoice
+  belongs_to :coupon
 
   after_create SetTaxAndShipping.new
 

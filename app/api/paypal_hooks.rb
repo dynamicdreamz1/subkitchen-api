@@ -9,8 +9,7 @@ module PaypalHooks
       payment = Payment.find(params.invoice)
       if params.payment_status == 'Completed'
         if CheckForFraud.new(params, payment).call
-          NotifyDesigners.new(payment.payable).call
-          ConfirmPayment.new(payment, params).call
+          PaypalPayment.new(payment, params).call
         else
           MalformedPaymentNotifier.notify(AdminUser.pluck(:email), payment_id: payment.id).deliver_later
           payment.update(payment_status: 'malformed')

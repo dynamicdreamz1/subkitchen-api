@@ -15,7 +15,6 @@ class StripePayment
   def pay
     customer = Stripe::Customer.create email: order.email,
                                        card: payment.payment_token
-
     Stripe::Charge.create customer: customer.id,
                           amount: (order.total_cost * 100).to_i,
                           currency: 'usd',
@@ -25,6 +24,8 @@ class StripePayment
     FindOrCreateInvoice.new(order).call
     order.update_attributes(purchased: true, purchased_at: DateTime.now, active: false)
     payment.update_attribute(:payment_status, 'completed')
+    RedemptionsCounter.perform_async(order.coupon.id) if order.coupon
+    SalesAndEarningsCounter.perform_async(order.id)
   rescue Stripe::InvalidRequestError => e
     { errors: { base: [e.message] } }
   rescue Stripe::CardError => e

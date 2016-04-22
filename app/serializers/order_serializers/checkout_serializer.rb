@@ -11,6 +11,7 @@ class CheckoutSerializer
                    tax: order.tax,
                    tax_cost: order.tax_cost,
                    total_cost: order.total_cost,
+                   discount: order.discount,
                    items: items,
                    pdf: Figaro.env.app_host + "api/v1/invoices?uuid=#{order.uuid}" } }
     data.merge(shipping_address) if order.user

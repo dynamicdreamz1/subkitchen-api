@@ -40,6 +40,7 @@ describe Products::Api, type: :request do
 
     context 'after delete' do
       before(:each) do
+        Order.destroy_all
         @order = create(:order, user: user, shipping_cost: 7.00, tax: 6, subtotal_cost: 10, total_cost: 17.6, tax_cost: 0.6)
         item = create(:order_item, order: @order, product: product, price: 10)
 

@@ -1,31 +1,40 @@
 class PaypalPayment
   def call
-    url
+    update_order
+    update_payment
+    send_order_and_create_invoice
+    NotifyDesigners.new(order).call
+    SalesAndEarningsCounter.perform_async(order.id)
+    RedemptionsCounter.perform_async(order.coupon.id) if order.coupon
+    payment
   end
 
   private
 
-  def initialize(payment, return_path)
+  attr_accessor :payment, :params, :order
+
+  def initialize(payment, params)
     @payment = payment
-    @return_path = return_path
+    @params = params
+    @order = payment.payable
   end
 
-  def url
-    values = {
-      business: Figaro.env.paypal_seller,
-      cmd: '_cart',
-      upload: 1,
-      return: Figaro.env.frontend_host + @return_path.to_s,
-      invoice: @payment.id,
-      notify_url: Figaro.env.app_host + '/api/v1/payment_notification'
-    }
-    @payment.payable.order_items.each_with_index do |item, index|
-      next unless item.quantity > 0
-      values.merge!("amount_#{index + 1}" => item.price,
-                    "item_name_#{index + 1}" => item.product.name,
-                    "item_number_#{index + 1}" => item.id,
-                    "quantity_#{index + 1}" => item.quantity)
+  def send_order_and_create_invoice
+    if CheckOrderIfReady.new(order).call
+      SendOrder.new(order).call
+      FindOrCreateInvoice.new(order).call
+    else
+      order.update(order_status: 'processing')
     end
-    'https://www.sandbox.paypal.com/cgi-bin/webscr?' + values.to_query
+  end
+
+  def update_order
+    order.update(purchased_at: DateTime.now,
+                 purchased: true,
+                 active: false)
+  end
+
+  def update_payment
+    payment.update(payment_token: params.txn_id, payment_status: 'completed')
   end
 end

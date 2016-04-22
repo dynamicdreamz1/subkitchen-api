@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160420141603) do
+ActiveRecord::Schema.define(version: 20160421114241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -181,6 +181,8 @@ ActiveRecord::Schema.define(version: 20160420141603) do
     t.boolean  "active",                                default: true
     t.string   "email"
     t.integer  "order_status",                          default: 0
+    t.integer  "coupon_id"
+    t.decimal  "discount",      precision: 8, scale: 2
   end
 
   create_table "payments", force: :cascade do |t|

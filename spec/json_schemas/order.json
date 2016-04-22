@@ -11,6 +11,7 @@
         "tax": {"type": "string"},
         "tax_cost": {"type": "string"},
         "total_cost": {"type": "string"},
+        "discount": {"type": ["string", "null"]},
         "items": {
           "id": "items",
           "type": "array",
@@ -35,6 +36,7 @@
         "tax",
         "tax_cost",
         "total_cost",
+        "discount",
         "items"
       ]
     }

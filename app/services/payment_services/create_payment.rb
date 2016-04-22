@@ -24,7 +24,7 @@ class CreatePayment
       payment.save
       StripePayment.new(payment).call
     else
-      url = PaypalPayment.new(payment, return_path).call
+      url = PaypalPaymentRequest.new(payment, return_path).call
       { url: url }
     end
   end
