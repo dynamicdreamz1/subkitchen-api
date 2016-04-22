@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160422101444) do
+ActiveRecord::Schema.define(version: 20160422135927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,6 +147,12 @@ ActiveRecord::Schema.define(version: 20160422101444) do
 
   add_index "likes", ["likeable_id", "likeable_type"], name: "index_likes_on_likeable_id_and_likeable_type", using: :btree
   add_index "likes", ["uuid", "likeable_id", "likeable_type"], name: "index_likes_on_uuid_and_likeable_id_and_likeable_type", unique: true, using: :btree
+
+  create_table "newsletter_receivers", force: :cascade do |t|
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "order_items", force: :cascade do |t|
     t.integer  "order_id"

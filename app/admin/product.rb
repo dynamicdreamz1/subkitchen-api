@@ -1,4 +1,5 @@
 ActiveAdmin.register Product do
+  config.sort_order = 'id_asc'
   permit_params :design, :name, :author_id, :description, :template_variant_id, :image, :preview, :published, :published_at, :tag_list
   config.batch_actions = false
   actions :all, except: :destroy

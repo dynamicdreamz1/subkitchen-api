@@ -1,5 +1,6 @@
 ActiveAdmin.register User do
   actions :index, :show, :new, :create
+  config.sort_order = 'id_asc'
 
   scope :all
   scope :artists
@@ -61,6 +62,7 @@ ActiveAdmin.register User do
   end
 
   index do
+    column(:id)
     column('Avatar') do |user|
       attachment_image_tag(user, :profile_image, :fit, 50, 50)
     end

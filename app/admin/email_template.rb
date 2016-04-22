@@ -5,6 +5,7 @@ ActiveAdmin.register EmailTemplate do
   actions :index, :edit, :update, :show
 
   index do
+    column(:id)
     column(:name)
     column 'Description' do |template|
       truncate(template.description, length: 150, escape: false)

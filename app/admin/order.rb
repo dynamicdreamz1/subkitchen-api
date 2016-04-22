@@ -1,4 +1,5 @@
 ActiveAdmin.register Order do
+  config.sort_order = 'id_asc'
   actions :index, :show
 
   filter :order_status, as: :select, collection: ['creating', 'completed', 'payment pending', 'cooking', 'processing']
@@ -12,6 +13,7 @@ ActiveAdmin.register Order do
   end
 
   index do
+    column(:id)
     column('Date', &:created_at)
     column(:order_status)
     column(:total_cost)

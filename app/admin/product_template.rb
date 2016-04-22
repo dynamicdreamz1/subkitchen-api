@@ -1,4 +1,5 @@
 ActiveAdmin.register ProductTemplate do
+  config.sort_order = 'id_asc'
   permit_params :price,
     :product_type,
     :size_chart,
@@ -28,6 +29,7 @@ ActiveAdmin.register ProductTemplate do
   end
 
   index do
+    column(:id)
     column('Image') do |template|
       attachment_image_tag(template, :template_image, :fit, 50, 50)
     end

@@ -1,4 +1,5 @@
 ActiveAdmin.register Payment do
+  config.sort_order = 'id_asc'
   config.batch_actions = false
   actions :index, :show
 
@@ -13,6 +14,7 @@ ActiveAdmin.register Payment do
   filter :payment_token_cont, as: :string, label: 'Token'
 
   index do
+    column(:id)
     column('Order/Verification') { |payment| link_to payment.payable_type, "/admin/#{payment.payable_type.downcase}s/#{payment.payable_id}" }
     column(:created_at)
     column(:payment_status)
