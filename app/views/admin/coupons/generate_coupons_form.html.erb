@@ -1,0 +1,14 @@
+<%= semantic_form_for @coupon, url: generate_coupons_admin_coupons_path, html: { method: :post } do |f| %>
+    <%= f.inputs do %>
+        <%= f.input :amount, input_html: { value: 100 } %>
+        <%= f.input :discount, input_html: { value: 50 } %>
+        <%= f.input :percentage, label: 'Coupon Type', as: :radio, collection: { 'Percentage': true, 'Amount': false } %>
+        <%= f.input :description, input_html: { value: 'Discount 50%' } %>
+        <%= f.input :redemption_limit, input_html: { value: 100 } %>
+        <%= f.input :valid_from, as: :date_time_picker, picker_options: { value: DateTime.now } %>
+        <%= f.input :valid_until, as: :date_time_picker, picker_options: { value: DateTime.now + 1.month }  %>
+    <% end %>
+    <%= f.actions do %>
+        <%= f.action :submit, as: :button %>
+    <% end %>
+<% end %>
