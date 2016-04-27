@@ -1,6 +1,6 @@
 ActiveAdmin.register Product do
   config.sort_order = 'id_asc'
-  permit_params :design, :name, :author_id, :description, :template_variant_id, :image, :preview, :published, :published_at, :tag_list
+  permit_params :design, :name, :author_id, :description, :product_template_id, :image, :preview, :published, :published_at, :tag_list
   config.batch_actions = false
   actions :all, except: :destroy
 
@@ -54,7 +54,7 @@ ActiveAdmin.register Product do
         f.input :name
         f.input :description
         f.input :author, collection: User.artists
-        t.input :product_template
+        f.input :product_template, collection: Hash[ProductTemplate.all.map{ |t| [t.product_type, t.id] }]
         f.input :published, input_html: { value: true }, as: :hidden
         f.input :published_at, input_html: { value: DateTime.now }, as: :hidden
         f.input :tag_list, as: :tags
