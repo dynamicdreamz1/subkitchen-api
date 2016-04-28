@@ -42,7 +42,6 @@ class Api < Grape::API
   mount Promoters::Api
   mount Comments::Api
   mount AccountsOrders::Api
-  mount AccountsDesigns::Api
   mount ProductTemplates::Api
   mount Invoices::Api
   mount Followers::Api

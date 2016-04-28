@@ -34,6 +34,7 @@ class Product < ActiveRecord::Base
   scope :with_product_type, -> (type) { joins(:product_template).where(product_templates: {product_type: type}) }
   scope :with_price_range, -> (range) { where(price: range[0]..range[1]) }
   scope :with_tags, -> (tags) { tagged_with(tags, any: true) }
+  scope :with_author, -> (author_id) { where(author_id: author_id) }
   scope :sorted_by, lambda { |sort_option|
                       direction = (sort_option =~ /asc$/) ? 'ASC' : 'DESC'
                       case sort_option.to_s
