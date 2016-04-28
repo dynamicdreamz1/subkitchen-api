@@ -35,6 +35,8 @@ class ProductListSerializer
       id: product.id,
       author: (product.author ? product.author.name : nil),
       price: product.product_template.price,
+      tags: product.tag_list,
+      published: product.published,
       sizes: product.product_template.size,
       name: product.name,
       likes_count: product.likes_count,
