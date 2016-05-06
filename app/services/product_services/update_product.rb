@@ -5,16 +5,17 @@ class UpdateProduct
 
   private
 
-  attr_reader :params, :user
+  attr_reader :params, :user, :id
 
-  def initialize(params, user = nil)
+  def initialize(id, params, user = nil)
+    @id = id
     @params = params
     @user = user
   end
 
   def update_product
-      product = Product.find(params.id)
-      product.published = params.published if params.published
+      product = Product.find(id)
+      product.published = params.published unless params.published.nil?
       product.description = params.description if params.description
       product.name = params.name if params.name
       update_tags(product) if params.tags

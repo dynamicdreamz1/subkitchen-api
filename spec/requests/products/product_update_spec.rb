@@ -5,10 +5,12 @@ describe Products::Api, type: :request do
     describe 'update product' do
       before(:each) do
         @product = create(:product, author: artist)
-        @params = {published: true,
-                   tags: ['Space'],
-                   description: 'New Description',
-                   name: 'NewName' }
+        @params = {id: @product.id,
+                   product: {
+                       published: true,
+                       tags: ['Space'],
+                       description: 'New Description',
+                       name: 'NewName' }}
         put "/api/v1/products/#{@product.id}", @params, auth_header_for(artist)
         @product.reload
       end
@@ -21,10 +23,10 @@ describe Products::Api, type: :request do
       end
 
       it 'should update product' do
-        expect(@product.published).to eq(@params[:published])
-        expect(@product.description).to eq(@params[:description])
-        expect(@product.name).to eq(@params[:name])
-        expect(@product.tag_list).to eq(@params[:tags])
+        expect(@product.published).to eq(@params[:product][:published])
+        expect(@product.description).to eq(@params[:product][:description])
+        expect(@product.name).to eq(@params[:product][:name])
+        expect(@product.tag_list).to eq(@params[:product][:tags])
       end
     end
   end

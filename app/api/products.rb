@@ -53,14 +53,17 @@ module Products
 
       desc 'update product'
       params do
-        optional :published, type: Boolean
-        optional :tags, type: Array[String]
-        optional :description, type: String
-        optional :name, type: String
+        requires :id, type: Integer
+        requires :product, type: Hash do
+          optional :published, type: Boolean
+          optional :tags, type: Array[String]
+          optional :description, type: String
+          optional :name, type: String
+        end
       end
       put ':id' do
         authenticate!
-        product = UpdateProduct.new(params, current_user).call
+        product = UpdateProduct.new(params[:id], params[:product], current_user).call
         if product.valid?
           product.save
         else
