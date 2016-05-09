@@ -64,11 +64,7 @@ module Products
       put ':id' do
         authenticate!
         product = UpdateProduct.new(params[:id], params[:product], current_user).call
-        if product.valid?
-          product.save
-        else
-          error!({ errors: product.errors.messages }, 422)
-        end
+        status(422) unless product.save
         ProductSerializer.new(product).as_json
       end
 
