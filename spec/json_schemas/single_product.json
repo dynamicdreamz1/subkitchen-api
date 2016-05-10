@@ -7,6 +7,7 @@
         "id": {"type": ["integer", "null"]},
         "is_deleted": {"type": "boolean"},
         "author": {"type": ["string", "null"]},
+        "author_id": {"type": ["integer", "null"]},
         "price": {"type": "string"},
         "sizes": {"type": "array"},
         "description": {"type": "string"},
@@ -35,6 +36,7 @@
         "shipping",
         "shipping_cost",
         "tax",
+        "author_id",
         "size_chart"
       ]
     }
