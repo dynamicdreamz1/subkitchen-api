@@ -65,12 +65,14 @@ ActiveAdmin.register Order do
         end
       end
 
-      tab 'Payment' do
-        attributes_table do
-          row('Type') { order.payment.payment_type }
-          row('Token') { order.payment.payment_token }
-          row('Status') { order.payment.payment_status }
-          row('Created At') { order.payment.created_at }
+      if order.payment
+        tab 'Payment' do
+          attributes_table do
+            row('Type') { order.payment.payment_type }
+            row('Token') { order.payment.payment_token }
+            row('Status') { order.payment.payment_status }
+            row('Created At') { order.payment.created_at }
+          end
         end
       end
     end
