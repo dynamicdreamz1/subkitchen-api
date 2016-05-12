@@ -57,7 +57,8 @@ class Product < ActiveRecord::Base
       :sorted_by,
       :with_price_range,
       :with_product_type,
-      :with_tags
+      :with_tags,
+      :with_author
     ]
   )
 
