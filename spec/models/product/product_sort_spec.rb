@@ -7,7 +7,7 @@ RSpec.describe Product, type: :model do
     end
 
     it 'should sort by created_at desc' do
-      sorted_products = Product.sorted_by('created_at_desc')
+      sorted_products = Product.sort_by('created_at_desc')
 
       expect(sorted_products[0]).to eq(@p1)
       expect(sorted_products[1]).to eq(@p2)
@@ -15,7 +15,7 @@ RSpec.describe Product, type: :model do
     end
 
     it 'should sort by created_at asc' do
-      sorted_products = Product.sorted_by('created_at_asc')
+      sorted_products = Product.sort_by('created_at_asc')
 
       expect(sorted_products[0]).to eq(@p3)
       expect(sorted_products[1]).to eq(@p2)
@@ -23,7 +23,7 @@ RSpec.describe Product, type: :model do
     end
 
     it 'should sort by name desc' do
-      sorted_products = Product.sorted_by('name_desc')
+      sorted_products = Product.sort_by('name_desc')
 
       expect(sorted_products[0]).to eq(@p2)
       expect(sorted_products[1]).to eq(@p3)
@@ -31,7 +31,7 @@ RSpec.describe Product, type: :model do
     end
 
     it 'should sort by name asc' do
-      sorted_products = Product.sorted_by('name_asc')
+      sorted_products = Product.sort_by('name_asc')
 
       expect(sorted_products[0]).to eq(@p1)
       expect(sorted_products[1]).to eq(@p3)
@@ -39,7 +39,7 @@ RSpec.describe Product, type: :model do
     end
 
     it 'should sort by price desc' do
-      sorted_products = Product.sorted_by('price_desc')
+      sorted_products = Product.sort_by('price_desc')
 
       expect(sorted_products[0]).to eq(@p1)
       expect(sorted_products[1]).to eq(@p3)
@@ -47,7 +47,7 @@ RSpec.describe Product, type: :model do
     end
 
     it 'should sort by price asc' do
-      sorted_products = Product.sorted_by('price_asc')
+      sorted_products = Product.sort_by('price_asc')
 
       expect(sorted_products[0]).to eq(@p2)
       expect(sorted_products[1]).to eq(@p3)
@@ -55,7 +55,7 @@ RSpec.describe Product, type: :model do
     end
 
     it 'should sort by best sellers desc' do
-      sorted_products = Product.sorted_by('best_sellers')
+      sorted_products = Product.sort_by('best_sellers')
 
       expect(sorted_products[0]).to eq(@p3)
       expect(sorted_products[1]).to eq(@p2)

@@ -6,18 +6,19 @@ module Products
         optional :page, type: Integer, default: 1
         optional :per_page, type: Integer, default: 30
         optional :sorted_by, type: String, default: 'created_at_desc'
-        optional :with_product_type, type: Array[String]
-        optional :with_price_range, type: Array[Integer]
-        optional :with_tags, type: Array[String]
+        optional :product_type, type: Array[String]
+        optional :price_range, type: Array[Integer]
+        optional :tags, type: Array[String]
         optional :author_id, type: Integer
       end
       get do
-        filterrific = Filterrific::ParamSet.new(Product, sorted_by: params.sorted_by,
-                                                         with_price_range: params.with_price_range,
-                                                         with_product_type: params.with_product_type,
-                                                         with_tags: params.with_tags,
+
+        filterrific = Filterrific::ParamSet.new(Product, sort_by: params.sorted_by,
+                                                         with_price_range: params.price_range,
+                                                         with_product_type: params.product_type,
+                                                         with_tags: params.tags,
                                                          with_author: params.author_id)
-        products = Product.includes(product_template: [:template_variants]).filterrific_find(filterrific).page(params.page).per(params.per_page)
+        products = Product.includes(product_template: [:template_variants]).published_all.filterrific_find(filterrific).page(params.page).per(params.per_page)
         if products
           ProductListSerializer.new(products).as_json
         else

@@ -20,5 +20,10 @@ FactoryGirl.define do
     country 'PL'
     phone '792541588'
     email_confirmed true
+
+    trait :artist do
+      artist true
+      status :verified
+    end
   end
 end

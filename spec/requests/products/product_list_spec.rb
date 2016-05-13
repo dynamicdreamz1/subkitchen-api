@@ -7,12 +7,12 @@ describe Products::Api, type: :request do
     describe 'list of products' do
       context 'without page params' do
         before(:each) do
-          2.times { create(:product) }
+          2.times { create(:product, :published) }
           get '/api/v1/products'
         end
 
         it 'should return first page of products' do
-          serialized_products = ProductListSerializer.new(Product.sorted_by('created_at_desc').page(1)).as_json
+          serialized_products = ProductListSerializer.new(Product.sort_by('created_at_desc').page(1)).as_json
           expect(response.body).to eq(serialized_products.to_json)
           expect(response).to have_http_status(:success)
           expect(response).to match_response_schema('products')
@@ -21,11 +21,10 @@ describe Products::Api, type: :request do
 
       context 'with page params' do
         before(:each) do
-          create(:product)
-          create(:product)
+          2.times { create(:product, :published) }
           @params = { page: 2, per_page: 1 }
           get '/api/v1/products', @params
-          @products = Product.sorted_by('created_at_desc').page(@params[:page]).per(@params[:per_page])
+          @products = Product.sort_by('created_at_desc').page(@params[:page]).per(@params[:per_page])
         end
 
         it 'should return page of products' do

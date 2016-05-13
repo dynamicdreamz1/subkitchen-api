@@ -35,26 +35,26 @@ class Product < ActiveRecord::Base
   scope :with_price_range, -> (range) { where(price: range[0]..range[1]) }
   scope :with_tags, -> (tags) { tagged_with(tags, any: true) }
   scope :with_author, -> (author_id) { where(author_id: author_id) }
-  scope :sorted_by, lambda { |sort_option|
+  scope :sort_by, lambda { |sort_option|
                       direction = (sort_option =~ /asc$/) ? 'ASC' : 'DESC'
                       case sort_option.to_s
                       when /^created_at_/
                         Product.order("created_at #{direction}")
                       when /^name/
-                        Product.order("name #{direction}")
+                        Product.order("lower(name) #{direction}")
                       when /^price_/
                         Product.order("price #{direction}")
                       when /^best_sellers/
                         Product.order("order_items_count #{direction}")
                       else
-                        raise(ArgumentError, 'Invalid sort option')
+                        raise(ArgumentError, "#{sort_option}")
                       end
                     }
 
   filterrific(
-    default_filter_params: { sorted_by: 'created_at_desc' },
+    default_filter_params: { sort_by: 'created_at_desc' },
     available_filters: [
-      :sorted_by,
+      :sort_by,
       :with_price_range,
       :with_product_type,
       :with_tags,
