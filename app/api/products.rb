@@ -7,7 +7,7 @@ module Products
         optional :per_page, type: Integer, default: 30
         optional :sorted_by, type: String, default: 'created_at_desc'
         optional :product_type, type: Array[String]
-        optional :price_range, type: Array[Integer]
+        optional :price_range, type: Array[String]
         optional :tags, type: Array[String]
         optional :author_id, type: Integer
       end

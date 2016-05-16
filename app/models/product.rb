@@ -32,7 +32,7 @@ class Product < ActiveRecord::Base
   scope :published, -> (user) { where(published: true, author: user) }
   scope :published_weekly, -> (user) { where(published: true, author: user, published_at: 1.week.ago..DateTime.now) }
   scope :with_product_type, -> (type) { joins(:product_template).where(product_templates: {product_type: type}) }
-  scope :with_price_range, -> (range) { where(price: range[0]..range[1]) }
+  scope :with_price_range, -> (range) { where(price: range[0].split(', ').map(&:to_i)[0]...range[0].split(', ').map(&:to_i)[1]) }
   scope :with_tags, -> (tags) { tagged_with(tags, any: true) }
   scope :with_author, -> (author_id) { where(author_id: author_id) }
   scope :sort_by, lambda { |sort_option|

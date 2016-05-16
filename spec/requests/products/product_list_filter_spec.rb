@@ -46,7 +46,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should filter products with price range' do
-        get '/api/v1/products', price_range: [0, 101]
+        get '/api/v1/products', price_range: ['0, 101']
 
         products = Product.sort_by('created_at_desc').where(id: [@p1.id])
         products = products.page(1).per(3)
