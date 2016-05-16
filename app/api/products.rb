@@ -1,5 +1,14 @@
 module Products
   class Api < Grape::API
+
+    helpers do
+      def price_range(range)
+        return unless range
+        array_range = range[0].split(', ').map(&:to_i)
+        Range.new(*array_range)
+      end
+    end
+
     resources :products do
       desc 'return all products'
       params do
@@ -12,9 +21,8 @@ module Products
         optional :author_id, type: Integer
       end
       get do
-
         filterrific = Filterrific::ParamSet.new(Product, sort_by: params.sorted_by,
-                                                         with_price_range: params.price_range,
+                                                         with_price_range: price_range(params.price_range),
                                                          with_product_type: params.product_type,
                                                          with_tags: params.tags,
                                                          with_author: params.author_id)

@@ -20,7 +20,7 @@ RSpec.describe Product, type: :model do
     end
 
     it 'should filter out products by product type' do
-      products = Product.with_price_range(['0, 150'])
+      products = Product.with_price_range(0...150)
 
       expect(products).to contain_exactly(@p2)
     end
