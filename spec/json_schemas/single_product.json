@@ -11,12 +11,14 @@
         "price": {"type": "string"},
         "sizes": {"type": "array"},
         "description": {"type": "string"},
+        "product_template_id": {"type": "integer"},
         "name": {"type": "string"},
         "likes_count": {"type": "integer"},
         "promoters": {"type": "array"},
         "product_type": {"type": "string"},
         "tags": {"type": "array"},
-        "product_image": {"type": "string"},
+        "image_url": {"type": "string"},
+        "preview_url": {"type": "string"},
         "shipping": {"type": "string"},
         "shipping_cost": {"type": "string"},
         "tax": {"type": "string"},
@@ -37,7 +39,8 @@
         "shipping_cost",
         "tax",
         "author_id",
-        "size_chart"
+        "size_chart",
+        "product_template_id"
       ]
     }
   },

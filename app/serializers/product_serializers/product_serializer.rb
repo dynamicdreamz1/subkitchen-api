@@ -10,6 +10,7 @@ class ProductSerializer
         author_id: (product.author ? product.author.id : nil),
         price: product.price,
         sizes: product.product_template.size,
+        product_template_id: product.product_template.id,
         description: product.description,
         name: product.name,
         product_type: product.product_template.product_type,
@@ -18,7 +19,8 @@ class ProductSerializer
         promoters: product.likes.order('created_at DESC').pluck(:user_id).uniq.compact,
         comments: product.comments.order('created_at DESC').pluck(:id).uniq.compact,
         comments_count: product.comments.count,
-        product_image: product_image,
+        image_url: product_image(:image),
+        preview_url: product_image(:preview),
         shipping: Config.shipping_info,
         shipping_cost: Config.shipping_cost,
         tax: Config.tax,
@@ -39,8 +41,7 @@ class ProductSerializer
     @product = product
   end
 
-  def product_image
-    img_key = product.preview ? :preview : :image
+  def product_image(img_key)
     Figaro.env.app_host.to_s + Refile.attachment_url(product, img_key, :fill, 400, 400, format: :png)
   end
 
