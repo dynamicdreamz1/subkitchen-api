@@ -41,7 +41,7 @@ class ProductSerializer
 
   def product_image
     img_key = product.preview ? :preview : :image
-    Figaro.env.app_host.to_s + Refile.attachment_url(product, img_key, :fill, 400, 400, format: :png)
+    Figaro.env.app_host.to_s + Refile.attachment_url(product, img_key, :fill, 1024, 1024, format: :png)
   end
 
   def variants
