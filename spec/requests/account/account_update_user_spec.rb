@@ -32,12 +32,20 @@ describe Users::Api, type: :request do
 
       user.reload
       expect(response).to have_http_status(:success)
+
       expect(json['user']['name']).to eq(user.name)
       expect(json['user']['email']).to eq(user.email)
       expect(json['user']['handle']).to eq(user.handle)
       expect(json['user']['location']).to eq(user.location)
       expect(json['user']['website']).to eq(user.website)
       expect(json['user']['bio']).to eq(user.bio)
+
+      expect(params[:user][:name]).to eq(user.name)
+      expect(params[:user][:email]).to eq(user.email)
+      expect(params[:user][:handle]).to eq(user.handle)
+      expect(params[:user][:location]).to eq(user.location)
+      expect(params[:user][:website]).to eq(user.website)
+      expect(params[:user][:bio]).to eq(user.bio)
 
       expect(ActionMailer::Base.deliveries.count).to eq(1)
     end
