@@ -34,7 +34,7 @@
         "name",
         "likes_count",
         "promoters",
-        "product_image",
+        "image_url",
         "shipping",
         "shipping_cost",
         "tax",

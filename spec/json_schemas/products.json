@@ -14,7 +14,7 @@
           "sizes": {"type": "array"},
           "name": {"type": "string"},
           "likes_count": {"type": "integer"},
-          "product_image": {"type": "string"},
+          "preview_url": {"type": "string"},
           "errors": {"type": "object"}
         },
         "required": [
@@ -26,7 +26,7 @@
           "sizes",
           "name",
           "likes_count",
-          "product_image"
+          "preview_url"
         ]
       }
     },
