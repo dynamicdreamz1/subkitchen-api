@@ -40,7 +40,7 @@ class ProductListSerializer
       sizes: product.product_template.size,
       name: product.name,
       likes_count: product.likes_count,
-      product_image: product_image(product),
+      preview_url: product_image(product),
       variants: variants(product)
     }
   end
