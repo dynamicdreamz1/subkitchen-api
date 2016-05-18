@@ -19,8 +19,8 @@ class ProductSerializer
         promoters: product.likes.order('created_at DESC').pluck(:user_id).uniq.compact,
         comments: product.comments.order('created_at DESC').pluck(:id).uniq.compact,
         comments_count: product.comments.count,
-        image_url: product_image(:image),
-        preview_url: product_image(:preview),
+        image_url: product_image(:image, 2048, 2048),
+        preview_url: product_image(:preview, 1024, 1024),
         shipping: Config.shipping_info,
         shipping_cost: Config.shipping_cost,
         tax: Config.tax,
@@ -41,8 +41,8 @@ class ProductSerializer
     @product = product
   end
 
-  def product_image(img_key)
-    Figaro.env.app_host.to_s + Refile.attachment_url(product, img_key, :fill, 400, 400, format: :png)
+  def product_image(img_key, h, w)
+    Figaro.env.app_host.to_s + Refile.attachment_url(product, img_key, :fill, h, w, format: :png)
   end
 
   def variants
