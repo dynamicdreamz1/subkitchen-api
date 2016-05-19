@@ -19,14 +19,16 @@ module Products
         optional :price_range, type: Array[String]
         optional :tags, type: Array[String]
         optional :author_id, type: Integer
+        optional :only_published, type: Boolean, default: true
       end
       get do
         filterrific = Filterrific::ParamSet.new(Product, sort_by: params.sorted_by,
                                                          with_price_range: price_range(params.price_range),
                                                          with_product_type: params.product_type,
                                                          with_tags: params.tags,
-                                                         with_author: params.author_id)
-        products = Product.includes(product_template: [:template_variants]).published_all.filterrific_find(filterrific).page(params.page).per(params.per_page)
+                                                         with_author: params.author_id,
+                                                         published_all: params.only_published)
+        products = Product.includes(product_template: [:template_variants]).filterrific_find(filterrific).page(params.page).per(params.per_page)
         if products
           ProductListSerializer.new(products).as_json
         else

@@ -41,12 +41,16 @@ RSpec.describe Product, type: :model do
 
     context 'published products' do
       before(:each) do
-        product = create(:product, design_id: nil)
+        @unpublished_product = create(:product, design_id: nil)
         @published_product = create(:product, :published)
       end
 
       it 'should return all published products' do
-        expect(Product.published_all).to contain_exactly(@published_product)
+        expect(Product.published_all(true)).to contain_exactly(@published_product)
+      end
+
+      it 'should not return published products' do
+        expect(Product.published_all(false)).to contain_exactly(@unpublished_product)
       end
     end
 
