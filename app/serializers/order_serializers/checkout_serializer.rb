@@ -42,7 +42,7 @@ class CheckoutSerializer
         is_deleted: item.product.is_deleted,
         quantity: item.quantity,
         size: item.size,
-        image: Figaro.env.app_host + Refile.attachment_url(item.product, :image, format: :png) }
+        preview_url: Figaro.env.app_host + Refile.attachment_url(item.product, :preview, format: :png) }
     end
   end
 
@@ -53,7 +53,7 @@ class CheckoutSerializer
         id: item.id,
         quantity: item.quantity,
         size: item.size,
-        image: Figaro.env.app_host + Refile.attachment_url(item.product, :image, format: :png) }
+        preview_url: Figaro.env.app_host + Refile.attachment_url(item.product, :preview, format: :png) }
     end
   end
 
