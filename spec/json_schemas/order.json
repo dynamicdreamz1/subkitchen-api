@@ -23,7 +23,7 @@
               "product_id": {"type": "integer"},
               "quantity": {"type": "integer"},
               "size": {"type": "string"},
-              "image": {"type": "string"}
+              "preview_url": {"type": "string"}
             }
           }
         }
