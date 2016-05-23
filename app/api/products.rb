@@ -27,7 +27,7 @@ module Products
                                                          with_product_type: params.product_type,
                                                          with_tags: params.tags,
                                                          with_author: params.author_id,
-                                                         published_all: params.only_published)
+                                                         published_only: params.only_published)
         products = Product.includes(product_template: [:template_variants]).filterrific_find(filterrific).page(params.page).per(params.per_page)
         if products
           ProductListSerializer.new(products).as_json

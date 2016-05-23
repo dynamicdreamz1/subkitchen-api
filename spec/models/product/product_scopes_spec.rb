@@ -46,11 +46,11 @@ RSpec.describe Product, type: :model do
       end
 
       it 'should return all published products' do
-        expect(Product.published_all(true)).to contain_exactly(@published_product)
+        expect(Product.published_only(true)).to contain_exactly(@published_product)
       end
 
       it 'should not return published products' do
-        expect(Product.published_all(false)).to contain_exactly(@unpublished_product)
+        expect(Product.published_only(false)).to contain_exactly(@unpublished_product)
       end
     end
 
