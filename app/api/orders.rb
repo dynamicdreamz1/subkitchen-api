@@ -91,9 +91,9 @@ module Orders
       params do
         optional :uuid, type: String
       end
-      get do
+      get 'current' do
         order = find_or_create_order(params.uuid)
-        OrderSerializer.new(order).as_json
+        OrderSerializer.new(Order.find(order)).as_json
       end
     end
   end

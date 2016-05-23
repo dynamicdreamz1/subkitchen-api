@@ -13,6 +13,8 @@
         "tax": {"type": "string"},
         "tax_cost": {"type": "string"},
         "total_cost": {"type": "string"},
+        "placed": {"type": "string"},
+        "invoice": {"type": "string"},
         "discount": {"type": ["string", "null"]},
         "items": {
           "type": "array",
@@ -33,7 +35,6 @@
       "required": [
         "purchased_at",
         "uuid",
-        "pdf",
         "status",
         "subtotal",
         "shipping_cost",

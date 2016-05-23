@@ -9,12 +9,10 @@ module Invoices
         requires :uuid, type: String
       end
       get do
-        Invoice.destroy_all
         order = Order.find_by!(uuid: params.uuid)
-        invoice = FindOrCreateInvoice.new(order).call
-        pdf = InvoicePdf.new(invoice)
+        invoice = Invoice.find_by!(order_id: order.id)
         header['Content-Disposition'] = "attachment; filename=order_#{order.id}_#{invoice.created_at.strftime('%d_%m_%Y')}"
-        pdf.render
+        InvoicePdf.new(invoice).render
       end
     end
   end

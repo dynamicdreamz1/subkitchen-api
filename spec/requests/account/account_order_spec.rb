@@ -1,11 +1,11 @@
 describe AccountsOrders::Api, type: :request do
   let(:user) { create(:user) }
 
-  describe '/api/v1/account/orders/:uuid' do
+  describe '/api/v1/orders/:id' do
     before(:each) do
       @order = create(:order, user: user)
       create(:order_item, order: @order, product: create(:product))
-      get "/api/v1/account/orders/#{@order.uuid}", {}, auth_header_for(user)
+      get "/api/v1/orders/#{@order.id}", {}, auth_header_for(user)
     end
 
     it 'should match serialized order' do

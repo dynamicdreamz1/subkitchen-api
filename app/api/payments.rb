@@ -3,7 +3,7 @@ module Payments
     resources :orders do
       desc 'payment page'
       get ':uuid/payment' do
-        order = Order.find_by!(uuid: params.uuid)
+        order = Order.find_by!(uuid: params.uuid, purchased_at: nil)
         if CheckOrderItems.new(order).call
           CheckoutSerializer.new(order).as_json
         else
@@ -26,7 +26,7 @@ module Payments
         optional :return_path, type: String
       end
       post ':uuid/payment' do
-        order = Order.find_by!(uuid: params.uuid, active: true, order_status: 'creating')
+        order = Order.find_by!(uuid: params.uuid, active: true, order_status: 'creating' )
         error!({ errors: { base: ['invalid payment parameters!'] } }, 422) unless ValidPaymentParams.new(params).call
 
         unless AddOrderAddress.new(params, order).call

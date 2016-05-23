@@ -53,7 +53,7 @@ describe Products::Api, type: :request do
         zip: 'changed',
         region: 'changed',
         country: 'changed',
-        email: 'test@.com' }
+        email: 'changed@example.com' }
       post "/api/v1/orders/#{order.uuid}/payment", params
       post "/api/v1/orders/#{order.uuid}/payment", changed_params
       order.reload
@@ -68,7 +68,7 @@ describe Products::Api, type: :request do
       expect(order.zip).not_to eq('changed')
       expect(order.region).not_to eq('changed')
       expect(order.country).not_to eq('changed')
-      expect(order.email).not_to eq('changed')
+      expect(order.email).not_to eq('changed@example.com')
     end
   end
 
