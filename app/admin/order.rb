@@ -2,11 +2,13 @@ ActiveAdmin.register Order do
   config.sort_order = 'id_asc'
   actions :index, :show
 
-  filter :order_status, as: :select, collection: ['creating', 'completed', 'payment pending', 'cooking', 'processing']
   filter :purchased_at
 
   scope :all
+  scope :creating
+  scope :payment_pending
   scope :processing
+  scope :cooking
 
   member_action :invoice, method: :get do
     redirect_to Figaro.env.app_host + "/api/v1/invoices?uuid=#{resource.uuid}"
@@ -19,7 +21,7 @@ ActiveAdmin.register Order do
     column(:total_cost)
     actions defaults: false do |order|
       link_to('View', admin_order_path(order), method: :get) + ' ' +
-        if order.payment && order.payment.payment_status != ('creating' || 'payment pending')
+        if order.payment && order.payment.payment_status != (:creating || :payment_pending)
           link_to('Invoice', invoice_admin_order_path(order), method: :get)
         end
     end

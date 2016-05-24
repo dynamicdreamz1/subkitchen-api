@@ -1,6 +1,9 @@
 class CreatePayment
   def call
-    create_payment
+    return false if already_paid?
+    update_order
+    RedemptionsCounter.perform_async(order.coupon.id) if order.coupon
+    charge
   end
 
   private
@@ -15,22 +18,21 @@ class CreatePayment
     @return_path = return_path
   end
 
-  def create_payment
-    order.update(order_status: 'payment pending')
-    return false if already_paid?
+  def already_paid?
+    Payment.find_by(payable: order, payment_status: :completed)
+  end
+
+  def update_order
+    order.update(order_status: :payment_pending)
+  end
+
+  def charge
     payment = Payment.create!(payable: order, payment_type: payment_type)
-    RedemptionsCounter.perform_async(order.coupon.id) if order.coupon
     if payment_type == 'stripe'
-      payment.update(payment_token: payment_token)
-      payment.save
-      StripePayment.new(payment).call
+      StripePayment.new(payment, payment_token).call
     else
       url = PaypalPaymentRequest.new(payment, return_path).call
       { url: url }
     end
-  end
-
-  def already_paid?
-    Payment.find_by(payable: order, payment_status: 'completed')
   end
 end

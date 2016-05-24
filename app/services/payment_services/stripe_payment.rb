@@ -1,33 +1,37 @@
 class StripePayment
   def call
-    pay
+    charge
+    update_order
+    update_payment
+    send_order_and_create_invoice
+    NotifyDesigners.new(order).call
+    SalesAndEarningsCounter.perform_async(order.id)
+    payment
+    rescue Stripe::InvalidRequestError => e
+      { errors: { base: [e.message] } }
+    rescue Stripe::CardError => e
+      { errors: { base: [e.message] } }
   end
 
   private
 
-  attr_accessor :payment, :order
+  include PaymentHelpers
 
-  def initialize(payment)
+  attr_accessor :payment, :order
+  attr_reader :token
+
+  def initialize(payment, payment_token)
     @payment = payment
     @order = @payment.payable
+    @token = payment_token
   end
 
-  def pay
+  def charge
     customer = Stripe::Customer.create email: order.email,
                                        card: payment.payment_token
     Stripe::Charge.create customer: customer.id,
                           amount: (order.total_cost * 100).to_i,
                           currency: 'usd',
                           metadata: { 'order_id' => order.id }
-
-    NotifyDesigners.new(order).call
-    FindOrCreateInvoice.new(order).call
-    order.update_attributes(purchased: true, purchased_at: DateTime.now, active: false)
-    payment.update_attribute(:payment_status, 'completed')
-    SalesAndEarningsCounter.perform_async(order.id)
-  rescue Stripe::InvalidRequestError => e
-    { errors: { base: [e.message] } }
-  rescue Stripe::CardError => e
-    { errors: { base: [e.message] } }
   end
 end
