@@ -6,7 +6,6 @@ class ProductSerializer
       product: {
         id: product.id,
         is_deleted: product.is_deleted,
-        author: (product.author ? product.author.name : nil),
         author_id: (product.author ? product.author.id : nil),
         price: product.price,
         sizes: product.product_template.size,

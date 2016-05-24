@@ -7,7 +7,7 @@
         "type": "object",
         "properties": {
           "id": {"type": ["integer", "null"]},
-          "author": {"type": ["string", "null"]},
+          "author_id": {"type": ["integer", "null"]},
           "price": {"type": "string"},
           "published": {"type": "boolean"},
           "tags": {"type": "array"},
@@ -19,7 +19,7 @@
         },
         "required": [
           "id",
-          "author",
+          "author_id",
           "price",
           "tags",
           "published",

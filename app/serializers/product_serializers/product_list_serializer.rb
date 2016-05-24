@@ -31,9 +31,8 @@ class ProductListSerializer
   end
 
   def single_product(product)
-    {
+    product_hash = {
       id: product.id,
-      author: (product.author ? product.author.name : nil),
       price: product.product_template.price,
       tags: product.tag_list,
       published: product.published,
@@ -43,6 +42,10 @@ class ProductListSerializer
       preview_url: product_image(product),
       variants: variants(product)
     }
+
+    product_hash[:author_id] = product.author.id if product.author
+
+    product_hash
   end
 
 
