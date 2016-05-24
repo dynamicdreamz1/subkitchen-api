@@ -13,12 +13,12 @@ class CheckoutSerializer
                tax_cost: order.tax_cost,
                total_cost: order.total_cost,
                discount: order.discount,
-               items: items } }
+               items: items,
+               invoice_id: "#{order.id}/#{order.created_at.strftime('%d/%m/%Y')}" } }
 
     if order.invoice
       data[:order][:pdf] = Figaro.env.app_host + "/api/v1/invoices?uuid=#{order.uuid}"
       data[:order][:placed] = "#{order.invoice.created_at.strftime('%B %d, %Y - %I:%M %p %Z')}"
-      data[:order][:invoice] = "#{order.id}/#{order.invoice.created_at.strftime('%d/%m/%Y')}"
     end
     data[:order][:shipping_address] = shipping_address if order.address
     data[:errors] = order.errors if order.errors.any?

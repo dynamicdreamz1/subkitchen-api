@@ -2,14 +2,9 @@ class OrderListSerializer
   include ApplicationHelper
 
   def as_json(options = {})
-    data = {
-      orders: serialized_orders,
-      meta: {
-        current_page: orders.current_page,
-        total_pages: orders.total_pages
-      }
-    }
-
+    data = { orders: serialized_orders,
+             meta: { current_page: orders.current_page,
+                     total_pages: orders.total_pages } }
     data.as_json(options)
   end
 
@@ -25,6 +20,10 @@ class OrderListSerializer
     orders.map do |order|
       single_order = single_order(order)
 
+      if order.invoice
+        single_order[:pdf] = Figaro.env.app_host + "/api/v1/invoices?uuid=#{order.uuid}"
+        single_order[:placed] = "#{order.invoice.created_at.strftime('%B %d, %Y - %I:%M %p %Z')}"
+      end
       single_order[:errors] = order.errors if order.errors.any?
       single_order
     end
@@ -37,7 +36,7 @@ class OrderListSerializer
       created_at: order.created_at,
       status: order.order_status,
       total_cost: order.total_cost,
-      pdf: Figaro.env.app_host + "api/v1/invoices?uuid=#{order.uuid}"
+      invoice_id: "#{order.id}/#{order.created_at.strftime('%d/%m/%Y')}"
     }
   end
 end

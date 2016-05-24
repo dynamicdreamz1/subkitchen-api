@@ -14,7 +14,7 @@
         "tax_cost": {"type": "string"},
         "total_cost": {"type": "string"},
         "placed": {"type": "string"},
-        "invoice": {"type": "string"},
+        "invoice_id": {"type": "string"},
         "discount": {"type": ["string", "null"]},
         "items": {
           "type": "array",
@@ -42,6 +42,7 @@
         "tax_cost",
         "total_cost",
         "discount",
+        "invoice_id",
         "items"
       ]
     },

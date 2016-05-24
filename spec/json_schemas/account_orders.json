@@ -11,13 +11,15 @@
           "status": {"type": "string"},
           "total_cost": {"type": "string"},
           "pdf": {"type": "string"},
+          "placed": {"type": "string"},
+          "invoice_id": {"type": "string"},
           "errors": {"type": "object"}},
         "required": [
           "uuid",
           "created_at",
           "status",
           "total_cost",
-          "pdf"
+          "invoice_id"
         ]
       }
     },
