@@ -71,7 +71,7 @@ class InvoicePdf < Prawn::Document
   def line_item_rows
     [%w(Image Product Quantity Price Subtotal)] +
       @order.order_items.map do |item|
-        [{ image: item.product.image, image_width: 50, image_height: 50 },
+        [{ image: item.product.preview, image_width: 50, image_height: 50 },
          item.product.name,
          item.quantity,
          price(item.price),
