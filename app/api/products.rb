@@ -13,6 +13,7 @@ module Products
       params do
         optional :page, type: Integer, default: 1
         optional :per_page, type: Integer, default: 30
+        optional :search_query, type: String
         optional :sorted_by, type: String, default: 'created_at_desc'
         optional :product_type, type: Array[String]
         optional :price_range, type: Array[String]
@@ -21,7 +22,8 @@ module Products
         optional :only_published, type: Boolean, default: true
       end
       get do
-        filterrific = Filterrific::ParamSet.new(Product, sort_by: params.sorted_by,
+        filterrific = Filterrific::ParamSet.new(Product, search_query: params.search_query,
+                                                         sort_by: params.sorted_by,
                                                          with_price_range: price_range(params.price_range),
                                                          with_product_type: params.product_type,
                                                          with_tags: params.tags,
