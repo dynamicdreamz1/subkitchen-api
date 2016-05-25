@@ -2,18 +2,17 @@ class EmailKeysValidator < ActiveModel::Validator
   def validate(record)
     case record.name
     when 'AccountEmailConfirmation'
-      unless record.content.include?('CONFIRMATION_URL')
-        record.errors.add(:content, 'must contain CONFIRMATION_URL')
-      end
+      check_if_content_contains(record, 'CONFIRMATION_URL')
     when 'AccountResetPassword'
-      unless record.content.include?('REMINDER_URL')
-        record.errors.add(:content, 'must contain REMINDER_URL')
-      end
+      check_if_content_contains(record, 'REMINDER_URL')
     when 'WaitingProductsNotifier'
-      unless record.content.include?('PRODUCTS_LIST')
-        record.errors.add(:content, 'must contain PRODUCTS_LIST')
-      end
+      check_if_content_contains(record, 'PRODUCTS_LIST')
     else return true
     end
+  end
+
+  def check_if_content_contains(record, phrase)
+    return if record.content.include?(phrase)
+    record.errors.add(:content, "must contain #{phrase}")
   end
 end

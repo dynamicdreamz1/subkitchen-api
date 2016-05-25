@@ -14,11 +14,11 @@ class Coupon < ActiveRecord::Base
 
   def generate_code
     self.code = SecureRandom.hex(3) if code?
-    self.save
+    save
   end
 
   def code?
-    self.code == ''
+    code == ''
   end
 
   def redemptions_count

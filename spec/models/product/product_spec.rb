@@ -20,7 +20,7 @@ RSpec.describe Product, type: :model do
     product_wish_id = create(:product_wish, wished_product: product).id
     product.destroy
 
-    expect{ ProductWish.find(product_wish_id) }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { ProductWish.find(product_wish_id) }.to raise_error(ActiveRecord::RecordNotFound)
   end
 
   it 'should have attributes' do

@@ -73,7 +73,9 @@ ActiveAdmin.register User do
     actions defaults: false do |user|
       unless user.is_deleted
         link_to('View', admin_user_path(user), method: :get) + ' ' +
-          link_to('Delete', delete_admin_user_path(user), method: :put, data: { confirm: 'Are you sure? If you delete this user, all the products created by this user will be deleted' })
+          link_to('Delete', delete_admin_user_path(user), method: :put,
+                  data: { confirm: 'Are you sure? If you delete this user,
+                                    all the products created by this user will be deleted' })
       end
     end
   end

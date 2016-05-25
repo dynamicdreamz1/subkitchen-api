@@ -9,8 +9,7 @@ describe 'Through6' do
       city: 'Warszawa',
       zip: '00-000',
       region: 'mazowieckie',
-      country: 'Polska'
-                   )
+      country: 'Polska')
   end
 
   it 'should match valid api response' do

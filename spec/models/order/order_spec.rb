@@ -35,7 +35,7 @@ RSpec.describe Order, type: :model do
 
   describe 'AddressValidator' do
     it 'should not update address when payment completed' do
-      payment = create(:payment, payable: order)
+      create(:payment, payable: order)
 
       expect do
         order.update!(address: 'abcd')

@@ -5,12 +5,13 @@ describe Products::Api, type: :request do
     describe 'update product' do
       before(:each) do
         @product = create(:product, author: artist)
-        @params = {id: @product.id,
-                   product: {
-                       published: true,
-                       tags: ['Space'],
-                       description: 'New Description',
-                       name: 'NewName' }}
+        @params = { id: @product.id,
+                    product: {
+                      published: true,
+                      tags: ['Space'],
+                      description: 'New Description',
+                      name: 'NewName'
+                    } }
         put "/api/v1/products/#{@product.id}", @params, auth_header_for(artist)
         @product.reload
       end

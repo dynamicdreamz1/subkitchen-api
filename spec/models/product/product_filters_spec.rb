@@ -5,7 +5,7 @@ RSpec.describe Product, type: :model do
 
   describe 'filters' do
     before(:each) do
-      @p1 = create(:product, author: artist , product_template: create(:product_template, price: 300, product_type: 'tee'))
+      @p1 = create(:product, author: artist, product_template: create(:product_template, price: 300, product_type: 'tee'))
       @p2 = create(:product, product_template: create(:product_template, price: 100, product_type: 'yoga_pants'))
       @p3 = create(:product, product_template: create(:product_template, price: 200, product_type: 'hoodie'))
       @p1.tag_list.add(%w(cats space))

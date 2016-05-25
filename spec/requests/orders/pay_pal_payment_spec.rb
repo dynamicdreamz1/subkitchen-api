@@ -53,7 +53,8 @@ describe Products::Api, type: :request do
         zip: 'changed',
         region: 'changed',
         country: 'changed',
-        email: 'changed@example.com' }
+        email: 'changed@example.com'
+      }
       post "/api/v1/orders/#{order.uuid}/payment", params
       post "/api/v1/orders/#{order.uuid}/payment", changed_params
       order.reload

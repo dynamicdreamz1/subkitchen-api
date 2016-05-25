@@ -15,7 +15,7 @@ class CheckoutSerializer
   attr_accessor :order, :data
   attr_reader :deleted_items
 
-  def initialize(order, deleted_items=nil)
+  def initialize(order, deleted_items = nil)
     @order = order
     @data = { order: order_hash }
     @deleted_items = deleted_items
@@ -95,8 +95,7 @@ class CheckoutSerializer
       zip: order.zip,
       region: order.region,
       country: order.country,
-      phone: order.try(:phone)
-    }
+      phone: order.try(:phone) }
   end
 
   def full_name

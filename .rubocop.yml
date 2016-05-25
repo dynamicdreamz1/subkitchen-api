@@ -7,7 +7,21 @@ Style/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 
 Metrics/LineLength:
-  Max: 120
+  Max: 170
 
 Documentation:
   Enabled: false
+
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'spec/rails_helper.rb'
+
+Style/AlignHash:
+  Enabled: false
+
+Style/GlobalVars:
+  Enabled: false
+

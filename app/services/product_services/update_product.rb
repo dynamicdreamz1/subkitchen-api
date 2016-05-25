@@ -14,12 +14,12 @@ class UpdateProduct
   end
 
   def update_product
-      product = Product.find(id)
-      product.published = params.published unless params.published.nil?
-      product.description = params.description if params.description
-      product.name = params.name if params.name
-      update_tags(product) if params.tags
-      product
+    product = Product.find(id)
+    product.published = params.published unless params.published.nil?
+    product.description = params.description if params.description
+    product.name = params.name if params.name
+    update_tags(product) if params.tags
+    product
   end
 
   def update_tags(product)

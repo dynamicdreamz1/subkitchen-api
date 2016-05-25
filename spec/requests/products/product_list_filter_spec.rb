@@ -4,21 +4,21 @@ describe Products::Api, type: :request do
       before(:each) do
         @user = create(:user, :artist)
         @p1 = create(:product,
-                     author_id: @user.id,
-                     name: 'AAA',
-                     published: true,
-                     created_at: 1.week.ago,
-                     product_template: create(:product_template, price: 100, product_type: 'tee'))
+          author_id: @user.id,
+          name: 'AAA',
+          published: true,
+          created_at: 1.week.ago,
+          product_template: create(:product_template, price: 100, product_type: 'tee'))
         @p2 = create(:product,
-                     author: create(:user, :artist),
-                     published: true, name: 'BBB',
-                     created_at: 2.weeks.ago,
-                     product_template: create(:product_template, price: 200, product_type: 'hoodie'))
+          author: create(:user, :artist),
+          published: true, name: 'BBB',
+          created_at: 2.weeks.ago,
+          product_template: create(:product_template, price: 200, product_type: 'hoodie'))
         @p3 = create(:product,
-                     author: create(:user, :artist),
-                     published: true, name: 'CCC',
-                     created_at: 3.weeks.ago,
-                     product_template: create(:product_template, price: 300, product_type: 'yoga_pants'))
+          author: create(:user, :artist),
+          published: true, name: 'CCC',
+          created_at: 3.weeks.ago,
+          product_template: create(:product_template, price: 300, product_type: 'yoga_pants'))
         @p1.tag_list.add(%w(cats space))
         @p1.save
         @p3.tag_list.add(['music'])

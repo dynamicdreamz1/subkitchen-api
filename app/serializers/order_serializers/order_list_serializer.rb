@@ -22,7 +22,7 @@ class OrderListSerializer
 
       if order.invoice
         single_order[:pdf] = Figaro.env.app_host + "/api/v1/invoices?uuid=#{order.uuid}"
-        single_order[:placed] = "#{order.invoice.created_at.strftime('%B %d, %Y - %I:%M %p %Z')}"
+        single_order[:placed] = order.invoice.created_at.strftime('%B %d, %Y - %I:%M %p %Z').to_s
       end
       single_order[:errors] = order.errors if order.errors.any?
       single_order

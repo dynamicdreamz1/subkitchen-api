@@ -45,6 +45,6 @@ class ProductSerializer
   end
 
   def variants
-    product.product_template.template_variants.map{|v| {id: v.id, color: v.color.color_value}}
+    product.product_template.template_variants.map { |v| { id: v.id, color: v.color.color_value } }
   end
 end

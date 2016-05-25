@@ -10,13 +10,15 @@ describe PaypalHooks::Api, type: :request do
       'payment_gross' => order_with_designs.total_cost,
       'invoice' => create(:payment, payable: order_with_designs).id,
       'payment_status' => 'Completed',
-      'txn_id' => '61E67681CH3238416' }
+      'txn_id' => '61E67681CH3238416'
+    }
     @order_without_designs_params = {
       'receiver_email' => Figaro.env.paypal_seller.to_s,
       'payment_gross' => order_without_designs.total_cost,
       'invoice' => create(:payment, payable: order_without_designs).id,
       'payment_status' => 'Completed',
-      'txn_id' => '61E67681CH3238416' }
+      'txn_id' => '61E67681CH3238416'
+    }
   end
 
   describe 'designer notifications' do

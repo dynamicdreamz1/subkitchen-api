@@ -16,7 +16,7 @@ RSpec.describe Product, type: :model do
 
     context 'ready to print' do
       before(:each) do
-        product = create(:product, design_id: nil)
+        create(:product, design_id: nil)
         @ready_product = create(:product, design_id: '123')
       end
 
@@ -56,7 +56,7 @@ RSpec.describe Product, type: :model do
 
     context 'published by given artist' do
       before(:each) do
-        product = create(:product, design_id: nil)
+        create(:product, design_id: nil)
         create(:product, author: other_artist, published: true)
         @published_product = create(:product, author: artist, published: true)
       end

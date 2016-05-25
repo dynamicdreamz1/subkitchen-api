@@ -9,7 +9,8 @@ class AddressSerializer
       zip: user.zip,
       region: user.region,
       country: user.country,
-      phone: user.phone }
+      phone: user.phone
+    }
 
     data[:errors] = user.errors if user.errors.any?
 

@@ -1,4 +1,4 @@
-ActiveAdmin::Editor.configure do |config|
+ActiveAdmin::Editor.configure do |_config|
   # config.s3_bucket = ''
   # config.aws_access_key_id = ''
   # config.aws_access_secret = ''

@@ -8,9 +8,7 @@ ActiveAdmin.register Color do
     column 'Color' do |color|
       color.name.humanize
     end
-    column 'Hex Color' do |color|
-      color.color_value
-    end
+    column 'Hex Color', &:color_value
     column 'Preview' do |color|
       "<div style='width:50px; height:50px; background-color:#{color.color_value}'></div>".html_safe
     end

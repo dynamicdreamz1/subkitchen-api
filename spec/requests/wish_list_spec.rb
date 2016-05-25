@@ -1,9 +1,6 @@
 describe WishList::Api, type: :request do
-
   describe '/api/v1/wish_list' do
-
     context 'add product to wish list' do
-
       before(:each) do
         @user = create(:user)
         @product = create(:product, :published)
@@ -17,7 +14,6 @@ describe WishList::Api, type: :request do
       end
 
       context 'does not add unpublished product to wish list' do
-
         before(:each) do
           @product = create(:product)
           post '/api/v1/wish_list', { product_id: @product.id }, auth_header_for(@user)
@@ -30,7 +26,6 @@ describe WishList::Api, type: :request do
       end
 
       context 'remove product from wish list' do
-
         before(:each) do
           @product = create(:product)
           create(:product_wish, user: @user, wished_product: @product)
@@ -45,10 +40,9 @@ describe WishList::Api, type: :request do
     end
 
     context 'get wish list' do
-
       before(:each) do
         @user = create(:user)
-        2.times{ create(:product_wish, user: @user, wished_product: create(:product)) }
+        2.times { create(:product_wish, user: @user, wished_product: create(:product)) }
         get '/api/v1/wish_list', {}, auth_header_for(@user)
       end
 

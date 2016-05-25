@@ -3,11 +3,10 @@ class LikesCounter
 
   def perform(author_id, quantity)
     user = get_user(author_id)
-    if (get_counter(user) + quantity) >= 0
-      increment(user, quantity)
-      percentage = calculate_percentage(user)
-      set_weekly(user, percentage)
-    end
+    return unless (get_counter(user) + quantity) >= 0
+    increment(user, quantity)
+    percentage = calculate_percentage(user)
+    set_weekly(user, percentage)
   end
 
   private

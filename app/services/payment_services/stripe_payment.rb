@@ -7,10 +7,10 @@ class StripePayment
     NotifyDesigners.new(order).call
     SalesAndEarningsCounter.perform_async(order.id)
     payment
-    rescue Stripe::InvalidRequestError => e
-      { errors: { base: [e.message] } }
-    rescue Stripe::CardError => e
-      { errors: { base: [e.message] } }
+  rescue Stripe::InvalidRequestError => e
+    { errors: { base: [e.message] } }
+  rescue Stripe::CardError => e
+    { errors: { base: [e.message] } }
   end
 
   private

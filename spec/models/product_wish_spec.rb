@@ -1,5 +1,4 @@
 RSpec.describe ProductWish, type: :model do
-
   before(:each) do
     @user = create(:user)
     @product = create(:product)

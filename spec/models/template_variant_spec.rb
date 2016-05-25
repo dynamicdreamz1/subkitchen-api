@@ -1,5 +1,4 @@
 RSpec.describe TemplateVariant, type: :model do
-
   it 'should have attributes' do
     variant = TemplateVariant.create
 

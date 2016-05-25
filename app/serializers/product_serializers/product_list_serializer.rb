@@ -48,13 +48,12 @@ class ProductListSerializer
     product_hash
   end
 
-
   def product_image(product)
     img_key = product.preview ? :preview : :image
     Figaro.env.app_host.to_s + Refile.attachment_url(product, img_key, :fill, 400, 400, format: :png)
   end
 
   def variants(product)
-    product.product_template.template_variants.map{|v| {id: v.id, color: v.color.color_value}}
+    product.product_template.template_variants.map { |v| { id: v.id, color: v.color.color_value } }
   end
 end

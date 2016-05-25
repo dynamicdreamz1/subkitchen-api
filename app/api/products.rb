@@ -1,6 +1,5 @@
 module Products
   class Api < Grape::API
-
     helpers do
       def price_range(range)
         return unless range

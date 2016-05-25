@@ -3,11 +3,10 @@ class PublishedCounter
 
   def perform(product_id, quantity)
     user = get_user(product_id)
-    if (get_counter(user) + quantity) >= 0
-      increment(quantity, user)
-      percentage = calculate_percentage(user)
-      set_weekly(user, percentage)
-    end
+    return unless (get_counter(user) + quantity) >= 0
+    increment(quantity, user)
+    percentage = calculate_percentage(user)
+    set_weekly(user, percentage)
   end
 
   private

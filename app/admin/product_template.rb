@@ -46,7 +46,9 @@ ActiveAdmin.register ProductTemplate do
       else
         link_to('View', admin_product_template_path(template), method: :get) + ' ' +
           link_to('Edit', edit_admin_product_template_path(template), method: :get) + ' ' +
-          link_to('Delete', delete_admin_product_template_path(template), method: :put, data: { confirm: 'Are you sure? If you delete this template, all the products related to this template will be deleted' })
+          link_to('Delete', delete_admin_product_template_path(template), method: :put,
+                  data: { confirm: 'Are you sure? If you delete this template,
+                                    all the products related to this template will be deleted' })
       end
     end
   end
@@ -69,9 +71,9 @@ ActiveAdmin.register ProductTemplate do
 
       tab('Variants') do
         table_for template.template_variants do
-          column('Name') { |variant| variant.name }
+          column('Name', &:name)
           column('Color') { |variant| variant.color.try(:name) }
-          column('Color Preview') { |variant| "<div style='width:50px; height:50px; background-color:#{ variant.color.try(:color_value) }'></div>".html_safe }
+          column('Color Preview') { |variant| "<div style='width:50px; height:50px; background-color:#{variant.color.try(:color_value)}'></div>".html_safe }
           column('Template Preview') { |variant| attachment_image_tag(variant, :template_color_image, :fit, 150, 150) }
         end
       end
@@ -90,7 +92,7 @@ ActiveAdmin.register ProductTemplate do
     f.inputs 'Variants' do
       f.has_many :template_variants do |v|
         v.input :name
-        v.input :color, collection: (Color.all)
+        v.input :color, collection: Color.all
         v.input :template_color_image, as: :refile
       end
     end

@@ -7,25 +7,29 @@ describe PaypalHooks::Api, type: :request do
       'payment_gross' => '1.00',
       'invoice' => @user_payment.id,
       'payment_status' => 'Completed',
-      'txn_id' => '61E67681CH3238416' }
+      'txn_id' => '61E67681CH3238416'
+    }
     @denied_user_params = {
       'receiver_email' => Figaro.env.paypal_seller.to_s,
       'payment_gross' => '1.00',
       'invoice' => @user_payment.id,
       'payment_status' => 'Denied',
-      'txn_id' => '61E67681CH3238416' }
-    @invalid_receiver_user_params =  {
+      'txn_id' => '61E67681CH3238416'
+    }
+    @invalid_receiver_user_params = {
       'receiver_email' => 'invalid receiver email',
       'payment_gross' => '1.00',
       'invoice' => @user_payment.id,
       'payment_status' => 'Completed',
-      'txn_id' => '61E67681CH3238416' }
-    @invalid_payment_user_params =   {
+      'txn_id' => '61E67681CH3238416'
+    }
+    @invalid_payment_user_params = {
       'receiver_email' => Figaro.env.paypal_seller.to_s,
       'payment_gross' => '100.00',
       'invoice' => @user_payment.id,
       'payment_status' => 'Completed',
-      'txn_id' => '61E67681CH3238416' }
+      'txn_id' => '61E67681CH3238416'
+    }
   end
 
   describe 'USER VERIFICATION' do

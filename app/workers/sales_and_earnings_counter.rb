@@ -2,20 +2,11 @@ class SalesAndEarningsCounter
   include Sidekiq::Worker
 
   def perform(order_id)
-    order = get_order(order_id)
-    order.order_items.each do |item|
+    get_order(order_id).order_items.each do |item|
       user = get_user(item)
-
-      if (earnings_increment_value(item) + get_sales_counter(user)) >= 0
-        increment_earnings_counter(user, item)
-        earnings = calculate_earnings_percentage(user)
-        set_earnings_weekly(user, earnings)
-      end
-
+      set_earnings(item, user) if (earnings_increment_value(item) + get_sales_counter(user)) >= 0
       next unless (item.quantity + get_sales_counter(user)) >= 0
-      increment_sales_counter(user, item)
-      sales = calculate_sales_percentage(user)
-      set_sales_weekly(user, sales)
+      set_sales(item, user)
     end
   end
 
@@ -27,6 +18,18 @@ class SalesAndEarningsCounter
 
   def get_user(item)
     item.product.author
+  end
+
+  def set_earnings(item, user)
+    increment_earnings_counter(user, item)
+    earnings = calculate_earnings_percentage(user)
+    set_earnings_weekly(user, earnings)
+  end
+
+  def set_sales(item, user)
+    increment_sales_counter(user, item)
+    sales = calculate_sales_percentage(user)
+    set_sales_weekly(user, sales)
   end
 
   def get_earnings_count(user)

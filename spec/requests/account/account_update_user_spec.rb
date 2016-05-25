@@ -17,17 +17,17 @@ describe Users::Api, type: :request do
   end
 
   describe 'user update' do
-
     it 'should update user information and send email confirmation' do
       params = {
-          user: {
-              name: 'Jon',
-              email: 'john_doe@example.com',
-              handle: 'john_doe',
-              location: 'USA',
-              website: 'johndoe.com',
-              bio: '...'
-          }}
+        user: {
+          name: 'Jon',
+          email: 'john_doe@example.com',
+          handle: 'john_doe',
+          location: 'USA',
+          website: 'johndoe.com',
+          bio: '...'
+        }
+      }
       put "/api/v1/users/#{user.id}", params, auth_header_for(user)
 
       user.reload

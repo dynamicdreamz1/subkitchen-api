@@ -15,7 +15,9 @@ ActiveAdmin.register Payment do
 
   index do
     column(:id)
-    column('Order/Verification') { |payment| link_to payment.payable_type, "/admin/#{payment.payable_type.downcase}s/#{payment.payable_id}" }
+    column('Order/Verification') do |payment|
+      link_to payment.payable_type, "/admin/#{payment.payable_type.downcase}s/#{payment.payable_id}"
+    end
     column(:created_at)
     column(:payment_status)
     column(:payment_type)
@@ -25,7 +27,9 @@ ActiveAdmin.register Payment do
 
   show do |payment|
     attributes_table do
-      row('Order/Verification') { link_to payment.payable_type, "/admin/#{payment.payable_type.downcase}s/#{payment.payable_id}" }
+      row('Order/Verification') do
+        link_to payment.payable_type, "/admin/#{payment.payable_type.downcase}s/#{payment.payable_id}"
+      end
       row(:created_at)
       row(:payment_status)
       row(:payment_type)

@@ -1,7 +1,6 @@
 module WishList
   class Api < Grape::API
     resources :wish_list do
-
       before do
         authenticate!
       end

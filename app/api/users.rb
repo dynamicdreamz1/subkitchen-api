@@ -1,7 +1,6 @@
 module Users
   class Api < Grape::API
     resources :users do
-
       desc 'get current user'
       get '/current' do
         authenticate!

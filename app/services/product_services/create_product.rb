@@ -18,8 +18,7 @@ class CreateProduct
                             image: image,
                             preview: preview,
                             published: @params.published,
-                            published_at: (@params.published ? DateTime.now : nil)
-                           )
+                            published_at: (@params.published ? DateTime.now : nil))
       product.tag_list.add(@params.tags)
       product.author_id = @user.id if @user
       product

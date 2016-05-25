@@ -19,7 +19,6 @@ class Order < ActiveRecord::Base
   scope :payment_pending, -> { where(order_status: :payment_pending) }
   scope :user, -> (user_id) { where(user_id: user_id) }
 
-
   validates :full_name, presence: true, on: :address
   validates :city,      presence: true, on: :address
   validates :address,   presence: true, on: :address

@@ -16,7 +16,6 @@ TemplateVariant.destroy_all
 Color.destroy_all
 Payment.destroy_all
 
-
 size_chart = "#{Rails.root}/app/assets/images/sizechart-hoodie.jpg"
 product_image = "#{Rails.root}/app/assets/images/t-shirt.png"
 
@@ -45,21 +44,21 @@ shipping_info = <<-EOT
 </p>
 EOT
 EmailTemplate.create!(name: 'MalformedPaymentNotifier',
-                     description: 'Sent automatically to all admins when malformed payment detected.',
-                     subject: 'Malformed payment',
-                     content: '<h3>Hi,</h3>You have <b></b>received malformed payment confirmation request.<br><br>Payment ID: <a target="_blank" title="Link: PAYMENT_ID" href="PAYMENT_URL">PAYMENT_ID</a><br><br><p>Regards,<br>Cloud Team</p>')
+                      description: 'Sent automatically to all admins when malformed payment detected.',
+                      subject: 'Malformed payment',
+                      content: '<h3>Hi,</h3>You have <b></b>received malformed payment confirmation request.<br><br>Payment ID: <a target="_blank" title="Link: PAYMENT_ID" href="PAYMENT_URL">PAYMENT_ID</a><br><br><p>Regards,<br>Cloud Team</p>')
 EmailTemplate.create!(name: 'WaitingProductsNotifier',
-                     description: 'Sent automatically/manually to the designer when customer orders product without design.',
-                     subject: 'New products are waiting for design',
-                     content: '<h3> Hi, </h3><p>New products are waiting for your design<br><br></p><p>PRODUCTS_LIST</p><p>Regards,</p><p>Cloud Team</p>')
+                      description: 'Sent automatically/manually to the designer when customer orders product without design.',
+                      subject: 'New products are waiting for design',
+                      content: '<h3> Hi, </h3><p>New products are waiting for your design<br><br></p><p>PRODUCTS_LIST</p><p>Regards,</p><p>Cloud Team</p>')
 EmailTemplate.create!(name: 'AccountResetPassword',
-                     description: 'Sent automatically to the customer when they ask to reset their password.',
-                     subject: 'Set new password',
-                     content: '<h3> Hi, </h3><p>Here is your reset password link:<br><br><a target="_blank" href="REMINDER_URL">REMINDER_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
+                      description: 'Sent automatically to the customer when they ask to reset their password.',
+                      subject: 'Set new password',
+                      content: '<h3> Hi, </h3><p>Here is your reset password link:<br><br><a target="_blank" href="REMINDER_URL">REMINDER_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
 EmailTemplate.create!(name: 'AccountEmailConfirmation',
-                     description: 'Sent automatically to the customer when they complete their account registration.	',
-                     subject: 'Confirm Your Email',
-                     content: '<h3> Hi, </h3><p>Please, confirm your email<br><br><a target="_blank" title="Link: CONFIRMATION_URL" href="CONFIRMATION_URL">CONFIRMATION_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
+                      description: 'Sent automatically to the customer when they complete their account registration.	',
+                      subject: 'Confirm Your Email',
+                      content: '<h3> Hi, </h3><p>Please, confirm your email<br><br><a target="_blank" title="Link: CONFIRMATION_URL" href="CONFIRMATION_URL">CONFIRMATION_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
 puts 'EmailTemplate created'
 Config.create!(name: 'themes', value: '3D, Abstract, Animal, Galaxy, Digital, Comic', input_type: 'short_text')
 Config.create!(name: 'tax', value: '7.00', input_type: 'short_text')
@@ -87,7 +86,6 @@ black = Color.create!(name: 'Black', color_value: '#000000')
 white = Color.create!(name: 'White', color_value: '#ffffff')
 
 puts 'Color created'
-
 
 sizes = %w(SM MD LG XL 2X 3X)
 

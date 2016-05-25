@@ -1,9 +1,9 @@
 describe Coupons::Api, type: :request do
-  let(:order){ create(:order_with_items) }
+  let(:order) { create(:order_with_items) }
 
   describe '/api/v1/coupon' do
     it 'should return error when code invalid' do
-      post '/api/v1/coupon', { order_uuid: order.uuid, coupon_code: '123456' }
+      post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: '123456'
 
       expect(json['errors']).to eq('base' => ['record not found'])
       expect(response).to have_http_status(:not_found)
@@ -14,7 +14,7 @@ describe Coupons::Api, type: :request do
         coupon = create(:coupon, valid_from: DateTime.now, valid_until: DateTime.now + 1.day)
 
         Timecop.freeze(DateTime.now + 2.days) do
-          post '/api/v1/coupon', { order_uuid: order.uuid, coupon_code: coupon.code }
+          post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: coupon.code
 
           expect(json['errors']).to eq('base' => ['Coupon invalid or expired'])
           expect(response).to have_http_status(:unprocessable_entity)
@@ -26,7 +26,7 @@ describe Coupons::Api, type: :request do
       coupon = create(:coupon, :one_time_limit)
       $redis.incr("coupon_#{coupon.id}_redemptions_counter")
 
-      post '/api/v1/coupon', { order_uuid: order.uuid, coupon_code: coupon.code }
+      post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: coupon.code
 
       expect(json['errors']).to eq('base' => ['Coupon invalid or expired'])
       expect(response).to have_http_status(:unprocessable_entity)
@@ -35,7 +35,7 @@ describe Coupons::Api, type: :request do
     it 'should return order' do
       coupon = create(:coupon)
 
-      post '/api/v1/coupon', { order_uuid: order.uuid, coupon_code: coupon.code }
+      post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: coupon.code
 
       expect(response).to match_response_schema('order')
     end
@@ -43,7 +43,7 @@ describe Coupons::Api, type: :request do
     it 'calculate discount' do
       coupon = create(:coupon)
 
-      post '/api/v1/coupon', { order_uuid: order.uuid, coupon_code: coupon.code }
+      post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: coupon.code
 
       order.reload
       expect(response).to have_http_status(:success)
@@ -55,7 +55,7 @@ describe Coupons::Api, type: :request do
       coupon = create(:coupon)
       subtotal = order.subtotal_cost
 
-      post '/api/v1/coupon', { order_uuid: order.uuid, coupon_code: coupon.code }
+      post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: coupon.code
 
       order.reload
       new_subtotal = (subtotal - coupon.discount).round(2)
@@ -72,7 +72,7 @@ describe Coupons::Api, type: :request do
       subtotal = order.subtotal_cost
       discount = coupon.discount * 0.01 * order.subtotal_cost
 
-      post '/api/v1/coupon', { order_uuid: order.uuid, coupon_code: coupon.code }
+      post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: coupon.code
 
       order.reload
 
@@ -91,7 +91,7 @@ describe Coupons::Api, type: :request do
       coupon = create(:coupon, :percentage)
       discount = coupon.discount * 0.01 * order.subtotal_cost
 
-      post '/api/v1/coupon', { order_uuid: order.uuid, coupon_code: coupon.code }
+      post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: coupon.code
 
       order.reload
 

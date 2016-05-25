@@ -32,25 +32,25 @@ class Product < ActiveRecord::Base
   scope :published_only, -> (is_published) { where(published: is_published) }
   scope :published, -> (user) { where(published: true, author: user) }
   scope :published_weekly, -> (user) { where(published: true, author: user, published_at: 1.week.ago..DateTime.now) }
-  scope :with_product_type, -> (type) { joins(:product_template).where(product_templates: {product_type: type}) }
+  scope :with_product_type, -> (type) { joins(:product_template).where(product_templates: { product_type: type }) }
   scope :with_price_range, -> (range) { where(price: range) }
   scope :with_tags, -> (tags) { tagged_with(tags, any: true) }
   scope :with_author, -> (author_id) { where(author_id: author_id) }
   scope :sort_by, lambda { |sort_option|
-                      direction = (sort_option =~ /asc$/) ? 'ASC' : 'DESC'
-                      case sort_option.to_s
-                      when /^created_at_/
-                        Product.order("created_at #{direction}")
-                      when /^name/
-                        Product.order("lower(name) #{direction}")
-                      when /^price_/
-                        Product.order("price #{direction}")
-                      when /^best_sellers/
-                        Product.order("order_items_count #{direction}")
-                      else
-                        raise(ArgumentError, "#{sort_option}")
-                      end
-                    }
+                    direction = (sort_option =~ /asc$/) ? 'ASC' : 'DESC'
+                    case sort_option.to_s
+                    when /^created_at_/
+                      Product.order("created_at #{direction}")
+                    when /^name/
+                      Product.order("lower(name) #{direction}")
+                    when /^price_/
+                      Product.order("price #{direction}")
+                    when /^best_sellers/
+                      Product.order("order_items_count #{direction}")
+                    else
+                      raise(ArgumentError, sort_option.to_s)
+                    end
+                  }
 
   filterrific(
     default_filter_params: { sort_by: 'created_at_desc' },

@@ -26,7 +26,7 @@ module Payments
         optional :return_path, type: String
       end
       post ':uuid/payment' do
-        order = Order.find_by!(uuid: params.uuid, active: true, order_status: 'creating' )
+        order = Order.find_by!(uuid: params.uuid, active: true, order_status: 'creating')
         error!({ errors: { base: ['invalid payment parameters!'] } }, 422) unless ValidPaymentParams.new(params).call
 
         unless AddOrderAddress.new(params, order).call

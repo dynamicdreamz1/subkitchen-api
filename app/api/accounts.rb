@@ -6,7 +6,6 @@ module Accounts
     end
 
     resources :account do
-
       before do
         authenticate!
       end

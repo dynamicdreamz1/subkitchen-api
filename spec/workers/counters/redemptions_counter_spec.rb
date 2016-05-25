@@ -3,10 +3,9 @@ RSpec.describe 'Earnings Counter' do
   before { StripeMock.start }
   after { StripeMock.stop }
 
-  let(:coupon){ create(:coupon, :one_time_limit) }
-  let(:order){ create(:order_with_items, coupon: coupon) }
-  let(:payment){ create(:payment, payable: order) }
-
+  let(:coupon) { create(:coupon, :one_time_limit) }
+  let(:order) { create(:order_with_items, coupon: coupon) }
+  let(:payment) { create(:payment, payable: order) }
 
   before(:each) do
     create(:config, name: 'designers', value: '')

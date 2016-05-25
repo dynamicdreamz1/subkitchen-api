@@ -7,7 +7,8 @@ describe PaypalHooks::Api, type: :request do
       'payment_gross' => @order.total_cost,
       'invoice' => @order_payment.id,
       'payment_status' => 'Completed',
-      'txn_id' => '61E67681CH3238416' }
+      'txn_id' => '61E67681CH3238416'
+    }
     @denied_order_params = { 'receiver_email' => Figaro.env.paypal_seller.to_s,
                              'payment_gross' => @order.total_cost,
                              'invoice' => @order_payment.id,
@@ -18,13 +19,15 @@ describe PaypalHooks::Api, type: :request do
       'payment_gross' => @order.total_cost,
       'invoice' => @order_payment.id,
       'payment_status' => 'Completed',
-      'txn_id' => '61E67681CH3238416' }
+      'txn_id' => '61E67681CH3238416'
+    }
     @invalid_payment_order_params = {
       'receiver_email' => Figaro.env.paypal_seller.to_s,
       'payment_gross' => '2.00',
       'invoice' => @order_payment.id,
       'payment_status' => 'Completed',
-      'txn_id' => '61E67681CH3238416' }
+      'txn_id' => '61E67681CH3238416'
+    }
   end
 
   describe 'ORDER PAYMENT' do

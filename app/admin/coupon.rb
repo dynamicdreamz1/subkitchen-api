@@ -1,34 +1,34 @@
 ActiveAdmin.register Coupon do
   permit_params :description,
-                :code,
-                :discount,
-                :valid_from,
-                :valid_until,
-                :percentage,
-                :redemption_limit,
-                :redeemed
+    :code,
+    :discount,
+    :valid_from,
+    :valid_until,
+    :percentage,
+    :redemption_limit,
+    :redeemed
   config.filters = false
   config.batch_actions = true
   actions :all
 
   action_item :generate do
-     link_to 'Generate Coupons', generate_coupons_form_admin_coupons_path, method: :get
+    link_to 'Generate Coupons', generate_coupons_form_admin_coupons_path, method: :get
   end
 
   collection_action :generate_coupons_form, method: :get do
     @coupon = Coupon.new
-    def @coupon.amount ; end
+    def @coupon.amount; end
   end
 
   collection_action :generate_coupons, method: :post do
     params['coupon']['amount'].to_i.times do
       Coupon.create!(
-          discount: params['coupon']['discount'],
-          percentage: params['coupon']['percentage'],
-          description: params['coupon']['description'],
-          redemption_limit: params['coupon']['redemption_limit'],
-          valid_from: params['coupon']['valid_from'],
-          valid_until: params['coupon']['valid_until']
+        discount: params['coupon']['discount'],
+        percentage: params['coupon']['percentage'],
+        description: params['coupon']['description'],
+        redemption_limit: params['coupon']['redemption_limit'],
+        valid_from: params['coupon']['valid_from'],
+        valid_until: params['coupon']['valid_until']
       )
     end
     redirect_to admin_coupons_path, notice: "Created #{params['coupon']['amount']} coupons!"
@@ -41,9 +41,7 @@ ActiveAdmin.register Coupon do
     column(:percentage)
     column(:description)
     column(:code)
-    column('Redemption Count') do |coupon|
-      coupon.redemptions_count
-    end
+    column('Redemption Count', &:redemptions_count)
     column(:redemption_limit)
     column(:valid_from)
     column(:valid_until)

@@ -1,8 +1,6 @@
 module Newsletters
   class Api < Grape::API
-
     resource :newsletter_receivers do
-
       desc 'add email to newsletter'
       params do
         requires :email, type: String

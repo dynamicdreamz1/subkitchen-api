@@ -49,6 +49,6 @@ RSpec.describe User, type: :model do
     product_wish_id = create(:product_wish, user: user).id
     user.destroy
 
-    expect{ ProductWish.find(product_wish_id) }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { ProductWish.find(product_wish_id) }.to raise_error(ActiveRecord::RecordNotFound)
   end
 end

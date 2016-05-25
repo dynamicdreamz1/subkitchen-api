@@ -7,9 +7,11 @@ ActiveAdmin.register_page 'Dashboard' do
         panel 'Recent Orders' do
           table_for Order.completed.order('purchased_at desc').limit(10) do
             column('Customer') do |order|
-              order.user \
-              ? link_to(order.user.email, admin_user_path(order.user)) \
-              : 'unknown'
+              if order.user
+                link_to(order.user.email, admin_user_path(order.user))
+              else
+                'unknown'
+              end
             end
             column('Total', &:total_cost)
             column('') { |order| link_to 'View', admin_order_path(order) }

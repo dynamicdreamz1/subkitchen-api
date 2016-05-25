@@ -1,5 +1,4 @@
 RSpec.describe Color, type: :model do
-
   it 'should have name and value' do
     color = Color.create
     expect(color.errors[:name].present?).to eq(true)

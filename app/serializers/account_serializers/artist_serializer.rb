@@ -7,7 +7,8 @@ class ArtistSerializer
                 handle: artist.handle,
                 company: artist.company,
                 designs: artist.products.count,
-                likes: artist.likes_count } }
+                likes: artist.likes_count }
+    }
 
     data[:errors] = artist.errors.to_h if artist.errors.any?
 

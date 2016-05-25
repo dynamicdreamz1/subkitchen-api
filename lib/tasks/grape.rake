@@ -18,7 +18,8 @@ namespace :grape do
       mapped_prefix.size,
       max_path_size,
       max_params_digits,
-      params_str.size)
+      params_str.size
+    )
 
     route_info.each do |_, info|
       fields = [

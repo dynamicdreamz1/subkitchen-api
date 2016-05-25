@@ -9,7 +9,7 @@ ActiveAdmin.register NewsletterReceiver do
     selectable_column
     column(:id)
     column(:email)
-    column('Join Date'){ |newsletter_receiver| newsletter_receiver.created_at }
+    column('Join Date', &:created_at)
     actions
   end
 

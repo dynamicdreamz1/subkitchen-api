@@ -1,8 +1,7 @@
 class AddressValidator < ActiveModel::Validator
   def validate(record)
-    if address_changed(record) && record.payment
-      record.errors.add(:base, 'cannot update address fields when payment exist')
-    end
+    return unless address_changed(record) && record.payment
+    record.errors.add(:base, 'cannot update address fields when payment exist')
   end
 
   private
