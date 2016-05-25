@@ -74,6 +74,28 @@ describe Products::Api, type: :request do
 
         expect(response.body).to eq(serialized_products.to_json)
       end
+
+      context 'search query' do
+        it 'should filter products with search_query' do
+          get '/api/v1/products', search_query: 'AA'
+
+          products = Product.where(id: @p1.id)
+          products = products.page(1).per(3)
+          serialized_products = ProductListSerializer.new(products).as_json
+
+          expect(response.body).to eq(serialized_products.to_json)
+        end
+
+        it 'should filter many products with search_query' do
+          get '/api/v1/products', search_query: 'AA bb'
+
+          products = Product.where(id: [@p1.id, @p2.id])
+          products = products.page(1).per(3)
+          serialized_products = ProductListSerializer.new(products).as_json
+
+          expect(response.body).to eq(serialized_products.to_json)
+        end
+      end
     end
   end
 end

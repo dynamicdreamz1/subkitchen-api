@@ -36,6 +36,21 @@ class Product < ActiveRecord::Base
   scope :with_price_range, -> (range) { where(price: range) }
   scope :with_tags, -> (tags) { tagged_with(tags, any: true) }
   scope :with_author, -> (author_id) { where(author_id: author_id) }
+  scope :search_query, -> (query) {
+    return nil if query.blank?
+    terms = query.downcase.split(/\s+/)
+    terms = terms.map { |e| (e.gsub('*', '%') + '%').gsub(/%+/, '%') }
+
+    terms.map{|term| "LOWER(name) LIKE (?)"}
+
+    where(
+      terms.map { |term|
+        "(LOWER(name) LIKE (?))"
+      }.join(' OR '),
+      *terms
+    )
+
+  }
   scope :sort_by, lambda { |sort_option|
                     direction = (sort_option =~ /asc$/) ? 'ASC' : 'DESC'
                     case sort_option.to_s
@@ -55,6 +70,7 @@ class Product < ActiveRecord::Base
   filterrific(
     default_filter_params: { sort_by: 'created_at_desc' },
     available_filters: [
+      :search_query,
       :sort_by,
       :with_price_range,
       :with_product_type,
