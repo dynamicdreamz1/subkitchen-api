@@ -38,7 +38,7 @@ module Products
 
       desc 'return product by id'
       get ':id' do
-        product = Product.find(params.id)
+        product = Product.where('id = ? AND (published = ? OR author_id = ?)', params.id, true, current_user).first!
         ProductSerializer.new(product).as_json
       end
 
