@@ -1,18 +1,25 @@
 describe Products::Api, type: :request do
-  let(:user) { create(:user, artist: false) }
+  let(:user) { create(:user, artist: true, status: :verified) }
 
   describe '/api/v1/products/:id' do
     describe 'single product' do
-      before(:each) do
-        @product = create(:product, author: user)
-        get "/api/v1/products/#{@product.id}"
-      end
-
       it 'should return product' do
-        serialized_product = ProductSerializer.new(@product).as_json
+        product = create(:product, author: user, published: true)
+        serialized_product = ProductSerializer.new(product).as_json
+
+        get "/api/v1/products/#{product.id}"
+
+        expect(response).to have_http_status(:success)
         expect(response.body).to eq(serialized_product.to_json)
         expect(response).to match_response_schema('single_product')
-        expect(response).to have_http_status(:success)
+      end
+
+      it 'should return 404 for private product' do
+        product = create(:product, author: user)
+
+        get "/api/v1/products/#{product.id}"
+
+        expect(response).to have_http_status(:not_found)
       end
     end
   end
