@@ -25,6 +25,14 @@ module Users
       get ':id' do
         UserPublicSerializer.new(User.find(params[:id]))
       end
+
+      desc 'return user by handle'
+      params do
+        requires :handle, type: String
+      end
+      get '/' do
+        UserPublicSerializer.new(User.where(handle: params[:handle]).first!)
+      end
     end
   end
 end

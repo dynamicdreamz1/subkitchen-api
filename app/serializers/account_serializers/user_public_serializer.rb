@@ -5,7 +5,8 @@ class UserPublicSerializer
               name: user.name,
               image_url: image_url,
               handle: user.handle,
-              company: user.company }
+              company: user.company,
+              products_count: user.products.count }
     }
 
     if include_sensitive_data
