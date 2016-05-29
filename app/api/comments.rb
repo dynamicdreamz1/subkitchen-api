@@ -3,13 +3,15 @@ module Comments
     resources :comments do
       desc 'add comment'
       params do
-        requires :product_id, type: Integer
-        requires :content, type: String
+        requires :comment, type: Hash do
+          requires :product_id, type: Integer
+          requires :content, type: String
+        end
       end
       post do
         authenticate!
-        product = Product.find(params.product_id)
-        comment = product.comments.create(user_id: current_user.try(:id), content: params.content)
+        product = Product.find(params.comment.product_id)
+        comment = product.comments.create(user_id: current_user.try(:id), content: params.comment.content)
         CommentSerializer.new(comment).as_json
       end
 
