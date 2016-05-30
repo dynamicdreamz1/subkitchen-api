@@ -23,7 +23,7 @@ class ProductSerializer
         shipping: Config.shipping_info,
         shipping_cost: Config.shipping_cost,
         tax: Config.tax,
-        size_chart: product.product_template.size_chart_url,
+        size_chart: Figaro.env.app_host + Refile.attachment_url(product.product_template, :size_chart),
         variants: variants
       }
     }
