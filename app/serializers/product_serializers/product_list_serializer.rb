@@ -6,7 +6,8 @@ class ProductListSerializer
       products: serialized_products,
       meta: {
         current_page: products.current_page,
-        total_pages: products.total_pages
+        total_pages: products.total_pages,
+        per_page: products.limit_value
       }
     }
 

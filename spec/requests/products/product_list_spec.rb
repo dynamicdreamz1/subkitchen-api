@@ -12,7 +12,7 @@ describe Products::Api, type: :request do
         end
 
         it 'should return first page of products' do
-          serialized_products = ProductListSerializer.new(Product.sort_by('created_at_desc').page(1)).as_json
+          serialized_products = ProductListSerializer.new(Product.sort_by('created_at_desc').page(1).per(30)).as_json
           expect(response.body).to eq(serialized_products.to_json)
           expect(response).to have_http_status(:success)
           expect(response).to match_response_schema('products')
