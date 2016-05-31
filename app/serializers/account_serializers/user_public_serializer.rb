@@ -5,8 +5,10 @@ class UserPublicSerializer
               name: user.name,
               image_url: image_url,
               handle: user.handle,
+              bio: user.bio,
               company: user.company,
-              products_count: user.products.count }
+              products_count: user.products.published_all.count,
+              likes_count: user.likes.count }
     }
 
     if include_sensitive_data
