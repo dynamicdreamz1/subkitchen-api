@@ -28,7 +28,7 @@ class ArtistSerializer
       Figaro.env.app_host.to_s + Refile.attachment_url(artist, :profile_image, :fill, 200, 200, format: :png)
     else
       if artist.provider == 'facebook' && artist.uid
-        return "https://graph.facebook.com/#{artist.uid}/picture?width=200"
+        return "https://graph.facebook.com/#{artist.uid}/picture?width=200&height=200"
       end
       nil
     end

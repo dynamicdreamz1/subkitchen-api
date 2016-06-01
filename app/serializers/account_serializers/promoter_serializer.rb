@@ -26,7 +26,7 @@ class PromoterSerializer
       Figaro.env.app_host.to_s + Refile.attachment_url(user, :profile_image, :fill, 200, 200, format: :png)
     else
       if user.provider == 'facebook' && user.uid
-        return "https://graph.facebook.com/#{user.uid}/picture?width=200"
+        return "https://graph.facebook.com/#{user.uid}/picture?width=200&height=200"
       end
       nil
     end
