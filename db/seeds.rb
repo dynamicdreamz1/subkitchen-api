@@ -110,10 +110,10 @@ TemplateVariant.create!(name: 'center', color: black, product_template: template
 
 puts 'TemplateVariant created'
 
-u1 = User.create!(name: 'user1', handle: 'user1', email: 't1@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true)
-u2 = User.create!(name: 'user2', handle: 'user2', email: 't2@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true)
-u3 = User.create!(name: 'user3', handle: 'user3', email: 't3@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true)
-u4 = User.create!(name: 'user4', handle: 'user4', email: 't4@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true)
+u1 = User.create!(name: 'user1', handle: 'user1', email: 't1@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true, status: :verified)
+u2 = User.create!(name: 'user2', handle: 'user2', email: 't2@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true, status: :verified)
+u3 = User.create!(name: 'user3', handle: 'user3', email: 't3@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true, status: :verified)
+u4 = User.create!(name: 'user4', handle: 'user4', email: 't4@example.com', password: 'password', password_confirmation: 'password', email_confirmed: true, artist: true, status: :verified)
 
 description = <<-EOT
 <p>This 'all over' print crewneck sweatshirt is made using a special sublimation technique to provide a vivid graphic image throughout the shirt.</p>
@@ -123,11 +123,11 @@ description = <<-EOT
 EOT
 
 25.times do
-  p = Product.create!(name: Faker::Commerce.product_name, description: description, author: u1, product_template: template2, image: File.new(product_image))
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u2, product_template: template4, image: File.new(product_image))
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u3, product_template: template3, image: File.new(product_image))
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template1, image: File.new(product_image))
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template5, image: File.new(product_image))
+  p = Product.create!(name: Faker::Commerce.product_name, description: description, author: u1, product_template: template2, image: File.new(product_image), published: true, published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u2, product_template: template4, image: File.new(product_image), published: true, published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u3, product_template: template3, image: File.new(product_image), published: true, published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template1, image: File.new(product_image), published: true, published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template5, image: File.new(product_image), published: true, published_at: Date.today)
   p.likes.create!(user: u2)
   p.likes.create!(user: u3)
   p.likes.create!(user: u4)
@@ -155,14 +155,10 @@ AdminUser.create!(email: 'admin@example.com', password: 'password', password_con
 puts 'AdminUser created'
 
 product = Product.first
-puts '1'
 order = Order.create!(purchased_at: DateTime.now, purchased: true, email: 'johndoe@example.com', order_status: 'cooking', full_name: 'John Doe', address: '123 Main St', city: 'Anytown', region: 'CA', zip: '12345-6789', country: 'USA')
-puts '2'
 OrderItem.create!(order: order, product: product, quantity: 2, size: 's', profit: product.product_template.profit * 2, template_variant: t1)
-puts '3'
 OrderItem.create!(order: order, product: product, quantity: 3, size: 'm', profit: product.product_template.profit * 3, template_variant: t2)
-puts '4'
 CalculateOrder.new(order).call
-puts '5'
 Payment.create!(payable: order, payment_status: 'completed', payment_type: 'paypal')
-puts '6'
+
+puts 'Order/Payment created'
