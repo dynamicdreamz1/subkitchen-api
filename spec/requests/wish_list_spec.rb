@@ -48,7 +48,7 @@ describe WishList::Api, type: :request do
 
       it 'should return wish list' do
         expect(response).to have_http_status(:success)
-        serialized_products = ProductListSerializer.new(@user.wished_products.page(1)).as_json
+        serialized_products = ProductListSerializer.new(@user.wished_products.page(1).per(20)).as_json
         expect(response.body).to eq(serialized_products.to_json)
       end
     end

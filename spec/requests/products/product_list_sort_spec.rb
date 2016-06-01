@@ -8,7 +8,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should sort by created_at param desc' do
-        get '/api/v1/products', sorted_by: 'created_at_desc'
+        get '/api/v1/products', sorted_by: 'created_at_desc', per_page: 3
 
         sorted_products = Product.sort_by('created_at_desc').page(1).per(3)
         serialized_products = ProductListSerializer.new(sorted_products).as_json
@@ -16,7 +16,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should sort by created_at param asc' do
-        get '/api/v1/products', sorted_by: 'created_at_asc'
+        get '/api/v1/products', sorted_by: 'created_at_asc', per_page: 3
 
         sorted_products = Product.sort_by('created_at_asc').page(1).per(3)
         serialized_products = ProductListSerializer.new(sorted_products).as_json
@@ -24,7 +24,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should sort by name param desc' do
-        get '/api/v1/products', sorted_by: 'name_desc'
+        get '/api/v1/products', sorted_by: 'name_desc', per_page: 3
 
         sorted_products = Product.sort_by('name_desc').page(1).per(3)
         serialized_products = ProductListSerializer.new(sorted_products).as_json
@@ -32,7 +32,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should sort by name param asc' do
-        get '/api/v1/products', sorted_by: 'name_asc'
+        get '/api/v1/products', sorted_by: 'name_asc', per_page: 3
 
         sorted_products = Product.sort_by('name_asc').page(1).per(3)
         serialized_products = ProductListSerializer.new(sorted_products).as_json
@@ -40,7 +40,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should sort by price param desc' do
-        get '/api/v1/products', sorted_by: 'price_desc'
+        get '/api/v1/products', sorted_by: 'price_desc', per_page: 3
 
         sorted_products = Product.sort_by('price_desc').page(1).per(3)
         serialized_products = ProductListSerializer.new(sorted_products).as_json
@@ -48,7 +48,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should sort by price param asc' do
-        get '/api/v1/products', sorted_by: 'price_asc'
+        get '/api/v1/products', sorted_by: 'price_asc', per_page: 3
 
         sorted_products = Product.sort_by('price_asc').page(1).per(3)
         serialized_products = ProductListSerializer.new(sorted_products).as_json
@@ -56,7 +56,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should sort by best sellers' do
-        get '/api/v1/products', sorted_by: 'best_sellers'
+        get '/api/v1/products', sorted_by: 'best_sellers', per_page: 3
 
         sorted_products = Product.sort_by('best_sellers').page(1).per(3)
         serialized_products = ProductListSerializer.new(sorted_products).as_json
