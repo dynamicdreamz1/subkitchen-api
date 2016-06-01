@@ -6,14 +6,20 @@ describe Products::Api, type: :request do
 
   describe '/api/v1/products' do
     describe 'CREATE product' do
+
+      before(:all) do
+        @themes = Config.themes.downcase.split(',')
+      end
+
       context 'when user is an artist' do
+
         before(:each) do
           @params = { name: 'new_product',
                       product_template_id: product_template.id,
                       description: 'description',
                       image: image,
                       preview: image,
-                      tags: ['cats'],
+                      tags: ['cats', @themes.first],
                       published: true }
           post '/api/v1/products', @params, auth_header_for(artist)
 
@@ -21,10 +27,10 @@ describe Products::Api, type: :request do
         end
 
         it 'should create product with correct data' do
+          expect(@product.tag_list).to contain_exactly(@params[:tags][0], @params[:tags][1])
           expect(@product.name).to eq(@params[:name])
           expect(@product.description).to eq(@params[:description])
           expect(@product.product_template.id).to eq(@params[:product_template_id])
-          expect(@product.tag_list).to eq(@params[:tags])
           expect(@product.published).to eq(true)
           expect(@product.image_id).to be_truthy
         end
@@ -34,6 +40,57 @@ describe Products::Api, type: :request do
           expect(response).to match_response_schema('single_product')
           serialized_product = ProductSerializer.new(@product).as_json
           expect(response.body).to eq(serialized_product.to_json)
+        end
+      end
+
+      context 'when user is an artist' do
+
+        before(:each) do
+          @params = { name: 'new_product',
+                      product_template_id: product_template.id,
+                      description: 'description',
+                      image: image,
+                      preview: image,
+                      tags: ['cats', @themes.first],
+                      published: true }
+          post '/api/v1/products', @params, auth_header_for(artist)
+
+          @product = Product.last
+        end
+
+        it 'should create product with correct data' do
+          expect(@product.tag_list).to contain_exactly(@params[:tags][0], @params[:tags][1])
+          expect(@product.name).to eq(@params[:name])
+          expect(@product.description).to eq(@params[:description])
+          expect(@product.product_template.id).to eq(@params[:product_template_id])
+          expect(@product.published).to eq(true)
+          expect(@product.image_id).to be_truthy
+        end
+
+        it 'should return created product' do
+          expect(response).to have_http_status(:success)
+          expect(response).to match_response_schema('single_product')
+          serialized_product = ProductSerializer.new(@product).as_json
+          expect(response.body).to eq(serialized_product.to_json)
+        end
+
+        describe 'creates product without theme selected' do
+          before(:each) do
+            post '/api/v1/products', { name: 'new_product',
+                                       product_template_id: product_template.id,
+                                       description: 'description',
+                                       image: image,
+                                       preview: image,
+                                       tags: ['cats'],
+                                       published: true }, auth_header_for(user)
+
+            @product = Product.first
+          end
+
+          it 'should return error' do
+            expect(json['errors']).to eq('themes' => ['Select at least one theme'])
+            expect(response).to have_http_status(:unprocessable_entity)
+          end
         end
       end
 
@@ -73,7 +130,7 @@ describe Products::Api, type: :request do
                                        description: 'description',
                                        image: image,
                                        preview: image,
-                                       tags: ['cats'],
+                                       tags: ['cats', @themes.first],
                                        published: true }, auth_header_for(user)
 
             @product = Product.first

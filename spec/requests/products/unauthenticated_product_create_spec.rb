@@ -6,6 +6,11 @@ describe Products::Api, type: :request do
 
   describe '/api/v1/products' do
     describe 'CREATE product' do
+
+      before(:all) do
+        @themes = Config.themes.downcase.split(',')
+      end
+
       context 'when user is unauthenticated' do
         before(:each) do
           @params = { name: 'new_product',
@@ -13,7 +18,7 @@ describe Products::Api, type: :request do
                       description: 'description',
                       image: image,
                       preview: image,
-                      tags: ['cats'],
+                      tags: ['cats', @themes.first],
                       published: false }
           post '/api/v1/products', @params
 
@@ -24,7 +29,7 @@ describe Products::Api, type: :request do
           expect(@product.name).to eq(@params[:name])
           expect(@product.description).to eq(@params[:description])
           expect(@product.product_template.id).to eq(@params[:product_template_id])
-          expect(@product.tag_list).to eq(@params[:tags])
+          expect(@product.tag_list).to contain_exactly(@params[:tags][0], @params[:tags][1])
           expect(@product.image_id).to be_truthy
         end
 
@@ -42,7 +47,7 @@ describe Products::Api, type: :request do
                                      description: 'description',
                                      image: image,
                                      preview: image,
-                                     tags: ['cats'],
+                                     tags: ['cats', @themes.first],
                                      published: true
 
             @product = Product.last

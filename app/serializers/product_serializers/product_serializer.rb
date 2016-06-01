@@ -13,7 +13,7 @@ class ProductSerializer
         description: product.description,
         name: product.name,
         product_type: product.product_template.product_type,
-        tags: product.tag_list,
+        tags: product.tag_list.sort,
         likes_count: product.likes_count,
         promoters: product.likes.order('created_at DESC').pluck(:user_id).uniq.compact,
         comments: product.comments.order('created_at DESC').pluck(:id).uniq.compact,

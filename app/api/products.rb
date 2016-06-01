@@ -6,6 +6,11 @@ module Products
         array_range = range[0].split(', ').map(&:to_i)
         Range.new(*array_range)
       end
+
+      def themes_invalid(params)
+        themes = Config.themes.downcase.split(', ')
+        params.published  && (!params.tags || (themes - params.tags) == themes)
+      end
     end
 
     resources :products do
@@ -54,6 +59,7 @@ module Products
         optional :tags, type: Array[String]
       end
       post do
+        error!({ errors: { themes: ['Select at least one theme'] } }, 422) if themes_invalid(params)
         product = CreateProduct.new(params, current_user).call
         if product.valid?
           product.save
