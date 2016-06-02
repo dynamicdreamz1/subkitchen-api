@@ -22,6 +22,10 @@ class MalformedPaymentNotifier < ApplicationMailer
   def values(options)
     payment_id = options[:payment_id] || 1
     { 'payment_id' => payment_id.to_s,
-      'payment_url' => "#{Figaro.env.frontend_host}admin/payments/#{payment_id}" }
+      'payment_url' => payment_url(payment_id) }
+  end
+
+  def payment_url(payment_id)
+    File.join(Figaro.env.frontend_host, 'admin/payments', payment_id.to_s)
   end
 end

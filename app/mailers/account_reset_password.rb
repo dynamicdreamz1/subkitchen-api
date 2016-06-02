@@ -20,7 +20,11 @@ class AccountResetPassword < ApplicationMailer
   private
 
   def values(options)
-    { 'reminder_url' => "#{Figaro.env.frontend_host}new_password/#{options[:password_reminder_token]}",
+    { 'reminder_url' => reset_url(options[:password_reminder_token]),
       'user_name' => options[:name] }
+  end
+
+  def reset_url(reset_token)
+    File.join(Figaro.env.frontend_host, 'new_password', reset_token)
   end
 end

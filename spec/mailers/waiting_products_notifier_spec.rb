@@ -15,7 +15,8 @@ RSpec.describe WaitingProductsNotifier, type: :mailer do
     end
 
     it 'renders the body' do
-      expect(@mail.body.raw_source).to be_include("<a href=\"#{Figaro.env.frontend_host}admin/products/#{@product.id}\">#{@product.name}")
+      url = File.join(Figaro.env.frontend_host, 'admin/products', @product.id.to_s)
+      expect(@mail.body.raw_source).to be_include("<a href=\"#{url}\">#{@product.name}")
     end
   end
 end

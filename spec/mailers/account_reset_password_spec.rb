@@ -15,7 +15,7 @@ RSpec.describe AccountResetPassword, type: :mailer do
     end
 
     it 'renders the body' do
-      url = "#{Figaro.env.frontend_host}new_password/#{user.password_reminder_token}"
+      url = File.join(Figaro.env.frontend_host, 'new_password', user.password_reminder_token)
       expect(mail.body.raw_source).to be_include(url)
     end
   end

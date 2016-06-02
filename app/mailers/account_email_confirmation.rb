@@ -20,7 +20,11 @@ class AccountEmailConfirmation < ApplicationMailer
   private
 
   def values(options)
-    { 'confirmation_url' => "#{Figaro.env.frontend_host}confirm_email/#{options[:confirmation_token]}",
+    { 'confirmation_url' => confirmation_url(options[:confirmation_token]),
       'user_name' => options[:name] }
+  end
+
+  def confirmation_url(confirmation_token)
+    File.join(Figaro.env.frontend_host, 'confirm_email', confirmation_token)
   end
 end
