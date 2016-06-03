@@ -15,7 +15,7 @@ describe Products::Api, type: :request do
       end
 
       it 'should list product comments' do
-        comments = Comment.product(product.id).page(1)
+        comments = Comment.product(product.id).order('created_at DESC').page(1)
         serialized_comments = CommentListSerializer.new(comments).as_json
         expect(response.body).to eq(serialized_comments.to_json)
         expect(response).to match_response_schema('comments')

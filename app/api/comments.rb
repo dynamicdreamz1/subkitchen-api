@@ -23,7 +23,7 @@ module Comments
       end
       get do
         product = Product.find(params.product_id)
-        comments = Comment.product(product.id).page(params.page).per(params.per_page)
+        comments = Comment.product(product.id).order('created_at DESC').page(params.page).per(params.per_page)
         CommentListSerializer.new(comments).as_json
       end
 
