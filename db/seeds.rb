@@ -123,11 +123,11 @@ description = <<-EOT
 EOT
 
 25.times do
-  p = Product.create!(name: Faker::Commerce.product_name, description: description, author: u1, product_template: template2, image: File.new(product_image), published: true, published_at: Date.today)
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u2, product_template: template4, image: File.new(product_image), published: true, published_at: Date.today)
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u3, product_template: template3, image: File.new(product_image), published: true, published_at: Date.today)
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template1, image: File.new(product_image), published: true, published_at: Date.today)
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template5, image: File.new(product_image), published: true, published_at: Date.today)
+  p = Product.create!(name: Faker::Commerce.product_name, description: description, author: u1, product_template: template2, image: File.new(product_image), preview: File.new(product_image), published: true, published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u2, product_template: template4, image: File.new(product_image), preview: File.new(product_image), published: true, published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u3, product_template: template3, image: File.new(product_image), preview: File.new(product_image), published: true, published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template1, image: File.new(product_image), preview: File.new(product_image), published: true, published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template5, image: File.new(product_image), preview: File.new(product_image), published: true, published_at: Date.today)
   p.likes.create!(user: u2)
   p.likes.create!(user: u3)
   p.likes.create!(user: u4)

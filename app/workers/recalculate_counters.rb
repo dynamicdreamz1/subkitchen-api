@@ -62,7 +62,9 @@ class RecalculateCounters
   end
 
   def published_weekly(user)
-    user.products.select { |product| product.published_at > 1.week.ago }.count
+    user.products.select do |product|
+      product.published && product.published_at > 1.week.ago
+    end.count
   end
 
   def percentage(user, name)
