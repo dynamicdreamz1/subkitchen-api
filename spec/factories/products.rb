@@ -15,6 +15,7 @@ FactoryGirl.define do
 
     trait :published do
       published true
+      published_at DateTime.now
       author { create(:user, artist: true, status: :verified) }
     end
   end

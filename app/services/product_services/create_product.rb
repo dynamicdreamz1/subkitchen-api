@@ -21,6 +21,8 @@ class CreateProduct
                             published_at: (@params.published ? DateTime.now : nil))
       product.tag_list.add(@params.tags)
       product.author_id = @user.id if @user
+      product.save!
+      PublishedCounter.perform_async(product.id, 1) if @params.published
       product
     end
   end

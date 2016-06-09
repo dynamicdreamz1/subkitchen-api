@@ -5,7 +5,7 @@ describe AccountsArtist::Api, type: :request do
   describe '/account/artist/stats' do
     context 'artist' do
       before(:each) do
-        get '/api/v1/account/artist/stats', {}, auth_header_for(artist)
+        get '/api/v1/artist_stats', {}, auth_header_for(artist)
       end
 
       it 'should get statistics for artist' do
@@ -16,7 +16,7 @@ describe AccountsArtist::Api, type: :request do
 
     context 'not artist' do
       before(:each) do
-        get '/api/v1/account/artist/stats', {}, auth_header_for(user)
+        get '/api/v1/artist_stats', {}, auth_header_for(user)
       end
 
       it 'should not get statistics for user' do

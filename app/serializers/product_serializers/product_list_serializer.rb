@@ -41,7 +41,8 @@ class ProductListSerializer
       name: product.name,
       likes_count: product.likes_count,
       preview_url: product_image(product),
-      variants: variants(product)
+      variants: variants(product),
+      sales_count: product.sales_count
     }
 
     product_hash[:author_id] = product.author.id if product.author

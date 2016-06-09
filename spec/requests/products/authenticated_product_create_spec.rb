@@ -137,7 +137,7 @@ describe Products::Api, type: :request do
           end
 
           it 'should return error' do
-            expect(json['errors']).to eq('published' => ["can't be true when you're not an artist"])
+            expect(json['errors']).to eq('base' => ["Validation failed: Published can't be true when you're not an artist"])
             expect(response).to have_http_status(:unprocessable_entity)
           end
         end

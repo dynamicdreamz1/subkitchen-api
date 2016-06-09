@@ -61,7 +61,7 @@ class Product < ActiveRecord::Base
                     when /^price_/
                       Product.order("price #{direction}")
                     when /^best_sellers/
-                      Product.order("order_items_count #{direction}")
+                      Product.order("sales_count #{direction}")
                     else
                       raise(ArgumentError, sort_option.to_s)
                     end
