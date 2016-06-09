@@ -1,5 +1,6 @@
 RSpec.describe OrderItem, type: :model do
   let(:user) { create(:user) }
+  let(:artist) { create(:user, :artist) }
   let(:order) { create(:order) }
   let(:product) { create(:product, author: user) }
   let(:order_item) { create(:order_item, product: product, order: order) }
@@ -18,6 +19,19 @@ RSpec.describe OrderItem, type: :model do
       expect do
         OrderItem.create!(order: order)
       end.to raise_error(ActiveRecord::RecordInvalid)
+    end
+  end
+
+  describe 'last sales scope' do
+    it 'should sort order items by latest sales' do
+      p1 = create(:product, author: artist)
+      p2 = create(:product, author: artist)
+      p3 = create(:product, author: artist)
+      create(:purchased_order_with_items, product: p3, purchased_at: DateTime.now - 1)
+      create(:purchased_order_with_items, product: p2, purchased_at: DateTime.now - 2)
+      create(:purchased_order_with_items, product: p1, purchased_at: DateTime.now - 3)
+
+      expect(OrderItem.last_sales(artist).pluck(:product_id)).to eq([p3.id, p2.id, p1.id])
     end
   end
 
