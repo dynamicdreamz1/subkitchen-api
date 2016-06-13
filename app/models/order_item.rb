@@ -4,7 +4,6 @@ class OrderItem < ActiveRecord::Base
   belongs_to :template_variant
 
   after_create SetOrderItem.new
-  after_save SalesCountCallback.new
 
   validates_with OrderItemValidator
   validates :order_id, presence: true

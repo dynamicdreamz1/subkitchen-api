@@ -7,6 +7,7 @@ class Order < ActiveRecord::Base
   belongs_to :coupon
 
   after_create SetTaxAndShipping.new
+  after_save SalesCountCallback.new, if: :purchased_changed?
 
   enum order_status: { creating: 0, payment_pending: 1, processing: 2, cooking: 3, completed: 4 }
 

@@ -10,8 +10,19 @@ RSpec.describe Product, type: :model do
     expect(product.author).to be_a User
   end
 
+  describe 'SalesCount on save callback' do
+    it 'should increment sales count' do
+      product = create(:product)
+      order = create(:order, order_items: [create(:order_item, product: product, quantity: 2)])
+      order.reload
+      order.update(purchased: true)
+      product.reload
+      expect(product.sales_count).to eq(2)
+    end
+  end
+
   describe 'SetProduct on create callback' do
-    it 'sets price' do
+    it 'should set price' do
       expect(product.price).to eq(product_template.price)
     end
   end
