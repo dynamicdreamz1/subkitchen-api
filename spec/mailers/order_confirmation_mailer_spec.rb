@@ -16,8 +16,8 @@ RSpec.describe AccountEmailConfirmation, type: :mailer do
     end
 
     it 'should have attachment' do
-      expect(mail.attachments.size).to eq(1)
-      expect(mail.attachments.first.content_type).to eq('application/pdf')
+      expect(mail.attachments.size).to eq(2)
+      expect(mail.attachments.last.content_type).to eq('application/pdf')
     end
   end
 end

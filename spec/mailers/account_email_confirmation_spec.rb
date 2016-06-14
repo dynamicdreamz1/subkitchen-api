@@ -15,7 +15,7 @@ RSpec.describe AccountEmailConfirmation, type: :mailer do
 
     it 'renders the body' do
       url = File.join(Figaro.env.frontend_host, 'confirm_email', user.confirm_token)
-      expect(mail.body.raw_source).to be_include(url)
+      expect(mail.encoded).to be_include(url)
     end
   end
 end
