@@ -1,5 +1,6 @@
 class Api < Grape::API
   use Grape::Middleware::Logger
+  use ActionDispatch::RemoteIp
 
   version 'v1', using: :path
   format :json
@@ -23,6 +24,10 @@ class Api < Grape::API
 
     def current_user
       @current_user ||= User.where(auth_token: headers['Auth-Token']).first
+    end
+
+    def client_ip
+      env['action_dispatch.remote_ip'].to_s
     end
   end
 

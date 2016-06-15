@@ -2,7 +2,9 @@ module Accounts
   class Api < Grape::API
     desc 'array of countries and their codes'
     get 'iso_countries' do
-      IsoCountryCodes.for_select
+			code = GeoIP.new('GeoIP.dat').country(client_ip).country_code2
+			country = IsoCountryCodes.find(code)
+			IsoCountryCodes.for_select.unshift([country.name, country.alpha2], ['United States of America', 'US'])
     end
 
     resources :account do
