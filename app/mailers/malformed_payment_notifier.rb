@@ -11,10 +11,9 @@ class MalformedPaymentNotifier < ApplicationMailer
 
     replace_keys(content, values(options))
 
-    mail(to: recipients,
-         body: content,
-         content_type: 'text/html',
-         subject: template.subject)
+    mail(to: recipients, subject: template.subject ) do |format|
+      format.html { render html: content.html_safe }
+    end
   end
 
   private

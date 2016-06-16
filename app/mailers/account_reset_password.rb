@@ -11,10 +11,9 @@ class AccountResetPassword < ApplicationMailer
 
     replace_keys(content, values(options))
 
-    mail to: email,
-         body: content,
-         content_type: 'text/html',
-         subject: template.subject
+    mail(to: email, subject: template.subject ) do |format|
+      format.html { render html: content.html_safe }
+    end
   end
 
   private
