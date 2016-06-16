@@ -3,8 +3,7 @@ require 'concerns/email_key_replacer'
 class AccountEmailConfirmation < ApplicationMailer
   KEYS = { 'CONFIRMATION_URL' => ' (required) - url to confirm email from registration form',
            'USER_NAME' => " - user's name",
-           'LOGO_IMG' => " - logo png file"
-  }.freeze
+           'LOGO_IMG' => " - logo png file" }.freeze
   include EmailKeyReplacer
 
   def notify(email, options = {})
@@ -22,8 +21,8 @@ class AccountEmailConfirmation < ApplicationMailer
 
   def values(options)
     { 'confirmation_url' => confirmation_url(options[:confirmation_token]),
-      'user_name' => options[:name],
-      'logo_img' => attachments['logo.png'].url }
+      'user_name'        => options[:name],
+      'logo_img'         => attachments['logo.png'].url }
   end
 
   def confirmation_url(confirmation_token)

@@ -2,7 +2,8 @@ require 'concerns/email_key_replacer'
 
 class AccountResetPassword < ApplicationMailer
   KEYS = { 'REMINDER_URL' => ' (required) - url for user to reset forgotten password',
-           'USER_NAME' => " - user's name" }.freeze
+           'USER_NAME' => " - user's name",
+           'LOGO_IMG' => " - logo png file" }.freeze
   include EmailKeyReplacer
 
   def notify(email, options = {})
@@ -20,7 +21,8 @@ class AccountResetPassword < ApplicationMailer
 
   def values(options)
     { 'reminder_url' => reset_url(options[:password_reminder_token]),
-      'user_name' => options[:name] }
+      'user_name'    => options[:name],
+      'logo_img'     => attachments['logo.png'].url }
   end
 
   def reset_url(reset_token)
