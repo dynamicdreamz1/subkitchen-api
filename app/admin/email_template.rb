@@ -47,7 +47,7 @@ ActiveAdmin.register EmailTemplate do
     end
     f.inputs 'Email Template' do
       f.input :subject, as: :string
-      f.input :content, as: :wysihtml5
+      f.input :content, as: :text, input_html: { size: 10 }
       f.submit
     end
   end
