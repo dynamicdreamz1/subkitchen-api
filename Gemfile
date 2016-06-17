@@ -59,8 +59,6 @@ gem 'prawn-table'
 gem 'jquery-minicolors-rails'
 gem 'activeadmin-minicolors', github: 'kholdrex/activeadmin-minicolors'
 gem 'activeadmin_addons'
-gem 'geoip'
-gem 'actionpack'
 
 group :production do
   gem 'rails_12factor'
