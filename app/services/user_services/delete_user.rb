@@ -10,7 +10,7 @@ class DeleteUser
   end
 
   def delete_user
-    @user.update(
+    @user.update_columns(
       is_deleted: true,
       email: '',
       status: '',
