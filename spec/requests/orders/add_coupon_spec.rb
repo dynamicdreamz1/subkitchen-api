@@ -7,7 +7,26 @@ describe Coupons::Api, type: :request do
 
       expect(json['errors']).to eq('coupon'=>['Coupon invalid'])
       expect(response).to have_http_status(:not_found)
-    end
+		end
+
+		it 'should set order discount' do
+			coupon = create(:coupon)
+
+			post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: coupon.code
+
+			order.reload
+			expect(order.discount).to eq(order.coupon.discount)
+		end
+
+		it 'should set order discount with percentage' do
+			coupon = create(:coupon, percentage: true)
+			discount = coupon.discount * order.subtotal_cost * 0.01
+
+			post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: coupon.code
+
+			order.reload
+			expect(order.discount).to eq(discount)
+		end
 
     it 'should return error when coupon expired' do
       Timecop.freeze(DateTime.now - 10.days) do

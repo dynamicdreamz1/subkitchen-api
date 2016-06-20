@@ -11,7 +11,18 @@ FactoryGirl.define do
         create_list(:order_item, evaluator.order_items_count, order: order)
         CalculateOrder.new(order).call
       end
-    end
+		end
+
+		factory :order_with_items_and_coupon do
+			coupon { create(:coupon) }
+			transient do
+				order_items_count 5
+			end
+			after(:create) do |order, evaluator|
+				create_list(:order_item, evaluator.order_items_count, order: order)
+				CalculateOrder.new(order).call
+			end
+		end
 
     factory :purchased_order_with_items do
       purchased true
