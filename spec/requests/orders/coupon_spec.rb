@@ -5,7 +5,7 @@ describe Coupons::Api, type: :request do
     it 'should return error when code invalid' do
       post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: '123456'
 
-      expect(json['errors']).to eq('base' => ['record not found'])
+      expect(json['errors']).to eq('coupon'=>['Coupon invalid'])
       expect(response).to have_http_status(:not_found)
     end
 
@@ -16,7 +16,7 @@ describe Coupons::Api, type: :request do
         Timecop.freeze(DateTime.now + 2.days) do
           post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: coupon.code
 
-          expect(json['errors']).to eq('base' => ['Coupon invalid or expired'])
+          expect(json['errors']).to eq('coupon' => ['Coupon expired'])
           expect(response).to have_http_status(:unprocessable_entity)
         end
       end
@@ -24,11 +24,11 @@ describe Coupons::Api, type: :request do
 
     it 'should return error when counter exceeds limit' do
       coupon = create(:coupon, :one_time_limit)
-      $redis.incr("coupon_#{coupon.id}_redemptions_counter")
+      order.update(coupon: coupon)
 
       post '/api/v1/coupon', order_uuid: order.uuid, coupon_code: coupon.code
 
-      expect(json['errors']).to eq('base' => ['Coupon invalid or expired'])
+      expect(json['errors']).to eq('coupon' => ['Coupon already applied'])
       expect(response).to have_http_status(:unprocessable_entity)
     end
 

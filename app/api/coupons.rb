@@ -7,9 +7,7 @@ module Coupons
     end
     post 'coupon' do
       order = Order.find_by!(uuid: params.order_uuid)
-      unless ApplyCoupon.new(order, params.coupon_code).call
-        error!({ errors: { base: ['Coupon invalid or expired'] } }, 422)
-      end
+      ApplyCoupon.new(order, params.coupon_code).call
       OrderSerializer.new(order).as_json
     end
   end

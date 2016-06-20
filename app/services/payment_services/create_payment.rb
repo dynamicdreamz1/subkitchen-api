@@ -2,7 +2,6 @@ class CreatePayment
   def call
     return false if already_paid?
     update_order
-    RedemptionsCounter.perform_async(order.coupon.id) if order.coupon
     charge
   end
 

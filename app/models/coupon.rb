@@ -22,6 +22,6 @@ class Coupon < ActiveRecord::Base
   end
 
   def redemptions_count
-    $redis.get("coupon_#{id}_redemptions_counter").to_i
+    orders.where(purchased: true).count
   end
 end
