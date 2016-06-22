@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
   scope :deleted, -> { unscoped.where(is_deleted: true) }
   scope :with_reminder_token, -> (token) { where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token) }
   scope :with_confirm_token, -> (token) { where(confirm_token: token) }
-  scope :artists, -> { where(artist: true) }
+  scope :artists, -> { where(artist: true, status: 1) }
   scope :not_artists, -> { where(artist: false) }
   scope :followers, -> (user) { where(id: user.user_likes.pluck(:user_id)) }
   scope :followings, -> (user) {
@@ -58,5 +58,20 @@ class User < ActiveRecord::Base
 
   def oauth_registration?
     @oauth_registration.nil? ? false : @oauth_registration
-  end
+	end
+
+	scope :sort_by, lambda { |sort_option|
+		direction = (sort_option =~ /asc$/) ? 'ASC' : 'DESC'
+		case sort_option.to_s
+			when /^created_at_/
+				User.artists.order("created_at #{direction}")
+			else
+				raise(ArgumentError, sort_option.to_s)
+		end
+	}
+
+	filterrific(
+		default_filter_params: { sort_by: 'created_at_desc' },
+		available_filters: [ :sort_by ]
+	)
 end

@@ -1,7 +1,7 @@
 class ArtistListSerializer
   def as_json(options = {})
     data = {
-      artists: serialized_artists,
+      users: serialized_artists,
       meta: {
         current_page: artists.current_page,
         total_pages: artists.total_pages
@@ -31,11 +31,11 @@ class ArtistListSerializer
   def single_artist(artist)
     { id: artist.id,
       name: artist.name,
-      image_url: (artist.profile_image_url || image_url(artist)),
+      image_url: image_url(artist),
       handle: artist.handle,
       company: artist.company,
-      designs: artist.products.count,
-      likes: artist.likes_count,
+      products_count: artist.products.count,
+      likes_count: artist.likes_count,
       verified: artist.status,
       location: nil,
       website: nil,

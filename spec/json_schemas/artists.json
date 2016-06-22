@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "artists": {
+    "users": {
       "type": "array",
       "items": {
         "type": "object",
@@ -11,8 +11,8 @@
           "image_url": {"type": ["null", "string"]},
           "handle": {"type": "string"},
           "company": {"type": ["null", "object"]},
-          "designs": {"type": "integer"},
-          "likes": {"type": "integer"},
+          "products_count": {"type": "integer"},
+          "likes_count": {"type": "integer"},
           "verified": {"type": "string"},
           "location": {"type": ["string", "null"]},
           "website": {"type": ["string", "null"]},
@@ -28,8 +28,8 @@
           "image_url",
           "handle",
           "company",
-          "designs",
-          "likes",
+          "products_count",
+          "likes_count",
           "verified",
           "location",
           "website",
@@ -50,7 +50,7 @@
     }
   },
   "required": [
-    "artists",
+    "users",
     "meta"
   ]
 }

@@ -12,9 +12,9 @@ describe Accounts::Api, type: :request do
   end
 
   describe '/api/v1/users/' do
-    context "fetching user by handle" do
+    context 'fetching user by handle' do
       it 'should return user by handle' do
-        get '/api/v1/users/', {handle: user.handle}
+        get "/api/v1/users/#{user.handle}"
 
         expect(response).to have_http_status(:success)
         expect(json['user']['name']).to eq(user.name)
@@ -22,7 +22,7 @@ describe Accounts::Api, type: :request do
       end
 
       it 'should raise 404 for unknown handle' do
-        get '/api/v1/users/', {handle: 'mom... mom... mooooom....'}
+        get '/api/v1/users/invalid'
 
         expect(response).to have_http_status(:not_found)
       end
