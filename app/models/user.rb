@@ -68,6 +68,8 @@ class User < ActiveRecord::Base
 		case sort_option.to_s
 			when /^created_at_/
 				User.artists.order("created_at #{direction}")
+			when /^likes_count_/
+				User.artists.order("likes_count #{direction}")
 			else
 				raise(ArgumentError, sort_option.to_s)
 		end
