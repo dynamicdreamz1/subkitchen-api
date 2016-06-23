@@ -47,6 +47,7 @@ class User < ActiveRecord::Base
   scope :artists, -> { where(artist: true, status: 1) }
 	scope :not_artists, -> { where(artist: false) }
 	scope :featured_artists, -> { where(artist: true, status: 1, featured: true) }
+	scope :featured, -> (featured) { where(artist: true, status: 1, featured: featured) }
   scope :followers, -> (user) { where(id: user.user_likes.pluck(:user_id)) }
   scope :followings, -> (user) {
     where(id: user.likes.where(likeable_type: 'User').pluck(:likeable_id))
@@ -74,6 +75,6 @@ class User < ActiveRecord::Base
 
 	filterrific(
 		default_filter_params: { sort_by: 'created_at_desc' },
-		available_filters: [ :sort_by ]
+		available_filters: [ :sort_by, :featured ]
 	)
 end
