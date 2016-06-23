@@ -4,6 +4,7 @@ ActiveAdmin.register User do
 
   scope :all
   scope :artists
+	scope :featured_artists
   scope :not_artists
   scope :deleted
 
@@ -17,7 +18,29 @@ ActiveAdmin.register User do
     DeleteUser.new(resource).call
     resource.products.map { |p| p.update(is_deleted: true) }
     redirect_to admin_users_path, notice: 'User Deleted'
-  end
+	end
+
+	batch_action :feature do |ids|
+		users = User.artists.where(id: ids)
+		notice = if users.empty?
+			'Select at least one artist'
+		else
+			users.each{ |artist| artist.update(featured: true) }
+			'Successfully added to featured artists list'
+		end
+		redirect_to admin_users_path(scope: 'featured_artists'), notice: notice
+	end
+
+	batch_action :stop_featuring do |ids|
+		users = User.featured_artists.where(id: ids, featured: true)
+		notice = if users.empty?
+			'Select at least one featured artist'
+		else
+			users.each{ |artist| artist.update(featured: false) }
+			'Successfully deleted from featured artists list'
+		end
+		redirect_to admin_users_path(scope: 'featured_artists'), notice: notice
+	end
 
   form do |f|
     f.inputs 'User', multipart: true do
@@ -62,6 +85,7 @@ ActiveAdmin.register User do
   end
 
   index do
+		selectable_column
     column(:id)
     column('Avatar') do |user|
       attachment_image_tag(user, :profile_image, :fit, 50, 50)
@@ -116,7 +140,8 @@ ActiveAdmin.register User do
             row('Number of Likes') { user.likes_count }
             row('Number of Sales') { user.sales_count }
             row('Profit') { user.earnings_count }
-            row('Published') { user.published_count }
+						row('Published') { user.published_count }
+						row('Featured') { user.featured }
           end
         end
       end

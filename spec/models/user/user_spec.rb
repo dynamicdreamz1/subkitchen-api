@@ -50,5 +50,25 @@ RSpec.describe User, type: :model do
     user.destroy
 
     expect { ProductWish.find(product_wish_id) }.to raise_error(ActiveRecord::RecordNotFound)
-  end
+	end
+
+	describe 'FeaturedValidator' do
+		it 'should not set featured to true when not an artist' do
+			expect do
+				create(:user, featured: true)
+			end.to raise_error(ActiveRecord::RecordInvalid)
+		end
+
+		it 'should not set featured to true when not verified' do
+			expect do
+				create(:user, artist: true, featured: true)
+			end.to raise_error(ActiveRecord::RecordInvalid)
+		end
+
+		it 'should create user with featured set to true' do
+			expect do
+				create(:user, :artist, featured: true)
+			end.to change(User, :count).by(1)
+		end
+	end
 end

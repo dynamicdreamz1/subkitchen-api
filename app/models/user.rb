@@ -15,9 +15,10 @@ class User < ActiveRecord::Base
 
   attr_accessor :oauth_registration
 
+	validates_with FeaturedValidator
   validates :email, presence: true, email: true, uniqueness: true, unless: :oauth_registration?
   validates :handle, uniqueness: { allow_nil: true, allow_blank: true }, presence: { if: :artist }
-  validates :name, presence: true, uniqueness: true
+	validates :name, presence: true, uniqueness: true
   validates :shop_banner, image: { width: 1920, height: 750 }
   validate do |record|
     record.errors.add(:password, :blank) unless record.password_digest.present? || oauth_registration?
@@ -44,7 +45,8 @@ class User < ActiveRecord::Base
   scope :with_reminder_token, -> (token) { where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token) }
   scope :with_confirm_token, -> (token) { where(confirm_token: token) }
   scope :artists, -> { where(artist: true, status: 1) }
-  scope :not_artists, -> { where(artist: false) }
+	scope :not_artists, -> { where(artist: false) }
+	scope :featured_artists, -> { where(artist: true, status: 1, featured: true) }
   scope :followers, -> (user) { where(id: user.user_likes.pluck(:user_id)) }
   scope :followings, -> (user) {
     where(id: user.likes.where(likeable_type: 'User').pluck(:likeable_id))
