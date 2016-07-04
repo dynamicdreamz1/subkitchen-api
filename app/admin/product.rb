@@ -2,13 +2,13 @@ ActiveAdmin.register Product do
   config.sort_order = 'id_asc'
   permit_params :design, :name, :author_id, :description, :product_template_id,
                 :image, :preview, :published, :published_at, :tag_list
-  config.batch_actions = false
   actions :all, except: :destroy
 
   scope :all
   scope :ready_to_print
   scope :waiting
-  scope :deleted
+	scope :deleted
+	scope :featured_products
 
   filter :published
   filter :name_cont, as: :string, label: 'Name'
@@ -18,10 +18,33 @@ ActiveAdmin.register Product do
   member_action :delete, method: :put do
     resource.update(is_deleted: true)
     redirect_to admin_products_path, notice: 'Product Deleted'
-  end
+	end
+
+	batch_action :feature do |ids|
+		products = Product.published_all.where(id: ids)
+		notice = if products.empty?
+			'Select at least one product'
+		else
+			products.each{ |product| product.update(featured: true) }
+			'Successfully added to featured products list'
+		end
+		redirect_to admin_products_path(scope: 'featured_products'), notice: notice
+	end
+
+	batch_action :stop_featuring do |ids|
+		products = Product.published_all.where(id: ids, featured: true)
+		notice = if products.empty?
+			'Select at least one featured product'
+		else
+			products.each{ |product| product.update(featured: false) }
+			'Successfully deleted from featured products list'
+		end
+		redirect_to admin_products_path(scope: 'featured_products'), notice: notice
+	end
 
   index do
-    column(:id)
+		selectable_column
+		column(:id)
     column('Image') do |product|
       attachment_image_tag(product, :image, :fit, 50, 50)
     end
@@ -34,7 +57,7 @@ ActiveAdmin.register Product do
       end
     end
     column(:name)
-    column(:published)
+		column(:published)
     column(:price)
     column('Type') { |product| product.product_template.product_type }
     actions defaults: false do |product|

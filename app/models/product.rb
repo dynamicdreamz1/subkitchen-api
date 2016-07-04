@@ -28,7 +28,9 @@ class Product < ActiveRecord::Base
   scope :deleted, -> { unscoped.where(is_deleted: true) }
   scope :ready_to_print, -> { where.not(design_id: nil) }
   scope :waiting, -> { joins(:orders).where(design_id: nil).where(orders: { order_status: 2 }) }
-  scope :published_all, -> { where(published: true) }
+	scope :published_all, -> { where(published: true) }
+	scope :featured, -> (is_featured) { where(featured: is_featured) }
+	scope :featured_products, -> { where(featured: true) }
   scope :published_only, -> (is_published) { where(published: is_published) }
   scope :published, -> (user) { where(published: true, author: user) }
   scope :published_weekly, -> (user) { where(published: true, author: user, published_at: 1.week.ago..DateTime.now) }
@@ -76,7 +78,8 @@ class Product < ActiveRecord::Base
       :with_product_type,
       :with_tags,
       :with_author,
-      :published_only
+      :published_only,
+			:featured
     ]
   )
 
