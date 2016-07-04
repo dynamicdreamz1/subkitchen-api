@@ -18,6 +18,7 @@
         "tags": {"type": "array"},
         "image_url": {"type": "string"},
         "preview_url": {"type": "string"},
+        "big_preview_url": {"type": "string"},
         "shipping": {"type": "string"},
         "shipping_cost": {"type": "string"},
         "tax": {"type": "string"},
