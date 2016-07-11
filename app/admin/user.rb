@@ -44,7 +44,6 @@ ActiveAdmin.register User do
 
   form do |f|
     f.inputs 'User', multipart: true do
-      f.input :profile_image, as: :refile
       f.input :name, required: true
       f.input :email, required: true
       f.input :handle, required: true
@@ -88,7 +87,7 @@ ActiveAdmin.register User do
 		selectable_column
     column(:id)
     column('Avatar') do |user|
-      attachment_image_tag(user, :profile_image, :fit, 50, 50)
+      image_tag(user.profile_image, height: '30')
     end
     column(:name)
     column(:email)
@@ -109,7 +108,7 @@ ActiveAdmin.register User do
       tab('Overview') do
         attributes_table do
           row('Avatar') do
-            attachment_image_tag(user, :profile_image, :fit, 50, 50)
+            image_tag(user.profile_image, height: '200')
           end
           row(:email)
           row(:email_confirmed)
