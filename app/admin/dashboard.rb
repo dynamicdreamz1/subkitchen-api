@@ -23,7 +23,7 @@ ActiveAdmin.register_page 'Dashboard' do
         panel 'Recent Users' do
           table_for User.order('id desc').limit(10).each do
             column('Avatar') do |user|
-              attachment_image_tag(user, :profile_image, :fit, 50, 50)
+              image_tag(user.profile_image)
             end
             column(:name)
             column(:email) { |user| link_to(user.email, admin_user_path(user)) }
