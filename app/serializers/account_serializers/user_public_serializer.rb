@@ -3,7 +3,8 @@ class UserPublicSerializer
     data = {
       user: { id: user.id,
               name: user.name,
-              image_url: image_url,
+							image_url: user.profile_image || image_url,
+							banner_url: user.shop_banner,
               handle: user.handle,
               bio: user.bio,
               company: user.company,
@@ -36,13 +37,9 @@ class UserPublicSerializer
   end
 
   def image_url
-    if user.profile_image_url
-      Figaro.env.app_host.to_s + Refile.attachment_url(user, :profile_image, :fill, 200, 200, format: :png)
-    else
-      if user.provider == 'facebook' && user.uid
-        return "https://graph.facebook.com/#{user.uid}/picture?width=200&height=200"
-      end
-      nil
-    end
-  end
+		if user.provider == 'facebook' && user.uid
+			return "https://graph.facebook.com/#{user.uid}/picture?width=200&height=200"
+		end
+		nil
+	end
 end

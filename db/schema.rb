@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160624120949) do
+ActiveRecord::Schema.define(version: 20160706103854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -298,8 +298,8 @@ ActiveRecord::Schema.define(version: 20160624120949) do
     t.string   "region",                       default: ""
     t.string   "country",                      default: ""
     t.string   "phone",                        default: ""
-    t.string   "profile_image_id"
-    t.string   "shop_banner_id"
+    t.string   "profile_image"
+    t.string   "shop_banner"
     t.boolean  "is_deleted",                   default: false
     t.integer  "status",                       default: 0
     t.integer  "likes_count",                  default: 0

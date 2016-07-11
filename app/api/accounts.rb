@@ -48,45 +48,6 @@ module Accounts
         CompanyAddress.new(current_user, params).call
         current_user
       end
-
-      desc 'upload profile image'
-      params do
-        requires :image, type: File
-      end
-      post 'profile_image' do
-        image = ActionDispatch::Http::UploadedFile.new(params.image)
-        current_user.profile_image = image
-        current_user.valid?
-        if current_user.errors[:profile_image].blank?
-          current_user.errors.delete(:profile_image)
-          current_user.save(validate: false)
-          current_user.reload
-        else
-          status(:unprocessable_entity)
-        end
-        UserPublicSerializer.new(current_user)
-      end
-
-      desc 'upload shop banner'
-      params do
-        requires :banner, type: File
-      end
-      post 'shop_banner' do
-        banner = ActionDispatch::Http::UploadedFile.new(params.banner)
-        if current_user.artist
-          current_user.shop_banner = banner
-          if current_user.valid?
-            current_user.save
-            data = { shop_banner_url: current_user.shop_banner_url }
-            data[:errors] = current_user.errors if current_user.errors.any?
-            data
-          else
-            error!({ errors: current_user.errors.messages }, 422)
-          end
-        else
-          error!({ errors: { base: ['user must be an artist'] } }, 422)
-        end
-      end
     end
   end
 end

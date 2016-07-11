@@ -48,7 +48,8 @@ class Api < Grape::API
   mount Followers::Api
   mount WishList::Api
   mount Coupons::Api
-  mount Newsletters::Api
+	mount Newsletters::Api
+	mount S3Direct::Api
 
   add_swagger_documentation(api_version: 'v1', hide_documentation_path: true, base_path: '/api')
 end

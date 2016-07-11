@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true, email: true, uniqueness: true, unless: :oauth_registration?
   validates :handle, uniqueness: { allow_nil: true, allow_blank: true }, presence: { if: :artist }
 	validates :name, presence: true, uniqueness: true
-  validates :shop_banner, image: { width: 1920, height: 750 }
+  validates :shop_banner, user_images: { width: 1372, height: 315 }
   validate do |record|
     record.errors.add(:password, :blank) unless record.password_digest.present? || oauth_registration?
   end
@@ -36,9 +36,6 @@ class User < ActiveRecord::Base
   uses_secure_token :auth_token
   uses_secure_token :password_reminder_token
   uses_secure_token :confirm_token
-
-  attachment :profile_image, content_type: %w(image/jpeg image/png image/jpg)
-  attachment :shop_banner, content_type: %w(image/jpeg image/png image/jpg)
 
   default_scope { where(is_deleted: false) }
   scope :deleted, -> { unscoped.where(is_deleted: true) }

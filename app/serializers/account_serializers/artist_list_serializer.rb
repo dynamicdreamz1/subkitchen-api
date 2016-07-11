@@ -31,7 +31,7 @@ class ArtistListSerializer
   def single_artist(artist)
     { id: artist.id,
       name: artist.name,
-      image_url: image_url(artist),
+      image_url: artist.profile_image || image_url(artist),
       handle: artist.handle,
       company: artist.company,
       products_count: artist.products.count,
@@ -41,20 +41,16 @@ class ArtistListSerializer
       location: nil,
       website: nil,
       bio: nil,
-      shop_banner: artist.shop_banner_url,
+      shop_banner: artist.shop_banner,
       promoted:  nil,
       followers: nil,
       following: nil }
   end
 
   def image_url(artist)
-    if artist.profile_image_url
-      Figaro.env.app_host.to_s + Refile.attachment_url(artist, :profile_image, :fill, 200, 200, format: :png)
-    else
-      if artist.provider == 'facebook' && artist.uid
-        return "https://graph.facebook.com/#{artist.uid}/picture?width=200&height=200"
-      end
-      nil
-    end
+		if artist.provider == 'facebook' && artist.uid
+			return "https://graph.facebook.com/#{artist.uid}/picture?width=200&height=200"
+		end
+		nil
   end
 end

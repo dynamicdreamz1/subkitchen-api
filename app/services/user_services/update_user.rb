@@ -18,7 +18,9 @@ class UpdateUser
     user.email = params.user.email
     user.handle = params.user.handle
     user.location = params.user.location
-    user.website = params.user.website
+		user.website = params.user.website
+		user.profile_image = params.user.image_url
+		user.shop_banner = params.user.banner_url
     user.bio = params.user.bio
     user
   end

@@ -25,8 +25,8 @@ module Users
       desc 'return user by id or handle'
       get ':id' do
 				user = params.id.to_i == 0 ? User.where(handle: params[:id]).first! : User.find(params[:id])
-				UserPublicSerializer.new(user)
-      end
+				UserPublicSerializer.new(user).as_json
+			end
     end
   end
 end
