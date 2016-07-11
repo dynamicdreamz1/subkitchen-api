@@ -20,6 +20,7 @@ class ProductSerializer
         comments_count: product.comments.count,
         image_url: product_image(:image, 2048, 2048),
         preview_url: product_image(:preview, 1024, 1024),
+        big_preview_url: product_image(:preview, 2048, 2048),
         shipping: Config.shipping_info,
         shipping_cost: Config.shipping_cost,
         tax: Config.tax,
