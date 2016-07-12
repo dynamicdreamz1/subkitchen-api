@@ -41,7 +41,8 @@ class User < ActiveRecord::Base
   scope :deleted, -> { unscoped.where(is_deleted: true) }
   scope :with_reminder_token, -> (token) { where('password_reminder_expiration >= ?', Time.zone.now).where(password_reminder_token: token) }
   scope :with_confirm_token, -> (token) { where(confirm_token: token) }
-  scope :artists, -> { where(artist: true, status: 1) }
+	scope :artists, -> { where(artist: true, status: 1) }
+	scope :pending_artists, -> { where(artist: true, status: 2) }
 	scope :not_artists, -> { where(artist: false) }
 	scope :featured_artists, -> { where(artist: true, status: 1, featured: true) }
 	scope :featured, -> (featured) { where(artist: true, status: 1, featured: featured) }

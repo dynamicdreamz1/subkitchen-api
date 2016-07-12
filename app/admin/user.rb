@@ -7,6 +7,7 @@ ActiveAdmin.register User do
 	scope :featured_artists
   scope :not_artists
   scope :deleted
+	scope :pending_artists
 
   filter :email_cont, as: :string
   filter :name_cont, as: :string
@@ -40,6 +41,17 @@ ActiveAdmin.register User do
 			'Successfully deleted from featured artists list'
 		end
 		redirect_to admin_users_path(scope: 'featured_artists'), notice: notice
+	end
+
+	batch_action :verify do |ids|
+		users = User.pending_artists.where(id: ids)
+		notice = if users.empty?
+			'Select at least one artist to verify'
+		else
+			users.each{ |artist| artist.update(status: 1) }
+			'Successfully verified artists'
+		end
+		redirect_to admin_users_path(scope: 'artists'), notice: notice
 	end
 
   form do |f|
