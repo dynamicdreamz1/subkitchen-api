@@ -36,19 +36,9 @@ module Accounts
 			end
 
 			desc 'simple user verification. See SK-317'
-			params do
-				optional :return_path, type: String
-				optional :has_company, type: Boolean
-				optional :handle, type: String
-				optional :company_name, type: String
-				optional :address, type: String
-				optional :city, type: String
-				optional :zip, type: String
-				optional :region, type: String
-				optional :country, type: String
-			end
 			post 'simple_verification' do
-				VerifyArtistSimple.new(current_user, params).call
+				authenticate!
+				VerifyArtistSimple.new(current_user).call
 				current_user
 			end
 

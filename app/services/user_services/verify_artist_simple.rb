@@ -2,24 +2,18 @@ class VerifyArtistSimple
 	include Grape::DSL::InsideRoute
 
   def call
-		status 422 unless update_user && update_address
+		status 422 unless update_user
   end
 
   private
 
-  attr_accessor :user, :params
+  attr_accessor :user
 
-  def initialize(user, params)
+  def initialize(user)
     @user = user
-    @params = params
-  end
-
-  def update_address
-    params.has_company ? CompanyAddress.new(user, params).call : true
   end
 
   def update_user
-    user_params = { artist: true, handle: params.handle }
-    user.update(user_params)
+    user.update(artist: true, handle: user.name)
   end
 end
