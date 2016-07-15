@@ -35,13 +35,6 @@ module Accounts
         current_user
 			end
 
-			desc 'simple user verification. See SK-317'
-			post 'simple_verification' do
-				authenticate!
-				VerifyArtistSimple.new(current_user).call
-				current_user
-			end
-
       desc 'update company address'
       params do
         requires :company_name, type: String
@@ -54,7 +47,31 @@ module Accounts
       post 'company_address' do
         CompanyAddress.new(current_user, params).call
         current_user
-      end
-    end
+			end
+		end
+
+		resources :account do
+
+			desc 'simple user verification. See SK-317'
+			params do
+				optional :uuid, type: String
+				optional :email, type: String
+				optional :password, type: String
+				optional :password_confirmation, type: String
+				optional :name, type: String
+				optional :handle, type: String
+			end
+			post 'simple_verification' do
+				if params.uuid
+					user = CreateVerifiedArtist.new(params, current_user).call
+					status(:unprocessable_entity) unless user.valid?
+					user
+				else
+					authenticate!
+					VerifyArtistSimple.new(current_user).call
+					current_user
+				end
+			end
+		end
   end
 end

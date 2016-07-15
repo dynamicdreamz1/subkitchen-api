@@ -1,0 +1,8 @@
+<%= semantic_form_for @token, url: generate_tokens_admin_artist_invitation_tokens_path, html: { method: :post } do |f| %>
+    <%= f.inputs do %>
+        <%= f.input :amount, input_html: { value: 100 } %>
+    <% end %>
+    <%= f.actions do %>
+        <%= f.action :submit, as: :button %>
+    <% end %>
+<% end %>
