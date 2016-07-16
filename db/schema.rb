@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160715112702) do
+ActiveRecord::Schema.define(version: 20160716160835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -209,6 +209,13 @@ ActiveRecord::Schema.define(version: 20160715112702) do
   end
 
   add_index "payments", ["payable_id", "payable_type"], name: "index_payments_on_payable_id_and_payable_type", using: :btree
+
+  create_table "payouts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.decimal  "value",      precision: 8, scale: 2
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
 
   create_table "product_templates", force: :cascade do |t|
     t.decimal  "price",             precision: 8, scale: 2

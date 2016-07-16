@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :product_wishes, dependent: :destroy
   has_many :wished_products, through: :product_wishes
 	has_one :artist_invitation_token
+	has_many :payouts
 
   enum status: { unverified: 0, verified: 1, pending: 2 }
 
