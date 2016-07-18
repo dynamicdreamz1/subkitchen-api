@@ -3,8 +3,8 @@ class UserPublicSerializer
     data = {
       user: { id: user.id,
               name: user.name,
-							image_url: user.profile_image || image_url,
-							banner_url: user.shop_banner,
+              image_url: user.profile_image || image_url,
+              banner_url: user.shop_banner,
               handle: user.handle,
               bio: user.bio,
               company: user.company,
@@ -17,11 +17,12 @@ class UserPublicSerializer
       data[:user][:location] = user.location
       data[:user][:website] = user.website
       data[:user][:bio] = user.bio
-			data[:user][:artist] = user.artist
-			data[:user][:current_account_state] = user.current_account_state
-			data[:user][:earnings_overall] = user.earnings_count
+      data[:user][:artist] = user.artist
+      data[:user][:current_account_state] = user.current_account_state
+      data[:user][:earnings_overall] = user.earnings_count
       data[:user][:status] = user.status
       data[:user][:auth_token] = user.auth_token
+      data[:user][:paypal_id] = user.paypal_id
     end
 
     data[:errors] = user.errors.to_h if user.errors.any?
@@ -39,9 +40,9 @@ class UserPublicSerializer
   end
 
   def image_url
-		if user.provider == 'facebook' && user.uid
-			return "https://graph.facebook.com/#{user.uid}/picture?width=200&height=200"
-		end
-		nil
-	end
+    if user.provider == 'facebook' && user.uid
+      return "https://graph.facebook.com/#{user.uid}/picture?width=200&height=200"
+    end
+    nil
+  end
 end
