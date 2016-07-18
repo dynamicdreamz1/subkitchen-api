@@ -33,7 +33,7 @@ class SalesAndEarningsCounter
   end
 
   def get_earnings_count(user)
-    $redis.get("user_#{user.id}_earnings_counter").to_i
+    $redis.get("user_#{user.id}_earnings_counter").to_f
   end
 
   def get_sales_counter(user)

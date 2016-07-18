@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :product_template do
     price 19.99
-    profit 5.00
+    profit 5.5
     product_type 't_shirt'
     size %w(s m l xl)
     size_chart_id '1234'

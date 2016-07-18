@@ -24,8 +24,13 @@ module ArtistStatsGetters
   end
 
   def earnings_count
-    $redis.get("user_#{id}_earnings_counter").to_i
-  end
+    $redis.get("user_#{id}_earnings_counter").to_f
+	end
+
+	def current_account_state
+		payouts = Payout.user(id).sum(:value)
+		$redis.get("user_#{id}_earnings_counter").to_f - payouts
+	end
 
   def earnings_weekly
     $redis.get("user_#{id}_earnings_weekly").to_i

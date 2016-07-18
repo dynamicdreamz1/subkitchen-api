@@ -50,6 +50,7 @@ class Api < Grape::API
   mount Coupons::Api
 	mount Newsletters::Api
 	mount S3Direct::Api
+	mount AccountsPayouts::Api
 
   add_swagger_documentation(api_version: 'v1', hide_documentation_path: true, base_path: '/api')
 end

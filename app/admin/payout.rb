@@ -1,8 +1,9 @@
 ActiveAdmin.register Payout do
 	permit_params :user_id, :value
-	config.filters = false
 	config.batch_actions = false
-	actions :all, except: :show
+	actions :index, :new, :create
+
+	filter :user
 
 	index do
 		column(:id)

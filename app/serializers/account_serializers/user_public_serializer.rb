@@ -17,7 +17,9 @@ class UserPublicSerializer
       data[:user][:location] = user.location
       data[:user][:website] = user.website
       data[:user][:bio] = user.bio
-      data[:user][:artist] = user.artist
+			data[:user][:artist] = user.artist
+			data[:user][:current_account_state] = user.current_account_state
+			data[:user][:earnings_overall] = user.earnings_count
       data[:user][:status] = user.status
       data[:user][:auth_token] = user.auth_token
     end
