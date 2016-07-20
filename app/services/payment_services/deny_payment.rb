@@ -1,22 +1,21 @@
-class DenyPaypalPayment
+class DenyPayment
   def call
     deny_payment
   end
 
   private
 
-  attr_accessor :payment, :params, :order
+  attr_accessor :payment, :order
 
-  def initialize(payment, params)
+  def initialize(payment)
     @payment = payment
-    @params = params
     @order = payment.payable
   end
 
   def deny_payment
     Order.transaction do
       payment.update(payment_status: 'denied')
-      order.update(order_status: 'creating')
+      order.update(order_status: 'failed', active: false)
       payment
     end
   end

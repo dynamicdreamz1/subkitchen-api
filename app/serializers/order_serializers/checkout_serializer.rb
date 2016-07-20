@@ -2,7 +2,7 @@ class CheckoutSerializer
   include ApplicationHelper
 
   def as_json(options = {})
-    add_invoice_data if order.invoice
+		add_invoice_data if order.invoice
     add_shipping_address if order.address
     add_errors if order.errors.any?
     add_deleted_items if deleted_items
@@ -22,9 +22,8 @@ class CheckoutSerializer
   end
 
   def add_invoice_data
-    data[:order][:pdf] = Figaro.env.app_host + "/api/v1/invoices?uuid=#{order.uuid}"
-    data[:order][:placed] = order.invoice.created_at.strftime('%B %d, %Y - %I:%M %p %Z').to_s
-  end
+    data[:order][:pdf] = order.invoice.pdf_url
+	end
 
   def add_shipping_address
     data[:order][:shipping_address] = shipping_address
@@ -41,7 +40,8 @@ class CheckoutSerializer
   def order_hash
     { id: order.id,
       uuid: order.uuid,
-      purchased_at: order.purchased_at,
+			purchased_at: purchased_at,
+			purchased: order.purchased,
       status: order.order_status,
       subtotal: order.subtotal_cost,
       shipping_cost: order.shipping_cost,
@@ -50,12 +50,17 @@ class CheckoutSerializer
       total_cost: order.total_cost,
       discount: order.discount,
       items: items_hash,
-      invoice_id: "#{order.id}/#{order.created_at.strftime('%d/%m/%Y')}" }
+			invoice_id: order.record_number
+		}
   end
 
   def items
     order.order_items.reject { |item| item.product.is_deleted }
-  end
+	end
+
+	def purchased_at
+		order.purchased_at ? order.purchased_at.strftime('%B %d, %Y - %I:%M %p %Z').to_s : nil
+	end
 
   def items_hash
     items.map do |item|

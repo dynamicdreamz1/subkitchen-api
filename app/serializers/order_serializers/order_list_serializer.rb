@@ -34,6 +34,7 @@ class OrderListSerializer
       id: order.id,
       uuid: order.uuid,
       created_at: order.created_at,
+			paypal_url: order.paypal_url,
       status: order.order_status,
       total_cost: order.total_cost,
       invoice_id: "#{order.id}/#{order.created_at.strftime('%d/%m/%Y')}"

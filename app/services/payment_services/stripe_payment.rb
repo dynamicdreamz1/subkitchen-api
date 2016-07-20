@@ -1,21 +1,16 @@
 class StripePayment
   def call
     charge
-    update_order
-    update_payment
-    send_order_and_create_invoice
-    NotifyDesigners.new(order).call
-    SalesAndEarningsCounter.perform_async(order.id)
-    payment
-  rescue Stripe::InvalidRequestError => e
+    CommonPayment.new(payment, token).call
+	rescue Stripe::InvalidRequestError => e
+		DenyPayment.new(payment).call
     { errors: { base: [e.message] } }
-  rescue Stripe::CardError => e
-    { errors: { base: [e.message] } }
+	rescue Stripe::CardError => e
+		DenyPayment.new(payment).call
+		{ errors: { base: [e.message] } }
   end
 
   private
-
-  include PaymentHelpers
 
   attr_accessor :payment, :order
   attr_reader :token

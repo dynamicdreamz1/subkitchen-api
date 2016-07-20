@@ -3,7 +3,7 @@ module Payments
     resources :orders do
       desc 'payment page'
       get ':uuid/payment' do
-        order = Order.find_by!(uuid: params.uuid, purchased_at: nil)
+        order = Order.find_by!(uuid: params.uuid, purchased: false)
         if CheckOrderItems.new(order).call
           CheckoutSerializer.new(order).as_json
         else

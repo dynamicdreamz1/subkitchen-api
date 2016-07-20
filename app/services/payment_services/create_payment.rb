@@ -18,20 +18,29 @@ class CreatePayment
   end
 
   def already_paid?
-    Payment.find_by(payable: order, payment_status: :completed)
+    Payment.find_by(payable: order, payment_status: 'completed')
   end
 
   def update_order
-    order.update(order_status: :payment_pending)
+    order.update(order_status: 'payment_pending')
   end
 
   def charge
-    payment = Payment.create!(payable: order, payment_type: payment_type)
-    if payment_type == 'stripe'
+    payment = find_or_create_payment
+    if payment.payment_type == 'stripe'
       StripePayment.new(payment, payment_token).call
-    else
-      url = PaypalPaymentRequest.new(payment, return_path).call
+		else
+			if order.paypal_url
+      	url = order.paypal_url
+			else
+				url = PaypalPaymentRequest.new(payment, return_path).call
+				order.update(paypal_url: url)
+			end
       { url: url }
     end
-  end
+	end
+
+	def find_or_create_payment
+		Payment.find_by(payable: order) || Payment.create!(payable: order, payment_type: payment_type)
+	end
 end

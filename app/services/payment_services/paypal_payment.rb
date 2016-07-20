@@ -1,16 +1,9 @@
 class PaypalPayment
   def call
-    update_order
-    update_payment
-    send_order_and_create_invoice
-    NotifyDesigners.new(order).call
-    SalesAndEarningsCounter.perform_async(order.id)
-    payment
-  end
+		CommonPayment.new(payment, token).call
+	end
 
   private
-
-  include PaymentHelpers
 
   attr_accessor :payment, :order
   attr_reader :token

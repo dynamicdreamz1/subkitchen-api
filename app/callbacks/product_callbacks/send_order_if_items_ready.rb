@@ -3,8 +3,11 @@ class SendOrderIfItemsReady
     if product.design_id.present? && product.design_id_was.nil?
       orders = get_orders(product)
       orders.each do |order|
-        SendOrder.new(order).call if CheckOrderIfReady.new(order).call
-      end
+				if CheckOrderIfReady.new(order).call
+					order.update(order_status: 'cooking')
+					SendOrder.new(order).call
+				end
+			end
     end
   end
 

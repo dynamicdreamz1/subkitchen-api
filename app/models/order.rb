@@ -9,15 +9,16 @@ class Order < ActiveRecord::Base
   after_create SetTaxAndShipping.new
   after_save SalesCountCallback.new, if: :purchased_changed?
 
-  enum order_status: { creating: 0, payment_pending: 1, processing: 2, cooking: 3, completed: 4 }
+  enum order_status: { creating: 0, payment_pending: 1, processing: 2, cooking: 3, completed: 4, failed: 5 }
 
   validates_with AddressValidator, on: :update
 
-  scope :completed, -> { where(purchased: true) }
   scope :waiting_products, ->(order) { order.products.where(design_id: nil) }
-  scope :processing, -> { where(order_status: :processing) }
+  scope :processing, -> { where(order_status: 'processing') }
   scope :creating, -> { where(order_status: 'creating') }
-  scope :payment_pending, -> { where(order_status: :payment_pending) }
+  scope :payment_pending, -> { where(order_status: 'payment_pending') }
+	scope :completed, -> { where(order_status: 'completed' ) }
+	scope :failed, -> { where(order_status: 'failed') }
   scope :user, -> (user_id) { where(user_id: user_id) }
 
   validates :full_name, presence: true, on: :address
@@ -27,4 +28,8 @@ class Order < ActiveRecord::Base
   validates :region,    presence: true, on: :address
   validates :country,   presence: true, on: :address
   validates :email,     presence: true, email: true, on: :address
+
+	def record_number
+		"#{id}/#{created_at.strftime('%d/%m/%Y')}"
+	end
 end

@@ -15,7 +15,7 @@ module PaypalHooks
           payment.update(payment_status: 'malformed')
         end
       else
-        DenyPaypalPayment.new(payment, params).call
+        DenyPayment.new(payment).call
       end
     end
 
