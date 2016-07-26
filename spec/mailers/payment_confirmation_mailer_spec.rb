@@ -7,7 +7,7 @@ RSpec.describe AccountEmailConfirmation, type: :mailer do
     let(:invoice) { create(:invoice, order: order) }
     let(:mail) do
       options = { order: order, invoice: invoice }
-      OrderConfirmationMailer.notify(user.email, options)
+      PaymentConfirmationMailer.notify(user.email, options)
     end
 
     it 'renders the headers' do

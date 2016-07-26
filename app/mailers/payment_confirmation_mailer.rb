@@ -1,6 +1,6 @@
 require 'concerns/email_key_replacer'
 
-class OrderConfirmationMailer < ApplicationMailer
+class PaymentConfirmationMailer < ApplicationMailer
   def notify(email, options = {})
     template = EmailTemplate.where(name: self.class.name.to_s).first
     content = template.content

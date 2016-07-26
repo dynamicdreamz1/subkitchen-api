@@ -81,7 +81,7 @@ RSpec.configure do |config|
                             description: 'Sent automatically to the customer when they complete their account registration.	',
                             subject: 'Confirm Your Email',
                             content: '<h3> Hi, </h3><p>Please, confirm your email<br><br><a target="_blank" title="Link: CONFIRMATION_URL" href="CONFIRMATION_URL">CONFIRMATION_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
-    create(:email_template, name: 'OrderConfirmationMailer',
+    create(:email_template, name: 'PaymentConfirmationMailer',
                             description: 'Sent automatically to the customer when order payment is received.',
                             subject: 'Thank you for your order',
                             content: '')
