@@ -2,11 +2,11 @@ require 'concerns/email_key_replacer'
 
 class OrderConfirmationMailer < ApplicationMailer
   KEYS = { 'PRODUCT_ROW' => ' (required) - we will place product list here',
-           'ORDER_NUMBER' => " (required) - order number",
+           'ORDER_NUMBER' => ' (required) - order number',
            'SUBTOTAL_COST' => ' (required) - order subtotal',
            'SHIPPING_COST' => ' (required) - shipping cost',
            'ORDER_TOTAL_COST' => ' (required) - order total',
-           'LOGO_IMG' => " - logo png file" }.freeze
+           'LOGO_IMG' => ' - logo png file' }.freeze
 
   PRODUCT_KEYS = { 'PRODUCT_IMG'      => '',
                    'PRODUCT_URL'      => '',
@@ -28,7 +28,6 @@ class OrderConfirmationMailer < ApplicationMailer
     end
   end
 
-
   private
 
   def values(options)
@@ -48,9 +47,8 @@ class OrderConfirmationMailer < ApplicationMailer
       replace_product_keys(row, product_values(order_item))
       products_rows << row
     end
-    products_rows.join()
+    products_rows.join
   end
-
 
   def empty_product_row
     <<-EOS
@@ -101,5 +99,4 @@ class OrderConfirmationMailer < ApplicationMailer
       content.gsub!(key, values[key.downcase].to_s)
     end
   end
-
 end
