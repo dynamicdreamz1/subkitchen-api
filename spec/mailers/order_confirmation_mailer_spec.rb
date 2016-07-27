@@ -1,12 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe AccountEmailConfirmation, type: :mailer do
+RSpec.describe OrderConfirmationMailer, type: :mailer do
   describe 'confirm_email' do
     let(:user) { create(:user) }
-    let(:order) { create(:order, purchased: true, purchased_at: DateTime.now) }
-    let(:invoice) { create(:invoice, order: order) }
+    let(:order) { create(:purchased_order_with_items) }
     let(:mail) do
-      options = { order: order, invoice: invoice }
+      options = { order: order }
       OrderConfirmationMailer.notify(user.email, options)
     end
 
@@ -16,8 +15,7 @@ RSpec.describe AccountEmailConfirmation, type: :mailer do
     end
 
     it 'should have attachment' do
-      expect(mail.attachments.size).to eq(2)
-      expect(mail.attachments.last.content_type).to eq('application/pdf')
+      expect(mail.attachments.size).to eq(1)
     end
   end
 end

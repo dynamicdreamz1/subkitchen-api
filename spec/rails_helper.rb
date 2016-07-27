@@ -54,6 +54,7 @@ RSpec.configure do |config|
     ActionMailer::Base.deliveries.clear
     Sidekiq::Worker.clear_all
   end
+
   config.before(:all) do
     create(:config, name: 'tax', value: '6')
     create(:config, name: 'shipping_cost', value: '7.00')
@@ -81,10 +82,14 @@ RSpec.configure do |config|
                             description: 'Sent automatically to the customer when they complete their account registration.	',
                             subject: 'Confirm Your Email',
                             content: '<h3> Hi, </h3><p>Please, confirm your email<br><br><a target="_blank" title="Link: CONFIRMATION_URL" href="CONFIRMATION_URL">CONFIRMATION_URL</a><br><br></p><p>Regards,<br>Cloud Team</p>')
-    create(:email_template, name: 'OrderConfirmationMailer',
+    create(:email_template, name: 'PaymentConfirmationMailer',
                             description: 'Sent automatically to the customer when order payment is received.',
                             subject: 'Thank you for your order',
                             content: '')
+    create(:email_template, name: 'OrderConfirmationMailer',
+                            description: 'Sent automatically to the customer when order is placed.',
+                            subject: 'Thank you for your order',
+                            content: File.read(File.join(File.dirname(__FILE__), 'fixtures/order_confirmation_mailer_body.html')))
   end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
