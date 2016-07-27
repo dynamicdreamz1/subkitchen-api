@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe AccountEmailConfirmation, type: :mailer do
+RSpec.describe PaymentConfirmationMailer, type: :mailer do
   describe 'confirm_email' do
     let(:user) { create(:user) }
     let(:order) { create(:order, purchased: true, purchased_at: DateTime.now) }

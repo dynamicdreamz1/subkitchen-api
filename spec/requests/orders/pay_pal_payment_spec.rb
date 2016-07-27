@@ -15,6 +15,21 @@ describe Products::Api, type: :request do
       email: 'test@example.com' }
   end
 
+  context 'order confirmation mailer' do
+    it 'should send order confirmation email' do
+      order = create(:purchased_order_with_items)
+      delivery = double
+      expect(delivery).to receive(:deliver_later).with(no_args)
+
+      expect(OrderConfirmationMailer).to receive(:notify)
+        .with(params[:email], order: order)
+        .and_return(delivery)
+
+      post "/api/v1/orders/#{order.uuid}/payment", params
+    end
+  end
+
+
   context 'with valid params' do
     before(:each) do
       post "/api/v1/orders/#{order.uuid}/payment", params

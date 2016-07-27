@@ -1,7 +1,11 @@
 describe Payments::Api, type: :request do
   let(:stripe_helper) { StripeMock.create_test_helper }
-  before { StripeMock.start }
+  before {
+    StripeMock.start
+    create(:config, name: 'designers', value: nil)
+  }
   after { StripeMock.stop }
+
 
   let(:order) { create(:order, user: nil, total_cost: 100) }
   let(:params) do
@@ -17,6 +21,20 @@ describe Payments::Api, type: :request do
   end
 
   describe '/api/v1/orders/:uuid/payment' do
+    context 'order confirmation mailer' do
+      it 'should send order confirmation email' do
+        order = create(:purchased_order_with_items)
+        delivery = double
+        expect(delivery).to receive(:deliver_later).with(no_args)
+
+        expect(OrderConfirmationMailer).to receive(:notify)
+          .with(params[:email], order: order)
+          .and_return(delivery)
+
+        post "/api/v1/orders/#{order.uuid}/payment", params
+      end
+    end
+
     context 'valid' do
       before(:each) do
         post "/api/v1/orders/#{order.uuid}/payment", params
