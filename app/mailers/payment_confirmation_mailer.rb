@@ -5,11 +5,17 @@ class PaymentConfirmationMailer < ApplicationMailer
     template = EmailTemplate.where(name: self.class.name.to_s).first
     content = template.content
 
-    invoice = InvoicePdf.new(options[:invoice])
-    attachments["order_#{options[:order].id}_#{options[:order].purchased_at.strftime('%d_%m_%Y')}.pdf"] = { mime_type: 'application/pdf', content: invoice.render }
+    add_invoice(options)
 
-    mail(to: email, subject: template.subject ) do |format|
+    mail(to: email, subject: template.subject) do |format|
       format.html { render html: content.html_safe }
     end
+  end
+
+  private
+
+  def add_invoice(options)
+    invoice = InvoicePdf.new(options[:invoice])
+    attachments["order_#{options[:order].id}_#{options[:order].purchased_at.strftime('%d_%m_%Y')}.pdf"] = { mime_type: 'application/pdf', content: invoice.render }
   end
 end
