@@ -48,7 +48,10 @@ ActiveAdmin.register User do
 		notice = if users.empty?
 			'Select at least one artist to verify'
 		else
-			users.each{ |artist| artist.update(status: 1) }
+			users.each do |artist|
+                          artist.update(status: 1)
+                          ArtistConfirmation.notify(artist.email).deliver_later
+                        end
 			'Successfully verified artists'
 		end
 		redirect_to admin_users_path(scope: 'artists'), notice: notice
