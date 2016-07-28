@@ -2,10 +2,11 @@ development:
   s3_access_key: "https://github.com/refile/refile-s3"
   s3_secret: ""
   s3_bucket: ""
+  s3_region: ""
   app_host: 'http://localhost:3000'
   front_host: 'http://localhost:4200'
   paypal_cert_id: ''
-  paypal_url:  ''
+  paypal_url:  'https://www.sandbox.paypal.com/cgi-bin/webscr?'
   t6_endpoint: ''
 
 test:

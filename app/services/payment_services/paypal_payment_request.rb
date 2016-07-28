@@ -26,6 +26,6 @@ class PaypalPaymentRequest
                     "item_number_#{index + 1}" => item.id,
                     "quantity_#{index + 1}" => item.quantity)
     end
-    'https://www.sandbox.paypal.com/cgi-bin/webscr?' + values.to_query
+    Figaro.env.paypal_url + values.to_query
   end
 end

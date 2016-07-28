@@ -4,7 +4,7 @@ if Rails.env.production?
   aws = {
     access_key_id: Figaro.env.s3_access_key,
     secret_access_key: Figaro.env.s3_secret,
-    region: 'eu-west-1',
+    region: Figaro.env.s3_region,
     bucket: Figaro.env.s3_bucket
   }
   Refile.cache = Refile::S3.new(prefix: 'cache', **aws)
