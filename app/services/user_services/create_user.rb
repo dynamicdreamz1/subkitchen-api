@@ -10,13 +10,13 @@ class CreateUser
   end
 
   def create_user
-    User.new(
+    User.create(
       name: @params.name,
       password: @params.password,
       password_confirmation: @params.password_confirmation,
       email: @params.email,
       artist: @params.artist,
-      handle: create_handle(@params.name)
+      handle: @params.handle || create_handle(@params.name)
     )
   end
 

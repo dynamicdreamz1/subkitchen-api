@@ -59,17 +59,22 @@ module Accounts
 				optional :password, type: String
 				optional :password_confirmation, type: String
 				optional :name, type: String
-				optional :handle, type: String
+				optional :handle, type: String, default: nil
+				optional :artist, type: Boolean, default: true
 			end
 			post 'simple_verification' do
 				if params.uuid
 					user = CreateVerifiedArtist.new(params, current_user).call
 					status(:unprocessable_entity) unless user.valid?
 					user
-				else
+				elsif current_user
 					authenticate!
 					VerifyArtistSimple.new(current_user).call
 					current_user
+				else
+					user = CreateUser.new(params).call
+					status(:unprocessable_entity) unless user.valid?
+					user
 				end
 			end
 		end

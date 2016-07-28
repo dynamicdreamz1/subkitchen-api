@@ -8,6 +8,7 @@ ActiveAdmin.register User do
   scope :not_artists
   scope :deleted
 	scope :pending_artists
+	scope :artists_to_be_paid
 
   filter :email_cont, as: :string
   filter :name_cont, as: :string
@@ -105,6 +106,9 @@ ActiveAdmin.register User do
     column(:email)
     column(:artist)
     column(:status)
+		column('Account State') do |user|
+			user.current_account_state
+		end
     actions defaults: false do |user|
       unless user.is_deleted
         link_to('View', admin_user_path(user), method: :get) + ' ' +
@@ -150,11 +154,23 @@ ActiveAdmin.register User do
             row(:handle)
             row('Number of Likes') { user.likes_count }
             row('Number of Sales') { user.sales_count }
-            row('Profit') { user.earnings_count }
 						row('Published') { user.published_count }
 						row('Featured') { user.featured }
           end
-        end
+				end
+
+				tab 'Earnings' do
+					attributes_table do
+						row('Current State') { user.current_account_state }
+						row('Overall Profit') { user.earnings_count }
+					end
+
+					table_for user.payouts do
+						column(:id)
+						column(:created_at)
+						column(:value)
+					end
+				end
       end
 
       if user.company

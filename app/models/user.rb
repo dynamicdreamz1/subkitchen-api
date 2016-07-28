@@ -45,6 +45,7 @@ class User < ActiveRecord::Base
   scope :with_confirm_token, -> (token) { where(confirm_token: token) }
 	scope :artists, -> { where(artist: true, status: 1) }
 	scope :pending_artists, -> { where(artist: true, status: 2) }
+	scope :artists_to_be_paid, -> { where(id: self.artist_ids_to_be_paid) }
 	scope :not_artists, -> { where(artist: false) }
 	scope :featured_artists, -> { where(artist: true, status: 1, featured: true) }
 	scope :featured, -> (featured) { where(artist: true, status: 1, featured: featured) }
@@ -58,6 +59,12 @@ class User < ActiveRecord::Base
   end
 
   private
+
+	def self.artist_ids_to_be_paid
+		artists.select do |artist|
+			artist.current_account_state > 0
+		end.map(&:id)
+	end
 
   def oauth_registration?
     @oauth_registration.nil? ? false : @oauth_registration

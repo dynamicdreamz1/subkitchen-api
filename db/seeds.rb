@@ -160,5 +160,6 @@ OrderItem.create!(order: order, product: product, quantity: 2, size: 's', profit
 OrderItem.create!(order: order, product: product, quantity: 3, size: 'm', profit: product.product_template.profit * 3, template_variant: t2)
 CalculateOrder.new(order).call
 Payment.create!(payable: order, payment_status: 'completed', payment_type: 'paypal')
+RecalculateCounters.new.perform
 
 puts 'Order/Payment created'

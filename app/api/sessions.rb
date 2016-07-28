@@ -40,7 +40,7 @@ module Sessions
       end
       post 'register' do
         user = CreateUser.new(params).call
-        if user.save
+        if user.valid?
           if params.order_uuid
             UpdateUserAddress.new(user, params).call
             SetUserInOrder.new(user, params.order_uuid).call

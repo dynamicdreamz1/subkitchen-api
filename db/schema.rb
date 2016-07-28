@@ -314,8 +314,6 @@ ActiveRecord::Schema.define(version: 20160719124022) do
     t.string   "region",                       default: ""
     t.string   "country",                      default: ""
     t.string   "phone",                        default: ""
-    t.string   "profile_image"
-    t.string   "shop_banner"
     t.boolean  "is_deleted",                   default: false
     t.integer  "status",                       default: 0
     t.integer  "likes_count",                  default: 0
@@ -323,6 +321,8 @@ ActiveRecord::Schema.define(version: 20160719124022) do
     t.string   "website",                      default: ""
     t.string   "bio",                          default: ""
     t.boolean  "featured",                     default: false
+    t.string   "profile_image"
+    t.string   "shop_banner"
     t.string   "paypal_id"
   end
 
