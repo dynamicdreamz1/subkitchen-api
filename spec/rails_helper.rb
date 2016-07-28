@@ -90,6 +90,10 @@ RSpec.configure do |config|
                             description: 'Sent automatically to the customer when order is placed.',
                             subject: 'Thank you for your order',
                             content: File.read(File.join(File.dirname(__FILE__), 'fixtures/order_confirmation_mailer_body.html')))
+    create(:email_template, name: 'ArtistConfirmation',
+                            description: 'Sent automatically to the artist when admin accepts application.',
+                            subject: 'Welcome to Sublimation Kitchen!',
+                            content: File.read(File.join(File.dirname(__FILE__), 'fixtures/artist_confirmation.html')))
   end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
