@@ -18,7 +18,8 @@ class CreateVerifiedArtist
   end
 
   def create_user
-    User.create(
+		NewsletterReceiver.find_or_create_by(email: params.email)
+		User.create(
       name: params.name,
       password: params.password,
       password_confirmation: params.password_confirmation,
