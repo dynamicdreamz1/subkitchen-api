@@ -272,6 +272,7 @@ GEM
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    kgio (2.10.0)
     koala (2.2.0)
       addressable
       faraday
@@ -552,6 +553,7 @@ DEPENDENCIES
   jquery-rails
   json-schema
   kaminari
+  kgio
   koala
   letter_opener_web (~> 1.2.0)
   markdown-rails
@@ -561,6 +563,7 @@ DEPENDENCIES
   prawn-table
   pry
   puma
+  rack-cache
   rack-cors
   rails (~> 4.2.5)
   rails-i18n
