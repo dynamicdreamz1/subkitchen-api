@@ -60,6 +60,7 @@ gem 'jquery-minicolors-rails'
 gem 'activeadmin-minicolors', github: 'kholdrex/activeadmin-minicolors'
 gem 'activeadmin_addons'
 gem 'fastimage'
+gem 'dalli'
 
 group :production do
   gem 'rails_12factor'
