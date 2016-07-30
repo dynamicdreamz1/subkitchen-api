@@ -310,6 +310,7 @@ GEM
     notiffany (0.0.8)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oj (2.17.1)
     orm_adapter (0.5.0)
     pdf-core (0.6.1)
     pdf-inspector (1.2.1)
@@ -410,6 +411,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    rollbar (2.12.0)
+      multi_json
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -557,6 +560,7 @@ DEPENDENCIES
   koala
   letter_opener_web (~> 1.2.0)
   markdown-rails
+  oj
   pdf-inspector
   pg
   prawn
@@ -573,6 +577,7 @@ DEPENDENCIES
   refile-input
   refile-mini_magick
   refile-s3
+  rollbar
   rspec-nc
   rspec-rails
   sass-rails (~> 5.0)

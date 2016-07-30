@@ -63,6 +63,8 @@ gem 'fastimage'
 gem 'rack-cache'
 gem 'kgio'
 gem 'dalli'
+gem 'rollbar'
+gem 'oj'
 
 group :production do
   gem 'rails_12factor'
