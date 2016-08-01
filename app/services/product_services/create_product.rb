@@ -29,7 +29,7 @@ class CreateProduct
   end
 
   def image
-    ActionDispatch::Http::UploadedFile.new(@params.image)
+    ActionDispatch::Http::UploadedFile.new(@params.image) if @params.image
   end
 
   def preview
