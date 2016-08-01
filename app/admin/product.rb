@@ -1,8 +1,8 @@
 ActiveAdmin.register Product do
   config.sort_order = 'id_asc'
   permit_params :design, :name, :author_id, :description, :product_template_id,
-                :image, :preview, :published, :published_at, :tag_list
-  actions :all, except: :destroy
+                :uploaded_image, :preview, :published, :published_at, :tag_list
+  actions :all, except: [:destroy, :new, :create]
 
   scope :all
   scope :ready_to_print
@@ -46,7 +46,7 @@ ActiveAdmin.register Product do
 		selectable_column
 		column(:id)
     column('Image') do |product|
-      attachment_image_tag(product, :image, :fit, 50, 50)
+      product.image ? attachment_image_tag(product, :image, :fit, 50, 50) : product.uploaded_image
     end
     column('Preview') do |product|
       attachment_image_tag(product, :preview, :fit, 50, 50)
@@ -73,7 +73,7 @@ ActiveAdmin.register Product do
     f.inputs 'Product Design', multipart: true do
       f.input :design, as: :refile
       if f.object.new_record?
-        f.input :image, as: :refile
+				f.input :image, as: :refile
         f.input :preview, as: :refile
         f.input :name
         f.input :description
@@ -89,7 +89,7 @@ ActiveAdmin.register Product do
 
   show do |product|
     attributes_table do
-      row('Image') { attachment_image_tag(product, :image, :fit, 50, 50) }
+      row('Image') { product.image ? attachment_image_tag(product, :image, :fit, 50, 50) : product.uploaded_image }
       row('Preview') { attachment_image_tag(product, :preview, :fit, 50, 50) }
       row('Date') { product.created_at }
       row(:author)

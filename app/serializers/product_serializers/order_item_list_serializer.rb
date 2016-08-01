@@ -43,8 +43,7 @@ class OrderItemListSerializer
     }
   end
 
-  def product_image(order_item)
-    img_key = order_item.product.preview ? :preview : :image
-    Figaro.env.app_host.to_s + Refile.attachment_url(order_item.product, img_key, :fill, 400, 400, format: :png)
-  end
+	def product_image(order_item)
+		Figaro.env.app_host.to_s + Refile.attachment_url(order_item.product, :preview, :fill, 400, 400, format: :png)
+	end
 end

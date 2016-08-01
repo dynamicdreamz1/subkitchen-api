@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160801110052) do
+ActiveRecord::Schema.define(version: 20160801131038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -259,6 +259,7 @@ ActiveRecord::Schema.define(version: 20160801110052) do
     t.string   "preview_id"
     t.integer  "sales_count",                                 default: 0
     t.boolean  "featured",                                    default: false
+    t.string   "uploaded_image"
   end
 
   create_table "taggings", force: :cascade do |t|
