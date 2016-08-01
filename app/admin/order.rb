@@ -67,7 +67,7 @@ ActiveAdmin.register Order do
           column(:quantity)
           column(:size)
           column('Product Name') { |item| item.product.name }
-          column('Product Author') { |item| item.product.author.name }
+          column('Product Author') { |item| item.product.author ? item.product.author.name : 'anonymous' }
           column('') { |item| link_to 'View', admin_product_path(item.product) }
         end
       end
