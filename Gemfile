@@ -65,6 +65,7 @@ gem 'kgio'
 gem 'dalli'
 gem 'rollbar'
 gem 'oj'
+gem 'newrelic_rpm'
 
 group :production do
   gem 'rails_12factor'
