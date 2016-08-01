@@ -15,7 +15,7 @@ class CreateProduct
       product = Product.new(name: @params.name,
                             product_template_id: @params.product_template_id,
                             description: @params.description,
-                            image: @params.uploaded_image,
+                            uploaded_image: @params.uploaded_image,
                             preview: preview,
                             published: @params.published,
                             published_at: (@params.published ? DateTime.now : nil))
