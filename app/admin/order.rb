@@ -9,7 +9,7 @@ ActiveAdmin.register Order do
   scope :payment_pending
   scope :processing
 	scope :cooking
-	scope :completed
+	# scope :completed
 	scope :failed
 
   member_action :invoice, method: :get do
