@@ -9,7 +9,6 @@ class Product < ActiveRecord::Base
   has_many :template_variants, through: :product_template
 
   validates_with PublishedValidator
-  validates :image, image: { range: 1024...5000 }
   validates :name, presence: true
   validates :description, presence: true
   validates :product_template_id, presence: true
@@ -18,7 +17,6 @@ class Product < ActiveRecord::Base
   after_update SendOrderIfItemsReady.new, if: :design_id_changed?
   after_save SetPublishedAt.new, if: :published_changed?
 
-  attachment :image, content_type: %w(image/jpeg image/png image/jpg)
   attachment :preview, content_type: %w(image/jpeg image/png image/jpg)
   attachment :design, content_type: 'application/pdf'
 

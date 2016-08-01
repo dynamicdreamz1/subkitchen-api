@@ -15,8 +15,7 @@ class CreateProduct
       product = Product.new(name: @params.name,
                             product_template_id: @params.product_template_id,
                             description: @params.description,
-                            image: image,
-														uploaded_image: @params.uploaded_image,
+                            uploaded_image: @params.uploaded_image,
                             preview: preview,
                             published: @params.published,
                             published_at: (@params.published ? DateTime.now : nil))
@@ -26,10 +25,6 @@ class CreateProduct
       PublishedCounter.perform_async(product.id, 1) if @params.published
       product
     end
-  end
-
-  def image
-    ActionDispatch::Http::UploadedFile.new(@params.image) if @params.image
   end
 
   def preview
