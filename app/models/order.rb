@@ -14,11 +14,11 @@ class Order < ActiveRecord::Base
   validates_with AddressValidator, on: :update
 
   scope :waiting_products, ->(order) { order.products.where(design_id: nil) }
-  scope :processing, -> { where(order_status: 'processing') }
-  scope :creating, -> { where(order_status: 'creating') }
-  scope :payment_pending, -> { where(order_status: 'payment_pending') }
-	scope :completed, -> { where(order_status: 'completed' ) }
-	scope :failed, -> { where(order_status: 'failed') }
+  scope :processing, -> { where(order_status: 2) }
+  scope :creating, -> { where(order_status: 0) }
+  scope :payment_pending, -> { where(order_status: 1) }
+	scope :completed, -> { where(order_status: 4) }
+	scope :failed, -> { where(order_status: 5) }
   scope :user, -> (user_id) { where(user_id: user_id) }
 
   validates :full_name, presence: true, on: :address
