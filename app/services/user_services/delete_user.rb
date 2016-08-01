@@ -23,8 +23,13 @@ class DeleteUser
       zip: '',
       region: '',
       phone: '',
-      profile_image_id: '',
-      shop_banner_id: ''
+			location: '',
+			website: '',
+			paypal_id: '',
+			bio: '',
+			featured: false,
+      profile_image: '',
+      shop_banner: ''
     )
   end
 end
