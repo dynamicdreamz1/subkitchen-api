@@ -68,7 +68,7 @@ module Products
         optional :name, type: String
         optional :product_template_id, type: Integer
         optional :description, type: String
-        optional :image, type: File
+        optional :uploaded_image, type: String
         optional :preview, type: File
         optional :published, type: Boolean
         optional :tags, type: Array[String]
