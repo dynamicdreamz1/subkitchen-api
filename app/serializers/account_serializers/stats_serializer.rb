@@ -9,8 +9,8 @@ class StatsSerializer
       earnings_percentage: artist.earnings_weekly,
       published_designs: artist.published_count,
       published_designs_percentage: artist.published_weekly,
-      total_likes: artist.likes_count,
-      total_likes_percentage: artist.likes_weekly
+      total_likes: artist.product_likes_count,
+      total_likes_percentage: artist.product_likes_weekly
     }
 
     data[:errors] = artist.errors if artist.errors.any?

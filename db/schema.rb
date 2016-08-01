@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160719124022) do
+ActiveRecord::Schema.define(version: 20160801110052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
   enable_extension "uuid-ossp"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -316,7 +315,7 @@ ActiveRecord::Schema.define(version: 20160719124022) do
     t.string   "phone",                        default: ""
     t.boolean  "is_deleted",                   default: false
     t.integer  "status",                       default: 0
-    t.integer  "likes_count",                  default: 0
+    t.integer  "product_likes",                default: 0
     t.string   "location",                     default: ""
     t.string   "website",                      default: ""
     t.string   "bio",                          default: ""
@@ -324,6 +323,7 @@ ActiveRecord::Schema.define(version: 20160719124022) do
     t.string   "profile_image"
     t.string   "shop_banner"
     t.string   "paypal_id"
+    t.integer  "likes_count",                  default: 0
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

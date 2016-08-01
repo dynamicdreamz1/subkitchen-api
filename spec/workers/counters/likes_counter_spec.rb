@@ -10,14 +10,22 @@ RSpec.describe 'Likes Counter' do
       expect do
         LikeProduct.new(product, user).call
         LikesCounter.drain
-      end.to change { artist.likes_count }.by(1)
-    end
+      end.to change { artist.product_likes_count }.by(1)
+		end
+
+		it 'should increment product likes' do
+			expect do
+				LikeProduct.new(product, user).call
+				LikesCounter.drain
+				artist.reload
+			end.to change { artist.product_likes }.by(1)
+		end
 
     it 'should set likes weekly percentage' do
       LikeProduct.new(product, user).call
       LikesCounter.drain
 
-      expect(artist.likes_weekly).to eq(100)
+      expect(artist.product_likes_weekly).to eq(100)
     end
   end
 
@@ -25,20 +33,29 @@ RSpec.describe 'Likes Counter' do
     before(:each) do
       LikeProduct.new(product, user).call
       LikesCounter.drain
+			artist.reload
     end
 
     it 'should decrement likes counter' do
       expect do
         UnlikeProduct.new(product, user).call
         LikesCounter.drain
-      end.to change { artist.likes_count }.by(-1)
-    end
+      end.to change { artist.product_likes_count }.by(-1)
+		end
+
+		it 'should decrement product likes' do
+			expect do
+				UnlikeProduct.new(product, user).call
+				LikesCounter.drain
+				artist.reload
+			end.to change { artist.product_likes }.by(-1)
+		end
 
     it 'should set likes weekly percentage' do
       UnlikeProduct.new(product, user).call
       LikesCounter.drain
 
-      expect(artist.likes_weekly).to eq(0)
+      expect(artist.product_likes_weekly).to eq(0)
     end
   end
 end

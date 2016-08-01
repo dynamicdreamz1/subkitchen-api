@@ -9,7 +9,7 @@ class UserPublicSerializer
               bio: user.bio,
               company: user.company,
               products_count: user.products.published_all.count,
-              likes_count: user.likes.count }
+              likes_count: user.product_likes_count }
     }
 
     if include_sensitive_data

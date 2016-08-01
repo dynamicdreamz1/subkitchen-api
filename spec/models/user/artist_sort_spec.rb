@@ -1,9 +1,9 @@
 RSpec.describe User, type: :model do
   describe 'sort by scope' do
     before(:each) do
-      @a1 = create(:user, :artist, created_at: 1.week.ago, likes_count: 1)
-      @a2 = create(:user, :artist, created_at: 2.week.ago, likes_count: 2)
-      @a3 = create(:user, :artist, created_at: 3.week.ago, likes_count: 3)
+      @a1 = create(:user, :artist, created_at: 1.week.ago, product_likes: 1)
+      @a2 = create(:user, :artist, created_at: 2.week.ago, product_likes: 2)
+      @a3 = create(:user, :artist, created_at: 3.week.ago, product_likes: 3)
     end
 
     it 'should sort by created_at desc' do

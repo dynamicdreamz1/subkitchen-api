@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
 			when /^created_at_/
 				User.artists.order("created_at #{direction}")
 			when /^likes_count_/
-				User.artists.order("likes_count #{direction}")
+				User.artists.order("product_likes #{direction}")
 			else
 				raise(ArgumentError, sort_option.to_s)
 		end

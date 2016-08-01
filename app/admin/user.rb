@@ -155,7 +155,7 @@ ActiveAdmin.register User do
         tab 'Shop' do
           attributes_table do
             row(:handle)
-            row('Number of Likes') { user.likes_count }
+            row('Number of Likes') { user.product_likes_count }
             row('Number of Sales') { user.sales_count }
 						row('Published') { user.published_count }
 						row('Featured') { user.featured }

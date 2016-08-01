@@ -35,7 +35,7 @@ class ArtistListSerializer
       handle: artist.handle,
       company: artist.company,
       products_count: artist.products.count,
-      likes_count: artist.likes_count,
+      likes_count: artist.product_likes_count,
 			verified: artist.status,
 			featured: artist.featured,
       location: nil,

@@ -7,11 +7,11 @@ module ArtistStatsGetters
     $redis.get("user_#{id}_sales_weekly").to_i
   end
 
-  def likes_count
+  def product_likes_count
     $redis.get("user_#{id}_likes_counter").to_i
   end
 
-  def likes_weekly
+  def product_likes_weekly
     $redis.get("user_#{id}_likes_weekly").to_i
   end
 
