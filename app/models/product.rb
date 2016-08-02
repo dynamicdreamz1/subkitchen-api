@@ -11,7 +11,8 @@ class Product < ActiveRecord::Base
   validates_with PublishedValidator
   validates :name, presence: true
   validates :description, presence: true
-  validates :product_template_id, presence: true
+	validates :product_template_id, presence: true
+	validates :uploaded_image, presence: true
 
   after_create SetProduct.new
   after_update SendOrderIfItemsReady.new, if: :design_id_changed?

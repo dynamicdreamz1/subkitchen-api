@@ -7,6 +7,7 @@ ActiveAdmin.register ProductTemplate do
     :is_deleted,
     :template_image,
     :template_mask,
+		:description,
     :sizes_raw, template_variants_attributes: [:name, :color_id, :template_color_image]
   config.filters = false
   config.batch_actions = false
@@ -63,7 +64,8 @@ ActiveAdmin.register ProductTemplate do
           row(:profit)
           row(:created_at)
           row(:price)
-          row(:size)
+					row(:size)
+					row(:description)
           row('Size Chart') { attachment_image_tag(template, :size_chart, :fit, 150, 150) }
           row(:is_deleted)
         end
@@ -88,6 +90,7 @@ ActiveAdmin.register ProductTemplate do
       f.input :product_type
       f.input :price
       f.input :sizes_raw, as: :text
+			f.input :description, as: :text
     end
     f.inputs 'Variants' do
       f.has_many :template_variants do |v|

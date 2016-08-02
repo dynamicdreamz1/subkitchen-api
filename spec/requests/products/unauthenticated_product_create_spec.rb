@@ -16,10 +16,10 @@ describe Products::Api, type: :request do
           @params = { name: 'new_product',
                       product_template_id: product_template.id,
                       description: 'description',
-                      image: image,
                       preview: image,
                       tags: ['cats', @themes.first],
-                      published: false }
+                      published: false,
+											uploaded_image: 'http://image_url' }
           post '/api/v1/products', @params
 
           @product = Product.last
@@ -27,10 +27,10 @@ describe Products::Api, type: :request do
 
         it 'should create product with correct data' do
           expect(@product.name).to eq(@params[:name])
-          expect(@product.description).to eq(@params[:description])
           expect(@product.product_template.id).to eq(@params[:product_template_id])
           expect(@product.tag_list).to contain_exactly(@params[:tags][0], @params[:tags][1])
-          expect(@product.image_id).to be_truthy
+					expect(@product.description).to eq(@product.product_template.description)
+					expect(@product.uploaded_image).to eq(@params[:uploaded_image])
         end
 
         it 'should return created product' do
@@ -45,10 +45,10 @@ describe Products::Api, type: :request do
             post '/api/v1/products', name: 'new_product',
                                      product_template_id: product_template.id,
                                      description: 'description',
-                                     image: image,
                                      preview: image,
                                      tags: ['cats', @themes.first],
-                                     published: true
+                                     published: true,
+								 										 uploaded_image: 'http://image_url'
 
             @product = Product.last
           end

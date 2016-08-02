@@ -14,7 +14,7 @@ class CreateProduct
     User.transaction do
       product = Product.new(name: @params.name,
                             product_template_id: @params.product_template_id,
-                            description: @params.description,
+                            description: description,
                             uploaded_image: @params.uploaded_image,
                             preview: preview,
                             published: @params.published,
@@ -29,5 +29,9 @@ class CreateProduct
 
   def preview
     ActionDispatch::Http::UploadedFile.new(@params.preview)
-  end
+	end
+
+	def description
+		ProductTemplate.find(@params.product_template_id).description
+	end
 end

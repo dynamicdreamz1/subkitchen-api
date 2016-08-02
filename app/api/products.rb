@@ -86,7 +86,6 @@ module Products
         requires :product, type: Hash do
           optional :published, type: Boolean
           optional :tags, type: Array[String]
-          optional :description, type: String
           optional :name, type: String
         end
       end

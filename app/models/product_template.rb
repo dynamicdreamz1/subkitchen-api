@@ -22,6 +22,7 @@ class ProductTemplate < ActiveRecord::Base
   validates :size, presence: true
   validates :profit, presence: true
   validates :product_type, presence: true
+	validates :description, presence: true
 
   def sizes_raw
     size.join("\n") unless size.nil?

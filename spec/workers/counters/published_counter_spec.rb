@@ -32,7 +32,7 @@ RSpec.describe 'Published Counter' do
         @params = Hashie::Mash.new(name: 'new_product',
                     product_template_id: product_template.id,
                     description: 'description',
-                    image: image,
+                    uploaded_image: 'http://image_url',
                     preview: image,
                     published: true)
       end
