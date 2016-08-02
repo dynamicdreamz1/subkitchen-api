@@ -71,14 +71,14 @@ ActiveAdmin.register ProductTemplate do
         end
       end
 
-      tab('Variants') do
-        table_for template.template_variants do
-          column('Name', &:name)
-          column('Color') { |variant| variant.color.try(:name) }
-          column('Color Preview') { |variant| "<div style='width:50px; height:50px; background-color:#{variant.color.try(:color_value)}'></div>".html_safe }
-          column('Template Preview') { |variant| attachment_image_tag(variant, :template_color_image, :fit, 150, 150) }
-        end
-      end
+      # tab('Variants') do
+      #   table_for template.template_variants do
+      #     column('Name', &:name)
+      #     column('Color') { |variant| variant.color.try(:name) }
+      #     column('Color Preview') { |variant| "<div style='width:50px; height:50px; background-color:#{variant.color.try(:color_value)}'></div>".html_safe }
+      #     column('Template Preview') { |variant| attachment_image_tag(variant, :template_color_image, :fit, 150, 150) }
+      #   end
+      # end
     end
   end
 
@@ -92,13 +92,13 @@ ActiveAdmin.register ProductTemplate do
       f.input :sizes_raw, as: :text
 			f.input :description, as: :text
     end
-    f.inputs 'Variants' do
-      f.has_many :template_variants do |v|
-        v.input :name
-        v.input :color, collection: Color.all
-        v.input :template_color_image, as: :refile
-      end
-    end
+    # f.inputs 'Variants' do
+    #   f.has_many :template_variants do |v|
+    #     v.input :name
+    #     v.input :color, collection: Color.all
+    #     v.input :template_color_image, as: :refile
+    #   end
+    # end
 
     f.actions
   end
