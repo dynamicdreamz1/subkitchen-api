@@ -9,6 +9,7 @@ class UserPublicSerializer
               bio: user.bio,
               company: user.company,
               products_count: user.products.published_all.count,
+              status: user.status,
               likes_count: user.product_likes_count }
     }
 
@@ -20,7 +21,6 @@ class UserPublicSerializer
       data[:user][:artist] = user.artist
       data[:user][:current_account_state] = user.current_account_state
       data[:user][:earnings_overall] = user.earnings_count
-      data[:user][:status] = user.status
       data[:user][:auth_token] = user.auth_token
       data[:user][:paypal_id] = user.paypal_id
     end

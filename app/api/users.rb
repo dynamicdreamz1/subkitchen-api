@@ -14,7 +14,7 @@ module Users
         send_notification = current_user.changes[:email]
         if current_user.save
           options = { confirmation_token: current_user.confirm_token,
-											name: current_user.name }
+                      name: current_user.name }
           AccountEmailConfirmation.notify(current_user.email, options).deliver_later if send_notification
         else
           status(:unprocessable_entity)
@@ -24,9 +24,9 @@ module Users
 
       desc 'return user by id or handle'
       get ':id' do
-				user = params.id.to_i == 0 ? User.where(handle: params[:id]).first! : User.find(params[:id])
-				UserPublicSerializer.new(user).as_json
-			end
+        user = params.id.to_i == 0 ? User.where(handle: params[:id]).first! : User.find(params[:id])
+        UserPublicSerializer.new(user).as_json
+      end
     end
   end
 end
