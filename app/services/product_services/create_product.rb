@@ -29,9 +29,10 @@ class CreateProduct
 
   def preview
     ActionDispatch::Http::UploadedFile.new(@params.preview)
-	end
+  end
 
-	def description
-		ProductTemplate.find(@params.product_template_id).description
-	end
+  def description
+    desc = ProductTemplate.find(@params.product_template_id).description
+    desc.blank? ? 'Custom Design' : desc
+  end
 end

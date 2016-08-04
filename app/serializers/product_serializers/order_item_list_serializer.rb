@@ -4,10 +4,10 @@ class OrderItemListSerializer
     data = {
       order_items: serialized_order_items,
       meta: {
-        current_page: order_items.current_page,
-        total_pages: order_items.total_pages,
-        per_page: order_items.limit_value
-      }
+      current_page: order_items.current_page,
+      total_pages: order_items.total_pages,
+      per_page: order_items.limit_value
+    }
     }
 
     data.as_json(options)
@@ -43,7 +43,7 @@ class OrderItemListSerializer
     }
   end
 
-	def product_image(order_item)
-		Figaro.env.app_host.to_s + Refile.attachment_url(order_item.product, :preview, :fill, 400, 400, format: :png)
-	end
+  def product_image(order_item)
+    Figaro.env.app_host.to_s + Refile.attachment_url(order_item.product, :preview, :fill, 400, 400, format: :jpg)
+  end
 end

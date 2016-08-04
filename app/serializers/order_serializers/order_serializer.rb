@@ -40,7 +40,7 @@ class OrderSerializer
         product_id: item.product.id,
         quantity: item.quantity,
         size: item.size,
-        preview_url: Figaro.env.app_host + Refile.attachment_url(item.product, :preview, format: :png)
+        preview_url: Figaro.env.app_host + Refile.attachment_url(item.product, :preview, format: :jpg)
       }
     end
   end

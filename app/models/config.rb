@@ -15,19 +15,19 @@ class Config < ActiveRecord::Base
     end
 
     def banner_img
-      where(name: 'banner_img').first.config_image_url(:fill, 1920, 750, format: :png)
+      where(name: 'banner_img').first.config_image_url(:fill, 1920, 750, format: :jpg)
     end
 
     def promo_1_img
-      where(name: 'promo_1_img').first.config_image_url
+      where(name: 'promo_1_img').first.config_image_url(format: :jpg)
     end
 
     def promo_2_img
-      where(name: 'promo_2_img').first.config_image_url
+      where(name: 'promo_2_img').first.config_image_url(format: :jpg)
     end
 
     def promo_3_img
-      where(name: 'promo_3_img').first.config_image_url
+      where(name: 'promo_3_img').first.config_image_url(format: :jpg)
     end
 
     def banner_url

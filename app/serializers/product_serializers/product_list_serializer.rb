@@ -51,7 +51,7 @@ class ProductListSerializer
   end
 
   def product_image(product)
-		Figaro.env.app_host.to_s + Refile.attachment_url(product, :preview, :fill, 400, 400, format: :png)
+    Figaro.env.app_host.to_s + Refile.attachment_url(product, :preview, :fill, 400, 400, format: :jpg)
   end
 
   def variants(product)

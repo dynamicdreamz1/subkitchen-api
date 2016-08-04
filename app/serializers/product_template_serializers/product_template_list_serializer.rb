@@ -32,7 +32,7 @@ class ProductTemplateListSerializer
       template_image: Figaro.env.app_host + Refile.attachment_url(product_template, :template_image, :fill, 200, 200, format: :png),
       template_image_large: Figaro.env.app_host + Refile.attachment_url(product_template, :template_image, :fill, 1024, 1024, format: :png),
       template_mask_large: Figaro.env.app_host + Refile.attachment_url(product_template, :template_mask, :fill, 1024, 1024, format: :png),
-      size_chart: Figaro.env.app_host + Refile.attachment_url(product_template, :size_chart, :fill, 400, 200, format: :png),
+      size_chart: Figaro.env.app_host + Refile.attachment_url(product_template, :size_chart, :fill, 400, 200, format: :jpg),
       product_type: product_template.product_type,
       profit: product_template.profit
     }

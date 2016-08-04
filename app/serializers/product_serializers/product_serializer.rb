@@ -39,14 +39,14 @@ class ProductSerializer
 
   def initialize(product)
     @product = product
-	end
+  end
 
-	def image
-		product.image ? product_image(:image, 2048, 2048) : product.uploaded_image
-	end
+  def image
+    product.image ? product_image(:image, 2048, 2048) : product.uploaded_image
+  end
 
   def product_image(img_key, h, w)
-    Figaro.env.app_host.to_s + Refile.attachment_url(product, img_key, :fill, h, w, format: :png)
+    Figaro.env.app_host.to_s + Refile.attachment_url(product, img_key, :fill, h, w, format: :jpg)
   end
 
   def variants
