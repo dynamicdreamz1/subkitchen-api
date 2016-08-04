@@ -10,7 +10,7 @@ module Artists
       end
       get do
 				filterrific = Filterrific::ParamSet.new(User, sort_by: params.sorted_by, featured: params.featured)
-        artists = User.filterrific_find(filterrific).page(params.page).per(params.per_page)
+        artists = User.artists.filterrific_find(filterrific).page(params.page).per(params.per_page)
         ArtistListSerializer.new(artists).as_json
       end
     end
