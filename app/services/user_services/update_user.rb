@@ -20,9 +20,13 @@ class UpdateUser
     user.handle = params.user.handle
     user.location = params.user.location
     user.website = params.user.website
-    user.profile_image = params.user.image_url
-    user.shop_banner = params.user.banner_url
+    user.profile_image = image(params.user.image_url)
+    user.shop_banner = image(params.user.banner_url)
     user.bio = params.user.bio
     user
-  end
+	end
+
+	def image(img)
+		img.gsub(/http:/, 'https:') if img
+	end
 end

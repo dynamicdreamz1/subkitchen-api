@@ -15,7 +15,7 @@ class CreateProduct
       product = Product.new(name: @params.name,
                             product_template_id: @params.product_template_id,
                             description: description,
-                            uploaded_image: @params.uploaded_image,
+                            uploaded_image: image,
                             preview: preview,
                             published: @params.published,
                             published_at: (@params.published ? DateTime.now : nil))
@@ -29,7 +29,11 @@ class CreateProduct
 
   def preview
     ActionDispatch::Http::UploadedFile.new(@params.preview)
-  end
+	end
+
+	def image
+		@params.uploaded_image.gsub(/http:/, 'https:') if @params.uploaded_image
+	end
 
   def description
     desc = ProductTemplate.find(@params.product_template_id).description
