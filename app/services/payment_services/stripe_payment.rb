@@ -23,7 +23,7 @@ class StripePayment
 
   def charge
     customer = Stripe::Customer.create email: order.email,
-                                       card: payment.payment_token
+                                       card: token
     Stripe::Charge.create customer: customer.id,
                           amount: (order.total_cost * 100).to_i,
                           currency: 'usd',
