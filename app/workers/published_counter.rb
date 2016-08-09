@@ -34,6 +34,8 @@ class PublishedCounter
   end
 
   def published_count_weekly(user)
-    user.products.select { |product| product.published_at > 1.week.ago }.count
+		user.products.select do |product|
+			product.published_at && product.published_at > 1.week.ago
+		end.count
   end
 end
