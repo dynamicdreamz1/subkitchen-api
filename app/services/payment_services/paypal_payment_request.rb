@@ -17,7 +17,8 @@ class PaypalPaymentRequest
       upload: 1,
       return: Figaro.env.frontend_host + @return_path.to_s,
       invoice: @payment.id,
-      notify_url: Figaro.env.app_host + '/api/v1/payment_notification'
+      notify_url: Figaro.env.app_host + '/api/v1/payment_notification',
+			shipping: Config.shipping_cost
     }
     @payment.payable.order_items.each_with_index do |item, index|
       next unless item.quantity > 0
