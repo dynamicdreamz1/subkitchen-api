@@ -10,7 +10,7 @@ module Products
       def themes_invalid(params)
         themes = Config.themes.downcase.split(', ')
         params.published  && (!params.tags || (themes - params.tags) == themes)
-      end
+			end
     end
 
     resources :order_items do
@@ -91,8 +91,8 @@ module Products
       end
       put ':id' do
         authenticate!
-        product = UpdateProduct.new(params[:id], params[:product], current_user).call
-        status(422) unless product.save
+        product = UpdateProduct.new(params.id, params.product, current_user).call
+				status(422) unless product.valid?
         ProductSerializer.new(product).as_json
       end
 
