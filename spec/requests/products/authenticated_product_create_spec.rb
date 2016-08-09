@@ -32,7 +32,7 @@ describe Products::Api, type: :request do
           expect(@product.description).to eq(@product.product_template.description)
           expect(@product.product_template.id).to eq(@params[:product_template_id])
           expect(@product.published).to eq(true)
-          expect(@product.uploaded_image).to eq(@params[:uploaded_image])
+          expect(@product.uploaded_image).to eq(@params[:uploaded_image].gsub(/http:/, 'https:'))
         end
 
         it 'should return created product' do
@@ -64,7 +64,7 @@ describe Products::Api, type: :request do
           expect(@product.description).to eq(@product.product_template.description)
           expect(@product.product_template.id).to eq(@params[:product_template_id])
           expect(@product.published).to eq(true)
-					expect(@product.uploaded_image).to eq(@params[:uploaded_image])
+					expect(@product.uploaded_image).to eq(@params[:uploaded_image].gsub(/http:/, 'https:'))
         end
 
         it 'should return created product' do
@@ -114,7 +114,7 @@ describe Products::Api, type: :request do
           expect(@product.tag_list).to eq(@params[:tags])
           expect(@product.published).to eq(false)
 					expect(@product.description).to eq(@product.product_template.description)
-					expect(@product.uploaded_image).to eq(@params[:uploaded_image])
+					expect(@product.uploaded_image).to eq(@params[:uploaded_image].gsub(/http:/, 'https:'))
         end
 
         it 'should return product' do

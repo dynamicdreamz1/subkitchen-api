@@ -30,7 +30,7 @@ describe Products::Api, type: :request do
           expect(@product.product_template.id).to eq(@params[:product_template_id])
           expect(@product.tag_list).to contain_exactly(@params[:tags][0], @params[:tags][1])
 					expect(@product.description).to eq(@product.product_template.description)
-					expect(@product.uploaded_image).to eq(@params[:uploaded_image])
+					expect(@product.uploaded_image).to eq(@params[:uploaded_image].gsub(/http:/, 'https:'))
         end
 
         it 'should return created product' do
