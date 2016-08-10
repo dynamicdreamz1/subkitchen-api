@@ -11,11 +11,17 @@ ActiveAdmin.register Order do
   scope :processing
   scope :cooking
   # scope :completed
-  scope :failed
+	scope :failed
+	scope :cancelled
 
   member_action :invoice, method: :get do
     redirect_to Figaro.env.app_host + "/api/v1/invoices?uuid=#{resource.uuid}"
-  end
+	end
+
+	member_action :cancel, method: :put do
+		resource.update(order_status: 6)
+		redirect_to admin_orders_path(scope: 'cancelled'), notice: 'Order Cancelled'
+	end
 
 	batch_action :export_shipping_csv do |order_ids|
 		csv_orders = OrderPresenter.to_shipping_csv(order_ids)
@@ -38,9 +44,10 @@ ActiveAdmin.register Order do
     column(:user)
     actions defaults: false do |order|
       link_to('View', admin_order_path(order), method: :get) + ' ' +
-        if order.invoice
+				link_to('Cancel', cancel_admin_order_path(order), method: :put) + ' ' +
+			if order.invoice
           link_to('Invoice', invoice_admin_order_path(order), method: :get)
-        end
+				end
     end
   end
 

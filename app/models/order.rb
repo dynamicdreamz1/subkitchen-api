@@ -7,9 +7,11 @@ class Order < ActiveRecord::Base
   belongs_to :coupon
 
   after_create SetTaxAndShipping.new
-  after_save SalesCountCallback.new, if: :purchased_changed?
+	after_save SalesCountCallback.new, if: :purchased_changed?
+	after_update OrderCancellationCallback.new, if: :order_status_changed?
 
-  enum order_status: { creating: 0, payment_pending: 1, processing: 2, cooking: 3, completed: 4, failed: 5 }
+  enum order_status: { creating: 0, payment_pending: 1, processing: 2,
+											 cooking: 3, completed: 4, failed: 5, cancelled: 6 }
 
   validates_with AddressValidator, on: :update
 
@@ -19,7 +21,8 @@ class Order < ActiveRecord::Base
   scope :creating, -> { where(order_status: 0) }
   scope :payment_pending, -> { where(order_status: 1) }
   scope :completed, -> { where(order_status: 4) }
-  scope :failed, -> { where(order_status: 5) }
+	scope :failed, -> { where(order_status: 5) }
+	scope :cancelled, -> { where(order_status: 6) }
   scope :user, -> (user_id) { where(user_id: user_id) }
 
   validates :full_name, presence: true, on: :address
