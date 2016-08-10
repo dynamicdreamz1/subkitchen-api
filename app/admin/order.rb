@@ -23,14 +23,9 @@ ActiveAdmin.register Order do
 		redirect_to admin_orders_path(scope: 'cancelled'), notice: 'Order Cancelled'
 	end
 
-	batch_action :export_shipping_csv do |order_ids|
-		csv_orders = OrderPresenter.to_shipping_csv(order_ids)
-		send_data csv_orders, filename: 'shipping_orders.txt'
-	end
-
-	batch_action :export_t6_csv do |order_ids|
-		csv_orders = OrderPresenter.to_t6_csv(order_ids)
-		send_data csv_orders, filename: 't6_orders.txt'
+	batch_action :export_csv do |order_ids|
+		csv_orders = OrderPresenter.to_csv(order_ids)
+		send_data csv_orders, filename: 'orders.csv'
 	end
 
   index do

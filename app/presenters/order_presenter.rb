@@ -1,19 +1,11 @@
 class OrderPresenter
 	class << self
-		def to_shipping_csv(order_ids)
+		def to_csv(order_ids)
 			orders = id_iterator(order_ids) do |item|
-				item_to_shipping_csv(item)
+				item_to_csv(item)
 			end
-			orders.unshift(shipping_headers)
-			orders.join('')
-		end
-
-		def to_t6_csv(order_ids)
-			orders = id_iterator(order_ids) do |item|
-				item_to_t6_csv(item)
-			end
-			orders.unshift(t6_headers)
-			orders.join('')
+			orders.unshift(headers)
+			orders.join("\n")
 		end
 
 		private
@@ -24,37 +16,28 @@ class OrderPresenter
 				items = order.order_items.map do |item|
 					yield item
 				end
-				items.join('\n')
+				items.join("\n")
 			end
 		end
 
-		def shipping_headers
-			'Order+#,Order+Paid,Product+Id,Product+Name,Product+Quantity,Product+Price,Product+Size,'\
-			 'Order+Date,Order+Total,Tax+Paid,Shipping+Paid,Buyer+Full+Name,Buyer+Email,Buyer+Username,Address,City,State,'\
-				'Postal+Code,Country+Code\n'
+		def headers
+			'Order;Brand;Design;Product Type;Binding Color;Size;Qty;Mockup Front;Mockup Back;'\
+			 'Image Front;Image Back;Order #;Order Paid;Item SKU;Item Name;Item Quantity;Item Unit Price;Item Size;'\
+			  'Order Date;Order Total;Tax Paid;Shipping Paid;Buyer Full Name;Buyer Email;Buyer Username;Address;City;State;'\
+			   'Postal Code;Country Code'
 		end
 
-		def t6_headers
-			'Order,Brand,Design,Product+Type,Binding+Color,Size,Qty,Mockup+Front,Mockup+Back,'\
-			 'Image+Front,Image+Back\n'
-		end
-
-		def item_to_shipping_csv(item)
+		def item_to_csv(item)
 			order = item.order
-			"#{order.id},#{order.purchased_at.try(:strftime,'%d/%m/%Y')},#{item.product.id},"\
-			 "#{CGI::escape(item.product.name)},#{item.quantity},#{item.price},#{item.size},"\
-			  "#{order.created_at.strftime('%d/%m/%Y')},#{order.total_cost},#{order.tax_cost},#{order.shipping_cost},"\
-			   "#{CGI::escape(order.full_name)},#{CGI::escape(order.email)},"\
-			    "#{CGI::escape(order.user ? order.user.name : 'anonymous user')},#{CGI::escape(order.address)},"\
-			     "#{CGI::escape(order.city)},#{CGI::escape(order.region)},#{CGI::escape(order.zip)},"\
-			      "#{CGI::escape(order.country)}"
-		end
-
-		def item_to_t6_csv(item)
-			order = item.order
-			"#{order.id},Sublimation+Kitchen,Custom,#{CGI::escape(item.template_variant.product_template.product_type)},"\
-			 "#{CGI::escape(item.template_variant.color.name)},#{item.size},#{item.quantity},#{product_preview(item)},,"\
-				"#{item.product.uploaded_image},,"
+			"#{order.id};Sublimation Kitchen;Custom;#{item.template_variant.product_template.product_type};"\
+			 "#{item.template_variant.color.name};#{item.size};#{item.quantity};#{product_preview(item)};;"\
+			 	 "#{item.product.uploaded_image};;#{order.id};#{order.purchased_at.try(:strftime,'%d/%m/%Y')};#{item.product.id};"\
+			 	  "#{item.product.name};#{item.quantity};#{item.price};#{item.size};"\
+			 	   "#{order.created_at.strftime('%d/%m/%Y')};#{order.total_cost};#{order.tax_cost};#{order.shipping_cost};"\
+			 	    "#{order.full_name};#{order.email};"\
+			 	     "#{order.user ? order.user.name : ''};#{order.address};"\
+							"#{order.city};#{order.region};#{order.zip};"\
+							 "#{order.country}"
 		end
 
 		def product_preview(item)
