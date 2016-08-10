@@ -1,3 +1,5 @@
+require 'cgi'
+
 ActiveAdmin.register Order do
   config.sort_order = 'id_asc'
   actions :index, :show
@@ -15,11 +17,22 @@ ActiveAdmin.register Order do
     redirect_to Figaro.env.app_host + "/api/v1/invoices?uuid=#{resource.uuid}"
   end
 
+	batch_action :export_shipping_csv do |order_ids|
+		csv_orders = OrderPresenter.to_shipping_csv(order_ids)
+		send_data csv_orders, filename: 'shipping_orders.txt'
+	end
+
+	batch_action :export_t6_csv do |order_ids|
+		csv_orders = OrderPresenter.to_t6_csv(order_ids)
+		send_data csv_orders, filename: 't6_orders.txt'
+	end
+
   index do
+		selectable_column
     column('Number') do |order|
       order.record_number
     end
-    column('Date', &:created_at)
+    column(:created_at)
     column(:order_status)
     column(:total_cost)
     column(:user)
@@ -82,5 +95,5 @@ ActiveAdmin.register Order do
         end
       end
     end
-  end
+	end
 end
