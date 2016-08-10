@@ -81,7 +81,7 @@ describe PaypalHooks::Api, type: :request do
       context 'invalid receiver params' do
         before(:each) do
           create(:admin_user)
-          post '/api/v1/payment_notification', @invalid_payment_user_params
+          post '/api/v1/user_verify_notification', @invalid_payment_user_params
           @user_payment.reload
         end
 
