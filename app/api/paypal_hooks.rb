@@ -12,7 +12,8 @@ module PaypalHooks
           PaypalPayment.new(payment, params).call
         else
           MalformedPaymentNotifier.notify(AdminUser.pluck(:email), payment_id: payment.id).deliver_later
-          payment.update(payment_status: 'malformed')
+          payment.update(payment_status: 3)
+					payment.payable.update(order_status: 5)
         end
       else
         DenyPayment.new(payment).call

@@ -14,8 +14,8 @@ class DenyPayment
 
   def deny_payment
     Order.transaction do
-      payment.update(payment_status: 'denied')
-      order.update(order_status: 'failed', active: false)
+      payment.update(payment_status: 0)
+      order.update(order_status: 5, active: false)
       payment
     end
   end
