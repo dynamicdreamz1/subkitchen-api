@@ -6,8 +6,8 @@ RSpec.describe Order, type: :model do
   describe 'scopes' do
     context 'completed scope' do
       it 'should return purchased orders' do
-        purchased_order = create(:order, purchased: true, order_status: 4)
-        expect(Order.completed).to contain_exactly(purchased_order)
+        purchased_order = create(:order, order_status: 4)
+        expect(Order.fulfilled).to contain_exactly(purchased_order)
       end
     end
 
