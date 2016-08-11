@@ -1,5 +1,3 @@
-require 'cgi'
-
 ActiveAdmin.register Order do
   config.sort_order = 'id_asc'
   actions :index, :show
@@ -10,9 +8,9 @@ ActiveAdmin.register Order do
   scope :payment_pending
   scope :processing
   scope :cooking
-  # scope :completed
 	scope :failed
 	scope :cancelled
+	scope :fulfilled
 
   member_action :invoice, method: :get do
     redirect_to Figaro.env.app_host + "/api/v1/invoices?uuid=#{resource.uuid}"
@@ -26,6 +24,13 @@ ActiveAdmin.register Order do
 	batch_action :export_csv do |order_ids|
 		csv_orders = OrderPresenter.to_csv(order_ids)
 		send_data csv_orders, filename: 'orders.csv'
+	end
+
+	batch_action :mark_as_fulfilled do |order_ids|
+		order_ids.each do |id|
+			Order.find(id).update!(order_status: 4)
+		end
+		redirect_to admin_orders_path(scope: 'fulfilled'), notice: 'Orders marked as fulfilled'
 	end
 
   index do

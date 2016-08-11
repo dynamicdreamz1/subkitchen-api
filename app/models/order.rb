@@ -11,7 +11,7 @@ class Order < ActiveRecord::Base
 	after_update OrderCancellationCallback.new, if: :order_status_changed?
 
   enum order_status: { creating: 0, payment_pending: 1, processing: 2,
-											 cooking: 3, completed: 4, failed: 5, cancelled: 6 }
+											 cooking: 3, fulfilled: 4, failed: 5, cancelled: 6 }
 
   validates_with AddressValidator, on: :update
 
@@ -20,7 +20,7 @@ class Order < ActiveRecord::Base
   scope :processing, -> { where(order_status: 2) }
   scope :creating, -> { where(order_status: 0) }
   scope :payment_pending, -> { where(order_status: 1) }
-  scope :completed, -> { where(order_status: 4) }
+  scope :fulfilled, -> { where(order_status: 4) }
 	scope :failed, -> { where(order_status: 5) }
 	scope :cancelled, -> { where(order_status: 6) }
   scope :user, -> (user_id) { where(user_id: user_id) }
