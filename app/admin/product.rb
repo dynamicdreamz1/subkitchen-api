@@ -63,15 +63,15 @@ ActiveAdmin.register Product do
     actions defaults: false do |product|
       unless product.is_deleted
         link_to('View', admin_product_path(product), method: :get) + ' ' +
-          link_to('Edit', edit_admin_product_path(product), method: :get) + ' ' +
+          link_to('Add Print File', edit_admin_product_path(product), method: :get) + ' ' +
           link_to('Delete', delete_admin_product_path(product), method: :put, data: { confirm: 'Are you sure?' })
       end
     end
   end
 
   form do |f|
-    f.inputs 'Product Design', multipart: true do
-      f.input :design, as: :refile
+    f.inputs 'Product Print File', multipart: true do
+      f.input :design, as: :refile, label: 'Print File'
       if f.object.new_record?
 				f.input :image, as: :refile
         f.input :preview, as: :refile
