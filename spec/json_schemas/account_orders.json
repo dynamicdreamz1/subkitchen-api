@@ -22,17 +22,9 @@
           "invoice_id"
         ]
       }
-    },
-    "meta": {
-      "type": "object",
-      "properties": {
-        "current_page": {"type": "integer"},
-        "total_pages": {"type": "integer"}
-      }
     }
   },
   "required": [
-    "orders",
-    "meta"
+    "orders"
   ]
 }
