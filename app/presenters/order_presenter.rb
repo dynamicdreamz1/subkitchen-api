@@ -29,7 +29,7 @@ class OrderPresenter
 
 		def item_to_csv(item)
 			order = item.order
-			"#{order.id};Sublimation Kitchen;Custom;#{item.template_variant.product_template.product_type};"\
+			"#{order.id};Sublimation Kitchen;Custom;#{item.product_template.product_type};"\
 			 "#{item.template_variant.color.name};#{item.size};#{item.quantity};#{product_preview(item)};;"\
 			 	 "#{item.product.uploaded_image};;#{order.id};#{order.purchased_at.try(:strftime,'%d/%m/%Y')};#{item.product.id};"\
 			 	  "#{item.product.name};#{item.quantity};#{item.price};#{item.size};"\
