@@ -1,6 +1,7 @@
 ActiveAdmin.register Order do
   config.sort_order = 'id_asc'
-  actions :index, :show
+	permit_params :shipstation_url
+  actions :index, :show, :edit, :update
 
   filter :purchased_at
 
@@ -43,9 +44,11 @@ ActiveAdmin.register Order do
     column(:order_status)
     column(:total_cost)
     column(:user)
+		column(:shipstation_url)
     actions defaults: false do |order|
       link_to('View', admin_order_path(order), method: :get) + ' ' +
-				link_to('Cancel', cancel_admin_order_path(order), method: :put) + ' ' +
+			link_to('Cancel', cancel_admin_order_path(order), method: :put) + ' ' +
+			link_to('Add URL', edit_admin_order_path(order), method: :get) + ' ' +
 			if order.invoice
           link_to('Invoice', invoice_admin_order_path(order), method: :get)
 				end
@@ -103,5 +106,12 @@ ActiveAdmin.register Order do
         end
       end
     end
+	end
+
+	form do |f|
+		f.inputs 'ShipStation URL' do
+			f.input :shipstation_url, label: 'ShipStation URL'
+			f.actions
+		end
 	end
 end

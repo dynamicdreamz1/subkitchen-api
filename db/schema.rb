@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160802075521) do
+ActiveRecord::Schema.define(version: 20160811182646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -175,28 +175,29 @@ ActiveRecord::Schema.define(version: 20160802075521) do
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                                                           null: false
-    t.datetime "updated_at",                                                           null: false
+    t.datetime "created_at",                                                             null: false
+    t.datetime "updated_at",                                                             null: false
     t.datetime "purchased_at"
-    t.uuid     "uuid",                                  default: "uuid_generate_v4()"
+    t.uuid     "uuid",                                    default: "uuid_generate_v4()"
     t.string   "full_name"
     t.string   "address"
     t.string   "city"
     t.string   "zip"
     t.string   "region"
     t.string   "country"
-    t.decimal  "subtotal_cost", precision: 8, scale: 2, default: 0.0
-    t.decimal  "shipping_cost", precision: 8, scale: 2
-    t.decimal  "tax",           precision: 4, scale: 2
-    t.decimal  "tax_cost",      precision: 8, scale: 2, default: 0.0
-    t.decimal  "total_cost",    precision: 8, scale: 2, default: 0.0
-    t.boolean  "purchased",                             default: false
-    t.boolean  "active",                                default: true
+    t.decimal  "subtotal_cost",   precision: 8, scale: 2, default: 0.0
+    t.decimal  "shipping_cost",   precision: 8, scale: 2
+    t.decimal  "tax",             precision: 4, scale: 2
+    t.decimal  "tax_cost",        precision: 8, scale: 2, default: 0.0
+    t.decimal  "total_cost",      precision: 8, scale: 2, default: 0.0
+    t.boolean  "purchased",                               default: false
+    t.boolean  "active",                                  default: true
     t.string   "email"
-    t.integer  "order_status",                          default: 0
+    t.integer  "order_status",                            default: 0
     t.integer  "coupon_id"
-    t.decimal  "discount",      precision: 8, scale: 2
+    t.decimal  "discount",        precision: 8, scale: 2
     t.string   "paypal_url"
+    t.string   "shipstation_url"
   end
 
   create_table "payments", force: :cascade do |t|
