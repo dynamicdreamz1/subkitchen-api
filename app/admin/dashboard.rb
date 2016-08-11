@@ -5,7 +5,7 @@ ActiveAdmin.register_page 'Dashboard' do
     columns do
       column do
         panel 'Recent Orders' do
-          table_for Order.completed.order('purchased_at desc').limit(10) do
+          table_for Order.fulfilled.order('purchased_at desc').limit(10) do
             column('Customer') do |order|
               if order.user
                 link_to(order.user.email, admin_user_path(order.user))
