@@ -22,7 +22,7 @@ class CreatePayment
   end
 
   def update_order
-    order.update(order_status: 'payment_pending')
+    order.update!(order_status: 1)
   end
 
   def charge
