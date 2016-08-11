@@ -8,7 +8,7 @@ module AccountsOrders
       end
       get do
         authenticate!
-        orders = Order.user(current_user.id)
+        orders = Order.user(current_user.id).order('created_at DESC')
         OrderListSerializer.new(orders).as_json
       end
 

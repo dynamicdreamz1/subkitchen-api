@@ -10,7 +10,7 @@ describe AccountsOrders::Api, type: :request do
       end
 
       it 'should return orders of user' do
-        serialized_orders = OrderListSerializer.new(user.orders).as_json
+        serialized_orders = OrderListSerializer.new(user.orders.order('created_at DESC')).as_json
         expect(response.body).to eq(serialized_orders.to_json)
         expect(response).to match_response_schema('account_orders')
         expect(response).to have_http_status(:success)
