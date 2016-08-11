@@ -8,7 +8,7 @@ module AccountsOrders
       end
       get do
         authenticate!
-        orders = Order.user(current_user.id).page(params.page).per(params.per_page)
+        orders = Order.user(current_user.id)
         OrderListSerializer.new(orders).as_json
       end
 

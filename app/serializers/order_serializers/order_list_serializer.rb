@@ -2,9 +2,7 @@ class OrderListSerializer
   include ApplicationHelper
 
   def as_json(options = {})
-    data = { orders: serialized_orders,
-             meta: { current_page: orders.current_page,
-                     total_pages: orders.total_pages } }
+    data = { orders: serialized_orders }
     data.as_json(options)
   end
 
