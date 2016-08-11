@@ -33,7 +33,8 @@ ActiveAdmin.register Order do
     column('Number') do |order|
       order.record_number
     end
-    column(:created_at)
+		column(:purchased_at)
+		column(:created_at)
     column(:order_status)
     column(:total_cost)
     column(:user)
