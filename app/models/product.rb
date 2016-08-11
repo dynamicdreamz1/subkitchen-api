@@ -20,7 +20,7 @@ class Product < ActiveRecord::Base
 
   attachment :image
   attachment :preview, content_type: %w(image/jpeg image/png image/jpg)
-  attachment :design, content_type: 'application/pdf'
+  attachment :design
 
   acts_as_taggable
 
