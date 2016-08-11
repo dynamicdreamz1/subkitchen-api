@@ -29,12 +29,12 @@ ActiveAdmin.register Order do
 	end
 
   index do
-		selectable_column
+    selectable_column
     column('Number') do |order|
-      order.record_number
+      order.id
     end
-		column(:purchased_at)
-		column(:created_at)
+    column(:purchased_at)
+    column(:created_at)
     column(:order_status)
     column(:total_cost)
     column(:user)
