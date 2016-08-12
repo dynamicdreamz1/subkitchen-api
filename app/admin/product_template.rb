@@ -3,7 +3,6 @@ ActiveAdmin.register ProductTemplate do
   permit_params :price,
     :product_type,
     :size_chart,
-    :profit,
     :is_deleted,
     :template_image,
     :template_mask,
@@ -89,7 +88,6 @@ ActiveAdmin.register ProductTemplate do
       f.input :size_chart, as: :refile
       f.input :product_type
 			f.input :price
-			f.input :profit
       f.input :sizes_raw, as: :text
 			f.input :description, as: :text
     end

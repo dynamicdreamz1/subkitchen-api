@@ -1,5 +1,8 @@
+require 'concerns/sales_and_earnings_methods'
+
 class RecalculateCounters
   include Sidekiq::Worker
+	include SalesAndEarningsMethods
 
   def perform
     User.all.each do |user|
@@ -25,11 +28,14 @@ class RecalculateCounters
   end
 
   def earnings(user)
-    OrderItem.joins('RIGHT JOIN orders ON orders.id = order_items.order_id')
-             .joins('RIGHT  JOIN products ON products.id = order_items.product_id')
-             .where('products.author_id = ?', user.id)
-             .where('orders.purchased = ?', true)
-             .sum('order_items.quantity*order_items.profit')
+		earnings = 0
+		OrderItem.joins('RIGHT JOIN orders ON orders.id = order_items.order_id')
+			.joins('RIGHT  JOIN products ON products.id = order_items.product_id')
+			.where('products.author_id = ?', user.id)
+			.where('orders.purchased = ?', true).each do |order_item|
+			earnings = earnings + profit(order_item) * order_item.quantity
+		end
+		earnings
   end
 
   def likes(user)
@@ -49,11 +55,14 @@ class RecalculateCounters
   end
 
   def earnings_weekly(user)
-    OrderItem.joins('RIGHT JOIN orders ON orders.id = order_items.order_id')
+		earnings = 0
+		OrderItem.joins('RIGHT JOIN orders ON orders.id = order_items.order_id')
       .joins('RIGHT  JOIN products ON products.id = order_items.product_id')
       .where('products.author_id = ?', user.id)
-      .where('orders.purchased_at > ?', 1.week.ago)
-      .sum('order_items.quantity*order_items.profit')
+      .where('orders.purchased_at > ?', 1.week.ago).each do |order_item|
+			earnings = earnings + profit(order_item) * order_item.quantity
+		end
+		earnings
   end
 
   def likes_weekly(user)

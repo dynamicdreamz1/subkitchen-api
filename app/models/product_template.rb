@@ -5,7 +5,8 @@ class ProductTemplate < ActiveRecord::Base
   has_many :colors, through: :template_variants
   accepts_nested_attributes_for :template_variants
 
-  after_update UpdateProductPrices.new, if: :price_changed?
+	after_update UpdateProductPrices.new, if: :price_changed?
+	after_save SetProfitCallback.new, if: :price_changed?
 
   serialize :size
 
