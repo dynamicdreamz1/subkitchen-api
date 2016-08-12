@@ -12,7 +12,17 @@ RSpec.describe ProductTemplate, type: :model do
       expect(product1.price).to eq(123)
       expect(product2.price).to eq(123)
     end
-  end
+	end
+
+	describe 'SetProfitCallback on save callback' do
+		it 'should set profit after price change' do
+			template.update(price: 123)
+
+			profit_percentage = 0.2
+
+			expect(template.profit).to eq(123 * profit_percentage)
+		end
+	end
 
   it 'should have attributes' do
     template = ProductTemplate.create
@@ -21,7 +31,6 @@ RSpec.describe ProductTemplate, type: :model do
     expect(template.errors[:template_mask].present?).to eq(true)
     expect(template.errors[:price].present?).to eq(true)
     expect(template.errors[:size].present?).to eq(true)
-    expect(template.errors[:profit].present?).to eq(true)
     expect(template.errors[:product_type].present?).to eq(true)
   end
 end

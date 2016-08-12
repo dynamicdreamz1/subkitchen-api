@@ -21,7 +21,6 @@ class ProductTemplate < ActiveRecord::Base
   validates :template_mask, image: { width: 1024, height: 1024 }, presence: true
   validates :price, presence: true
   validates :size, presence: true
-  validates :profit, presence: true
   validates :product_type, presence: true
 	validates :description, presence: true
 

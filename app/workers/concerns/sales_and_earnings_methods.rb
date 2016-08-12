@@ -5,9 +5,9 @@ module SalesAndEarningsMethods
 			discount = if coupon.percentage
 				coupon.discount
 			else
-				(100 * coupon.discount) / coupon.order.subtotal_cost
+				(100 * coupon.discount) / item.order.subtotal_cost
 			end
-			return item.profit - item.profit * 0.01 * discount
+			return (item.profit - item.profit * 0.01 * discount).round(2)
 		end
 		item.profit
 	end

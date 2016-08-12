@@ -37,7 +37,6 @@ ActiveAdmin.register ProductTemplate do
       attachment_image_tag(template, :template_mask, :fit, 50, 50)
     end
     column(:product_type)
-    column(:profit)
     column(:created_at)
     column(:price)
     actions defaults: false do |template|
@@ -60,7 +59,6 @@ ActiveAdmin.register ProductTemplate do
           row('Image') { attachment_image_tag(template, :template_image, :fit, 150, 150) }
           row('Image Mask') { attachment_image_tag(template, :template_mask, :fit, 150, 150) }
           row(:product_type)
-          row(:profit)
           row(:created_at)
           row(:price)
 					row(:size)
