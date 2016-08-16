@@ -2,7 +2,7 @@ ActiveAdmin.register Product do
   config.sort_order = 'id_asc'
   permit_params :name, :author_id, :description, :product_template_id,
                 :uploaded_image, :preview, :published, :published_at, :tag_list,
-								product_variants_attributes: [:size, :design_id]
+                product_variants_attributes: [:id, :size, :design_id]
   actions :all, except: [:destroy, :new, :create]
 
   scope :all
@@ -71,14 +71,15 @@ ActiveAdmin.register Product do
   end
 
   form do |f|
-		f.semantic_errors *f.object.errors.keys
-		f.inputs 'Product Print File', multipart: true do
-			f.has_many :product_variants, allow_destroy: true, new_record: true do |variant|
-				variant.input :size, :label => 'Size', :as => :select, :collection => f.object.product_template.size
-				variant.input :design, as: :refile, label: 'Print File'
-			end
-		end
-		f.actions
+    f.semantic_errors *f.object.errors.keys
+    f.inputs 'Product Print File', multipart: true do
+      f.has_many :product_variants, allow_destroy: false do |variant|
+        variant.input :id, as: :hidden
+        variant.input :size, :label => 'Size', :as => :select, :collection => f.object.product_template.size
+        variant.input :design, as: :refile, label: 'Print File'
+      end
+    end
+    f.actions
   end
 
   show do |product|
