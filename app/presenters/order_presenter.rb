@@ -41,7 +41,7 @@ class OrderPresenter
     end
 
     def product_panel(item)
-      variant = item.product.product_variant.where(size: item.size).first
+      variant = item.product_variant
       Figaro.env.app_host + Refile.attachment_url(variant, :design) if variant
     end
 
