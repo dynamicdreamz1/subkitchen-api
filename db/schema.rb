@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160811182646) do
+ActiveRecord::Schema.define(version: 20160815173741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
   enable_extension "uuid-ossp"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -171,6 +172,7 @@ ActiveRecord::Schema.define(version: 20160811182646) do
     t.string   "size"
     t.decimal  "profit",              precision: 8, scale: 2
     t.integer  "template_variant_id"
+    t.string   "style"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -231,7 +233,20 @@ ActiveRecord::Schema.define(version: 20160811182646) do
     t.string   "template_image_id"
     t.string   "template_mask_id"
     t.string   "description",                               default: ""
+    t.string   "style"
   end
+
+  create_table "product_variants", force: :cascade do |t|
+    t.integer  "product_id"
+    t.string   "size"
+    t.string   "design_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "design_size"
+    t.string   "design_content_type"
+  end
+
+  add_index "product_variants", ["product_id"], name: "index_product_variants_on_product_id", using: :btree
 
   create_table "product_wishes", force: :cascade do |t|
     t.integer  "user_id"
@@ -316,6 +331,8 @@ ActiveRecord::Schema.define(version: 20160811182646) do
     t.string   "region",                       default: ""
     t.string   "country",                      default: ""
     t.string   "phone",                        default: ""
+    t.string   "profile_image"
+    t.string   "shop_banner"
     t.boolean  "is_deleted",                   default: false
     t.integer  "status",                       default: 0
     t.integer  "product_likes",                default: 0
@@ -323,8 +340,6 @@ ActiveRecord::Schema.define(version: 20160811182646) do
     t.string   "website",                      default: ""
     t.string   "bio",                          default: ""
     t.boolean  "featured",                     default: false
-    t.string   "profile_image"
-    t.string   "shop_banner"
     t.string   "paypal_id"
     t.integer  "likes_count",                  default: 0
   end
@@ -332,4 +347,5 @@ ActiveRecord::Schema.define(version: 20160811182646) do
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree
   add_index "users", ["password_reminder_token"], name: "index_users_on_password_reminder_token", unique: true, using: :btree
 
+  add_foreign_key "product_variants", "products"
 end

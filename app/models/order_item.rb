@@ -1,5 +1,6 @@
 class OrderItem < ActiveRecord::Base
   belongs_to :product, counter_cache: true
+  has_many :product_variants, through: :product
   belongs_to :order, touch: true
   belongs_to :template_variant
 
@@ -20,5 +21,9 @@ class OrderItem < ActiveRecord::Base
 
   def product
     Product.unscoped.find_by(id: product_id)
+  end
+
+  def product_variant
+    product.product_variants.where(size: size).first
   end
 end

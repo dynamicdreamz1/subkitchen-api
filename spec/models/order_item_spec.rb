@@ -9,6 +9,10 @@ RSpec.describe OrderItem, type: :model do
     it 'should set price' do
       expect(order_item.price).to eq(product.price)
     end
+
+    it 'should set style' do
+      expect(order_item.style).to eq(product.product_template.style)
+    end
   end
 
   describe 'OrderItemValidator' do

@@ -89,11 +89,46 @@ puts 'Color created'
 
 sizes = %w(SM MD LG XL 2X 3X)
 
-template1 = ProductTemplate.create!(price: 69.95, profit: 25.00, size: sizes, template_image: File.new(template_image('hoodie')), template_mask: File.new(template_image('hoodie-mask', 'png')), product_type: 'hoodie', size_chart: File.new(size_chart))
-template2 = ProductTemplate.create!(price: 65.00, profit: 25.00, size: sizes, template_image: File.new(template_image('sweatshirt')), template_mask: File.new(template_image('sweatshirt-mask', 'png')), product_type: 'sweatshirt', size_chart: File.new(size_chart))
-template3 = ProductTemplate.create!(price: 39.95, profit: 15.00, size: sizes, template_image: File.new(template_image('shirt')), template_mask: File.new(template_image('shirt-mask', 'png')), product_type: 'tee', size_chart: File.new(size_chart))
-template4 = ProductTemplate.create!(price: 35.00, profit: 15.00, size: sizes, template_image: File.new(template_image('tank')), template_mask: File.new(template_image('tank-mask', 'png')), product_type: 'tank_top', size_chart: File.new(size_chart))
-template5 = ProductTemplate.create!(price: 79.95, profit: 30.00, size: sizes, template_image: File.new(template_image('yoga_pants')), template_mask: File.new(template_image('yoga_pants-mask', 'png')), product_type: 'yoga_pants', size_chart: File.new(size_chart))
+template1 = ProductTemplate.create!(price: 69.95,
+                                    profit: 25.00,
+                                    size: sizes,
+                                    template_image: File.new(template_image('hoodie')),
+                                    template_mask: File.new(template_image('hoodie-mask', 'png')),
+                                    product_type: 'hoodie',
+                                    description: 'Super dumper custom design',
+                                    size_chart: File.new(size_chart))
+template2 = ProductTemplate.create!(price: 65.00,
+                                    profit: 25.00,
+                                    size: sizes,
+                                    template_image: File.new(template_image('sweatshirt')),
+                                    template_mask: File.new(template_image('sweatshirt-mask', 'png')),
+                                    product_type: 'sweatshirt',
+                                    description: 'Super dumper custom design',
+                                    size_chart: File.new(size_chart))
+template3 = ProductTemplate.create!(price: 39.95,
+                                    profit: 15.00,
+                                    size: sizes,
+                                    template_image: File.new(template_image('shirt')),
+                                    template_mask: File.new(template_image('shirt-mask', 'png')),
+                                    product_type: 'tee',
+                                    description: 'Super dumper custom design',
+                                    size_chart: File.new(size_chart))
+template4 = ProductTemplate.create!(price: 35.00,
+                                    profit: 15.00,
+                                    size: sizes,
+                                    template_image: File.new(template_image('tank')),
+                                    template_mask: File.new(template_image('tank-mask', 'png')),
+                                    product_type: 'tank_top',
+                                    description: 'Super dumper custom design',
+                                    size_chart: File.new(size_chart))
+template5 = ProductTemplate.create!(price: 79.95,
+                                    profit: 30.00,
+                                    size: sizes,
+                                    template_image: File.new(template_image('yoga_pants')),
+                                    template_mask: File.new(template_image('yoga_pants-mask', 'png')),
+                                    product_type: 'yoga_pants',
+                                    description: 'Super dumper custom design',
+                                    size_chart: File.new(size_chart))
 
 puts 'ProductTemplate created'
 
@@ -122,12 +157,57 @@ description = <<-EOT
 <p>• Made in USA</p>
 EOT
 
-25.times do
-  p = Product.create!(name: Faker::Commerce.product_name, description: description, author: u1, product_template: template2, image: File.new(product_image), preview: File.new(product_image), published: true, published_at: Date.today)
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u2, product_template: template4, image: File.new(product_image), preview: File.new(product_image), published: true, published_at: Date.today)
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u3, product_template: template3, image: File.new(product_image), preview: File.new(product_image), published: true, published_at: Date.today)
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template1, image: File.new(product_image), preview: File.new(product_image), published: true, published_at: Date.today)
-  Product.create!(name: Faker::Commerce.product_name, description: description, author: u4, product_template: template5, image: File.new(product_image), preview: File.new(product_image), published: true, published_at: Date.today)
+5.times do
+  p = Product.create!(name: Faker::Commerce.product_name,
+                      description: description,
+                      author: u1,
+                      product_template: template2,
+                      uploaded_image: File.new(product_image),
+                      image: File.new(product_image),
+                      preview: File.new(product_image),
+                      published: true,
+                      description: "Super dumper custom design",
+                      published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name,
+                  description: description,
+                  author: u2,
+                  product_template: template4,
+                  uploaded_image: File.new(product_image),
+                  image: File.new(product_image),
+                  preview: File.new(product_image),
+                  published: true,
+                  description: "Super dumper custom design",
+                  published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name,
+                  description: description,
+                  author: u3,
+                  product_template: template3,
+                  uploaded_image: File.new(product_image),
+                  image: File.new(product_image),
+                  preview: File.new(product_image),
+                  published: true,
+                  description: "Super dumper custom design",
+                  published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name,
+                  description: description,
+                  author: u4,
+                  product_template: template1,
+                  uploaded_image: File.new(product_image),
+                  image: File.new(product_image),
+                  preview: File.new(product_image),
+                  published: true,
+                  description: "Super dumper custom design",
+                  published_at: Date.today)
+  Product.create!(name: Faker::Commerce.product_name,
+                  description: description,
+                  author: u4,
+                  product_template: template5,
+                  uploaded_image: File.new(product_image),
+                  image: File.new(product_image),
+                  preview: File.new(product_image),
+                  published: true,
+                  description: "Super dumper custom design",
+                  published_at: Date.today)
   p.likes.create!(user: u2)
   p.likes.create!(user: u3)
   p.likes.create!(user: u4)

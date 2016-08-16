@@ -16,8 +16,11 @@ RSpec.describe Product, type: :model do
 
     context 'ready to print' do
       before(:each) do
-        create(:product, design_id: nil)
-        @ready_product = create(:product, design_id: '123')
+				create(:product)
+        @ready_product = create(:product)
+				product.product_template.size.each do |size|
+					create(:product_variant, product: @ready_product, size: size, design_id: '123')
+				end
       end
 
       it 'should return ready to print products' do
@@ -27,10 +30,9 @@ RSpec.describe Product, type: :model do
 
     context 'waiting products' do
       before(:each) do
-        product = create(:product, design_id: '123')
-        @waiting_product = create(:product, design_id: nil)
-        order = create(:order, order_status: 'processing')
-        create(:order_item, product: product, order: order)
+        create(:product)
+        @waiting_product = create(:product)
+        order = create(:order, order_status: 2)
         create(:order_item, product: @waiting_product, order: order)
       end
 

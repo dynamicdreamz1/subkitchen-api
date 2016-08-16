@@ -1,7 +1,8 @@
 ActiveAdmin.register Product do
   config.sort_order = 'id_asc'
-  permit_params :design, :name, :author_id, :description, :product_template_id,
-                :uploaded_image, :preview, :published, :published_at, :tag_list
+  permit_params :name, :author_id, :description, :product_template_id,
+                :uploaded_image, :preview, :published, :published_at, :tag_list,
+								product_variants_attributes: [:size, :design_id]
   actions :all, except: [:destroy, :new, :create]
 
   scope :all
@@ -18,33 +19,33 @@ ActiveAdmin.register Product do
   member_action :delete, method: :put do
     resource.update(is_deleted: true)
     redirect_to admin_products_path, notice: 'Product Deleted'
-	end
+  end
 
-	batch_action :feature do |ids|
-		products = Product.published_all.where(id: ids)
-		notice = if products.empty?
-			'Select at least one product'
-		else
-			products.each{ |product| product.update(featured: true) }
-			'Successfully added to featured products list'
-		end
-		redirect_to admin_products_path(scope: 'featured_products'), notice: notice
-	end
+  batch_action :feature do |ids|
+    products = Product.published_all.where(id: ids)
+    notice = if products.empty?
+               'Select at least one product'
+             else
+               products.each{ |product| product.update(featured: true) }
+               'Successfully added to featured products list'
+             end
+    redirect_to admin_products_path(scope: 'featured_products'), notice: notice
+  end
 
-	batch_action :stop_featuring do |ids|
-		products = Product.published_all.where(id: ids, featured: true)
-		notice = if products.empty?
-			'Select at least one featured product'
-		else
-			products.each{ |product| product.update(featured: false) }
-			'Successfully deleted from featured products list'
-		end
-		redirect_to admin_products_path(scope: 'featured_products'), notice: notice
-	end
+  batch_action :stop_featuring do |ids|
+    products = Product.published_all.where(id: ids, featured: true)
+    notice = if products.empty?
+               'Select at least one featured product'
+             else
+               products.each{ |product| product.update(featured: false) }
+               'Successfully deleted from featured products list'
+             end
+    redirect_to admin_products_path(scope: 'featured_products'), notice: notice
+  end
 
   index do
-		selectable_column
-		column(:id)
+    selectable_column
+    column(:id)
     column('Image') do |product|
       product.image ? attachment_image_tag(product, :image, :fit, 50, 50) : product.uploaded_image
     end
@@ -57,7 +58,7 @@ ActiveAdmin.register Product do
       end
     end
     column(:name)
-		column(:published)
+    column(:published)
     column(:price)
     column('Type') { |product| product.product_template.product_type }
     actions defaults: false do |product|
@@ -70,21 +71,14 @@ ActiveAdmin.register Product do
   end
 
   form do |f|
-    f.inputs 'Product Print File', multipart: true do
-      f.input :design, as: :refile, label: 'Print File'
-      if f.object.new_record?
-				f.input :image, as: :refile
-        f.input :preview, as: :refile
-        f.input :name
-        f.input :description
-        f.input :author, collection: User.artists
-        f.input :product_template, collection: Hash[ProductTemplate.all.map { |t| [t.product_type, t.id] }]
-        f.input :published, input_html: { value: true }, as: :hidden
-        f.input :published_at, input_html: { value: DateTime.now }, as: :hidden
-        f.input :tag_list, as: :tags
-      end
-      f.actions
-    end
+		f.semantic_errors *f.object.errors.keys
+		f.inputs 'Product Print File', multipart: true do
+			f.has_many :product_variants, allow_destroy: true, new_record: true do |variant|
+				variant.input :size, :label => 'Size', :as => :select, :collection => f.object.product_template.size
+				variant.input :design, as: :refile, label: 'Print File'
+			end
+		end
+		f.actions
   end
 
   show do |product|
@@ -99,7 +93,10 @@ ActiveAdmin.register Product do
       row(:price)
       row('Sold') { product.order_items_count }
       row('Likes') { product.likes_count }
-      row('Design') { link_to 'Download', product.design_url }
+
+      product.product_variants.each do |variant|
+        row("Design #{variant.size}") { attachment_image_tag(variant, :design, :fit, 50, 50) }
+      end
     end
   end
 end

@@ -14,7 +14,9 @@ describe 'Through6' do
 
   it 'should match valid api response' do
     VCR.use_cassette('through6/valid') do
-      create(:order_item, order: @order, product: create(:product, image: image, design: design))
+      product = create(:product, image: image)
+      create(:product_variant, product: product, size: "MD", design: design)
+      create(:order_item, size: "MD", order: @order, product: product)
       @order.reload
       response = SendOrder.new(@order).call
 
@@ -23,7 +25,9 @@ describe 'Through6' do
   end
 
   it 'should return valid response' do
-    create(:order_item, order: @order, product: create(:product, image: image, design: design))
+    product = create(:product, image: image)
+    create(:product_variant, product: product, size: "MD", design: design)
+    create(:order_item, size: "MD", order: @order, product: product)
     @order.reload
     serialized_order = Through6Serializer.new(@order).as_json
 

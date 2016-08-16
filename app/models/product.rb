@@ -4,6 +4,8 @@ class Product < ActiveRecord::Base
   has_many :likes, as: :likeable
   has_many :orders, through: :order_items
   has_many :comments
+  has_many :product_variants,  dependent: :destroy
+  accepts_nested_attributes_for :product_variants
   has_many :product_wishes, foreign_key: 'wished_product_id', dependent: :destroy
   belongs_to :product_template
   has_many :template_variants, through: :product_template
@@ -15,19 +17,22 @@ class Product < ActiveRecord::Base
 	validates :uploaded_image, presence: true
 
   after_create SetProduct.new
-  after_update SendOrderIfItemsReady.new, if: :design_id_changed?
   after_save SetPublishedAt.new, if: :published_changed?
 
   attachment :image
   attachment :preview, content_type: %w(image/jpeg image/png image/jpg)
-  attachment :design
 
   acts_as_taggable
 
   default_scope { where(is_deleted: false) }
   scope :deleted, -> { unscoped.where(is_deleted: true) }
-  scope :ready_to_print, -> { where.not(design_id: nil) }
-  scope :waiting, -> { joins(:orders).where(design_id: nil).where(orders: { order_status: 2 }) }
+  scope :ready_to_print, -> {
+		where(id: products_with_variants)
+			.joins(:product_variants)
+			.where.not(product_variants: { design_id: nil })
+			.distinct
+	}
+  scope :waiting, -> { joins(:orders).where(orders: { order_status: 2 }) }
 	scope :published_all, -> { where(published: true) }
 	scope :featured, -> (is_featured) { where(featured: is_featured) }
 	scope :featured_products, -> { where(featured: true) }
@@ -82,6 +87,12 @@ class Product < ActiveRecord::Base
 			:featured
     ]
   )
+
+	def self.products_with_variants
+		select do |product|
+			product.product_variants.count >= product.product_template.size.length
+		end.map(&:id)
+	end
 
   def product_template
     ProductTemplate.unscoped.find_by(id: product_template_id)

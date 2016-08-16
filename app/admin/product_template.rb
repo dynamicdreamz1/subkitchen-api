@@ -85,9 +85,10 @@ ActiveAdmin.register ProductTemplate do
       f.input :template_mask, as: :refile
       f.input :size_chart, as: :refile
       f.input :product_type
-			f.input :price
+      f.input :price
       f.input :sizes_raw, as: :text
-			f.input :description, as: :text
+      f.input :style, placeholder: 'TEE - CREW - B - 79'
+      f.input :description, as: :text
     end
     # f.inputs 'Variants' do
     #   f.has_many :template_variants do |v|
