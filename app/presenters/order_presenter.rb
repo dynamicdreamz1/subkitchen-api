@@ -30,9 +30,9 @@ class OrderPresenter
 		def item_to_csv(item)
 			order = item.order
 			"#{order.id},Sublimation Kitchen,Custom,#{item.product.product_template.product_type},,"\
-			 "#{item.size},#{item.quantity},#{product_preview(item)},,"\
+			 "#{item.t6_size},#{item.quantity},#{product_preview(item)},,"\
 			 	 "#{item.product.uploaded_image},,#{order.id},#{order.purchased_at.try(:strftime,'%d/%m/%Y')},#{item.product.id},"\
-			 	  "#{item.product.name},#{item.quantity},#{item.price},#{item.size},"\
+			 	  "#{item.product.name},#{item.quantity},#{item.price},#{item.t6_size},"\
 			 	   "#{order.created_at.strftime('%d/%m/%Y')},#{order.total_cost},#{order.tax_cost},#{order.shipping_cost},"\
 			 	    "#{order.full_name},#{order.email},"\
 			 	     "#{order.user ? order.user.name : ''},#{order.address},"\

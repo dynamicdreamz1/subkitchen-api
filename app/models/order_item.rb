@@ -26,4 +26,21 @@ class OrderItem < ActiveRecord::Base
   def product_variant
     product.product_variants.where(size: size).first
   end
+
+  def t6_size
+    T6_SIZES[size] || size
+  end
+
+  T6_SIZES = {
+    '3S' => 'XXXS',
+    '2S' => 'XXS',
+    'XS' => 'XS',
+    'SM' => 'S',
+    'MD' => 'M',
+    'LG' => 'L',
+    'XL' => 'XL',
+    '2X' => 'XXL',
+    '3X' => 'XXXL'
+  }
+
 end
