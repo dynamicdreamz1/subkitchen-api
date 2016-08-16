@@ -6,7 +6,8 @@ ActiveAdmin.register ProductTemplate do
     :is_deleted,
     :template_image,
     :template_mask,
-		:description,
+    :description,
+    :style,
     :sizes_raw, template_variants_attributes: [:name, :color_id, :template_color_image]
   config.filters = false
   config.batch_actions = false
@@ -39,6 +40,7 @@ ActiveAdmin.register ProductTemplate do
     column(:product_type)
     column(:created_at)
     column(:price)
+    column(:style)
     actions defaults: false do |template|
       if template.is_deleted
         link_to('Restore', restore_admin_product_template_path(template), method: :put)
@@ -61,8 +63,9 @@ ActiveAdmin.register ProductTemplate do
           row(:product_type)
           row(:created_at)
           row(:price)
-					row(:size)
-					row(:description)
+          row(:style)
+          row(:size)
+          row(:description)
           row('Size Chart') { attachment_image_tag(template, :size_chart, :fit, 150, 150) }
           row(:is_deleted)
         end
