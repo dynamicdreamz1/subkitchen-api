@@ -2,7 +2,7 @@ ActiveAdmin.register Product do
   config.sort_order = 'id_asc'
   permit_params :name, :author_id, :description, :product_template_id,
                 :uploaded_image, :preview, :published, :published_at, :tag_list,
-                product_variants_attributes: [:id, :size, :design_id]
+                product_variants_attributes: [:id, :size, :design_id, :design]
   actions :all, except: [:destroy, :new, :create]
 
   scope :all
