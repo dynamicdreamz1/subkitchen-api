@@ -9,9 +9,10 @@ ActiveAdmin.register Order do
   scope :payment_pending
   scope :processing
   scope :cooking
-	scope :failed
-	scope :cancelled
-	scope :fulfilled
+  scope :failed
+  scope :cancelled
+  scope :fulfilled
+  scope :all
 
   member_action :invoice, method: :get do
     redirect_to Figaro.env.app_host + "/api/v1/invoices?uuid=#{resource.uuid}"
