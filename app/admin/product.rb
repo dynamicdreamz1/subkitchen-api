@@ -92,7 +92,7 @@ ActiveAdmin.register Product do
         a << '&nbsp;'.html_safe
         a << '&nbsp;'.html_safe
         a << '&nbsp;'.html_safe
-        a << link_to("&#8681;".html_safe, url, class: 'button', title: "Download")
+        a << link_to("&#8681;".html_safe, url, class: 'button', title: "Download", target: "_blank")
         a
       end
       row('Preview') do
@@ -102,7 +102,7 @@ ActiveAdmin.register Product do
         a << '&nbsp;'.html_safe
         a << '&nbsp;'.html_safe
         a << '&nbsp;'.html_safe
-        a << link_to("&#8681;".html_safe, product.preview_url, class: 'button', title: "Download")
+        a << link_to("&#8681;".html_safe, product.preview_url, class: 'button', title: "Download", target: "_blank")
         a
       end
       row('Date') { product.created_at }
@@ -123,7 +123,7 @@ ActiveAdmin.register Product do
             a << '&nbsp;'.html_safe
             a << '&nbsp;'.html_safe
             a << '&nbsp;'.html_safe
-            a << link_to("&#8681;".html_safe, variant.design_url, class: 'button', title: "Download")
+            a << link_to("&#8681;".html_safe, variant.design_url, class: 'button', title: "Download", target: "_blank")
             a
           end
         end
