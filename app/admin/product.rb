@@ -117,13 +117,13 @@ ActiveAdmin.register Product do
       product.product_variants.each do |variant|
         if variant.design
           row("Design #{variant.size}") do
-            a = link_to variant.design_url do
+            a = link_to variant.design_s3_url do
               attachment_image_tag(variant, :design, :fit, 100, 100)
             end
             a << '&nbsp;'.html_safe
             a << '&nbsp;'.html_safe
             a << '&nbsp;'.html_safe
-            a << link_to("&#8681;".html_safe, variant.design_url, class: 'button', title: "Download", target: "_blank")
+            a << link_to("&#8681;".html_safe, variant.design_s3_url, class: 'button', title: "Download", target: "_blank")
             a
           end
         end

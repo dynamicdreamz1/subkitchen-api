@@ -42,7 +42,7 @@ class OrderPresenter
 
     def product_panel(item)
       variant = item.product_variant
-      Figaro.env.app_host + Refile.attachment_url(variant, :design) if variant
+      variant.design_s3_url if variant
     end
 
     def product_preview(item)

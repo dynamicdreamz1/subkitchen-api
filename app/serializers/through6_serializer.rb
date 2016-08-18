@@ -60,7 +60,7 @@ class Through6Serializer
         subtotal_amount: item.price*item.quantity,
         thumbnail: Figaro.env.app_host + Refile.attachment_url(item.product, :preview, :fill, 100, 100, format: :png),
         preview: Figaro.env.app_host + Refile.attachment_url(item.product, :preview, :fill, 400, 400, format: :png),
-        file_url: Figaro.env.app_host + Refile.attachment_url(product_variant, :design, format: :jpg),
+        file_url: product_variant.design_s3_url,
         file_extension: 'jpg',
         file_type: product_variant.design_content_type,
         file_size: product_variant.design_size,
