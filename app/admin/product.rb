@@ -84,8 +84,27 @@ ActiveAdmin.register Product do
 
   show do |product|
     attributes_table do
-      row('Image') { product.image ? attachment_image_tag(product, :image, :fit, 50, 50) : product.uploaded_image }
-      row('Preview') { attachment_image_tag(product, :preview, :fit, 50, 50) }
+      row('Image') do
+        url = product.image ? product.image_url : product.uploaded_image
+        a = link_to url do
+          image_tag url, style: "width: 100px"
+        end
+        a << '&nbsp;'.html_safe
+        a << '&nbsp;'.html_safe
+        a << '&nbsp;'.html_safe
+        a << link_to("&#8681;".html_safe, url, class: 'button', title: "Download")
+        a
+      end
+      row('Preview') do
+        a = link_to product.preview_url do
+          attachment_image_tag(product, :preview, :fit, 100, 100)
+        end
+        a << '&nbsp;'.html_safe
+        a << '&nbsp;'.html_safe
+        a << '&nbsp;'.html_safe
+        a << link_to("&#8681;".html_safe, product.preview_url, class: 'button', title: "Download")
+        a
+      end
       row('Date') { product.created_at }
       row(:author)
       row(:name)
