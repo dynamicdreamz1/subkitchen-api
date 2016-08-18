@@ -96,9 +96,16 @@ ActiveAdmin.register Product do
       row('Likes') { product.likes_count }
 
       product.product_variants.each do |variant|
-        row("Design #{variant.size}") do
-          link_to variant.design_url do
-            attachment_image_tag(variant, :design, :fit, 50, 50)
+        if variant.design
+          row("Design #{variant.size}") do
+            a = link_to variant.design_url do
+              attachment_image_tag(variant, :design, :fit, 100, 100)
+            end
+            a << '&nbsp;'.html_safe
+            a << '&nbsp;'.html_safe
+            a << '&nbsp;'.html_safe
+            a << link_to("&#8681;".html_safe, variant.design_url, class: 'button', title: "Download")
+            a
           end
         end
       end
