@@ -5,7 +5,7 @@ class Product < ActiveRecord::Base
   has_many :orders, through: :order_items
   has_many :comments
   has_many :product_variants,  dependent: :destroy
-  accepts_nested_attributes_for :product_variants
+  accepts_nested_attributes_for :product_variants, :reject_if => lambda { |v| v[:design].blank? }
   has_many :product_wishes, foreign_key: 'wished_product_id', dependent: :destroy
   belongs_to :product_template
   has_many :template_variants, through: :product_template
