@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160815173741) do
+ActiveRecord::Schema.define(version: 20160819202333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(version: 20160815173741) do
     t.datetime "updated_at",          null: false
     t.integer  "design_size"
     t.string   "design_content_type"
+    t.string   "design_filename"
   end
 
   add_index "product_variants", ["product_id"], name: "index_product_variants_on_product_id", using: :btree
@@ -277,6 +278,9 @@ ActiveRecord::Schema.define(version: 20160815173741) do
     t.integer  "sales_count",                                 default: 0
     t.boolean  "featured",                                    default: false
     t.string   "uploaded_image"
+    t.string   "image_filename"
+    t.string   "image_size"
+    t.string   "image_content_type"
   end
 
   create_table "taggings", force: :cascade do |t|
