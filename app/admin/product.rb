@@ -97,14 +97,14 @@ ActiveAdmin.register Product do
         a
       end
       row('Preview') do
-        filename = "#{product.name} - preview"
-        a = link_to product.preview_url(filename: filename, format: "jpg"), target: "_blank" do
+        a = link_to product.preview_url do
           attachment_image_tag(product, :preview, :fit, 100, 100)
         end
         a << '&nbsp;'.html_safe
         a << '&nbsp;'.html_safe
         a << '&nbsp;'.html_safe
-        a << link_to("&#8681;".html_safe, product.preview_url(filename: filename, format: "jpg"), class: 'button', title: "Download", target: "_blank")
+        a << link_to("&#8681;".html_safe, product.preview_url, class: 'button', title: "Download", target: "_blank")
+        a << product.preview_filename
         a
       end
       row('Date') { product.created_at }
@@ -119,14 +119,14 @@ ActiveAdmin.register Product do
       product.product_variants.each do |variant|
         if variant.design
           row("Design #{variant.size}") do
-            filename = "#{product.name} - #{variant.size} - print file"
-            a = link_to variant.design_url(filename: filename, format: "jpg"), target: "_blank" do
+            a = link_to variant.design_s3_url do
               attachment_image_tag(variant, :design, :fit, 100, 100)
             end
             a << '&nbsp;'.html_safe
             a << '&nbsp;'.html_safe
             a << '&nbsp;'.html_safe
-            a << link_to("&#8681;".html_safe, variant.design_url(filename: filename, format: "jpg"), class: 'button', title: "Download", target: "_blank")
+            a << link_to("&#8681;".html_safe, variant.design_s3_url, class: 'button', title: "Download", target: "_blank")
+            a << variant.design_filename
             a
           end
         end
