@@ -12,7 +12,7 @@ module S3Direct
 					bucket: Figaro.env.s3_bucket,
 					acl: 'public-read',
 					expiration: "#{10.hours.from_now.utc.strftime('%Y-%m-%dT%H:%M:%S.000Z')}",
-					key: "uploads/#{SecureRandom.uuid}",
+					key: "uploads/#{SecureRandom.uuid}#{Rack::Mime::MIME_TYPES.invert[params.type]}",
 					type: params.type
 				}).to_json
 			end
