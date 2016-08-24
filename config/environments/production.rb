@@ -1,3 +1,20 @@
+class SkipCache
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    request = Rack::Request.new(env)
+
+    # skip request for oryginal files
+    if env['ORIGINAL_FULLPATH'] =~ /\A\/attachments\/[^\/]+\/store\/[^\/]+\/([^\/]*)\z/
+      env["rack-cache.force-pass"] = true
+    end
+
+    @app.call(env)
+  end
+end
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -66,13 +83,17 @@ Rails.application.configure do
                                :username => ENV["MEMCACHEDCLOUD_USERNAME"],
                                :password => ENV["MEMCACHEDCLOUD_PASSWORD"],
                                :failover => true,
+                               :error_when_over_max_size => false,
                                :socket_timeout => 1.5,
                                :socket_failure_delay => 0.2,
                                :value_max_bytes => 10485760)
     config.action_dispatch.rack_cache = {
       :metastore    => client,
-      :entitystore  => client
+      :entitystore  => client,
+      :verbose      => true
     }
+
+    config.middleware.insert_before "Rack::Cache", "SkipCache"
   end
 
 
