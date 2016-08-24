@@ -47,6 +47,9 @@ class Through6Serializer
   def items
     order.order_items.map do |item|
       product_variant = item.product_variant
+      filename = "#{item.product.name} - #{product_variant.size} - print file"
+      print_file = product_variant.design_url(filename: filename, format: "jpg")
+
       {
         id: item.id,
         name: item.product.name,
@@ -60,7 +63,7 @@ class Through6Serializer
         subtotal_amount: item.price*item.quantity,
         thumbnail: Figaro.env.app_host + Refile.attachment_url(item.product, :preview, :fill, 100, 100, format: :png),
         preview: Figaro.env.app_host + Refile.attachment_url(item.product, :preview, :fill, 400, 400, format: :png),
-        file_url: product_variant.design_s3_url,
+        file_url: print_file,
         file_extension: 'jpg',
         file_type: product_variant.design_content_type,
         file_size: product_variant.design_size,
