@@ -44,7 +44,7 @@ class OrderPresenter
       variant = item.product_variant
       return nil unless variant
       filename = "#{item.product.name} - #{variant.size} - print file"
-      variant.design_url(filename: filename, format: "jpg")
+      Figaro.env.app_host + variant.design_url(filename: filename, format: "jpg")
     end
 
     def product_preview(item)
