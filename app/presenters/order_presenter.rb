@@ -42,7 +42,9 @@ class OrderPresenter
 
     def product_panel(item)
       variant = item.product_variant
-      variant.design_s3_url if variant
+      return nil unless variant
+      filename = "#{item.product.name} - #{variant.size} - print file"
+      variant.design_url(filename: filename, format: "jpg")
     end
 
     def product_preview(item)
