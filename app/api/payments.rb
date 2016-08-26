@@ -29,6 +29,12 @@ module Payments
         order = Order.find_by!(uuid: params.uuid, active: true, order_status: 'creating')
         error!({ errors: { base: ['invalid payment parameters!'] } }, 422) unless ValidPaymentParams.new(params).call
 
+        if current_user
+          order.update(user_id: current_user.id)
+        else
+          order.update(user_id: nil)
+        end
+
         unless AddOrderAddress.new(params, order).call
           status :unprocessable_entity
           return CheckoutSerializer.new(order).as_json
