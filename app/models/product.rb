@@ -101,4 +101,8 @@ class Product < ActiveRecord::Base
   def author
     User.unscoped.find_by(id: author_id)
   end
+
+  def get_description
+    self.description.blank? ? "" : self.description.gsub(/\n/, '<br>').html_safe
+  end
 end

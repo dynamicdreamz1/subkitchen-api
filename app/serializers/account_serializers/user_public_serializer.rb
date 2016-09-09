@@ -6,7 +6,7 @@ class UserPublicSerializer
               image_url: user.profile_image || image_url,
               banner_url: user.shop_banner,
               handle: user.handle,
-              bio: user.bio,
+              bio: user.get_user_bio,
               company: user.company,
               products_count: user.products.published_all.count,
               status: user.status,

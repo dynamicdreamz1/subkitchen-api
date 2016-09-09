@@ -10,7 +10,7 @@ class ProductSerializer
         price: product.price,
         sizes: product.product_template.size,
         product_template_id: product.product_template.id,
-        description: product.description,
+        description: product.get_description,
         name: product.name,
         product_type: product.product_template.product_type,
         tags: product.tag_list.sort,

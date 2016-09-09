@@ -58,6 +58,10 @@ class User < ActiveRecord::Base
     UserPublicSerializer.new(self, true).as_json(params)
   end
 
+  def get_user_bio
+    self.bio.blank? ? "" : self.bio.gsub(/\n/, '<br>')
+  end
+
   private
 
 	def self.artist_ids_to_be_paid
