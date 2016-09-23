@@ -36,9 +36,17 @@ class ProductTemplate < ActiveRecord::Base
   def t6_size
     size_new = []
     self.size.each do |pt_size|
-      size_new << T6_SIZES[pt_size] || pt_size
+      size_new << get_value(pt_size)
     end
     return size_new
+  end
+
+  def get_value(pt_size)
+    if T6_SIZES[pt_size].nil?
+      return pt_size
+    else
+      T6_SIZES[pt_size]
+    end
   end
 
   T6_SIZES = {
