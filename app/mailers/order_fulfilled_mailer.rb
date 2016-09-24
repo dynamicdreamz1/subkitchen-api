@@ -31,7 +31,7 @@ class OrderFulfilledMailer < ApplicationMailer
     { 'product_row'      => products_rows(order),
       'order_number'     => order.id.to_s,
       'shipment_url'     => order.shipstation_url.blank? ? "#" : order.shipstation_url.to_s,
-      'store_website'    => Figaro.env.front_host }
+      'store_website'    => 'https://www.sublimation.kitchen/' }
   end
 
   def products_rows(order)
