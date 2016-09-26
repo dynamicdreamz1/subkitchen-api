@@ -24,6 +24,14 @@ class OrderFulfilledMailer < ApplicationMailer
     end
   end
 
+  def test_notify
+    template = EmailTemplate.where(name: self.class.name.to_s).first
+    content = template.content
+    mail(to: 'gkpatel98@gmail.com', subject: 'test' ) do |format|
+      format.html { render html: content.html_safe }
+    end
+  end
+
   private
 
   def values(options)
