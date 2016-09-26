@@ -52,15 +52,29 @@ class OrderFulfilledMailer < ApplicationMailer
     products_rows.join
   end
 
+  # def empty_product_row
+  #   <<-EOS
+  #     <div class="singleitems">
+  #       <div class="item-img">
+  #         <img src="PRODUCT_IMG">
+  #       </div>
+  #       <div class="item-detail">
+  #         <h4>PRODUCT_NAME</h4>
+  #         <p>PRODUCT_TYPE</p>
+  #       </div>
+  #     </div>
+  #   EOS
+  # end
+
   def empty_product_row
     <<-EOS
       <div class="singleitems">
-        <div class="item-img">
-          <img src="PRODUCT_IMG">
+        <div class="item-img" style=" width: 6%; float: left; border: 1px solid #eee; padding: 5px; border-radius: 10px;" >
+          <img style="width: 100%;" src="PRODUCT_IMG">
         </div>
-        <div class="item-detail">
-          <h4>PRODUCT_NAME</h4>
-          <p>PRODUCT_TYPE</p>
+        <div class="item-detail" style="width: 85%; float: left; margin-left: 3%;">
+          <h4 style=" margin-bottom: 0; color: #4d4d4d; margin-top: 15px;">PRODUCT_NAME</h4>
+          <p style="margin-top: 0; color: #8d8d8d;">PRODUCT_TYPE</p>
         </div>
       </div>
     EOS
