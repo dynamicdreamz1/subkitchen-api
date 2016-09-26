@@ -24,14 +24,6 @@ class OrderFulfilledMailer < ApplicationMailer
     end
   end
 
-  def test_notify
-    template = EmailTemplate.where(name: self.class.name.to_s).first
-    content = template.content
-    mail(to: 'gkpatel98@gmail.com', subject: 'test' ) do |format|
-      format.html { render html: content.html_safe }
-    end
-  end
-
   private
 
   def values(options)
@@ -51,20 +43,6 @@ class OrderFulfilledMailer < ApplicationMailer
     end
     products_rows.join
   end
-
-  # def empty_product_row
-  #   <<-EOS
-  #     <div class="singleitems">
-  #       <div class="item-img">
-  #         <img src="PRODUCT_IMG">
-  #       </div>
-  #       <div class="item-detail">
-  #         <h4>PRODUCT_NAME</h4>
-  #         <p>PRODUCT_TYPE</p>
-  #       </div>
-  #     </div>
-  #   EOS
-  # end
 
   def empty_product_row
     <<-EOS
