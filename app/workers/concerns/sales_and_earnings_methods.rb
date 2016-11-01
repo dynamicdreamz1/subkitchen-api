@@ -9,7 +9,7 @@ module SalesAndEarningsMethods
 			end
 			return (item.profit - item.profit * 0.01 * discount).round(2)
 		end
-		item.profit
+		(item.price * 0.2).round
 	end
 
 	def get_order(order_id)
