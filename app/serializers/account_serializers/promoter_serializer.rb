@@ -7,7 +7,8 @@ class PromoterSerializer
       last_name: user.last_name,
       followers_count: 0,
       artist: user.artist,
-      image_url: user.profile_image || image_url
+      image_url: user.profile_image || image_url,
+      handle: user.handle
     }
 
     { promoter: data }.as_json(options)

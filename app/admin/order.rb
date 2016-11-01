@@ -30,7 +30,10 @@ ActiveAdmin.register Order do
 
 	batch_action :mark_as_fulfilled do |order_ids|
 		order_ids.each do |id|
-			Order.find(id).update!(order_status: 4)
+      order = Order.find(id)
+			if order and order.update!(order_status: 4)
+        OrderFulfilledMailer.notify(order.email, order: order).deliver_later
+      end
 		end
 		redirect_to admin_orders_path(scope: 'fulfilled'), notice: 'Orders marked as fulfilled'
 	end

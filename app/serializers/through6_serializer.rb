@@ -53,7 +53,7 @@ class Through6Serializer
       {
         id: item.id,
         name: item.product.name,
-        description: item.product.description,
+        description: '',
         quantity: item.quantity,
         attributes: {
           size: item.t6_size,

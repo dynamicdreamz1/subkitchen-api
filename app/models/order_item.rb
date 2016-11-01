@@ -28,7 +28,7 @@ class OrderItem < ActiveRecord::Base
   end
 
   def t6_size
-    T6_SIZES[size] || size
+    T6_SIZES[self.size] || self.size
   end
 
   T6_SIZES = {

@@ -8,7 +8,7 @@ class ProductSerializer
         is_deleted: product.is_deleted,
         author_id: (product.author ? product.author.id : nil),
         price: product.price,
-        sizes: product.product_template.size,
+        sizes: product.product_template.t6_size,
         product_template_id: product.product_template.id,
         description: product.get_description,
         name: product.name,
