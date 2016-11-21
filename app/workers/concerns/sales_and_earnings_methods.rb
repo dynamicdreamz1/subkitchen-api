@@ -7,7 +7,7 @@ module SalesAndEarningsMethods
 			else
 				(100 * coupon.discount) / item.order.subtotal_cost
 			end
-			return (item.profit - item.profit * 0.01 * discount).round(2)
+			return (item.order.subtotal_cost * 0.2).round
 		end
 		(item.price * 0.2).round
 	end
