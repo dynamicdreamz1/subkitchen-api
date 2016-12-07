@@ -18,9 +18,9 @@ class PaypalPaymentRequest
       business: Figaro.env.paypal_seller,
       cmd: '_cart',
       upload: 1,
-      return: Figaro.env.frontend_host + @return_path.to_s,
+      return: "#{Figaro.env.frontend_host}#{@return_path.to_s}",
       invoice: @payment.id,
-      notify_url: Figaro.env.app_host + '/api/v1/payment_notification'
+      notify_url: "#{Figaro.env.app_host}/api/v1/payment_notification"
     }
 		values.merge!(discount_amount_cart: order.discount) if order.coupon
     @payment.payable.order_items.each_with_index do |item, index|
