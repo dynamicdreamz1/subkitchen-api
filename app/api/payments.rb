@@ -45,8 +45,6 @@ module Payments
           return UpdateOrderItems.new(order).call
         end
 
-        OrderConfirmationMailer.notify(order.email, order: order).deliver_later
-
         CreatePayment.new(order, params.payment_type, params.stripe_token, params.return_path).call ||
           error!({ errors: { base: ['already paid'] } }, 422)
       end

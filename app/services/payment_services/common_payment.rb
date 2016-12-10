@@ -29,6 +29,7 @@ class CommonPayment
                'processing'
              end
     order.update(order_status: status)
+    OrderConfirmationMailer.notify(order.email, order: order).deliver_later
   end
 
   def update_order
