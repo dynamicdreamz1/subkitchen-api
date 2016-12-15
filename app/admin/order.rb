@@ -33,6 +33,7 @@ ActiveAdmin.register Order do
       order = Order.find(id)
 			if order and order.update!(order_status: 4)
         OrderFulfilledMailer.notify(order.email, order: order).deliver_later
+        SalesAndEarningsCounter.perform_async(order.id)
       end
 		end
 		redirect_to admin_orders_path(scope: 'fulfilled'), notice: 'Orders marked as fulfilled'

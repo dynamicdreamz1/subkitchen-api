@@ -3,7 +3,6 @@ class CommonPayment
     update_order
     update_payment
     send_order_and_create_invoice
-    SalesAndEarningsCounter.perform_async(order.id)
     PaymentConfirmationMailer.notify(order.email, invoice: order.invoice, order: order)
     payment
   end
