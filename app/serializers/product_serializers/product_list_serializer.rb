@@ -37,7 +37,7 @@ class ProductListSerializer
       price: product.product_template.price,
       tags: product.tag_list,
       published: product.published,
-      sizes: product.product_template.size,
+      sizes: product.product_template.t6_size,
       name: product.name,
       likes_count: product.likes_count,
       preview_url: product_image(product),
