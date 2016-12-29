@@ -1,0 +1,81 @@
+
+subkitchen/bower.json
+
+```
+{
+  "name": "subkitchen-front",
+  "dependencies": {
+    "ember": "~2.4.3",
+    "ember-cli-shims": "0.1.1",
+    "ember-cli-test-loader": "0.2.2",
+    "ember-qunit-notifications": "0.1.0",
+    "node-uuid": "1.4.1",
+    "blob-polyfill": "^1.0.20150320",
+    "foundation-sites": "~6.1.0",
+    "font-awesome": "~4.5.0",
+    "fabric.js": "fabric#1.5.0",
+    "jquery.tagsinput": "jquery-tags-input#^1.3.6",
+    "ember-cli-moment-shim": "0.0.3"
+  },
+  "resolutions": {
+    "jquery": "1.x"
+  }
+}
+
+```
+JSON CODE FROM MESSAGE BOARD JEREMIAH HAD ON FILE FOR API VENDORS
+```
+{
+  "id": 2109,
+  "email": "test@example.com",
+  "created_at": "2016-08-11T13:30:34.290Z",
+  "updated_at": "2016-08-11T13:30:34.988Z",
+  "token": "f84cf0ee-5254-4b81-8e8d-ba8cfb9bcad3",
+  "total_price": "0.0",
+  "subtotal_price": "0.0",
+  "total_tax": "0.0",
+  "total_discounts": "0.0",
+  "taxes_included": false,
+  "currency": "USD",
+  "processed_at": "2016-08-11T15:30:34.992+02:00",
+  "tax_lines": [
+    {
+      "title": "Tax",
+      "price": "0.0",
+      "rate": "0.06"
+    }
+  ],
+  "shipping_address": [
+    {
+      "address1": "123 Main St",
+      "city": "Anytown",
+      "country": "United States of America",
+      "name": "John Doe",
+      "zip": "00-000",
+      "province": ""
+    }
+  ],
+  "line_items": [
+    {
+      "id": 2298,
+      "name": "product1",
+      "description": "description",
+      "quantity": 1,
+      "attributes": {
+        "size": "s"
+      },
+      "unit_amount": "19.99",
+      "subtotal_amount": "19.99",
+      "thumbnail": "http://localhost:3000/attachments/2e5566783ced4b41bc670a2ddf726a210fd73358/store/fill/100/100/2f8353998f2847bde9248a42222238a25932c5a64e18bff3a708475c3bb1/preview.png",
+      "preview": "http://localhost:3000/attachments/edd176b457e1f5fd18d52bdceaa0c1fcba67e3bc/store/fill/400/400/2f8353998f2847bde9248a42222238a25932c5a64e18bff3a708475c3bb1/preview.png",
+      "file_url": "http://localhost:3000/attachments/5426d08fa57c601519aa185c1b0042cc4532e415/store/ef0c1c38b7f5f1448fc973a460897fd9951e80247b2cefcd9f6d43585b75/design.pdf",
+      "file_extension": "pdf",
+      "file_type": "application/pdf",
+      "file_size": 1171246,
+      "file_hash": "ef0c1c38b7f5f1448fc973a460897fd9951e80247b2cefcd9f6d43585b75"
+    }
+  ]
+}
+
+
+```
