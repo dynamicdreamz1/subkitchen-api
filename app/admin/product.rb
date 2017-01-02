@@ -121,7 +121,7 @@ ActiveAdmin.register Product do
           row("Design #{variant.size}") do
             filename = "#{product.name} - #{variant.size} - print file"
             a = link_to variant.design_url(filename: filename, format: "jpg"), target: "_blank" do
-              attachment_image_tag(variant, :design, :fit, 100, 100)
+              variant.design_url(filename: filename, format: "jpg")
             end
             a << '&nbsp;'.html_safe
             a << '&nbsp;'.html_safe
