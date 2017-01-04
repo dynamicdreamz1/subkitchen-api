@@ -19,7 +19,7 @@ deploy:
     secure: please-set
   app: subkitchen-api
   on:
-    repo: jerrobison/subkitchen-api
+    repo: dynamicdreamz1/subkitchen-api
   run: "rake db:migrate"
 services:
   - redis-server
